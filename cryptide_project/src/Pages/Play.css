@@ -1,0 +1,89 @@
+
+.MainContainer{
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around
+}
+
+.MidContainer{
+    display: flex;
+    /* justify-content:center; */
+    align-items:center;
+    flex-direction: column;
+
+    margin-top: 15px;
+    width: 30%;
+}
+
+.MidContainer div h2 {
+    display: flex;
+    justify-content: center;
+}
+/* 
+.MidContainer div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+} */
+
+.leftContainer{
+    width: 30%;
+}
+
+.rightContainer{
+    width: 30%;
+}
+
+.LeaderBoardiv{
+    background-color: #D7D4C6;
+    opacity: 80%;
+    border-radius: 25px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 15px;
+}
+
+
+.textBoard{
+    display: flex;
+    flex-wrap: column;
+    justify-content: space-between;
+    width: 300px;
+}
+
+/* .textBoard div{
+    display: flex;
+    flex-direction:column-reverse;
+    justify-content:space-between
+} */
+
+/* .textBoard div:nth-child(2){
+    display: flex;
+    justify-content: end;
+} */
+
+/**Button**/
+.buttonGroupVertical{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+}
+
+.ButtonNav{
+    margin: 15px 0;
+    width:200px;
+    height: 8vh;
+    
+
+    background-color: #85C9C2;
+    color: #2A4541;
+    border-radius: 15px;
+    border-width: 0;
+
+    font-size:larger;
+}

@@ -15,7 +15,7 @@ import { HiLanguage } from 'react-icons/hi2';
 import './NavBar.css';
 
 // @ts-ignore
-function AppNavbar({ changeLocale}) {
+function AppNavbar({changeLocale}) {
     return (
         <Navbar expand="lg" className="custom-navbar">
         <Container>
@@ -29,10 +29,10 @@ function AppNavbar({ changeLocale}) {
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
                 <NavDropdown title={<span><FormattedMessage id="play"/></span>} className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="jouer"><FormattedMessage id="play_solo"/> </NavDropdown.Item>
+                    <NavDropdown.Item href="play"><FormattedMessage id="play_solo"/> </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="jouer"><FormattedMessage id="create_room"/> </NavDropdown.Item>
-                    <NavDropdown.Item href="jouer"><FormattedMessage id="join"/> </NavDropdown.Item>
+                    <NavDropdown.Item href="play"><FormattedMessage id="create_room"/> </NavDropdown.Item>
+                    <NavDropdown.Item href="play"><FormattedMessage id="join"/> </NavDropdown.Item>
                 </NavDropdown>
             </Nav>
             <div className='leftdiv'>

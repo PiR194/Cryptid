@@ -24,6 +24,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
+import Play from './Pages/Play';
 
 const messages = {
   fr: messagesFr,
@@ -60,6 +61,7 @@ function App() {
         <Route path="/jouer" element={<Jouer />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/play" element={<Play/>} />
       </Routes>
     </BrowserRouter>
   </IntlProvider>

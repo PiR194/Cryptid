@@ -21,7 +21,7 @@ function Home() {
             <div>
                 <h2><FormattedMessage id="home.jeu.title"/></h2>
                 <p>
-                <FormattedMessage id="home.jeu" />
+                    <FormattedMessage id="home.jeu" />
                 </p>
             </div>
             <div>
