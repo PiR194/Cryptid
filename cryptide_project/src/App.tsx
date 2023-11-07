@@ -26,6 +26,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
+import Play from './Pages/Play';
 
 const messages = {
   fr: messagesFr,
