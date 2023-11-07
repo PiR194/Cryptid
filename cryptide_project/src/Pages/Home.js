@@ -8,9 +8,10 @@ import { Link } from 'react-router-dom';
 function Home() {
     return (
         
-    <div className="home_container">
+    <div className="home-container">
+
         <div className="left-section">
-            
+
             <div>
                 <h2>L'HISTOIRE</h2>
                 <p>
