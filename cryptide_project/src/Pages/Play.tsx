@@ -3,15 +3,19 @@ import './Play.css';
 
 import Person from '../res/img/Person.png';
 import { Link } from 'react-router-dom';
+import ButtonImgNav from "../Components/ButtonImgNav"
+import param from '../res/icon/param.png';
+import share from '../res/icon/share.png';
 
 function Play() {
     return (
 
         <div className="MainContainer">
             <div className="leftContainer">
-                <button className='ButtonNav'>
+                {/* <button className='ButtonNav'>
                     Param
-                </button>
+                </button> */}
+                <ButtonImgNav dest='/' img={param}/>
             </div>
             <div className="MidContainer">
                 <div>
@@ -59,9 +63,10 @@ function Play() {
                             </h4>
                         </div>
                     </div>
-                    <button className='ButtonNav'>
+                    {/* <button className='ButtonNav'>
                         Share
-                    </button>
+                    </button> */}
+                    <ButtonImgNav dest='/' img={share}/>
                 </div>
             </div>
         </div>
