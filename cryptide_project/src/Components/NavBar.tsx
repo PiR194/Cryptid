@@ -14,7 +14,8 @@ import { HiLanguage } from 'react-icons/hi2';
 /* Components */
 import './NavBar.css';
 
-function AppNavbar({ changeLocale }) {
+// @ts-ignore
+function AppNavbar({ changeLocale}) {
     return (
         <Navbar expand="lg" className="custom-navbar">
         <Container>
