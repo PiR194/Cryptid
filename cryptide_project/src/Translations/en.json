@@ -1,12 +1,30 @@
 {
-    "languageSelector": {
-        "french": "French",
-        "english": "English"
-    },
-    
+    "languageSelector.french": "French",
+    "languageSelector.english": "English",
+
+    "home.histoire.title": "HISTORY",
     "home.histoire": "Cryptozoology studies the traces of legendary monsters: cryptids. Yetis, Chupacabra, beast of the gevaudan, Dahut, etc. , are very serious topics for you… Cross the clues and be the first to discover them!",
+    
+    "home.jeu.title": "THE GAME",
     "home.jeu": "Each player has a clue on the field where the creature is located. By cross-referencing your information, there can only be one box. But the goal is to be the first to find it. Ask your colleagues, and nevertheless competitors. They can only answer you by «no» or «maybe», with a lot of logic and a bit of audacity, you can enter the legend!",
+    
+    "home.plus.title": "STRENGTH",
     "home.plus.1": "A mind-blowing deduction mechanism.",
     "home.plus.2": "An immense replayability.",
-    "home.plus.3": "A surprising and strong theme."
+    "home.plus.3": "A surprising and strong theme.",
+
+    "game.time": "Time : 45 minutes",
+    "game.players": "Players : 3 to 5 players",
+    "game.age": "Age: 10 years and over",
+    "game.createdBy": "Created By :",
+    "game.illustratedBy": "Illustrated By :",
+
+    "log_in":" Log in ",
+    "sign_up":" Sign up ",
+
+    "join" : "Join",
+    "create_room" : "Create room",
+    "play_solo" : "Single player",
+
+    "play" : "PLAY"
 }

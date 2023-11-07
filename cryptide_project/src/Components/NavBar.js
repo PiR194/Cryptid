@@ -1,8 +1,17 @@
 import React from 'react';
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-import { BiLogInCircle } from 'react-icons/bi';
-import { BsFillPersonPlusFill } from 'react-icons/bs'
 
+/* Naviagtion */
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+
+/* Lang */
+import { FormattedMessage } from 'react-intl';
+
+/* Icon */
+import { BiLogInCircle } from 'react-icons/bi';
+import { BsFillPersonPlusFill } from 'react-icons/bs';
+import { HiLanguage } from 'react-icons/hi2';
+
+/* Components */
 import './NavBar.css';
 
 function AppNavbar({ changeLocale }) {
@@ -18,22 +27,34 @@ function AppNavbar({ changeLocale }) {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <NavDropdown title="Jouer" className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="jouer">Jouer solo</NavDropdown.Item>
+                <NavDropdown title={<span><FormattedMessage id="play"/></span>} className="navbar-title" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="jouer"><FormattedMessage id="play_solo"/> </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="jouer">Créer une partie</NavDropdown.Item>
-                    <NavDropdown.Item href="jouer">Rejoindre</NavDropdown.Item>
+                    <NavDropdown.Item href="jouer"><FormattedMessage id="create_room"/> </NavDropdown.Item>
+                    <NavDropdown.Item href="jouer"><FormattedMessage id="join"/> </NavDropdown.Item>
                 </NavDropdown>
             </Nav>
             <div className='leftdiv'>
                 <Nav className="ml-auto navbar-title-dd">
-                    <Nav.Link href="login" className='navbar-title-dd'> <BiLogInCircle/> Log in</Nav.Link>
-                    <Nav.Link href="signup" className='navbar-title-dd'> <BsFillPersonPlusFill/> Sign up</Nav.Link>
+                    <Nav.Link href="login" className='navbar-title-dd'> 
+                        <BiLogInCircle/>
+                        <FormattedMessage id="log_in"/> 
+                    </Nav.Link>
+                    <Nav.Link href="signup" className='navbar-title-dd'> 
+                        <BsFillPersonPlusFill/>
+                        <FormattedMessage id="sign_up"/> 
+                    </Nav.Link>
                 </Nav>
                 <Nav className="me-auto">
-                    <NavDropdown title="Language" className="navbar-title" id="basic-nav-dropdown">
-                        <NavDropdown.Item onClick={() => changeLocale('fr')}>Français</NavDropdown.Item>
-                        <NavDropdown.Item onClick={() => changeLocale('en')}>Anglais</NavDropdown.Item>
+                    <NavDropdown 
+                    title={<span><HiLanguage /></span>}
+                    className="navbar-title" id="basic-nav-dropdown">
+                        <NavDropdown.Item onClick={() => changeLocale('fr')}> 
+                            <FormattedMessage id="languageSelector.french"/> 
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => changeLocale('en')}> 
+                            <FormattedMessage id="languageSelector.english"/> 
+                        </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </div>
