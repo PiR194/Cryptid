@@ -1,0 +1,49 @@
+.home-container {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: #D7D4C6; */
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    font-size: calc(10px + 2vmin);
+    color: #2A4541;
+}
+
+/**Divider**/
+.left-section {
+    flex: 3;
+    padding: 20px;
+    margin-right: 10px; 
+    margin-left: 30px; 
+}
+
+.vertical-divider {
+    width: 5px;
+    background-color: #2A4541;
+}
+
+.right-section {
+    flex: 1;
+    padding: 20px;
+    margin-left: 10px;
+}
+
+.left-section h2,
+.right-section h2 {
+    text-align: left;
+}
+
+.left-section p,
+.right-section ul {
+    text-align: left;
+}
+
+
+/*Global ???*/
+.button {
+    background-color: #49A4BE;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10;
+    cursor: pointer;
+}

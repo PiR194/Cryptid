@@ -1,0 +1,14 @@
+
+
+
+
+/**Form**/
+.form-container {
+    /* background-color: #D7D4C6; */
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+form{
+    margin : auto 150px;
+}
