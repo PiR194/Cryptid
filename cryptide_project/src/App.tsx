@@ -38,8 +38,7 @@ function App() {
   //const locale = 'fr'; 
   const [locale, setLocale] = useState('fr');
 
-
-  // @ts-ignore
+  //@ts-ignore
   const changeLocale = (newLocale) => {
     setLocale(newLocale);
   };
@@ -51,9 +50,7 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
-
-  
-  // @ts-ignore
+  //@ts-ignore
   <IntlProvider locale={locale} messages={messages[locale]}>
     <BrowserRouter>  
       <AppNavbar changeLocale={changeLocale} />
