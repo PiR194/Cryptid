@@ -2,7 +2,7 @@ import React from 'react';
 import './Home.css'; // Créez un fichier CSS pour styliser votre composant
 import '../App.css';
 import { Link } from 'react-router-dom';
-
+import { FormattedMessage } from 'react-intl';
 
 
 function Home() {
@@ -15,21 +15,21 @@ function Home() {
             <div>
                 <h2>L'HISTOIRE</h2>
                 <p>
-                    "La cryptozoologie étudie les traces des monstres de légende : les cryptides. Yétis, Chupacabra, bête du gévaudan, Dahut, ect., sont des sujets très sérieux pour vous… Croisez les indices et soyez le premier à les découvrir!"
+                    <FormattedMessage id="home.histoire" />
                 </p>
             </div>
             <div>
                 <h2>LE JEU</h2>
                 <p>
-                    "Chaque joueur possède un indice sur le terrain où se trouve la créature. En recoupant vos informations, il ne peut y avoir qu'une case qui y corresponde. Mais le but est d'être le premier à la trouver. Interrogez vos collègues, et néanmoins concurrents. Ils ne peuvent vous répondre que par «non» ou «peut-être», avec beaucoup de logique et un brin d'audace, vous pourrez rentrer dans la légende!"
+                <FormattedMessage id="home.jeu" />
                 </p>
             </div>
             <div>
                 <h2>LES +</h2>
                 <ul>
-                    <li>Une mécanique de déduction époustouflante.</li>
-                    <li>Une rejouabilité immense.</li>
-                    <li>Un thème surprenant et fort.</li>
+                    <li><FormattedMessage id="home.plus.truc"/></li>
+                    <li><FormattedMessage id="home.plus.2"/></li>
+                    <li><FormattedMessage id="home.plus.3"/></li>
                 </ul>
             </div>
         </div>

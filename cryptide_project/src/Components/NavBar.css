@@ -31,3 +31,8 @@
     display: flex;
     justify-content: center;    
 }
+
+.leftdiv{
+    display: flex;
+    justify-content: start;
+}

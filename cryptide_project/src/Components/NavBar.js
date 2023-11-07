@@ -5,7 +5,7 @@ import { BsFillPersonPlusFill } from 'react-icons/bs'
 
 import './NavBar.css';
 
-function AppNavbar() {
+function AppNavbar({ changeLocale }) {
     return (
         <Navbar expand="lg" className="custom-navbar">
         <Container>
@@ -25,10 +25,18 @@ function AppNavbar() {
                     <NavDropdown.Item href="jouer">Rejoindre</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
-            <Nav className="ml-auto navbar-title-dd">
-                <Nav.Link href="login" className='navbar-title-dd'> <BiLogInCircle/> Log in</Nav.Link>
-                <Nav.Link href="signup" className='navbar-title-dd'> <BsFillPersonPlusFill/> Sign up</Nav.Link>
-            </Nav>
+            <div className='leftdiv'>
+                <Nav className="ml-auto navbar-title-dd">
+                    <Nav.Link href="login" className='navbar-title-dd'> <BiLogInCircle/> Log in</Nav.Link>
+                    <Nav.Link href="signup" className='navbar-title-dd'> <BsFillPersonPlusFill/> Sign up</Nav.Link>
+                </Nav>
+                <Nav className="me-auto">
+                    <NavDropdown title="Language" className="navbar-title" id="basic-nav-dropdown">
+                        <NavDropdown.Item onClick={() => changeLocale('fr')}>Français</NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => changeLocale('en')}>Anglais</NavDropdown.Item>
+                    </NavDropdown>
+                </Nav>
+            </div>
             </Navbar.Collapse>
         </Container>
         </Navbar>
