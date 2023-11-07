@@ -1,11 +1,24 @@
 import React from 'react';
-import './Home.css';
+import './Home.css'; // Créez un fichier CSS pour styliser votre composant
 import '../App.css';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import Person from '../source/Person';
+import Color from '../source/Color';
+import Sport from '../source/Sport';
+import PersonNetwork from '../source/PersonsNetwork';
+import AgeIndice from '../source/Indices/AgeIndice';
+
+
+
+
+
 
 
 function Home() {
+
+    let person = new Person(1, "test", 12, Color.NOIR, [Sport.CURLING], []);
+    let network = new PersonNetwork([person, person])
+    let indice = new AgeIndice(1, 10, 20)
     return (
         
     <div className="home-container">
@@ -13,23 +26,23 @@ function Home() {
         <div className="left-section">
 
             <div>
-                <h2><FormattedMessage id="home.histoire.title"/></h2>
+                <h2>L'HISTOIRE</h2>
                 <p>
-                    <FormattedMessage id="home.histoire" />
+                    "La cryptozoologie étudie les traces des monstres de légende : les cryptides. Yétis, Chupacabra, bête du gévaudan, Dahut, ect., sont des sujets très sérieux pour vous… Croisez les indices et soyez le premier à les découvrir!"
                 </p>
             </div>
             <div>
-                <h2><FormattedMessage id="home.jeu.title"/></h2>
+                <h2>LE JEU</h2>
                 <p>
-                    <FormattedMessage id="home.jeu" />
+                    "Chaque joueur possède un indice sur le terrain où se trouve la créature. En recoupant vos informations, il ne peut y avoir qu'une case qui y corresponde. Mais le but est d'être le premier à la trouver. Interrogez vos collègues, et néanmoins concurrents. Ils ne peuvent vous répondre que par «non» ou «peut-être», avec beaucoup de logique et un brin d'audace, vous pourrez rentrer dans la légende!"
                 </p>
             </div>
             <div>
-                <h2><FormattedMessage id="home.plus.title"/></h2>
+                <h2>LES +</h2>
                 <ul>
-                    <li><FormattedMessage id="home.plus.1"/></li>
-                    <li><FormattedMessage id="home.plus.2"/></li>
-                    <li><FormattedMessage id="home.plus.3"/></li>
+                    <li>Une mécanique de déduction époustouflante.</li>
+                    <li>Une rejouabilité immense.</li>
+                    <li>Un thème surprenant et fort.</li>
                 </ul>
             </div>
         </div>
@@ -37,15 +50,15 @@ function Home() {
         <div className="vertical-divider"></div>
 
         <div className="right-section">
-            <h3><FormattedMessage id="game.time"/></h3>
-            <h3><FormattedMessage id="game.players"/></h3>
-            <h3><FormattedMessage id="game.age"/></h3>
+            <h3>Temps :45 minutes</h3>
+            <h3>Joueurs :3 à 5 joueurs</h3>
+            <h3>Age :10 ans et +</h3>
             <p>-------------------------------</p>
-            <h3> <u><FormattedMessage id="game.createdBy"/></u><br/> Hal Duncan & Ruth Veevers</h3>
-            <h3> <u><FormattedMessage id="game.illustratedBy"/></u><br/> Kwanchai Moriya</h3>
+            <h3> <u>Créé par :</u><br/> Hal Duncan & Ruth Veevers</h3>
+            <h3> <u>Illustré par :</u><br/> Kwanchai Moriya</h3>
             {/* <button>Jouer au jeu</button> */}
             <br/>
-            <Link to="/play" className='button'> <FormattedMessage id="play"/> </Link>
+            <Link to="/jouer" className='button'>Aller à la page Page2</Link>
         </div>
     </div>
     );
