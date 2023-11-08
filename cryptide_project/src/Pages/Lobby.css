@@ -1,0 +1,44 @@
+
+
+.lobby-container {
+    display: flex;
+    background-color: #fff;
+    min-height: 100vh;
+    font-size: calc(10px + 2vmin);
+    color: #2A4541;
+}
+
+.left-section {
+    padding: 20px;
+    margin-right: 10px; 
+    margin-left: 30px; 
+}
+
+.lobby-vertical-divider{
+    width: 5px;
+    background-color: #2A4541;
+}
+
+.right-section {
+    padding: 20px;
+    margin: 10px;
+}
+
+
+.player-board{
+    height: 100%;
+    width: max-content;
+    background-color: rgb(243, 241, 235);
+    border-radius: 20px;
+
+    padding: 20px 0px;
+    margin: 10px 15px;
+}
+
+.title-param-div{
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+
