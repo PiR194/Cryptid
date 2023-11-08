@@ -18,11 +18,7 @@ import SportIndice from '../source/Indices/SportIndice';
 import Stub from '../source/Stub';
 import NetworkGenerator from '../source/NetworkGenerator';
 import GraphCreator from '../source/GraphCreator';
-
-
-
-
-
+import { FormattedMessage } from 'react-intl';
 
 
 function Home() {
