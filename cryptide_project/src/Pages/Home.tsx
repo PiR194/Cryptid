@@ -36,26 +36,6 @@ function Home() {
     let network = new PersonNetwork([person, p1, p2, p3, p4, p5, p6, p7, p8, p9])
     */
 
-    const edgesCreator = new EdgesCreator()
-
-    const chooser = new IndiceChooser()
-
-    const indices = Stub.GenerateIndice()
-
-    const network = NetworkGenerator.GenerateNetwork(12)
-
-    const rand = Math.floor(Math.random() * 12)
-    const person = network.getPersons()[rand]
-
-    const choosenIndices = chooser.chooseIndice(network, person, indices, 3)
-
-    edgesCreator.CreateAllEdges(network, person, choosenIndices)
-
-    const graph = GraphCreator.CreateGraph(network)
-
-    console.log(network)
-    console.log(graph)
-
     return (
         
     <div className="home-container">

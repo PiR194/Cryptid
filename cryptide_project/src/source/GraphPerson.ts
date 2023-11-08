@@ -3,9 +3,9 @@ import NodePerson from "./NodePerson";
 
 class GraphPerson{
 
-    private edges: Edge[]
+    public edges: Edge[]
 
-    private nodesPerson: NodePerson[]
+    public nodesPerson: NodePerson[]
 
     constructor(edges: Edge[], nodesPerson: NodePerson[]){
         this.edges = edges
