@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css'; // Créez un fichier CSS pour styliser votre composant
+import './Home.css';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import Person from '../source/Person';
@@ -99,7 +99,7 @@ function Home() {
             <h3> <u><FormattedMessage id="game.illustratedBy"/></u><br/> Kwanchai Moriya</h3>
             {/* <button>Jouer au jeu</button> */}
             <br/>
-            <Link to="/jouer" className='button'> <FormattedMessage id="play"/> </Link>
+            <Link to="/play" className='button'> <FormattedMessage id="play"/> </Link>
         </div>
     </div>
     );
