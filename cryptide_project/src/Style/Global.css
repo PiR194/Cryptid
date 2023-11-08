@@ -1,6 +1,13 @@
 
-
-
+.item-horizontal-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color:#fff;
+    border-radius: 15px;
+    width: 500px;
+    margin: 10px 20px;
+}
 
 /**Form**/
 .form-container {
