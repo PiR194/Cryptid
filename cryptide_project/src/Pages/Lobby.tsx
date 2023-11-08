@@ -39,7 +39,7 @@ function Lobby() {
                     }
                 </ul>
                 <center>
-                    <ButtonImgNav dest='/' img={cible} text=' À la chasse !'/> {/* page de baptiste ici */}
+                    <ButtonImgNav dest='/game' img={cible} text=' À la chasse !'/> {/* page de baptiste ici */}
                 </center>
             </div>
         </div>
