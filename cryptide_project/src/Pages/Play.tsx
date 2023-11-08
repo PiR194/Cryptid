@@ -40,7 +40,7 @@ function Play() {
                             />
                 </div>
                 <div className='buttonGroupVertical'>
-                    <Link to="/">
+                    <Link to="/lobby">
                         <button className="ButtonNav"> Jouer seul </button>
                     </Link>
                     <Link to="/">
