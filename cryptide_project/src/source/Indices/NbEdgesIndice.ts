@@ -1,11 +1,15 @@
 import EdgesIndice from "./EdgesIndice";
 
-class NbEdgesIbndice extends EdgesIndice {
+class NbEdgesIndice extends EdgesIndice {
     private nbNeighbors: number;
 
     constructor(id: number, nbNeighbors: number) {
       super(id);
       this.nbNeighbors = nbNeighbors;
+    }
+
+    public getNbEdges(): number{
+      return this.nbNeighbors
     }
   
     // Implémentation de la méthode abstraite
@@ -14,4 +18,4 @@ class NbEdgesIbndice extends EdgesIndice {
     }
   }
 
-  export default NbEdgesIbndice
+  export default NbEdgesIndice

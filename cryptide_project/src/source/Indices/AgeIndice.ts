@@ -21,7 +21,7 @@ class AgeIndice extends Indice {
     }
 
     getMaximum(): number{
-      return this.minimum
+      return this.maximum
     }
   }
 

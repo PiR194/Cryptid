@@ -4,6 +4,7 @@ enum Sport {
     BASKET,
     TENNIS,
     CURLING,
+    AUCUN
 }
 
 export default Sport
