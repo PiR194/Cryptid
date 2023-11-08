@@ -1,11 +1,22 @@
 import React from 'react';
+
+/* Page */
 import './Play.css';
 
-import Person from '../res/img/Person.png';
+/* Nav */
 import { Link } from 'react-router-dom';
+
+/* Component */
 import ButtonImgNav from "../Components/ButtonImgNav"
+
+/* Img */
+import Person from '../res/img/Person.png';
+
+/* Icon */
+import trophy from '../res/icon/trophy.png';
 import param from '../res/icon/param.png';
 import share from '../res/icon/share.png';
+
 
 function Play() {
     return (
@@ -15,7 +26,7 @@ function Play() {
                 {/* <button className='ButtonNav'>
                     Param
                 </button> */}
-                <ButtonImgNav dest='/' img={param}/>
+                <ButtonImgNav dest='/signup' img={Person} text="Gestion du compte"/>
             </div>
             <div className="MidContainer">
                 <div>
@@ -42,7 +53,7 @@ function Play() {
             </div>
             <div className='rightContainer'>
                 <div className='LeaderBoardiv'>
-                    <img src={Person}
+                    <img src={trophy}
                                 height='100'
                                 width='100'
                                 alt="Person2"

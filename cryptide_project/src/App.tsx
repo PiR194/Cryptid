@@ -5,9 +5,9 @@ import { IntlProvider } from 'react-intl';
 
 /* Page */
 import Home from './Pages/Home'; 
-import Jouer from './Pages/Jouer'; 
 import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
+import Play from './Pages/Play';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
@@ -24,7 +24,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
-import Play from './Pages/Play';
 
 const messages = {
   fr: messagesFr,
@@ -58,7 +57,6 @@ function App() {
       <AppNavbar changeLocale={changeLocale} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/jouer" element={<Jouer />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/play" element={<Play/>} />

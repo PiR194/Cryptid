@@ -1,12 +1,25 @@
 .buttonNabImg{
     margin: 15px 0;
     width: auto;
-    height: 8vh;
+    height: 65px;
 
     background-color: #85C9C2;
     color: #2A4541;
     border-radius: 15px;
     border-width: 0;
 
-    font-size:larger;
+    font-size:large;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.buttonNabImg p {
+    color:white;
+    margin-top: 15px;
+}
+
+.link-without-underline {
+    text-decoration: none;
 }
