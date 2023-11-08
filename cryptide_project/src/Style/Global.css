@@ -1,3 +1,16 @@
+.centerDivV{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.centerDivH{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 
 .item-horizontal-div{
     display: flex;
@@ -7,6 +20,17 @@
     border-radius: 15px;
     width: 500px;
     margin: 10px 20px;
+}
+
+.statusDiv{
+    background-color: #A7E2DC;
+    border-radius: 15px;
+
+    height: 30px;
+    width: 75px;
+
+    display: flex;
+    justify-content: center;
 }
 
 /**Form**/

@@ -10,6 +10,8 @@ import SignUp from './Pages/SignUpForm';
 import Play from './Pages/Play';
 import Lobby from './Pages/Lobby';
 
+import EndGame from './Pages/EndGame';
+
 /* Component */
 import AppNavbar from './Components/NavBar';
 
@@ -62,6 +64,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/play" element={<Play/>} />
         <Route path="/lobby" element={<Lobby/>} />
+
+        <Route path="/endgame" element={<EndGame/>} />
       </Routes>
     </BrowserRouter>
   </IntlProvider>
