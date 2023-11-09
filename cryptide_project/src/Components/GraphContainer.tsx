@@ -8,6 +8,7 @@ import NetworkGenerator from "../source/NetworkGenerator";
 import Sport from "../source/Sport";
 import Stub from "../source/Stub";
 import "./GraphContainer.css";
+import NodePerson from "../source/Graph/NodePerson";
 
 const edgesCreator = new EdgesCreator()
 
@@ -35,8 +36,11 @@ choosenIndices.forEach((indice) =>{
 });
 console.log(person)
 
+interface MyGraphComponentProps {
+  onNodeClick: (shouldShowChoiceBar: boolean) => void;
+}
 
-const MyGraphComponent = () => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
   useEffect(() => {
     const container = document.getElementById('graph-container');
     if (!container) {
@@ -79,6 +83,16 @@ const MyGraphComponent = () => {
         }
     });
 
+    network.on("click", (params) => {
+      if(params.nodes.length > 0){
+        // Renvoyer un true pour afficher la choice bar
+        onNodeClick(true)
+      }
+      else{
+        // Renvoyer un false pour cacher la choice bar
+        onNodeClick(false)
+      }
+    });
   }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
 
   return (
