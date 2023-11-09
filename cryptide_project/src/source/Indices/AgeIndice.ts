@@ -11,7 +11,7 @@ class AgeIndice extends Indice {
     }
   
     // Implémentation de la méthode abstraite
-    ToString(): string {
+    ToString(lang: string): string {
       return "La personne a entre " + this.minimum + " et " + this.maximum + " ans"
     }
 

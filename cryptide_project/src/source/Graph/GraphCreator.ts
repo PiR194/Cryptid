@@ -1,7 +1,9 @@
 import Edge from "./Edge";
+import { ColorToColorFont, ColorToHexa, SportToString } from "../EnumExtender";
 import GraphPerson from "./GraphPerson";
 import NodePerson from "./NodePerson";
-import PersonNetwork from "./PersonsNetwork";
+import PersonNetwork from "../PersonsNetwork";
+import Font from "./Font";
 
 class GraphCreator{
 
@@ -9,7 +11,18 @@ class GraphCreator{
         const nodesPerson : NodePerson[] = []
         const edges: Edge[] = []
         network.getPersons().forEach((p) =>{
-            const nodePerson = new NodePerson(p.getId(), p.getName())
+            let label = p.getName() + "\n" + p.getAge() + "\n"
+            for (let i = 0; i<p.getSports().length; i++){
+                if (i==p.getSports().length -1 || p.getSports().length == 1){
+                    label += SportToString(p.getSports()[i], "fr")
+                }
+                else{
+                    label += SportToString(p.getSports()[i], "fr") + "\n"
+                }
+            }
+
+            
+            const nodePerson = new NodePerson(p.getId(), label, p.getColor(), new Font(ColorToColorFont(p.getColor()), 14, 'center'), 'ellipse')
             nodesPerson.push(nodePerson)
             p.getFriends().forEach((f) =>{
                 if(edges.some(edge => (edge.from === f.getId() && edge.to === p.getId()) || (edge.from === p.getId() && edge.to === f.getId()))){

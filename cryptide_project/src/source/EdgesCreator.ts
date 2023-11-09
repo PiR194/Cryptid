@@ -50,19 +50,23 @@ class EdgesCreator{
                 return
             }
             if (p != personToCreateEdge && p != choosenPerson && !personToCreateEdge.getFriends().includes(p)){
-                let testEdgeWork = 0
+                let testEdgeWork1 = 0
+                let testEdgeWork2 = 0
                 const p1 = cloneDeep(p);
                 const personEdge = cloneDeep(personToCreateEdge);
                 p1.addFriend(personEdge)
                 personEdge.addFriend(p1)
                 indices.forEach((indice) => {
                     const tester = IndiceTesterFactory.Create(indice)
-                    if (tester.Works(p1) || tester.Works(personEdge) || map.get(p.getId()) === p.getFriends().length){
-                        testEdgeWork ++
+                    if (tester.Works(p1) || map.get(p.getId()) === p.getFriends().length){
+                        testEdgeWork1 ++
                     } 
+                    if (tester.Works(personEdge) || map.get(p.getId()) === p.getFriends().length){
+                        testEdgeWork2 ++
+                    }
                 });
                 
-                if (testEdgeWork < indices.length){
+                if (testEdgeWork1 < indices.length && testEdgeWork2 < indices.length){
                     p.addFriend(personToCreateEdge)
                     personToCreateEdge.addFriend(p)
                 }
@@ -72,6 +76,13 @@ class EdgesCreator{
 
     CreateAllEdges(personNetwork: PersonNetwork, choosenPerson: Person, indices: Indice[]){
         const test = new Map<number, number>()
+        const tabEdgesSize: number[] = []
+        for (let i = 0; i<personNetwork.getPersons().length / 4; i++){
+            tabEdgesSize.push(1)
+            tabEdgesSize.push(2)
+            tabEdgesSize.push(3)
+            tabEdgesSize.push(4)
+        }
         indices.forEach(indice => {
             if (indice instanceof EdgesIndice){
                 this.CreateWorkingEdge(personNetwork, choosenPerson, indice, indices)
@@ -79,7 +90,8 @@ class EdgesCreator{
         });
         personNetwork.getPersons().forEach((p) => {
             if (p != choosenPerson){
-                test.set(p.getId(), Math.floor(Math.random() * 5) + p.getFriends().length + 1)
+                const rand = Math.floor(Math.random() * 4)
+                test.set(p.getId(), tabEdgesSize[rand] + p.getFriends().length)
             }
         });
         personNetwork.getPersons().forEach((p) => {

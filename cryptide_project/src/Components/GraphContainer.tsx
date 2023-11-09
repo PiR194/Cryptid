@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { DataSet, Network} from "vis-network/standalone/esm/vis-network";
 import EdgesCreator from "../source/EdgesCreator";
-import GraphCreator from "../source/GraphCreator";
+import GraphCreator from "../source/Graph/GraphCreator";
 import IndiceChooser from "../source/IndiceChooser";
 import NetworkGenerator from "../source/NetworkGenerator";
 import Stub from "../source/Stub";
@@ -41,13 +41,6 @@ const MyGraphComponent = () => {
 
     // Configuration des options du Graphe
     const initialOptions = {
-        nodes: {
-            shape: 'circle',
-            size: 30,
-            font: {
-                size: 20
-            },
-        },
         layout: {
             improvedLayout: true,
             hierarchical: {
@@ -70,8 +63,6 @@ const MyGraphComponent = () => {
     const network = new Network(container, networkData, initialOptions);
 
     // Gérer le changement entre la physique et le déplacement manuel
-    let physicsEnabled = true;
-
     network.on("dragging", (params) => {
         if (params.nodes.length > 0) {
             // Un nœud a été cliqué

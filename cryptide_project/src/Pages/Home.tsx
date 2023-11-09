@@ -17,7 +17,7 @@ import Indice from '../source/Indices/Indice';
 import SportIndice from '../source/Indices/SportIndice';
 import Stub from '../source/Stub';
 import NetworkGenerator from '../source/NetworkGenerator';
-import GraphCreator from '../source/GraphCreator';
+import GraphCreator from '../source/Graph/GraphCreator';
 import { FormattedMessage } from 'react-intl';
 
 

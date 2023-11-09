@@ -15,7 +15,9 @@ abstract class Indice {
     }
   
     // Méthode abstraite pour être implémentée par les classes dérivées
-    abstract ToString(): string;
+    abstract ToString(lang: string): string;
+
+    
   }
   
 export default Indice

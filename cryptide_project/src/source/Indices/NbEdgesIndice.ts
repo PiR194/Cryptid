@@ -13,7 +13,7 @@ class NbEdgesIndice extends EdgesIndice {
     }
   
     // Implémentation de la méthode abstraite
-    ToString(): string {
+    ToString(lang: string): string {
       return "La personne a au moins " + this.nbNeighbors + " amis";
     }
   }
