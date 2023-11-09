@@ -1,118 +1,99 @@
 import Color from "./Color";
 import Sport from "./Sport";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFutbol, faBasketballBall } from '@fortawesome/free-solid-svg-icons';
+import { parseJsonText } from "typescript";
 
+
+
+function GetJsonFile(lang: string){
+    const response = require(`../Translations/${lang}.json`);
+    const data = response;
+    return data
+}
 function ColorToString(color: Color, lang: string): string{
+    let json = GetJsonFile(lang)
     switch(color){
-        case Color.BLANC:
-            switch(lang){
-                case "en":
-                    return "White"
-                default:
-                    return "Blanc" 
-            }
-        case Color.NOIR:
-            switch(lang){
-                case "en":
-                    return "Black"
-                default:
-                    return "Noir" 
-            }
+        case Color.WHITE:
+            return json.white
+        case Color.BLACK:
+            return json.black
         case Color.BLOND:
-            switch(lang){
-                case "en":
-                    return "Blond"
-                default:
-                    return "Blond" 
-            }
-        case Color.ROUX:
-            switch(lang){
-                case "en":
-                    return "Redhead"
-                default:
-                    return "Roux" 
-            }
-        case Color.BRUN:
-            switch(lang){
-                case "en":
-                    return "Brown"
-                default:
-                    return "Brun" 
-            }
+            return json.blond
+        case Color.REDHEAD:
+            return json.redhead
+        case Color.BROWN:
+            return json.brown
     }
 }
 
 
 function ColorToHexa(color: Color): string{
     switch(color){
-        case Color.BLANC:
+        case Color.WHITE:
             return "#FFFFFF"
-        case Color.NOIR:
+        case Color.BLACK:
             return "#000000"
         case Color.BLOND:
             return "#E2BC74"
-        case Color.ROUX:
+        case Color.REDHEAD:
             return "#FF8B00"
-        case Color.BRUN:
+        case Color.BROWN:
             return "#5B3C11"
     }
 }
 
 function ColorToColorFont(color: Color): string{
     switch(color){
-        case Color.BLANC:
+        case Color.WHITE:
             return "#000000"
-        case Color.NOIR:
+        case Color.BLACK:
             return "#FFFFFF"
         case Color.BLOND:
             return "#000000"
-        case Color.ROUX:
+        case Color.REDHEAD:
             return "#000000"
-        case Color.BRUN:
+        case Color.BROWN:
             return "#FFFFFF"
     }
 }
 
 
 function SportToString(sport: Sport, lang: string): string{
+    let json = GetJsonFile(lang)
     switch(sport){
         case Sport.FOOT:
-            switch(lang){
-                case "en":
-                    return "Football"
-                default:
-                    return "Football" 
-            }
-        case Sport.RUGBY:
-            switch(lang){
-                case "en":
-                    return "Rugby"
-                default:
-                    return "Rugby" 
-            }
+            return json.football
+        case Sport.BASEBALL:
+            return json.baseball
         case Sport.BASKET:
-            switch(lang){
-                case "en":
-                    return "Basket"
-                default:
-                    return "Basket" 
-            }
+            return json.basketball
         case Sport.TENNIS:
-            switch(lang){
-                case "en":
-                    return "Tennis"
-                default:
-                    return "Tennis" 
-            }
-        case Sport.CURLING:
-            switch(lang){
-                case "en":
-                    return "Curling"
-                default:
-                    return "Curling" 
-            }
+            return json.tennis
+        case Sport.BOWLING:
+            return json.bowling
         case Sport.AUCUN:
             return ""
     }
 }
 
-export {ColorToString, SportToString, ColorToHexa, ColorToColorFont}
+
+
+function SportToIcon(sport: Sport): string{
+    switch(sport){
+        case Sport.FOOT:
+            return "⚽" 
+        case Sport.BASEBALL:
+            return "⚾"
+        case Sport.BASKET:
+            return "🏀"
+        case Sport.TENNIS:
+            return "🎾"
+        case Sport.BOWLING:
+            return "🎳"
+        case Sport.AUCUN:
+            return ""
+    }
+}
+export {ColorToString, SportToString, ColorToHexa, ColorToColorFont, SportToIcon, GetJsonFile}

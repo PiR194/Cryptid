@@ -92,6 +92,7 @@ class EdgesCreator{
             if (p != choosenPerson){
                 const rand = Math.floor(Math.random() * 4)
                 test.set(p.getId(), tabEdgesSize[rand] + p.getFriends().length)
+                tabEdgesSize.splice(rand, 1)
             }
         });
         personNetwork.getPersons().forEach((p) => {

@@ -3,7 +3,9 @@ import { DataSet, Network} from "vis-network/standalone/esm/vis-network";
 import EdgesCreator from "../source/EdgesCreator";
 import GraphCreator from "../source/Graph/GraphCreator";
 import IndiceChooser from "../source/IndiceChooser";
+import SportIndice from "../source/Indices/SportIndice";
 import NetworkGenerator from "../source/NetworkGenerator";
+import Sport from "../source/Sport";
 import Stub from "../source/Stub";
 import "./GraphContainer.css";
 
@@ -24,8 +26,14 @@ edgesCreator.CreateAllEdges(network, person, choosenIndices)
 
 const graph = GraphCreator.CreateGraph(network)
 
+
+let indice = new SportIndice(12, [Sport.TENNIS, Sport.BASEBALL])
 console.log(network)
 console.log(graph)
+choosenIndices.forEach((indice) =>{
+  console.log(indice.ToString("fr"))
+});
+console.log(person)
 
 
 const MyGraphComponent = () => {

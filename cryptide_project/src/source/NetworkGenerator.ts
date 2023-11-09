@@ -6,6 +6,7 @@ import Sport from "./Sport";
 class NetworkGenerator{
 
     static GenerateNetwork(nbPerson: number): PersonNetwork{
+        let json = require("../res/names.json")
         const tabSports: Sport[] = [0, 1, 2, 3, 4, 5, 5, 5, 5]
         const tabColor: Color[] = [0, 1, 2, 3, 4]
         const tabJeune: number[] = []
@@ -14,6 +15,8 @@ class NetworkGenerator{
         const tabVieux: number[] = []
 
         const tabPerson: Person[] = []
+
+        const tabNames = json.names
 
         let id = 0
         for(let i = 0; i < nbPerson/4; i++){
@@ -38,6 +41,9 @@ class NetworkGenerator{
         let tmpTabSport=[...tabSports]
         let tmpTabColor = [...tabColor]
         for (let i = 0; i<nbPerson; i++){
+            const randName = Math.floor(Math.random() * tabNames.length)
+            const name = tabNames[randName]
+            tabNames.splice(randName, 1)
             if (tmpTabColor.length == 0){
                 tmpTabColor = [...tabColor]
             }
@@ -62,7 +68,7 @@ class NetworkGenerator{
             if (tabAge[randAge].length == 0){
                 tabAge.splice(randAge, 1)
             }
-            tabPerson.push(new Person(i, i.toString(), age, color, sports, []))
+            tabPerson.push(new Person(i, name, age, color, sports, []))
         }
         return new PersonNetwork(tabPerson)
     }

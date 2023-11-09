@@ -1,3 +1,4 @@
+import { GetJsonFile } from "../EnumExtender";
 import EdgesIndice from "./EdgesIndice";
 
 class NbEdgesIndice extends EdgesIndice {
@@ -14,7 +15,8 @@ class NbEdgesIndice extends EdgesIndice {
   
     // Implémentation de la méthode abstraite
     ToString(lang: string): string {
-      return "La personne a au moins " + this.nbNeighbors + " amis";
+      let json = GetJsonFile(lang)
+      return `${json.nb_friends_indice_start} ${this.nbNeighbors} ${json.nb_friends_indice_end}`;
     }
   }
 

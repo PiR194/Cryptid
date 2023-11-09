@@ -26,5 +26,38 @@
     "create_room" : "Create room",
     "play_solo" : "Single player",
 
-    "play" : "PLAY"
+    "play" : "PLAY",
+
+    "football": "Football",
+    "basketball": "Basketball",
+    "baseball": "Baseball",
+    "tennis": "Tennis",
+    "bowling": "Bowling",
+
+    "white": "White",
+    "black": "Black",
+    "blond": "Blond",
+    "redhead": "Red",
+    "brown": "Brown",
+
+    "and": "and",
+    "or": "or",
+    "or_sport": "or",
+
+
+    "age_indice_start": "The suspect is between",
+    "age_indice_more_start": "The suspect is older than or",
+    "age_indice_end": "years old",
+    
+    "color_edges_start": "The suspect has at least one friend with",
+    "color_edges_end": "hair",
+
+    "color_start": "The suspect has",
+    "color_end": "hair",
+
+    "nb_friends_indice_start": "The suspect has at least",
+    "nb_friends_indice_end": "friends",
+
+    "sport_start": "The suspect plays at least",
+    "sport_end": ""
 }

@@ -1,9 +1,9 @@
 enum Sport {
     FOOT,
-    RUGBY,
+    BASEBALL,
     BASKET,
     TENNIS,
-    CURLING,
+    BOWLING,
     AUCUN
 }
 

@@ -1,5 +1,5 @@
 import Color from "../Color";
-import { ColorToString } from "../EnumExtender";
+import { ColorToString, GetJsonFile } from "../EnumExtender";
 import EdgesIndice from "./EdgesIndice";
 
 class ColorEdgesIndice extends EdgesIndice {
@@ -17,16 +17,17 @@ class ColorEdgesIndice extends EdgesIndice {
   
     // Implémentation de la méthode abstraite
     ToString(lang: string): string {
-      let string =  "La personne a au moins un ami avec les cheveux";
+      let json = GetJsonFile(lang)
+      let string =  json.color_edges_start;
       for (let i = 0; i<this.neighborsColors.length; i++){
         if (i==this.neighborsColors.length - 1 || this.neighborsColors.length == 1){
-          string = string + " " + ColorToString(this.neighborsColors[i], lang)
+          string = `${string} ${ColorToString(this.neighborsColors[i], lang)}`
         }
         else{
-          string = string + " ou " + ColorToString(this.neighborsColors[i], lang)
+          string = `${string} ${ColorToString(this.neighborsColors[i], lang)} ${json.or}`
         }
       }
-      return string
+      return `${string} ${json.color_edges_end}` 
     }
   }
 

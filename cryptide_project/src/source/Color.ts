@@ -1,9 +1,9 @@
 enum Color {
-    BLANC,
-    NOIR,
+    WHITE,
+    BLACK,
     BLOND,
-    ROUX,
-    BRUN,
+    REDHEAD,
+    BROWN,
 }
 
 export default Color

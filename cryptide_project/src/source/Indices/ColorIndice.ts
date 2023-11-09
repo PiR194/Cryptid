@@ -1,5 +1,5 @@
 import Color from "../Color";
-import { ColorToString } from "../EnumExtender";
+import { ColorToString, GetJsonFile } from "../EnumExtender";
 import Indice from "./Indice";
 
 class ColorIndice extends Indice {
@@ -12,16 +12,17 @@ class ColorIndice extends Indice {
   
     // Implémentation de la méthode abstraite
     ToString(lang: string): string {
-      let string =  "La personne a au moins un ami avec les cheveux";
+      let json = GetJsonFile(lang)
+      let string =  json.color_start;
       for (let i = 0; i<this.colors.length; i++){
         if (i==this.colors.length - 1 || this.colors.length == 1){
-          string = string + " " + ColorToString(this.colors[i], lang)
+          string = `${string} ${ColorToString(this.colors[i], lang)}`
         }
         else{
-          string = string + " ou " + ColorToString(this.colors[i], lang)
+          string = `${string} ${ColorToString(this.colors[i], lang)} ${json.or}`
         }
       }
-      return string
+      return `${string} ${json.color_end}` 
     }
 
     getColors(): Color[]{

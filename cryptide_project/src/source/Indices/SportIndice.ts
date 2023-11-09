@@ -1,4 +1,4 @@
-import { SportToString } from "../EnumExtender";
+import { GetJsonFile, SportToString } from "../EnumExtender";
 import Sport from "../Sport";
 import Indice from "./Indice";
 
@@ -12,16 +12,17 @@ class SportIndice extends Indice {
   
     // Implémentation de la méthode abstraite
     ToString(lang: string): string {
-      let string =  "La personne pratique au moins un de ces sports: ";
+      let json = GetJsonFile(lang)
+      let string =  json.sport_start;
       for (let i = 0; i<this.sports.length; i++){
         if (i==this.sports.length - 1 || this.sports.length == 1){
-          string = string + " " + SportToString(this.sports[i], lang)
+          string = `${string} ${SportToString(this.sports[i], lang)}`
         }
         else{
-          string = string + " ou " + SportToString(this.sports[i], lang)
+          string = `${string} ${SportToString(this.sports[i], lang)} ${json.or_sport}`
         }
       }
-      return string
+      return `${string} ${json.sport_end}` 
     }
 
 
