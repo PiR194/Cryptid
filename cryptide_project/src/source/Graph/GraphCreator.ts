@@ -15,6 +15,7 @@ class GraphCreator{
             for (let i = 0; i<p.getSports().length; i++){
                 label += SportToIcon(p.getSports()[i])
             }
+            label += "\n"
 
             
             const nodePerson = new NodePerson(p.getId(), label, p.getColor(), new Font(ColorToColorFont(p.getColor()), 14, 'center'), 'box')

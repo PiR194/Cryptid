@@ -58,6 +58,9 @@
     "nb_friends_indice_start": "The suspect has at least",
     "nb_friends_indice_end": "friends",
 
+    "nb_sports_indice_start": "The suspect is playing",
+    "nb_sports_indice_end": "sport",
+
     "sport_start": "The suspect plays at least",
     "sport_end": ""
 }

@@ -57,6 +57,9 @@
     "nb_friends_indice_start": "Le suspect a au moins",
     "nb_friends_indice_end": "amis",
 
-    "sport_start": "Le suspect fait au moins du",
+    "nb_sports_indice_start": "Le suspect pratique",
+    "nb_sports_indice_end": "sport(s)",
+
+    "sport_start": "Le suspect pratique au moins du",
     "sport_end": ""
 }

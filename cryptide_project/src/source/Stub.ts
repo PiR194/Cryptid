@@ -4,6 +4,7 @@ import ColorEdgesIndice from "./Indices/ColorEdgesIndice"
 import ColorIndice from "./Indices/ColorIndice"
 import Indice from "./Indices/Indice"
 import NbEdgesIndice from "./Indices/NbEdgesIndice"
+import NbSportIndice from "./Indices/NbSportIndice"
 import SportIndice from "./Indices/SportIndice"
 import Sport from "./Sport"
 
@@ -42,6 +43,11 @@ class Stub{
 
         for (let i: Color=0; i<5; i++){
             indices.push(new ColorEdgesIndice(test, [i]))
+            test++
+        }
+
+        for (let i=1; i<3; i++){
+            indices.push(new NbSportIndice(test, i))
             test++
         }
         return indices

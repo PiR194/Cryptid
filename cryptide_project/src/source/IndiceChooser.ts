@@ -8,6 +8,7 @@ import IndiceEdgesFactory from "./Factory/IndiceEdgesCreatorFactory";
 import AgeIndice from "./Indices/AgeIndice";
 import ColorIndice from "./Indices/ColorIndice";
 import SportIndice from "./Indices/SportIndice";
+import NbSportIndice from "./Indices/NbSportIndice";
 
 
 class IndiceChooser{
@@ -18,6 +19,7 @@ class IndiceChooser{
         const sportIndice : Indice[] = []
         const colorIndice : Indice[] = []
         const edgeIndice : Indice[] = []
+        const nbSportIndice : Indice[] = []
 
         const tabIndice: Indice[][] = []
 
@@ -37,18 +39,23 @@ class IndiceChooser{
                 else if(indice instanceof SportIndice){
                     sportIndice.push(indice)
                 }
+                else if(indice instanceof NbSportIndice){
+                    nbSportIndice.push(indice)
+                }
             }
         }
         let test = [...tabIndice]
         if (ageIndice.length > 0) tabIndice.push(ageIndice)
         if (colorIndice.length > 0) tabIndice.push(colorIndice)
         if (sportIndice.length > 0) tabIndice.push(sportIndice)
+        if (nbSportIndice.length > 0) tabIndice.push(nbSportIndice)
 
         for (let i = 0; i<nbPlayer-1; i++){
             if (test.length == 0){
                 if (ageIndice.length > 0) test.push(ageIndice)
                 if (colorIndice.length > 0) test.push(colorIndice)
                 if (sportIndice.length > 0) test.push(sportIndice)
+                if (nbSportIndice.length > 0) test.push(nbSportIndice)
             }
             
             const rand = Math.floor(Math.random() * test.length)
