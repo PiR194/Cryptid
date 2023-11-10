@@ -49,7 +49,7 @@ function App() {
 
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"].includes(window.location.pathname);
+  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
 
 
   return (
