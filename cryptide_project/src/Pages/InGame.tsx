@@ -24,7 +24,11 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-const InGame = () => {
+/* Model */
+import Stub from '../source/Stub';
+
+//@ts-ignore
+const InGame = ({locale}) => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -66,6 +70,9 @@ const InGame = () => {
       window.open(url);
     };
   
+
+  const indices = Stub.GenerateIndice()
+
     return (
       <div id="mainDiv">
         <div className='upperInfo'>
@@ -131,7 +138,10 @@ const InGame = () => {
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            Possède les cheveux noir <u>ou</u> joue au basket
+            {/* Possède les cheveux noir <u>ou</u> joue au basket */}
+            {indices[0].ToString(locale)}<br/>
+            {indices[1].ToString(locale)}<br/>
+            {indices[2].ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
 
