@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Switch from "react-switch";
 
 /* Style */
 import "./InGame.css"
@@ -86,7 +87,7 @@ const InGame = ({locale, changeLocale}) => {
       window.open(url);
     };
   
-
+  const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const indices = Stub.GenerateIndice()
 
     return (
@@ -163,21 +164,20 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Body>
         </Offcanvas>
 
-        
         {
           //* canva pour les paramètres
         }
         <Offcanvas show={showS} 
                   onHide={handleCloseS} 
                   placement='top'
-                  style={{width: '30%', left: '70%' }}>
+                  style={{height: '30%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="me-auto">
                 <NavDropdown 
-                title={<span><HiLanguage /></span>}
+                title={<span><HiLanguage/> Language </span>}
                 className="navbar-title" id="basic-nav-dropdown">
                     <NavDropdown.Item onClick={() => changeLocale('fr')}> 
                         <FormattedMessage id="languageSelector.french"/> 
@@ -187,6 +187,12 @@ const InGame = ({locale, changeLocale}) => {
                     </NavDropdown.Item>
                 </NavDropdown>
             </Nav>
+
+            <label>
+              <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
+              <p>Afficher les noeuds possibles</p>
+            </label>
+
           </Offcanvas.Body>
         </Offcanvas>
 
