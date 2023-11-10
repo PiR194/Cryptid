@@ -26,9 +26,12 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 /* Model */
 import Stub from '../source/Stub';
+import { HiLanguage } from 'react-icons/hi2';
+import { Nav, NavDropdown } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
 
 //@ts-ignore
-const InGame = ({locale}) => {
+const InGame = ({locale, changeLocale}) => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -37,6 +40,7 @@ const InGame = ({locale}) => {
   
     /* offcanvas */
     //? faire une fonction pour close et show en fonction de l'etat du canva ?
+    //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -44,6 +48,10 @@ const InGame = ({locale}) => {
     const [showP, setShowP] = useState(false);
     const handleCloseP = () => setShowP(false);
     const handleShowP = () => setShowP(true);
+  
+    const [showS, setShowS] = useState(false);
+    const handleCloseS = () => setShowS(false);
+    const handleShowS = () => setShowS(true);
   
     const handleChange = () => {
       if (show){
@@ -63,6 +71,14 @@ const InGame = ({locale}) => {
       }
     };
 
+    const handleChangeS = () => {
+      if (showS){
+        handleCloseS()
+      }
+      else {
+        handleShowS()
+      }
+    };
 
     /* Windows open */
     //@ts-ignore
@@ -90,7 +106,9 @@ const InGame = ({locale}) => {
         </div>
 
         <div className='paramDiv'>
-          <ButtonImgNav text='paramètres' img={Param} dest='/'/>
+          <button className='button' onClick={handleChangeS}>
+            <img src={Param} alt="paramètres" height='40'/>
+          </button>
         </div>
 
         <div className='menuGame'>
@@ -142,6 +160,33 @@ const InGame = ({locale}) => {
             {indices[0].ToString(locale)}<br/>
             {indices[1].ToString(locale)}<br/>
             {indices[2].ToString(locale)}
+          </Offcanvas.Body>
+        </Offcanvas>
+
+        
+        {
+          //* canva pour les paramètres
+        }
+        <Offcanvas show={showS} 
+                  onHide={handleCloseS} 
+                  placement='top'
+                  style={{width: '30%', left: '70%' }}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="me-auto">
+                <NavDropdown 
+                title={<span><HiLanguage /></span>}
+                className="navbar-title" id="basic-nav-dropdown">
+                    <NavDropdown.Item onClick={() => changeLocale('fr')}> 
+                        <FormattedMessage id="languageSelector.french"/> 
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeLocale('en')}> 
+                        <FormattedMessage id="languageSelector.english"/> 
+                    </NavDropdown.Item>
+                </NavDropdown>
+            </Nav>
           </Offcanvas.Body>
         </Offcanvas>
 

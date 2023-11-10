@@ -48,7 +48,7 @@ function App() {
 
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"].includes(window.location.pathname);
+  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
 
 
   return (
@@ -70,7 +70,7 @@ function App() {
         <Route path="/play" element={<Play/>} />
         <Route path="/lobby" element={<Lobby/>} />
         <Route path="/endgame" element={<EndGame/>} />
-        <Route path="/game" element={<InGame locale={locale} />} />
+        <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale} />} />
         <Route path="/info" element={<InfoPage/>} />
       </Routes>
     </BrowserRouter>
