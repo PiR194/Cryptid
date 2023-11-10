@@ -9,6 +9,7 @@ import GraphContainer from '../Components/GraphContainer';
 import ChoiceBar from '../Components/ChoiceBar';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import PersonStatus from '../Components/PersonStatus';
+import PlayerList from '../Components/PlayerList';
 
 /* Icon */
 import Leave from "../res/icon/leave.png";
@@ -33,6 +34,29 @@ import { FormattedMessage } from 'react-intl';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
+
+  const players = [
+    { state: Replay, name: 'Dummy' },
+    { state: Replay, name: 'Boat' },
+    { state: Replay, name: 'Bot-tom' },
+    { state: Replay, name: 'Dummy' },
+    { state: Replay, name: 'Boat' },
+    { state: Replay, name: 'Bot-tom' },
+    { state: Replay, name: 'Dummy' },
+    { state: Replay, name: 'Boat' },
+    { state: Replay, name: 'Bot-tom' },
+    { state: Replay, name: 'Dummy' },
+    { state: Replay, name: 'Boat' },
+    { state: Replay, name: 'Bot-tom' },
+    { state: Replay, name: 'Dummy' },
+    { state: Replay, name: 'Boat' },
+    { state: Replay, name: 'Bot-tom' },
+    // Ajouter d'autres joueurs au besoin
+  ];
+
+
+
+
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -140,10 +164,13 @@ const InGame = ({locale, changeLocale}) => {
             <h3>Il y a 3 joueurs</h3>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {/* affichage d'une liste responsive dynamic */}
-            <PersonStatus state={Replay} name="Dummy"/>
-            <PersonStatus state={Replay} name="Boat"/>
-            <PersonStatus state={Replay} name="Bot-tom"/>
+              {/* affichage d'une liste responsive dynamic */}
+            {/* <div className='playerCanvasBody'>
+              <PersonStatus state={Replay} name="Dummy"/>
+              <PersonStatus state={Replay} name="Boat"/>
+              <PersonStatus state={Replay} name="Bot-tom"/>
+            </div> */}
+            <PlayerList players={players} />
           </Offcanvas.Body>
         </Offcanvas>
 
