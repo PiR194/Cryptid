@@ -12,6 +12,7 @@ import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
 
 import EndGame from './Pages/EndGame';
+import InfoPage from './Pages/InfoPage';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
@@ -64,6 +65,7 @@ function App() {
         <Route path="/lobby" element={<Lobby/>} />
         <Route path="/endgame" element={<EndGame/>} />
         <Route path="/game" element={<InGame/>} />
+        <Route path="/info" element={<InfoPage/>} />
       </Routes>
     </BrowserRouter>
   </IntlProvider>
