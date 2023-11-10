@@ -28,9 +28,12 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 /* Model */
 import Stub from '../source/Stub';
+import { HiLanguage } from 'react-icons/hi2';
+import { Nav, NavDropdown } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
 
 //@ts-ignore
-const InGame = ({locale}) => {
+const InGame = ({locale, changeLocale}) => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
     const theme = useTheme();
@@ -48,6 +51,10 @@ const InGame = ({locale}) => {
     const [showP, setShowP] = useState(false);
     const handleCloseP = () => setShowP(false);
     const handleShowP = () => setShowP(true);
+  
+    const [showS, setShowS] = useState(false);
+    const handleCloseS = () => setShowS(false);
+    const handleShowS = () => setShowS(true);
   
     const handleChange = () => {
       if (show){
@@ -67,6 +74,14 @@ const InGame = ({locale}) => {
       }
     };
 
+    const handleChangeS = () => {
+      if (showS){
+        handleCloseS()
+      }
+      else {
+        handleShowS()
+      }
+    };
 
     /* Windows open */
     //@ts-ignore
