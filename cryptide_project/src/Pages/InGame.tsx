@@ -26,40 +26,10 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-/* Model */
-import Stub from '../model/Stub';
-import { HiLanguage } from 'react-icons/hi2';
-import { Nav, NavDropdown } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
-import Color from '../model/Color';
-
-//@ts-ignore
-const InGame = ({locale, changeLocale}) => {
-
-  const players = [
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' }
-    // Ajouter d'autres joueurs au besoin
-  ];
-
-
-  const theme = useTheme();
-
+const InGame = () => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
+    const theme = useTheme();
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
       setShowChoiceBar(shouldShowChoiceBar);
     };
@@ -74,10 +44,6 @@ const InGame = ({locale, changeLocale}) => {
     const [showP, setShowP] = useState(false);
     const handleCloseP = () => setShowP(false);
     const handleShowP = () => setShowP(true);
-  
-    const [showS, setShowS] = useState(false);
-    const handleCloseS = () => setShowS(false);
-    const handleShowS = () => setShowS(true);
   
     const handleChange = () => {
       if (show){
@@ -97,14 +63,6 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
 
-    const handleChangeS = () => {
-      if (showS){
-        handleCloseS()
-      }
-      else {
-        handleShowS()
-      }
-    };
 
     /* Windows open */
     //@ts-ignore
@@ -112,9 +70,6 @@ const InGame = ({locale, changeLocale}) => {
       window.open(url);
     };
   
-  const [SwitchEnabled, setSwitchEnabled] = useState(false)
-  const indices = Stub.GenerateIndice()
-
     return (
       <div id="mainDiv">
         <div className='upperInfo' 
