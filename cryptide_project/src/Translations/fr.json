@@ -26,5 +26,40 @@
     "join" : "Rejoindre",
     "create_room" : "Créer une partie",
     "play_solo" : "Jouer seul",
-    "play" : "JOUER"
+    "play" : "JOUER",
+
+    "football": "Football",
+    "basketball": "Basketball",
+    "baseball": "Baseball",
+    "tennis": "Tennis",
+    "bowling": "Bowling",
+    
+    "white": "Blanc",
+    "black": "Noir",
+    "blond": "Blond",
+    "redhead": "Roux",
+    "brown": "Brun",
+
+    "and": "et",
+    "or": "ou",
+    "or_sport": "ou du",
+
+    "age_indice_start": "Le suspect a entre",
+    "age_indice_more_start": "Le suspect a ou a plus de",
+    "age_indice_end": "ans",
+
+    "color_edges_start": "Le suspect a au moins un ami avec les cheveux",
+    "color_edges_end": "",
+
+    "color_start": "Le suspect a les cheveux",
+    "color_end": "",
+
+    "nb_friends_indice_start": "Le suspect a au moins",
+    "nb_friends_indice_end": "amis",
+
+    "nb_sports_indice_start": "Le suspect pratique",
+    "nb_sports_indice_end": "sport(s)",
+
+    "sport_start": "Le suspect pratique au moins du",
+    "sport_end": ""
 }

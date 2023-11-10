@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 
 function Home() {
+
     return (
         
     <div className="home-container">

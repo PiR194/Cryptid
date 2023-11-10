@@ -9,6 +9,7 @@ import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
 import Play from './Pages/Play';
 import Lobby from './Pages/Lobby';
+import InGame from './Pages/InGame';
 
 import EndGame from './Pages/EndGame';
 
@@ -39,8 +40,7 @@ function App() {
   //const locale = 'fr'; 
   const [locale, setLocale] = useState('fr');
 
-
-  // @ts-ignore
+  //@ts-ignore
   const changeLocale = (newLocale) => {
     setLocale(newLocale);
   };
@@ -52,9 +52,7 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
-
-  
-  // @ts-ignore
+  //@ts-ignore
   <IntlProvider locale={locale} messages={messages[locale]}>
     <BrowserRouter>  
       <AppNavbar changeLocale={changeLocale} />
@@ -64,8 +62,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/play" element={<Play/>} />
         <Route path="/lobby" element={<Lobby/>} />
-
         <Route path="/endgame" element={<EndGame/>} />
+        <Route path="/game" element={<InGame/>} />
       </Routes>
     </BrowserRouter>
   </IntlProvider>
