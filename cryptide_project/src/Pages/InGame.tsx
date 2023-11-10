@@ -89,7 +89,7 @@ const InGame = ({locale, changeLocale}) => {
       window.open(url);
     };
   
-
+  const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const indices = Stub.GenerateIndice()
 
     return (
