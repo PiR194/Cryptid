@@ -26,7 +26,11 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-const InGame = () => {
+/* Model */
+import Stub from '../source/Stub';
+
+//@ts-ignore
+const InGame = ({locale}) => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
     const theme = useTheme();
@@ -70,6 +74,9 @@ const InGame = () => {
       window.open(url);
     };
   
+
+  const indices = Stub.GenerateIndice()
+
     return (
       <div id="mainDiv">
         <div className='upperInfo' 
