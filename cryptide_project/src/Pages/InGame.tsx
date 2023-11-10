@@ -17,6 +17,9 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 
+/* nav */
+import { Link } from 'react-router-dom';
+
 /* Boostrap */
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -37,6 +40,32 @@ const InGame = () => {
     const [showP, setShowP] = useState(false);
     const handleCloseP = () => setShowP(false);
     const handleShowP = () => setShowP(true);
+  
+    const handleChange = () => {
+      if (show){
+        handleClose()
+      }
+      else {
+        handleShow()
+      }
+    };
+  
+    const handleChangeP = () => {
+      if (showP){
+        handleCloseP()
+      }
+      else {
+        handleShowP()
+      }
+    };
+
+
+    /* Windows open */
+    //@ts-ignore
+    const openInNewTab = (url) => { //! avec url ==> dangereux
+      window.open(url);
+    };
+  
     return (
       <div id="mainDiv">
         <div className='upperInfo'>
@@ -48,7 +77,7 @@ const InGame = () => {
         </div>
 
         <div className='playerlistDiv'>
-          <button className='button' onClick={handleShowP}>
+          <button className='button' onClick={handleChangeP}>
             Players
           </button>
         </div>
@@ -58,13 +87,22 @@ const InGame = () => {
         </div>
 
         <div className='menuGame'>
-          <button className='button' onClick={handleShow}>
-            <img src={Info} alt="info" height="40"/>
-          </button>
-          <button className='button' onClick={handleShow}>
+          <Link to='/info' target='_blank'>
+            <button className='button'>
+              <img src={Info} alt="info" height="40"/>
+            </button>
+          </Link>
+          {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
             <img src={Check} alt="check" height="40"/>
-          </button>
-          <button className='button' onClick={handleShow}>
+          </button> */}
+
+          <Link to='/info' target='_blank'>
+            <button className='button'>
+              <img src={Check} alt="check" height="40"/>
+            </button>
+          </Link>
+
+          <button className='button' onClick={handleChange}>
             <img src={Alpha} alt="indice" height="40"/>
           </button>
         </div>
