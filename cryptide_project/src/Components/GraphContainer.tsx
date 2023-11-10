@@ -109,6 +109,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
         
         const pers = networkPerson.getPersons().find((p) => p.getId() == params.nodes[0])
         if (pers!=undefined){
+          //@ts-ignore
           const node = nodes.get().find((n) => params.nodes[0] == n.id)
           if (node != undefined){
             var tester = IndiceTesterFactory.Create(testIndice)

@@ -77,7 +77,7 @@ function Play() {
                     {/* <button className='ButtonNav'>
                         Share
                     </button> */}
-                    <ButtonImgNav dest='/endgame' img={share}/>
+                    <ButtonImgNav dest='/' img={share}/>
                 </div>
             </div>
         </div>
