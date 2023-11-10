@@ -70,7 +70,7 @@ function App() {
         <Route path="/play" element={<Play/>} />
         <Route path="/lobby" element={<Lobby/>} />
         <Route path="/endgame" element={<EndGame/>} />
-        <Route path="/game" element={<InGame/>} />
+        <Route path="/game" element={<InGame locale={locale} />} />
         <Route path="/info" element={<InfoPage/>} />
       </Routes>
     </BrowserRouter>
