@@ -18,7 +18,7 @@ import InfoPage from './Pages/InfoPage';
 import AppNavbar from './Components/NavBar';
 
 /* nav */
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 /* Style */
 import './App.css';
@@ -46,6 +46,11 @@ function App() {
     setLocale(newLocale);
   };
 
+
+  //const location = useLocation();
+  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"].includes(window.location.pathname);
+
+
   return (
   // <div className="App">
   //   <header className="App-header">
@@ -56,7 +61,8 @@ function App() {
   //@ts-ignore
   <IntlProvider locale={locale} messages={messages[locale]}>
     <BrowserRouter>  
-      <AppNavbar changeLocale={changeLocale} />
+      {/* <AppNavbar changeLocale={changeLocale} /> */}
+      {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
