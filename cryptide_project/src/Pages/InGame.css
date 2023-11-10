@@ -80,10 +80,20 @@
     justify-content: end;
     flex-direction: column;
 
-    top:70%;
+    top:30%;
     right: 0;
 }
 
 .menuGame Button {
     margin: 10px;
+}
+
+.button{
+    background-color: #85C9C2;
+    
+    border: solid 2px #85C9C2;
+    border-radius: 10px;
+
+    width: 100px;
+    height: 60px;
 }

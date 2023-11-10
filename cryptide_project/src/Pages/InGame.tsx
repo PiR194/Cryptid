@@ -7,16 +7,19 @@ import "./InGame.css"
 import GraphContainer from '../Components/GraphContainer';
 import ChoiceBar from '../Components/ChoiceBar';
 import ButtonImgNav from '../Components/ButtonImgNav';
+import PersonStatus from '../Components/PersonStatus';
 
 /* Icon */
 import Leave from "../res/icon/leave.png";
 import Param from "../res/icon/param.png";
 import Replay from "../res/icon/replay.png";
+import Info from "../res/icon/infoGreen.png";
+import Check from "../res/icon/checkboxGreen.png";
+import Alpha from "../res/GreekLetters/alphaW.png";
 
 /* Boostrap */
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import PersonStatus from '../Components/PersonStatus';
 
 const InGame = () => {
     const [showChoiceBar, setShowChoiceBar] = useState(false);
@@ -26,6 +29,7 @@ const InGame = () => {
     };
   
     /* offcanvas */
+    //? faire une fonction pour close et show en fonction de l'etat du canva ?
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -44,27 +48,27 @@ const InGame = () => {
         </div>
 
         <div className='playerlistDiv'>
-          <Button variant="primary" onClick={handleShowP}>
+          <button className='button' onClick={handleShowP}>
             Players
-          </Button>
+          </button>
         </div>
 
         <div className='paramDiv'>
           <ButtonImgNav text='paramètres' img={Param} dest='/'/>
         </div>
 
-      
         <div className='menuGame'>
-          <Button variant="primary" onClick={handleShow}>
-            i
-          </Button>
-          <Button variant="primary" onClick={handleShow}>
-            check
-          </Button>
-          <Button variant="primary" onClick={handleShow}>
-            α
-          </Button>
+          <button className='button' onClick={handleShow}>
+            <img src={Info} alt="info" height="40"/>
+          </button>
+          <button className='button' onClick={handleShow}>
+            <img src={Check} alt="check" height="40"/>
+          </button>
+          <button className='button' onClick={handleShow}>
+            <img src={Alpha} alt="indice" height="40"/>
+          </button>
         </div>
+
         <Offcanvas show={showP} 
                   onHide={handleCloseP}>
           <Offcanvas.Header closeButton>
@@ -94,7 +98,7 @@ const InGame = () => {
         </Offcanvas>
 
         <div id="bottom-container">
-            {showChoiceBar && <ChoiceBar />}
+          {showChoiceBar && <ChoiceBar />}
         </div>
         <div id="endgamebutton"> {/*  tmp */}
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
