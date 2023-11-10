@@ -13,7 +13,7 @@ import NbSportIndice from "./Indices/NbSportIndice";
 
 class IndiceChooser{
 
-    chooseIndice(personNetwork: PersonNetwork, choosenPerson: Person, indices: Indice[], nbPlayer: number): Indice[]{
+    chooseIndice(choosenPerson: Person, indices: Indice[], nbPlayer: number): Indice[]{
         const choosenIndices: Indice[] = []
         const ageIndice : Indice[] = []
         const sportIndice : Indice[] = []

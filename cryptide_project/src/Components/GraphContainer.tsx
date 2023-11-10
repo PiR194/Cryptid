@@ -1,41 +1,26 @@
 import React, { useEffect } from "react";
 import { DataSet, Network} from "vis-network/standalone/esm/vis-network";
-import EdgesCreator from "../source/EdgesCreator";
-import GraphCreator from "../source/Graph/GraphCreator";
-import IndiceChooser from "../source/IndiceChooser";
-import SportIndice from "../source/Indices/SportIndice";
-import NetworkGenerator from "../source/NetworkGenerator";
-import Sport from "../source/Sport";
-import Stub from "../source/Stub";
+import EdgesCreator from "../model/EdgesCreator";
+import GraphCreator from "../model/Graph/GraphCreator";
+import IndiceChooser from "../model/IndiceChooser";
+import SportIndice from "../model/Indices/SportIndice";
+import NetworkGenerator from "../model/NetworkGenerator";
+import Sport from "../model/Sport";
+import Stub from "../model/Stub";
 import "./GraphContainer.css";
-import NodePerson from "../source/Graph/NodePerson";
-import IndiceTesterFactory from "../source/Factory/IndiceTesterFactory";
+import NodePerson from "../model/Graph/NodePerson";
+import IndiceTesterFactory from "../model/Factory/IndiceTesterFactory";
+import GameCreator from "../model/GameCreator";
 
-const edgesCreator = new EdgesCreator()
-
-const chooser = new IndiceChooser()
-
-const indices = Stub.GenerateIndice()
-
-const networkPerson = NetworkGenerator.GenerateNetwork(50)
-
-const rand = Math.floor(Math.random() * 50)
-const person = networkPerson.getPersons()[rand]
-
-const choosenIndices = chooser.chooseIndice(networkPerson, person, indices, 8)
-
-edgesCreator.CreateAllEdges(networkPerson, person, choosenIndices)
-
-const graph = GraphCreator.CreateGraph(networkPerson)
+const [networkPerson, choosenPerson, choosenIndices, graph] = GameCreator.CreateGame(3, 30)
 
 
-let indice = new SportIndice(12, [Sport.TENNIS, Sport.BASEBALL])
 console.log(networkPerson)
 console.log(graph)
 choosenIndices.forEach((indice) =>{
   console.log(indice.ToString("fr"))
 });
-console.log(person)
+console.log(choosenPerson)
 const testIndice = choosenIndices[0]
 
 interface MyGraphComponentProps {

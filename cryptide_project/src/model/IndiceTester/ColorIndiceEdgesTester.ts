@@ -22,15 +22,6 @@ class ColorEdgesIndiceTester implements IndiceTester{
         });
         return res
     }
-
-    TestWorks(person: Person): boolean {
-        person.getFriends().forEach(p => {
-            if(this.colorEdgesIndice.getColors().includes(p.getColor())){
-                return true
-            }
-        });
-        return false
-    }
 }
 
 export default ColorEdgesIndiceTester
