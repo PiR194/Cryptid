@@ -20,15 +20,6 @@ class SportIndiceTester implements IndiceTester{
         }
         return false
     }
-
-    TestWorks(person: Person): boolean {
-        for (const sport of person.getSports()){
-            if (this.sportIndice.getSports().includes(sport)){
-                return true
-            }
-        }
-        return false
-    }
 }
 
 export default SportIndiceTester

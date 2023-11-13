@@ -13,10 +13,6 @@ class IndiceTesterAge implements IndiceTester{
     Works(person: Person): boolean {
         return person.getAge() >= this.ageIndice.getMinimum() && person.getAge()<= this.ageIndice.getMaximum()
     }
-
-    TestWorks(person: Person): boolean {
-        return person.getAge() >= this.ageIndice.getMinimum() && person.getAge()<this.ageIndice.getMaximum()
-    }
 }
 
 export default IndiceTesterAge

@@ -14,10 +14,6 @@ class ColorIndiceTester implements IndiceTester{
     Works(person: Person): boolean {
         return this.colorIndice.getColors().includes(person.getColor()) 
     }
-
-    TestWorks(person: Person): boolean {
-        return this.colorIndice.getColors().includes(person.getColor()) 
-    }
 }
 
 export default ColorIndiceTester

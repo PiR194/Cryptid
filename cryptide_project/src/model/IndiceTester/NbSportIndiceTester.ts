@@ -15,10 +15,6 @@ class NbSportIndiceTester implements IndiceTester{
     Works(person: Person): boolean {
         return this.nbSportIndice.getNbSport() ==  person.getSports().length
     }
-
-    TestWorks(person: Person): boolean {
-        return this.nbSportIndice.getNbSport() ==  person.getSports().length
-    }
 }
 
 export default NbSportIndiceTester
