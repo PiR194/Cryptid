@@ -31,6 +31,7 @@ import Stub from '../source/Stub';
 import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
+import Color from '../source/Color';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {

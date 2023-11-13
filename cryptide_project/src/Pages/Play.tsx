@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Play() {
+<<<<<<< HEAD
 
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();
@@ -56,6 +57,9 @@ function Play() {
 
 
 
+=======
+    const theme=useTheme()
+>>>>>>> faf141d (ajout d'un theme global pour toutes les couleurs primaire, secondaire et quelque texte principaux :lipstick:)
     return (
 
         <div className="MainContainer">
