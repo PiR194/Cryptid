@@ -50,7 +50,7 @@ const InGame = ({locale, changeLocale}) => {
     { state: Replay, name: 'Bot-tom' },
     { state: Replay, name: 'Dummy' },
     { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
+    { state: Replay, name: 'Bot-tom' }
     // Ajouter d'autres joueurs au besoin
   ];
 
@@ -161,7 +161,7 @@ const InGame = ({locale, changeLocale}) => {
                   onHide={handleCloseP}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Joueurs</Offcanvas.Title>
-            <h3>Il y a 3 joueurs</h3>
+            <h3>Il y a {players.length} joueurs</h3>
           </Offcanvas.Header>
           <Offcanvas.Body>
               {/* affichage d'une liste responsive dynamic */}
