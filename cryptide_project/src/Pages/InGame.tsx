@@ -27,11 +27,11 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 /* Model */
-import Stub from '../source/Stub';
+import Stub from '../model/Stub';
 import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import Color from '../source/Color';
+import Color from '../model/Color';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
