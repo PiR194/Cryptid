@@ -50,7 +50,6 @@ const InGame = ({locale, changeLocale}) => {
   
 
     const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
-      console.log("je passe bien ici avec : " + shouldShowTurnBar)
       setShowTurnBar(shouldShowTurnBar);
     };
 

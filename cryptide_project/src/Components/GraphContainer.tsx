@@ -104,7 +104,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         onNodeClick(false)
         playerIndex = newPlayerIndex
         networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
-        console.log(playerIndex + " => " + thisPlayerIndex)
         if (playerIndex === thisPlayerIndex){
           handleShowTurnBar(true)
         }
