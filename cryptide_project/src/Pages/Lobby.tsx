@@ -1,4 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
+
+// import { useId } from 'react';
+// import { v4 as uuidv4 } from 'uuid';
+
 
 /* Style */
 import './Lobby.css';
@@ -16,14 +21,26 @@ import PlayerItemList from '../Components/PlayerItemList'
 
 function Lobby() {
     const theme=useTheme();
+
+    const players = [
+        { pdp: Person, name: "Dummy (vous)", id: 1 },
+        { pdp: Person, name: "Dummy2)", id: 1 },
+        //{ pdp: Bot, name: "Boat", id: 2 },
+        // { pdp: Bot, name: "Bot-tom", id: 3 },
+    ];
+
+    while (players.length < 3) {
+        players.push({ pdp: Bot, name: "BotAdded", id: players.length + 1 });
+    }
+
     return (
         <div className='lobby-container'>
             <div className='left-part'>
                 <div className='player-board'>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
-                    <PlayerItemList pdp={Person} name="Dummy (vous)"/>
-                    <PlayerItemList pdp={Bot} name="Boat"/>
-                    <PlayerItemList pdp={Bot} name="Bot-tom"/>
+                    {players.map((player) => (
+                        <PlayerItemList key={player.id} pdp={player.pdp} name={player.name} id={player.id} />
+                    ))}
                 </div>
             </div>
 

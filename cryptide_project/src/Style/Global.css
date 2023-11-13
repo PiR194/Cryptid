@@ -12,6 +12,12 @@
     align-items: center;
 }
 
+.item-horizontal-div-container{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
 .item-horizontal-div{
     display: flex;
     flex-direction: row;
