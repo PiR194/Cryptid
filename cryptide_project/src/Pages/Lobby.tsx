@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './Lobby.css';
-import PlayerItemList from '../Components/PlayerItemList'
+import { useTheme } from '../Style/ThemeContext';
+
+/* res */
 import PersonImg from '../res/img/Person.png';
 import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
+
+/* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
@@ -20,9 +24,11 @@ import { random } from 'lodash';
 import Player from '../model/Player';
 
 
+import PlayerItemList from '../Components/PlayerItemList'
 
 function Lobby() {
     const navigate = useNavigate();
+    const theme = useTheme()
 
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setRoomData } = useGame();
@@ -95,7 +101,7 @@ function Lobby() {
                 </div>
             </div>
 
-            <div className="lobby-vertical-divider"></div>
+            <div className="lobby-vertical-divider" style={{backgroundColor: theme.colors.secondary}}></div>
 
             <div className='right-part'>
                 <div className='title-param-div'>

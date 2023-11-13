@@ -24,6 +24,9 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 /* Style */
 import './App.css';
 
+import { ThemeProvider } from './Style/ThemeContext';
+// import theme from './Style/Theme';
+
 /* bootstrap */
 import 'bootstrap/dist/css/bootstrap.min.css';
 

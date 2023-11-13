@@ -3,7 +3,7 @@ import Switch from "react-switch";
 
 /* Style */
 import "./InGame.css"
-
+import {useTheme} from '../Style/ThemeContext'
 /* Component */
 import GraphContainer from '../Components/GraphContainer';
 import ChoiceBar from '../Components/ChoiceBar';
@@ -31,6 +31,7 @@ import Stub from '../source/Stub';
 import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
+import Color from '../source/Color';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -55,7 +56,7 @@ const InGame = ({locale, changeLocale}) => {
   ];
 
 
-
+  const theme = useTheme();
 
     const [showChoiceBar, setShowChoiceBar] = useState(false);
   
@@ -116,7 +117,10 @@ const InGame = ({locale, changeLocale}) => {
 
     return (
       <div id="mainDiv">
-        <div className='upperInfo'>
+        <div className='upperInfo' 
+          style={{ 
+              borderColor: theme.colors.secondary
+          }}>
           {/* texte changeable et a traduire */}
           <p>Dummy, à vous de jouer !</p>
         </div>
@@ -125,20 +129,34 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
         <div className='playerlistDiv'>
-          <button className='button' onClick={handleChangeP}>
+          <button className='button' 
+            style={{ 
+                backgroundColor: theme.colors.primary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={handleChangeP}>
             Players
           </button>
         </div>
 
         <div className='paramDiv'>
-          <button className='button' onClick={handleChangeS}>
+          <button className='button'
+            style={{ 
+                backgroundColor: theme.colors.primary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={handleChangeS}>
             <img src={Param} alt="paramètres" height='40'/>
           </button>
         </div>
 
         <div className='menuGame'>
           <Link to='/info' target='_blank'>
-            <button className='button'>
+            <button className='button' 
+              style={{ 
+                backgroundColor: theme.colors.primary,
+                borderColor: theme.colors.secondary
+              }}>
               <img src={Info} alt="info" height="40"/>
             </button>
           </Link>
@@ -147,12 +165,20 @@ const InGame = ({locale, changeLocale}) => {
           </button> */}
 
           <Link to='/info' target='_blank'>
-            <button className='button'>
+            <button className='button'
+              style={{ 
+                backgroundColor: theme.colors.primary,
+                borderColor: theme.colors.secondary
+              }}>
               <img src={Check} alt="check" height="40"/>
             </button>
           </Link>
 
-          <button className='button' onClick={handleChange}>
+          <button className='button' onClick={handleChange}
+            style={{ 
+              backgroundColor: theme.colors.primary,
+              borderColor: theme.colors.secondary
+            }}>
             <img src={Alpha} alt="indice" height="40"/>
           </button>
         </div>
@@ -226,7 +252,7 @@ const InGame = ({locale, changeLocale}) => {
         <div id="bottom-container">
           {showChoiceBar && <ChoiceBar />}
         </div>
-        <div id="endgamebutton"> {/*  tmp */}
+        <div id="endgamebutton" > {/*  tmp */}
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
         </div>
       </div>

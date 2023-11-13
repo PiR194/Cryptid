@@ -2,6 +2,7 @@ import React from 'react';
 import { useGame } from '../Contexts/GameContext';
 import { socket } from '../SocketConfig';
 import './ChoiceBar.css';
+import { useTheme } from '../Style/ThemeContext';
 
 const ChoiceBar = () => {
   const { players, nodeId } = useGame();
