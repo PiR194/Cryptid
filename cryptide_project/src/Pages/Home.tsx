@@ -1,12 +1,14 @@
 import React from 'react';
 import './Home.css';
 import '../App.css';
+import { useTheme } from '../Style/ThemeContext';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import ButtonImgNav from '../Components/ButtonImgNav';
 
 
 function Home() {
-
+    const theme=useTheme();
     return (
         
     <div className="home-container">
@@ -46,7 +48,13 @@ function Home() {
             <h3> <u><FormattedMessage id="game.illustratedBy"/></u><br/> Kwanchai Moriya</h3>
             {/* <button>Jouer au jeu</button> */}
             <br/>
-            <Link to="/play" className='button'> <FormattedMessage id="play"/> </Link>
+            <Link to="/play" className='button' 
+                style={{ 
+                    backgroundColor: theme.colors.primary,
+                    borderColor: theme.colors.secondary
+                }}>
+                <FormattedMessage id="play"/> 
+            </Link>
         </div>
     </div>
     );

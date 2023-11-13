@@ -14,21 +14,25 @@ import { HiLanguage } from 'react-icons/hi2';
 /* Components */
 import './NavBar.css';
 
+/* Style */
+import { useTheme } from '../Style/ThemeContext';
+
 // @ts-ignore
 function AppNavbar({changeLocale}) {
+    const theme = useTheme();
     return (
-        <Navbar expand="lg" className="custom-navbar">
+        <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
         <Container>
             <Navbar.Brand href="/">
                 <div>
-                    <h2>Cryptide</h2>
-                    <h6>by Crypteam</h6>
+                    <h2 style={{color:theme.colors.text}}>Cryptide</h2>
+                    <h6 style={{color:theme.colors.text}}>by Crypteam</h6>
                 </div>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <NavDropdown title={<span><FormattedMessage id="play"/></span>} className="navbar-title" id="basic-nav-dropdown">
+                <NavDropdown title={<span style={{color:theme.colors.text}}><FormattedMessage id="play"/></span>} className="navbar-title" id="basic-nav-dropdown" >
                     <NavDropdown.Item href="play"><FormattedMessage id="play_solo"/> </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="play"><FormattedMessage id="create_room"/> </NavDropdown.Item>
@@ -37,11 +41,11 @@ function AppNavbar({changeLocale}) {
             </Nav>
             <div className='leftdiv'>
                 <Nav className="ml-auto navbar-title-dd">
-                    <Nav.Link href="login" className='navbar-title-dd'> 
+                    <Nav.Link href="login" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}> 
                         <BiLogInCircle/>
                         <FormattedMessage id="log_in"/> 
                     </Nav.Link>
-                    <Nav.Link href="signup" className='navbar-title-dd'> 
+                    <Nav.Link href="signup" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}> 
                         <BsFillPersonPlusFill/>
                         <FormattedMessage id="sign_up"/> 
                     </Nav.Link>
