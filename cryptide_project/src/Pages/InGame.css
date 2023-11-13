@@ -7,7 +7,7 @@
     width: 30%;
 
     border-radius: 0px 0px 30px 30px;
-    border: solid #85C9C2;
+    border: solid;
     border-width: 2px 5px;
 
     background-color: white;
@@ -89,7 +89,7 @@
 }
 
 .button{
-    background-color: #85C9C2;
+    /*background-color: #85C9C2;*/
     
     border: solid 2px #85C9C2;
     border-radius: 10px;
