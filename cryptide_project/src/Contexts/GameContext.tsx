@@ -15,6 +15,7 @@ interface GameContextProps {
   actualPlayerIndex: number;
   turnPlayerIndex: number;
   room: string;
+  onlyFalse: boolean
   setIndicesData: (newIndices: Indice[]) => void;
   setIndiceData: (newIndice: Indice) => void;
   setPersonData: (newPerson: Person) => void;
@@ -25,6 +26,7 @@ interface GameContextProps {
   setActualPlayerIndexData: (newActualPlayerIndex: number) => void;
   setTurnPlayerIndexData: (newTurnPlayerIndex: number) => void;
   setRoomData: (newRoom: string) => void;
+  setOnlyFalseData: (newOnlyFalse: boolean) => void
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -44,6 +46,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [actualPlayerIndex, setActualPlayerIndex] = useState<number>(-1)
   const [turnPlayerIndex, setTurnPlayerIndex] = useState<number>(-1)
   const [room, setRoom] = useState<string>("")
+  const [onlyFalse, setOnlyFalse] = useState<boolean>(false)
 
 
   const setIndicesData = (newIndices: Indice[]) => {
@@ -87,8 +90,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setRoom(newRoom)
   }
 
+  const setOnlyFalseData = (newOnlyFalse: boolean) =>{
+    setOnlyFalse(newOnlyFalse)
+  }
+
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData }}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData }}>
       {children}
     </GameContext.Provider>
   );

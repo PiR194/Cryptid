@@ -1,7 +1,11 @@
 import React from "react";
 import { useTheme } from "../Style/ThemeContext";
 
-const TurnBar = () => {
+interface TurnBarProps{
+    text: string
+}
+
+const TurnBar: React.FC<TurnBarProps> = ({text})=> {
     const theme = useTheme();
     return (
         <div className='upperInfo' 
@@ -9,7 +13,7 @@ const TurnBar = () => {
                 borderColor: theme.colors.secondary
             }}>
             {/* texte changeable et a traduire */}
-            <p>Dummy, à vous de jouer !</p>
+            <p>{text}</p>
         </div>
     );
   };
