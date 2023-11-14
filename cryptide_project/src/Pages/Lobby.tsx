@@ -28,20 +28,6 @@ import Player from '../model/Player';
 
 function Lobby() {
     const theme=useTheme();
-    
-    const [codeShowed, setCodeShowed] = useState(true);
-
-    const playerslst = [
-        { pdp: Person, name: "Dummy (vous)", id: 1 },
-        { pdp: Person, name: "Dummy2)", id: 1 },
-        //{ pdp: Bot, name: "Boat", id: 2 },
-        // { pdp: Bot, name: "Bot-tom", id: 3 },
-    ];
-
-    while (playerslst.length < 3) {
-        playerslst.push({ pdp: Bot, name: "BotAdded", id: playerslst.length + 1 });
-    }
-
     const navigate = useNavigate();
 
 
@@ -96,6 +82,9 @@ function Lobby() {
         }
         setPlayersData(tab.map((p: any) => new Player(p.id, p.name)))
     })
+
+    const [codeShowed, setCodeShowed] = useState(true);
+
 
     function StartGame(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, 30)

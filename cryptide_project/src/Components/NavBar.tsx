@@ -20,6 +20,8 @@ import ReactCountryFlag from "react-country-flag"
 
 /* Style */
 import './NavBar.css';
+
+/* Style */
 import { useTheme } from '../Style/ThemeContext';
 
 // @ts-ignore

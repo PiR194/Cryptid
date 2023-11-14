@@ -78,7 +78,7 @@ function App() {
                 <Route path="/endgame" element={<EndGame/>} />
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>} />
                 <Route path="/info" element={<InfoPage/>} />
-      </Routes>
+              </Routes>
             </BrowserRouter>
           </ThemeProvider>
         </IntlProvider>
