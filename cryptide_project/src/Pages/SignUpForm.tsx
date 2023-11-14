@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineSend } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom'; 
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
 const SignUp = () => {
-    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const navigate = useNavigate(); 
 
     const [error, setError] = useState<string | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
