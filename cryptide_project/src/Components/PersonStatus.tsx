@@ -9,7 +9,7 @@ import Person from '../res/img/Person.png'
 import leave from '../res/img/bot.png'
 
 //@ts-ignore
-function PersonStatus({img = Person, state= leave, name = "Dummy"}) {
+function PersonStatus({img = Person, state= Person, name = "Dummy"}) {
     const theme=useTheme();
     return (
         <div className='centerDivV'>

@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Play() {
-<<<<<<< HEAD
+    const theme=useTheme()
 
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();
@@ -57,9 +57,6 @@ function Play() {
 
 
 
-=======
-    const theme=useTheme()
->>>>>>> faf141d (ajout d'un theme global pour toutes les couleurs primaire, secondaire et quelque texte principaux :lipstick:)
     return (
 
         <div className="MainContainer">
@@ -82,9 +79,9 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <Link to="/">
-                        <button className="ButtonNav"> Jouer seul </button>
+                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     </Link>
-                    <button onClick={createLobby} className="ButtonNav"> Créer une partie </button>
+                    <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <Link to="/">
                         <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     </Link>

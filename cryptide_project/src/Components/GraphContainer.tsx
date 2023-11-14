@@ -19,20 +19,34 @@ import Indice from "../model/Indices/Indice";
 import { useLocation } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
+import { colorToEmoji, positionToColor } from "../ColorHelper";
 
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
+  handleShowTurnBar: (shouldShowTurnBar: boolean) => void
 }
 
 let lastAskingPlayer = 0
+let lastNodeId = -1
 let first = true
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar}) => {
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex } = useGame();
 
   let playerIndex: number = actualPlayerIndex
+  let index = 0
+  for (let i=0; i<players.length; i++){
+    if(players[i].id == socket.id){
+        index=i
+        break
+    }
+  }
+  let thisPlayerIndex = index
+  if (playerIndex == thisPlayerIndex){
+    handleShowTurnBar(true)
+  }
 
   if (first){
     first = false
@@ -87,11 +101,18 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
     socket.on("node checked",(id, works, color, newPlayerIndex) => {
       const node = nodes.get().find((n) => id == n.id)
       if (node!=undefined){
-        setActualPlayerIndexData(newPlayerIndex)
+        onNodeClick(false)
         playerIndex = newPlayerIndex
         networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
+        if (playerIndex == thisPlayerIndex){
+          handleShowTurnBar(true)
+        }
+        else{
+          handleShowTurnBar(false)
+        }
       }
       lastAskingPlayer = 0
+      lastNodeId = -1
     })
 
     socket.on("already asked", (nodeId, askedPlayer) =>{
@@ -100,8 +121,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
 
 
     socket.on("asked", (nodeId, askingPlayer) => {
-      if (askingPlayer.id !== lastAskingPlayer){
+      if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
         lastAskingPlayer = askingPlayer.id
+        lastNodeId = nodeId
         const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
         if (pers!=undefined){
           if (askedPersons.includes(pers)){
@@ -117,12 +139,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
               if(playerIndex == players.length){
                 playerIndex = 0
               }
-              console.log(playerIndex)
               if (tester.Works(pers)){
-                socket.emit("node checked", nodeId, true, positionToColor(), room, playerIndex)
+                socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
               }
               else{
-                socket.emit("node checked", nodeId, false, positionToColor(), room, playerIndex)
+                socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, playerIndex)
               }
             }
           }     
@@ -164,14 +185,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
         setNodeIdData(params.nodes[0])
 
         // Renvoyer un true pour afficher la choice bar
-        let index = 0
-        for (let i=0; i<players.length; i++){
-          if(players[i].id == socket.id){
-              index=i
-              break
-          }
-        }
-        if (index == playerIndex){
+        if (thisPlayerIndex == playerIndex){
           onNodeClick(true)
         }
         else{
@@ -190,65 +204,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
       <div id="graph-container"/>
     </>
   );
-
-  function positionToColor(): string{
-    let index = 0
-    for (let i=0; i<players.length; i++){
-        if(players[i].id == socket.id){
-            index=i
-            break
-        }
-    }
-    switch (index) {
-      case 0:
-        return "blue";
-      case 1:
-        return "green";
-      case 2:
-        return "yellow";
-      case 3:
-        return "purple";
-      case 4:
-        return "red";
-      default:
-        return "brown";
-    }
-  }
-};
-
-function colorToEmoji(color: string, works: boolean): string{
-  if (works){
-    switch (color) {
-      case "blue":
-        return "🔵";
-      case "green":
-        return "🟢";
-      case "yellow":
-        return "🟡"; 
-      case "purple":
-        return "🟣"; 
-      case "red":
-        return "🔴";
-      default:
-        return "🟤"; 
-    }
-  }
-  else{
-    switch (color) {
-      case "blue":
-        return "🟦";
-      case "green":
-        return "🟩"; 
-      case "yellow":
-        return "🟨";
-      case "purple":
-        return "🟪"; 
-      case "red":
-        return "🟥";
-      default:
-        return "🟫"; 
-    }    
-  }
 }
 
 

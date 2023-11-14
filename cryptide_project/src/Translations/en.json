@@ -42,7 +42,7 @@
 
     "and": "and",
     "or": "or",
-    "or_sport": "or",
+    "or_sport": "and/or",
 
 
     "age_indice_start": "The suspect is between",
