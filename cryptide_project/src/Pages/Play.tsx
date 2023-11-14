@@ -48,7 +48,7 @@ function Play() {
                     <Link to="/">
                         <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     </Link>
-                    <Link to="/">
+                    <Link to="/solo">
                         <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     </Link>
                 </div>
