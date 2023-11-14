@@ -31,7 +31,7 @@ function Lobby() {
     const navigate = useNavigate();
 
 
-    const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setRoomData } = useGame();
+    const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
     let first = true
 
@@ -65,7 +65,8 @@ function Lobby() {
         if (room != null){
             setRoomData(room)
         }
-        setActualPlayerIndexData(playerIndex)
+        setTurnPlayerIndexData(playerIndex)
+        setActualPlayerIndexData(index)
         setIndiceData(choosenIndices[index])
         setPersonData(choosenOne)
         setPersonNetworkData(network)
