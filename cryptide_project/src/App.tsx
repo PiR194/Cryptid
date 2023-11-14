@@ -12,15 +12,19 @@ import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
 
 import EndGame from './Pages/EndGame';
+import InfoPage from './Pages/InfoPage';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
 
 /* nav */
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 /* Style */
 import './App.css';
+
+import { ThemeProvider } from './Style/ThemeContext';
+// import theme from './Style/Theme';
 
 /* bootstrap */
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,6 +49,11 @@ function App() {
     setLocale(newLocale);
   };
 
+
+  //const location = useLocation();
+  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
+
+
   return (
   // <div className="App">
   //   <header className="App-header">
@@ -52,20 +61,25 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
+
   //@ts-ignore
   <IntlProvider locale={locale} messages={messages[locale]}>
-    <BrowserRouter>  
-      <AppNavbar changeLocale={changeLocale} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/play" element={<Play/>} />
-        <Route path="/lobby" element={<Lobby/>} />
-        <Route path="/endgame" element={<EndGame/>} />
-        <Route path="/game" element={<InGame/>} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>  
+        {/* <AppNavbar changeLocale={changeLocale} /> */}
+        {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/play" element={<Play/>} />
+          <Route path="/lobby" element={<Lobby/>} />
+          <Route path="/endgame" element={<EndGame/>} />
+          <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale} />} />
+          <Route path="/info" element={<InfoPage/>} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   </IntlProvider>
   );
 }

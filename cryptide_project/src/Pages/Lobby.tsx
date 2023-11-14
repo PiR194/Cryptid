@@ -1,13 +1,21 @@
 import React from 'react';
+
+/* Style */
 import './Lobby.css';
-import PlayerItemList from '../Components/PlayerItemList'
+import { useTheme } from '../Style/ThemeContext';
+
+/* res */
 import Person from '../res/img/Person.png';
 import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
+
+/* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
+import PlayerItemList from '../Components/PlayerItemList'
 
 function Lobby() {
+    const theme=useTheme();
     return (
         <div className='lobby-container'>
             <div className='left-part'>
@@ -19,7 +27,7 @@ function Lobby() {
                 </div>
             </div>
 
-            <div className="lobby-vertical-divider"></div>
+            <div className="lobby-vertical-divider" style={{backgroundColor: theme.colors.secondary}}></div>
 
             <div className='right-part'>
                 <div className='title-param-div'>

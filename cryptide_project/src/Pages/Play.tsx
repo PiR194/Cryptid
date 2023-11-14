@@ -1,7 +1,8 @@
 import React from 'react';
 
-/* Page */
+/* Style */
 import './Play.css';
+import { useTheme } from '../Style/ThemeContext';
 
 /* Nav */
 import { Link } from 'react-router-dom';
@@ -19,6 +20,7 @@ import share from '../res/icon/share.png';
 
 
 function Play() {
+    const theme=useTheme()
     return (
 
         <div className="MainContainer">
@@ -41,13 +43,13 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <Link to="/lobby">
-                        <button className="ButtonNav"> Jouer seul </button>
+                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     </Link>
                     <Link to="/">
-                        <button className="ButtonNav"> Créer une partie </button>
+                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     </Link>
                     <Link to="/">
-                        <button className="ButtonNav"> Rejoindre </button>
+                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     </Link>
                 </div>
             </div>
