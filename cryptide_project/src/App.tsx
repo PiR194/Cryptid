@@ -66,18 +66,20 @@ function App() {
 
       {/*@ts-ignore*/}
         <IntlProvider locale={locale} messages={messages[locale]}>
-          <BrowserRouter>  
-            <AppNavbar changeLocale={changeLocale} />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/play" element={<Play/>} />
-              <Route path="/lobby" element={<Lobby/>} />
-              <Route path="/endgame" element={<EndGame/>} />
-              <Route path="/game" element={<InGame/>} />
-            </Routes>
-          </BrowserRouter>
+          <ThemeProvider>
+            <BrowserRouter>  
+              {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/play" element={<Play/>} />
+                <Route path="/lobby" element={<Lobby/>} />
+                <Route path="/endgame" element={<EndGame/>} />
+                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>} />
+              </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
         </IntlProvider>
       </GameProvider>
   

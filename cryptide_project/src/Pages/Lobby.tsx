@@ -3,7 +3,8 @@ import './Lobby.css';
 import { useTheme } from '../Style/ThemeContext';
 
 /* res */
-import PersonImg from '../res/img/Person.png';
+import PlayerItemList from '../Components/PlayerItemList'
+import PersonImgImg from '../res/img/Person.png';
 import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
@@ -24,11 +25,10 @@ import { random } from 'lodash';
 import Player from '../model/Player';
 
 
-import PlayerItemList from '../Components/PlayerItemList'
 
 function Lobby() {
+    const theme=useTheme();
     const navigate = useNavigate();
-    const theme = useTheme()
 
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setRoomData } = useGame();
