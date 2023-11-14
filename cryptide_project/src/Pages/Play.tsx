@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* Page */
 import './Play.css';
@@ -16,9 +16,45 @@ import Person from '../res/img/Person.png';
 import trophy from '../res/icon/trophy.png';
 import param from '../res/icon/param.png';
 import share from '../res/icon/share.png';
+import { socket } from '../SocketConfig';
+import { useNavigate } from 'react-router-dom';
 
 
 function Play() {
+
+    const [room, setRoom] = useState(null);
+    const navigate = useNavigate();
+
+    function createLobby(){
+        socket.emit("lobby created")
+    }
+
+    
+
+    useEffect(() => {
+        const handleLobbyCreated = (newRoom: any) => {
+        setRoom(newRoom);
+        };
+    
+        // Ajouter l'event listener
+        socket.on('lobby created', handleLobbyCreated);
+    
+        // Nettoyer l'event listener lors du démontage du composant
+        return () => {
+            socket.off('lobby created', handleLobbyCreated);
+        };
+        
+      }, []);  // Aucune dépendance ici
+
+      useEffect(() => {
+        if (room !== null) {
+          const nouvelleURL = `/lobby?room=${room}`;
+          navigate(nouvelleURL);
+        }
+      }, [room, navigate]);
+
+
+
     return (
 
         <div className="MainContainer">
@@ -40,12 +76,10 @@ function Play() {
                             />
                 </div>
                 <div className='buttonGroupVertical'>
-                    <Link to="/lobby">
+                    <Link to="/">
                         <button className="ButtonNav"> Jouer seul </button>
                     </Link>
-                    <Link to="/">
-                        <button className="ButtonNav"> Créer une partie </button>
-                    </Link>
+                    <button onClick={createLobby} className="ButtonNav"> Créer une partie </button>
                     <Link to="/">
                         <button className="ButtonNav"> Rejoindre </button>
                     </Link>

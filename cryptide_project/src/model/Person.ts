@@ -78,6 +78,24 @@ class Person {
       setFriends(friends: Person[]): void {
         this.friends = friends;
       }
+
+      toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            age: this.age,
+            color: this.color,
+            sports: this.sports,
+            friends: this.friends.map(friend => ({
+                id: friend.id,
+                name: friend.name,
+                age: friend.age,
+                color: friend.color,
+                sports: friend.sports,
+                // Ne pas inclure friends ici pour éviter la boucle infinie
+            }))
+        };
+    }
 }
 
 export default Person
