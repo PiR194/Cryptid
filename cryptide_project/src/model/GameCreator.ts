@@ -10,7 +10,7 @@ import PersonNetwork from "./PersonsNetwork";
 import Stub from "./Stub";
 
 class GameCreator{
-    static CreateGame(nbPlayers: number, nbNodes: number): [PersonNetwork, Person, Indice[], GraphPerson]{
+    static CreateGame(nbPlayers: number, nbNodes: number): [PersonNetwork, Person, Indice[]]{
         const edgesCreator = new EdgesCreator()
 
         const chooser = new IndiceChooser()
@@ -26,9 +26,7 @@ class GameCreator{
 
         edgesCreator.CreateAllEdges(networkPerson, person, choosenIndices)
 
-        const graph = GraphCreator.CreateGraph(networkPerson)
-
-        return [networkPerson, person, choosenIndices, graph]
+        return [networkPerson, person, choosenIndices]
 
     }
 }

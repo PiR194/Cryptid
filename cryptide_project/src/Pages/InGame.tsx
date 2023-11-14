@@ -32,38 +32,27 @@ import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
+import TurnBar from '../Components/TurnBar';
+import { useGame } from '../Contexts/GameContext';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
 
-  const players = [
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' }
-    // Ajouter d'autres joueurs au besoin
-  ];
-
-
   const theme = useTheme();
 
     const [showChoiceBar, setShowChoiceBar] = useState(false);
+    const [showTurnBar, setShowTurnBar] = useState(false);
+
   
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
       setShowChoiceBar(shouldShowChoiceBar);
     };
   
+
+    const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
+      setShowTurnBar(shouldShowTurnBar);
+    };
+
     /* offcanvas */
     //? faire une fonction pour close et show en fonction de l'etat du canva ?
     //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
@@ -114,18 +103,14 @@ const InGame = ({locale, changeLocale}) => {
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const indices = Stub.GenerateIndice()
+  const { indice, players } = useGame();
+
 
     return (
       <div id="mainDiv">
-        <div className='upperInfo' 
-          style={{ 
-              borderColor: theme.colors.secondary
-          }}>
-          {/* texte changeable et a traduire */}
-          <p>Dummy, à vous de jouer !</p>
-        </div>
+        {showTurnBar && <TurnBar/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} />
+          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} />
         </div>
 
         <div className='playerlistDiv'>
@@ -211,9 +196,7 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             {/* Possède les cheveux noir <u>ou</u> joue au basket */}
-            {indices[0].ToString(locale)}<br/>
-            {indices[1].ToString(locale)}<br/>
-            {indices[2].ToString(locale)}
+            {indice?.ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
 
@@ -248,13 +231,14 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-
         <div id="bottom-container">
           {showChoiceBar && <ChoiceBar />}
         </div>
-        <div id="endgamebutton" > {/*  tmp */}
+        {/*
+        <div id="endgamebutton" > {/*  tmp 
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
         </div>
+      */}
       </div>
     );
   };
