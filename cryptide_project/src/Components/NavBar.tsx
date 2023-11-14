@@ -28,10 +28,6 @@ function AppNavbar({changeLocale}) {
         <Container>
             <Navbar.Brand href="/">
                 <img src={logo} alt="logo" className="logo"/>
-                {/* <div>
-                    <h2 style={{color:theme.colors.text}}>Cryptide</h2>
-                    <h6 style={{color:theme.colors.text}}>by Crypteam</h6>
-                </div> */}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
