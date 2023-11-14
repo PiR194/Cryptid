@@ -28,6 +28,20 @@ import Player from '../model/Player';
 
 function Lobby() {
     const theme=useTheme();
+    
+    const [codeShowed, setCodeShowed] = useState(true);
+
+    const playerslst = [
+        { pdp: Person, name: "Dummy (vous)", id: 1 },
+        { pdp: Person, name: "Dummy2)", id: 1 },
+        //{ pdp: Bot, name: "Boat", id: 2 },
+        // { pdp: Bot, name: "Bot-tom", id: 3 },
+    ];
+
+    while (playerslst.length < 3) {
+        playerslst.push({ pdp: Bot, name: "BotAdded", id: playerslst.length + 1 });
+    }
+
     const navigate = useNavigate();
 
 
@@ -95,10 +109,19 @@ function Lobby() {
         <div className='lobby-container'>
             <div className='left-part'>
                 <div className='player-board'>
-                    {players.map((player, index) => (
-                        <PlayerItemList key={player.id} pdp={PersonImg} name={player.name}/>
-                    ))}
+                    <div className='codeDiv' onClick={() => setCodeShowed(!codeShowed)}>
+                        {
+                            codeShowed ? (
+                                <p>Room : {room}</p>
+                            ) : (
+                                <p>Room : ******</p>
+                            )
+                        }
+                    </div>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
+                    {players.map((player, index) => (
+                        <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                    ))}
                 </div>
             </div>
 

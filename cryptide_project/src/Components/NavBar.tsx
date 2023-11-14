@@ -15,9 +15,11 @@ import { HiLanguage } from 'react-icons/hi2';
 import logo from '../res/img/logo2_preview_rev_1.png';
 
 /* Components */
-import './NavBar.css';
+import ReactCountryFlag from "react-country-flag"
+
 
 /* Style */
+import './NavBar.css';
 import { useTheme } from '../Style/ThemeContext';
 
 // @ts-ignore
@@ -55,9 +57,23 @@ function AppNavbar({changeLocale}) {
                     title={<span><HiLanguage /></span>}
                     className="navbar-title" id="basic-nav-dropdown">
                         <NavDropdown.Item onClick={() => changeLocale('fr')}> 
+                            <ReactCountryFlag countryCode="FR"
+                                                svg
+                                                style={{
+                                                    width: '30px',
+                                                    height: '20px',
+                                                    margin: 'auto 10px 3px auto',
+                                                }}/>        
                             <FormattedMessage id="languageSelector.french"/> 
                         </NavDropdown.Item>
                         <NavDropdown.Item onClick={() => changeLocale('en')}> 
+                            <ReactCountryFlag countryCode="GB" 
+                                                svg
+                                                style={{
+                                                    width: '30px',
+                                                    height: '20px',
+                                                    margin: 'auto 10px 3px auto',
+                                                }}/>
                             <FormattedMessage id="languageSelector.english"/> 
                         </NavDropdown.Item>
                     </NavDropdown>

@@ -48,12 +48,12 @@ function Play() {
         
       }, []);  // Aucune dépendance ici
 
-      useEffect(() => {
+    useEffect(() => {
         if (room !== null) {
-          const nouvelleURL = `/lobby?room=${room}`;
-          navigate(nouvelleURL);
+            const nouvelleURL = `/lobby?room=${room}`;
+        navigate(nouvelleURL);
         }
-      }, [room, navigate]);
+    }, [room, navigate]);
 
 
 
