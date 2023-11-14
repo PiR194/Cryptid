@@ -1,0 +1,104 @@
+.upperInfo{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    width: 30%;
+
+    border-radius: 0px 0px 30px 30px;
+    border: solid;
+    border-width: 2px 5px;
+
+    background-color: white;
+
+    font-size: 30px;
+
+    top: 20px;;
+}
+
+#mainDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.paramDiv{
+    z-index: 1;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#graphDiv{
+
+    display: flex;
+    flex-direction: row;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#bottom-container{
+    bottom: 0;
+    
+    background-color: white;
+    padding:20px;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.playerlistDiv{
+    position: absolute;
+    z-index: 1;
+    left: 10px;
+    top :50px;
+}
+
+#endgamebutton{
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    right: 25%;
+}
+
+.upperInfo,
+#bottom-container,
+.menuGame {
+    position: absolute;
+    z-index: 1;
+}
+
+.menuGame{
+    display: flex;
+    align-items: space-between;
+    justify-content: end;
+    flex-direction: column;
+
+    top:30%;
+    right: 0;
+}
+
+.menuGame Button {
+    margin: 10px;
+}
+
+.button{
+    /*background-color: #85C9C2;*/
+    
+    border: solid 2px #85C9C2;
+    border-radius: 10px;
+
+    width: 100px;
+    height: 60px;
+}
+
+/* #playerCanvasBody{
+    columns: 2 auto;
+    grid-row: 2;
+} */

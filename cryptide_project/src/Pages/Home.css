@@ -6,7 +6,7 @@
     min-height: 100vh;
     display: flex;
     font-size: calc(10px + 2vmin);
-    color: #2A4541;
+    /* color: #2A4541; */
 }
 
 /**Divider**/
@@ -41,7 +41,7 @@
 
 /*Global ???*/
 .button {
-    background-color: #49A4BE;
+    /* background-color: #49A4BE;   */
     color: #fff;
     padding: 10px 20px;
     border-radius: 10;

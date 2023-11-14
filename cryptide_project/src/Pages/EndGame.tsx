@@ -1,6 +1,12 @@
 import React from 'react';
+
+
+/* Style */
 import './EndGame.css';
 import '../Style/Global.css';
+import { useTheme } from '../Style/ThemeContext';
+
+/* res */
 import Person from '../res/img/Person.png';
 import Leave from '../res/icon/leave.png';
 import Replay from '../res/icon/replay.png';
@@ -18,10 +24,12 @@ import { FormattedMessage } from 'react-intl';
 
 
 function EndGame() {
+
+    const theme = useTheme();
     return (
         <div>
             <div className="head">
-                <header className='leaderboard-header'>
+                <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                     <h1>Dummy a gagné !</h1>
                     <h3>Le tueur était <u>Bob</u></h3>
                 </header>
