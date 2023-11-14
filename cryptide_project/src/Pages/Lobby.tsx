@@ -31,15 +31,15 @@ function Lobby() {
     
     const [codeShowed, setCodeShowed] = useState(true);
 
-    const players = [
+    const playerslst = [
         { pdp: Person, name: "Dummy (vous)", id: 1 },
         { pdp: Person, name: "Dummy2)", id: 1 },
         //{ pdp: Bot, name: "Boat", id: 2 },
         // { pdp: Bot, name: "Bot-tom", id: 3 },
     ];
 
-    while (players.length < 3) {
-        players.push({ pdp: Bot, name: "BotAdded", id: players.length + 1 });
+    while (playerslst.length < 3) {
+        playerslst.push({ pdp: Bot, name: "BotAdded", id: playerslst.length + 1 });
     }
 
     const navigate = useNavigate();
@@ -112,16 +112,16 @@ function Lobby() {
                     <div className='codeDiv' onClick={() => setCodeShowed(!codeShowed)}>
                         {
                             codeShowed ? (
-                                <p>Room : 63194</p>
+                                <p>Room : {room}</p>
                             ) : (
                                 <p>Room : ******</p>
                             )
                         }
                     </div>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
-                    <PlayerItemList pdp={Person} name="Dummy (vous)"/>
-                    <PlayerItemList pdp={Bot} name="Boat"/>
-                    <PlayerItemList pdp={Bot} name="Bot-tom"/>
+                    {players.map((player, index) => (
+                        <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                    ))}
                 </div>
             </div>
 
