@@ -24,14 +24,15 @@ import { colorToEmoji, positionToColor } from "../ColorHelper";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
-  handleShowTurnBar: (shouldShowTurnBar: boolean) => void
+  handleShowTurnBar: (shouldShowTurnBar: boolean) => void;
+  FromSolo: boolean;
 }
 
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, FromSolo}) => {
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex } = useGame();
 
@@ -96,108 +97,129 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
 
-    
-    
-    socket.on("node checked",(id, works, color, newPlayerIndex) => {
-      const node = nodes.get().find((n) => id == n.id)
-      if (node!=undefined){
-        onNodeClick(false)
-        playerIndex = newPlayerIndex
-        networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
-        if (playerIndex === thisPlayerIndex){
-          handleShowTurnBar(true)
-        }
-        else{
-          handleShowTurnBar(false)
-          console.log("je passe bien ici ?????")
-        }
-      }
-      lastAskingPlayer = 0
-      lastNodeId = -1
-    })
+    if(FromSolo){
 
-    socket.on("already asked", (nodeId, askedPlayer) =>{
-      console.log("player: " + askedPlayer + " already asked on node " + nodeId)
-    })
+      //* lsti = Generate indice (paramNbIndice) //une couleur par indice
+      /*
+      Onclick :
+        nbcoup = 0;
+        pour chaque indice i :
+          jeton = IsNodeInIndice(node,i)
+          lstJ.add(jeton)
+          if jeton == X :
+            rep = false
+        if(rep) :
+          endgame()
+          break
+        afficheJeton(jeton)
+      */
 
-
-    socket.on("asked", (nodeId, askingPlayer) => {
-      if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
-        lastAskingPlayer = askingPlayer.id
-        lastNodeId = nodeId
-        const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
-        if (pers!=undefined){
-          if (askedPersons.includes(pers)){
-            socket.emit("already asked", nodeId, askingPlayer, socket.id)
-            return
+        
+    }
+    else {
+        socket.on("node checked",(id, works, color, newPlayerIndex) => {
+          const node = nodes.get().find((n) => id == n.id)
+          if (node!=undefined){
+            onNodeClick(false)
+            playerIndex = newPlayerIndex
+            networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
+            if (playerIndex === thisPlayerIndex){
+              handleShowTurnBar(true)
+            }
+            else{
+              handleShowTurnBar(false)
+              console.log("je passe bien ici ?????")
+            }
           }
-          else{
-            askedPersons.push(pers)
-            const node = nodes.get().find((n) => nodeId == n.id)
-            if (node != undefined && indice != null){
-              var tester = IndiceTesterFactory.Create(indice)
-              playerIndex = playerIndex + 1
-              if(playerIndex == players.length){
-                playerIndex = 0
-              }
-              if (tester.Works(pers)){
-                socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
+          lastAskingPlayer = 0
+          lastNodeId = -1
+        })
+
+        socket.on("already asked", (nodeId, askedPlayer) =>{
+          console.log("player: " + askedPlayer + " already asked on node " + nodeId)
+        })
+
+
+        socket.on("asked", (nodeId, askingPlayer) => {
+          if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
+            lastAskingPlayer = askingPlayer.id
+            lastNodeId = nodeId
+            const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
+            if (pers!=undefined){
+              if (askedPersons.includes(pers)){
+                socket.emit("already asked", nodeId, askingPlayer, socket.id)
+                return
               }
               else{
-                socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, playerIndex)
-              }
+                askedPersons.push(pers)
+                const node = nodes.get().find((n) => nodeId == n.id)
+                if (node != undefined && indice != null){
+                  var tester = IndiceTesterFactory.Create(indice)
+                  playerIndex = playerIndex + 1
+                  if(playerIndex == players.length){
+                    playerIndex = 0
+                  }
+                  if (tester.Works(pers)){
+                    socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
+                  }
+                  else{
+                    socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, playerIndex)
+                  }
+                }
+              }     
             }
-          }     
+          }
         }
-      }
       
-    })
+        )
 
 
-    
-    personNetwork.getPersons().forEach(p => {
-      let a = 0
-      for (let i of indices){
-        let tester = IndiceTesterFactory.Create(i)
-        if (tester.Works(p)){
-          a++
+
+      personNetwork.getPersons().forEach(p => {
+        let a = 0
+        for (let i of indices){
+          let tester = IndiceTesterFactory.Create(i)
+          if (tester.Works(p)){
+            a++
+          }
         }
-      }
-      if (a==indices.length){
-        //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-        console.log(p)
-      }
-      
-    });
-    
-
-    // Gérer le changement entre la physique et le déplacement manuel
-    network.on("dragging", (params) => {
-        if (params.nodes.length > 0) {
-            // Un nœud a été cliqué
-            initialOptions.physics.enabled = false;
-            network.setOptions(initialOptions);
+        if (a==indices.length){
+          //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
+          console.log(p)
         }
-    });
-
-    network.on("click", (params) => {
+        
+      });
       
-      if(params.nodes.length > 0){
-        setNodeIdData(params.nodes[0])
 
-        // Renvoyer un true pour afficher la choice bar
-        if (thisPlayerIndex == playerIndex){
-          onNodeClick(true)
+      // Gérer le changement entre la physique et le déplacement manuel
+      network.on("dragging", (params) => {
+          if (params.nodes.length > 0) {
+              // Un nœud a été cliqué
+              initialOptions.physics.enabled = false;
+              network.setOptions(initialOptions);
+          }
+      });
+
+      network.on("click", (params) => {
+        
+        if(params.nodes.length > 0){
+          setNodeIdData(params.nodes[0])
+
+          // Renvoyer un true pour afficher la choice bar
+          if (thisPlayerIndex == playerIndex){
+            onNodeClick(true)
+          }
+          else{
+            onNodeClick(false)
+          }
         }
         else{
+          // Renvoyer un false pour cacher la choice bar
           onNodeClick(false)
         }
-      }
-      else{
-        // Renvoyer un false pour cacher la choice bar
-        onNodeClick(false)
-      }
-    });
+      });
+  } //notfromsolo
+
   }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
 
   return (

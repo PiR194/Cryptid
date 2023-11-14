@@ -108,9 +108,9 @@ const InGame = ({locale, changeLocale}) => {
 
     return (
       <div id="mainDiv">
-        {showTurnBar && <TurnBar/>}
+        {showTurnBar && <TurnBar text="je suis dans la page InGame"/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} />
+          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} FromSolo={false}/>
         </div>
 
         <div className='playerlistDiv'>
