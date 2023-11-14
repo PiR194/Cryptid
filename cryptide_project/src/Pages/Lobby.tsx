@@ -21,6 +21,8 @@ import PlayerItemList from '../Components/PlayerItemList'
 
 function Lobby() {
     const theme=useTheme();
+    
+    const [codeShowed, setCodeShowed] = useState(true);
 
     const players = [
         { pdp: Person, name: "Dummy (vous)", id: 1 },
@@ -37,6 +39,15 @@ function Lobby() {
         <div className='lobby-container'>
             <div className='left-part'>
                 <div className='player-board'>
+                    <div className='codeDiv' onClick={() => setCodeShowed(!codeShowed)}>
+                        {
+                            codeShowed ? (
+                                <p>Room : 63194</p>
+                            ) : (
+                                <p>Room : ******</p>
+                            )
+                        }
+                    </div>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
                     {players.map((player) => (
                         <PlayerItemList key={player.id} pdp={player.pdp} name={player.name} id={player.id} />
