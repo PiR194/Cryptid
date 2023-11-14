@@ -50,8 +50,10 @@ const InGame = ({locale, changeLocale}) => {
   
 
     const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
+      console.log("je passe bien ici avec : " + shouldShowTurnBar)
       setShowTurnBar(shouldShowTurnBar);
     };
+
     /* offcanvas */
     //? faire une fonction pour close et show en fonction de l'etat du canva ?
     //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
@@ -107,7 +109,7 @@ const InGame = ({locale, changeLocale}) => {
 
     return (
       <div id="mainDiv">
-        {showTurnBar && <TurnBar />}
+        {showTurnBar && <TurnBar/>}
         <div id='graphDiv'>
           <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} />
         </div>

@@ -33,9 +33,9 @@ let first = true
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar}) => {
 
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex } = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex } = useGame();
 
-  let playerIndex: number = actualPlayerIndex
+  let playerIndex: number = turnPlayerIndex
   let index = 0
   for (let i=0; i<players.length; i++){
     if(players[i].id == socket.id){
@@ -44,14 +44,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }
   let thisPlayerIndex = index
-  if (playerIndex == thisPlayerIndex){
-    handleShowTurnBar(true)
-  }
+  
 
   if (first){
     first = false
-    console.log(indice)
-
+    setActualPlayerIndexData(index)
+    if (playerIndex == thisPlayerIndex){
+      handleShowTurnBar(true)
+    }
     indices.forEach(i => {
       console.log(i.ToString("en"))
     });
@@ -104,11 +104,13 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         onNodeClick(false)
         playerIndex = newPlayerIndex
         networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
-        if (playerIndex == thisPlayerIndex){
+        console.log(playerIndex + " => " + thisPlayerIndex)
+        if (playerIndex === thisPlayerIndex){
           handleShowTurnBar(true)
         }
         else{
           handleShowTurnBar(false)
+          console.log("je passe bien ici ?????")
         }
       }
       lastAskingPlayer = 0

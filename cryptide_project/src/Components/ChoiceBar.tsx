@@ -13,7 +13,6 @@ const ChoiceBar = () => {
 
   function askPlayer(playerId: string){
     if (nodeId !== null){
-      console.log("CLICK")
       socket.emit("ask player", nodeId, playerId, players.find((p) => p.id === socket.id))
     }
   }
@@ -23,29 +22,28 @@ const ChoiceBar = () => {
       const person = personNetwork?.getPersons().find((p) => p.getId() == nodeId)
       if (person != undefined){
         const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])
+        let nextPlayerIndex = actualPlayerIndex + 1
+        if (nextPlayerIndex == players.length){
+          nextPlayerIndex = 0
+        }
+
         let playerIndex = actualPlayerIndex + 1
         if (indiceTester.Works(person)){
-          socket.emit("node checked", nodeId, true, positionToColor(actualPlayerIndex), room, actualPlayerIndex + 1)
+          socket.emit("node checked", nodeId, true, positionToColor(actualPlayerIndex), room, nextPlayerIndex)
           while(playerIndex != actualPlayerIndex){
-            const tester = IndiceTesterFactory.Create(indices[playerIndex])
-            const works = tester.Works(person)
-            socket.emit("node checked", nodeId, works, positionToColor(playerIndex), room, actualPlayerIndex + 1)
-            if (!works){
-              break
-            }
-            playerIndex ++
             if (playerIndex == players.length){
               playerIndex = 0
             }
+            const tester = IndiceTesterFactory.Create(indices[playerIndex])
+            const works = tester.Works(person)
+            socket.emit("node checked", nodeId, works, positionToColor(playerIndex), room, nextPlayerIndex)
+            if(!works){
+              return
+            }
+            playerIndex ++
           }
         }
-        else{
-          console.log("Ne marche pas")
-          console.log(person)
-        }
       }
-      console.log("CLICK")
-      //socket.emit("ask player", nodeId, playerId, players.find((p) => p.id === socket.id))
     }
   }
 

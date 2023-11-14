@@ -13,6 +13,7 @@ interface GameContextProps {
   nodeId: number | null
   askedPersons: Person[];
   actualPlayerIndex: number;
+  turnPlayerIndex: number;
   room: string;
   setIndicesData: (newIndices: Indice[]) => void;
   setIndiceData: (newIndice: Indice) => void;
@@ -22,6 +23,7 @@ interface GameContextProps {
   setNodeIdData: (newId: number) => void;
   setAskedPersonsData: (newAskedPersons: Person[]) => void;
   setActualPlayerIndexData: (newActualPlayerIndex: number) => void;
+  setTurnPlayerIndexData: (newTurnPlayerIndex: number) => void;
   setRoomData: (newRoom: string) => void;
 }
 
@@ -40,6 +42,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [nodeId, setNodeId] = useState<number | null>(null);
   const [askedPersons, setAskedPersons] = useState<Person[]>([])
   const [actualPlayerIndex, setActualPlayerIndex] = useState<number>(-1)
+  const [turnPlayerIndex, setTurnPlayerIndex] = useState<number>(-1)
   const [room, setRoom] = useState<string>("")
 
 
@@ -76,12 +79,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setActualPlayerIndex(newActualPlayerIndex)
   }
 
+  const setTurnPlayerIndexData = (newTurnPlayerIndex: number) =>{
+    setTurnPlayerIndex(newTurnPlayerIndex)
+  }
+
   const setRoomData = (newRoom: string) =>{
     setRoom(newRoom)
   }
 
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, room, setRoomData }}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData }}>
       {children}
     </GameContext.Provider>
   );
