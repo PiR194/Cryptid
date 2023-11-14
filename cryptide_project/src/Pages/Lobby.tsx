@@ -4,7 +4,7 @@ import { useTheme } from '../Style/ThemeContext';
 
 /* res */
 import PlayerItemList from '../Components/PlayerItemList'
-import PersonImgImg from '../res/img/Person.png';
+import PersonImg from '../res/img/Person.png';
 import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
