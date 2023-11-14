@@ -1,17 +1,28 @@
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const authRoutes = require('./routes/authRoutes');
 const DatabaseService = require('./services/DatabaseService');
 
 const app = express();
 const port = 3000;
 
-// Middleware CORS
-app.use(cors());
+// Middleware
+app.use(cors());                // Autoriser les requêtes cross-origin
+app.use(bodyParser.json());     // Parser le body des requêtes en JSON
 
-// Middleware pour traiter le corps des requêtes en JSON
-app.use(bodyParser.json());
+// Session
+const secret = crypto.randomBytes(32).toString('hex');
+app.use(session({
+  secret: secret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: process.env.NODE_ENV === 'production' ? true : false,
+            maxAge: 60 * 60 * 1000
+  }
+}));
 
 // Middleware pour les routes d'authentification
 app.use('/auth', authRoutes);

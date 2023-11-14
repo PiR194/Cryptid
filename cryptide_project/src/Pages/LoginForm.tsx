@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import { AiOutlineSend } from 'react-icons/ai';
+import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
 export default class Login extends Component {
+    handleSubmit = async (event: any) => {
+        event.preventDefault();
+        try{
+            const data = {
+                pseudo: event.target.pseudo.value,
+                password: event.target.password.value,
+                remember: event.target.remember.value
+            };
+
+            const result = await AuthService.signIn(data);
+            console.log(result);
+            alert('Connexion réussie !');
+        }
+        catch(error){
+            console.error(error);
+        }
+    };
+
     render() {
         return (
             <div className="form-container">
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <br/>
                     <h3>Log In</h3>
                     <div className="mb-3">
                         <label>Pseudo</label>
                         <input
                         type="pseudo"
+                        name='pseudo'
                         className="form-control"
                         placeholder="Entrez votre pseudo ici"
                         />
@@ -21,6 +41,7 @@ export default class Login extends Component {
                         <label>Password</label>
                         <input
                         type="password"
+                        name='password'
                         className="form-control"
                         placeholder="Entrez votre mot de passe ici"
                         />
@@ -29,6 +50,7 @@ export default class Login extends Component {
                         <div className="custom-control custom-checkbox">
                         <input
                             type="checkbox"
+                            name='remember'
                             className="custom-control-input"
                             id="customCheck1"
                         />
