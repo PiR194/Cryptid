@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Switch from "react-switch";
 
 /* Style */
-import "./InGame.css"
+import "./SoloGame.css"
 import {useTheme} from '../Style/ThemeContext'
 /* Component */
 import GraphContainer from '../Components/GraphContainer';
@@ -32,6 +32,8 @@ import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
+import TurnBar from '../Components/TurnBar';
+import { useGame } from '../Contexts/GameContext';
 
 //@ts-ignore
 const SoloGame = ({locale, changeLocale}) => {
@@ -39,9 +41,15 @@ const SoloGame = ({locale, changeLocale}) => {
     const theme = useTheme();
 
     const [showChoiceBar, setShowChoiceBar] = useState(false);
+    const [showTurnBar, setShowTurnBar] = useState(false);
+
 
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
         setShowChoiceBar(shouldShowChoiceBar);
+    };
+
+    const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
+        setShowTurnBar(shouldShowTurnBar);
     };
 
     /* offcanvas */
@@ -61,7 +69,7 @@ const SoloGame = ({locale, changeLocale}) => {
 
     const handleChange = () => {
         if (show){
-            handleClose()
+        handleClose()
         }
         else {
             handleShow()
@@ -94,132 +102,134 @@ const SoloGame = ({locale, changeLocale}) => {
 
     const [SwitchEnabled, setSwitchEnabled] = useState(false)
     const indices = Stub.GenerateIndice()
+    const { indice, players } = useGame();
+
 
     return (
         <div id="mainDiv">
-            <div className='upperInfo' 
-            style={{ 
-                borderColor: theme.colors.secondary
-            }}>
-            {/* texte changeable et a traduire */}
-            <p>Dummy, à vous de jouer !</p>
-            </div>
+            <TurnBar/>
             <div id='graphDiv'>
-            <GraphContainer onNodeClick={handleNodeClick} />
+                <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} />
             </div>
 
-            {/* <div className='playerlistDiv'>
-                <button className='button' 
+            <div className='nbLaps' style={{ 
+                                        backgroundColor: theme.colors.primary,
+                                        borderColor: theme.colors.secondary
+                                    }}>
+                Tour : 5
+            </div>
+
+            <div className='paramDiv'>
+                <button className='button'
                     style={{ 
                         backgroundColor: theme.colors.primary,
                         borderColor: theme.colors.secondary
                     }}
-                    onClick={handleChangeP}>
-                    Players
+                    onClick={handleChangeS}>
+                    <img src={Param} alt="paramètres" height='40'/>
                 </button>
-            </div> */}
+            </div>
 
-        <div className='paramDiv'>
-            <button className='button'
-            style={{ 
-                backgroundColor: theme.colors.primary,
-                borderColor: theme.colors.secondary
-            }}
-            onClick={handleChangeS}>
-            <img src={Param} alt="paramètres" height='40'/>
-            </button>
-        </div>
-
-        <div className='menuGame'>
-            <Link to='/info' target='_blank'>
-                <button className='button' 
+            <div className='menuGame'>
+                <Link to='/info' target='_blank'>
+                    <button className='button' 
                     style={{ 
                         backgroundColor: theme.colors.primary,
                         borderColor: theme.colors.secondary
                     }}>
                     <img src={Info} alt="info" height="40"/>
-                </button>
-            </Link>
-          {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
-            <img src={Check} alt="check" height="40"/>
-          </button> */}
-
-        <Link to='/info' target='_blank'>
-            <button className='button'
-                style={{ 
-                backgroundColor: theme.colors.primary,
-                borderColor: theme.colors.secondary
-                }}>
+                    </button>
+                </Link>
+            {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
                 <img src={Check} alt="check" height="40"/>
-            </button>
-        </Link>
+            </button> */}
 
-            <button className='button' onClick={handleChange}
-            style={{ 
-                backgroundColor: theme.colors.primary,
-                borderColor: theme.colors.secondary
-            }}>
-            <img src={Alpha} alt="indice" height="40"/>
-            </button>
-        </div>
+                <Link to='/info' target='_blank'>
+                    <button className='button'
+                    style={{ 
+                        backgroundColor: theme.colors.primary,
+                        borderColor: theme.colors.secondary
+                    }}>
+                    <img src={Check} alt="check" height="40"/>
+                    </button>
+                </Link>
 
-        <Offcanvas show={show} 
-                onHide={handleClose} 
-                placement='end'
-                scroll={true}
-                backdrop={false}
-                style={{ height: '20%', width: '25%', top: '60vh' }}>
+                <button className='button' onClick={handleChange}
+                            style={{ 
+                                backgroundColor: theme.colors.primary,
+                                borderColor: theme.colors.secondary
+                            }}>
+                    <img src={Alpha} alt="indice" height="40"/>
+                </button>
+            </div>
+
+            {/* <Offcanvas show={showP} 
+                    onHide={handleCloseP}>
             <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Indice</Offcanvas.Title>
+                <Offcanvas.Title>Joueurs</Offcanvas.Title>
+                <h3>Il y a {players.length} joueurs</h3>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+                <PlayerList players={players} />
+            </Offcanvas.Body>
+            </Offcanvas> */}
+
+            <Offcanvas show={show} 
+                    onHide={handleClose} 
+                    placement='end'
+                    scroll={true}
+                    backdrop={false}
+                    style={{ height: '20%', width: '25%', top: '60vh' }}>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Indice</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 {/* Possède les cheveux noir <u>ou</u> joue au basket */}
-            {indices[0].ToString(locale)}<br/>
-            {indices[1].ToString(locale)}<br/>
-            {indices[2].ToString(locale)}
+                {indice?.ToString(locale)}
             </Offcanvas.Body>
-        </Offcanvas>
+            </Offcanvas>
 
-        {
-          //* canva pour les paramètres
-        }
-        <Offcanvas show={showS} 
+            {
+            //* canva pour les paramètres
+            }
+            <Offcanvas show={showS} 
                     onHide={handleCloseS} 
                     placement='top'
                     style={{height: '30%', width: '30%', left: '70%' }}>
-            <Offcanvas.Header closeButton>
-                <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-            <Nav className="me-auto">
-                <NavDropdown 
-                title={<span><HiLanguage/> Language </span>}
-                className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item onClick={() => changeLocale('fr')}> 
-                        <FormattedMessage id="languageSelector.french"/> 
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => changeLocale('en')}> 
-                        <FormattedMessage id="languageSelector.english"/> 
-                    </NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Nav className="me-auto">
+                        <NavDropdown 
+                        title={<span><HiLanguage/> Language </span>}
+                        className="navbar-title" id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() => changeLocale('fr')}> 
+                                <FormattedMessage id="languageSelector.french"/> 
+                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => changeLocale('en')}> 
+                                <FormattedMessage id="languageSelector.english"/> 
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                    </Nav>
 
-            <label>
-            <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
-            <p>Afficher les noeuds possibles</p>
-        </label>
+                    <label>
+                        <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
+                        <p>Afficher les noeuds possibles</p>
+                    </label>
 
-        </Offcanvas.Body>
-    </Offcanvas>
-
-    <div id="bottom-container">
-        {showChoiceBar && <ChoiceBar />}
-    </div>
-    <div id="endgamebutton" > {/*  tmp */}
-        <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
-    </div>
-    </div>
-);
+                </Offcanvas.Body>
+            </Offcanvas>
+            <div id="bottom-container">
+            {showChoiceBar && <ChoiceBar />}
+            </div>
+            {/*
+            <div id="endgamebutton" > {/*  tmp 
+            <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
+            </div>
+        */}
+        </div>
+    );
 };
 
 

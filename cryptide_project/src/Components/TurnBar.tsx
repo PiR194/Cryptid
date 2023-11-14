@@ -12,6 +12,6 @@ const TurnBar = () => {
             <p>Dummy, à vous de jouer !</p>
         </div>
     );
-  };
-  
-  export default TurnBar;
+};
+
+export default TurnBar;
