@@ -28,6 +28,15 @@ class AgeIndice extends Indice {
     getMaximum(): number{
       return this.maximum
     }
+
+    toJSON() {
+      return {
+          type: "AgeIndice",
+          id: this.id,
+          minimum: this.minimum,
+          maximum: this.maximum
+      };
+    }
   }
 
   export default AgeIndice

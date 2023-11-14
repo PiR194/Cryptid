@@ -11,24 +11,44 @@ import "./GraphContainer.css";
 import NodePerson from "../model/Graph/NodePerson";
 import IndiceTesterFactory from "../model/Factory/IndiceTesterFactory";
 import GameCreator from "../model/GameCreator";
+import io from 'socket.io-client';
+import JSONParser from "../JSONParser";
+import PersonNetwork from "../model/PersonsNetwork";
+import Person from "../model/Person";
+import Indice from "../model/Indices/Indice";
+import { useLocation } from "react-router-dom";
+import { useGame } from "../Contexts/GameContext";
+import { socket } from "../SocketConfig"
 
-const [networkPerson, choosenPerson, choosenIndices, graph] = GameCreator.CreateGame(3, 30)
-
-
-console.log(networkPerson)
-console.log(graph)
-choosenIndices.forEach((indice) =>{
-  console.log(indice.ToString("fr"))
-});
-console.log(choosenPerson)
-const testIndice = choosenIndices[0]
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
 }
 
+let lastAskingPlayer = 0
+let first = true
+
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
+
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex } = useGame();
+
+  let playerIndex: number = actualPlayerIndex
+
+  if (first){
+    first = false
+    console.log(indice)
+
+    indices.forEach(i => {
+      console.log(i.ToString("en"))
+    });
+  }
+
   useEffect(() => {
+    if (personNetwork == null){
+      return
+    }
+    const graph = GraphCreator.CreateGraph(personNetwork)
+
     const container = document.getElementById('graph-container');
     if (!container) {
       console.error("Container not found");
@@ -58,26 +78,76 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
         }
     };
 
-
+    
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
 
-    //TEST POUR MONTRER QU'IL Y EN A QU'UN A CHAQUE FOIS
-    /*
-    networkPerson.getPersons().forEach(p => {
+    
+    
+    socket.on("node checked",(id, works, color, newPlayerIndex) => {
+      const node = nodes.get().find((n) => id == n.id)
+      if (node!=undefined){
+        setActualPlayerIndexData(newPlayerIndex)
+        playerIndex = newPlayerIndex
+        networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
+      }
+      lastAskingPlayer = 0
+    })
+
+    socket.on("already asked", (nodeId, askedPlayer) =>{
+      console.log("player: " + askedPlayer + " already asked on node " + nodeId)
+    })
+
+
+    socket.on("asked", (nodeId, askingPlayer) => {
+      if (askingPlayer.id !== lastAskingPlayer){
+        lastAskingPlayer = askingPlayer.id
+        const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
+        if (pers!=undefined){
+          if (askedPersons.includes(pers)){
+            socket.emit("already asked", nodeId, askingPlayer, socket.id)
+            return
+          }
+          else{
+            askedPersons.push(pers)
+            const node = nodes.get().find((n) => nodeId == n.id)
+            if (node != undefined && indice != null){
+              var tester = IndiceTesterFactory.Create(indice)
+              playerIndex = playerIndex + 1
+              if(playerIndex == players.length){
+                playerIndex = 0
+              }
+              console.log(playerIndex)
+              if (tester.Works(pers)){
+                socket.emit("node checked", nodeId, true, positionToColor(), room, playerIndex)
+              }
+              else{
+                socket.emit("node checked", nodeId, false, positionToColor(), room, playerIndex)
+              }
+            }
+          }     
+        }
+      }
+      
+    })
+
+
+    
+    personNetwork.getPersons().forEach(p => {
       let a = 0
-      for (let i of choosenIndices){
+      for (let i of indices){
         let tester = IndiceTesterFactory.Create(i)
         if (tester.Works(p)){
           a++
         }
       }
-      if (a==choosenIndices.length){
-        networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
+      if (a==indices.length){
+        //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
+        console.log(p)
       }
       
     });
-    */
+    
 
     // Gérer le changement entre la physique et le déplacement manuel
     network.on("dragging", (params) => {
@@ -89,28 +159,24 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
     });
 
     network.on("click", (params) => {
+      
       if(params.nodes.length > 0){
-        //TEST POUR VOIR SI ON PEUT RAJOUTER DES TRUCS AU LABEL
-        
-        const pers = networkPerson.getPersons().find((p) => p.getId() == params.nodes[0])
-        if (pers!=undefined){
-          //@ts-ignore
-          const node = nodes.get().find((n) => params.nodes[0] == n.id)
-          if (node != undefined){
-            var tester = IndiceTesterFactory.Create(testIndice)
-            if (tester.Works(pers)){
-              networkData.nodes.update({id: params.nodes[0], label: node.label + "🔵"})
-            }
-            else{
-              networkData.nodes.update({id: params.nodes[0], label: node.label + "🟦"})
-            }
-          }
-          
-        }
-        
+        setNodeIdData(params.nodes[0])
 
         // Renvoyer un true pour afficher la choice bar
-        onNodeClick(true)
+        let index = 0
+        for (let i=0; i<players.length; i++){
+          if(players[i].id == socket.id){
+              index=i
+              break
+          }
+        }
+        if (index == playerIndex){
+          onNodeClick(true)
+        }
+        else{
+          onNodeClick(false)
+        }
       }
       else{
         // Renvoyer un false pour cacher la choice bar
@@ -124,6 +190,67 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick}) => {
       <div id="graph-container"/>
     </>
   );
+
+  function positionToColor(): string{
+    let index = 0
+    for (let i=0; i<players.length; i++){
+        if(players[i].id == socket.id){
+            index=i
+            break
+        }
+    }
+    switch (index) {
+      case 0:
+        return "blue";
+      case 1:
+        return "green";
+      case 2:
+        return "yellow";
+      case 3:
+        return "purple";
+      case 4:
+        return "red";
+      default:
+        return "brown";
+    }
+  }
 };
+
+function colorToEmoji(color: string, works: boolean): string{
+  if (works){
+    switch (color) {
+      case "blue":
+        return "🔵";
+      case "green":
+        return "🟢";
+      case "yellow":
+        return "🟡"; 
+      case "purple":
+        return "🟣"; 
+      case "red":
+        return "🔴";
+      default:
+        return "🟤"; 
+    }
+  }
+  else{
+    switch (color) {
+      case "blue":
+        return "🟦";
+      case "green":
+        return "🟩"; 
+      case "yellow":
+        return "🟨";
+      case "purple":
+        return "🟪"; 
+      case "red":
+        return "🟥";
+      default:
+        return "🟫"; 
+    }    
+  }
+}
+
+
 
 export default MyGraphComponent;
