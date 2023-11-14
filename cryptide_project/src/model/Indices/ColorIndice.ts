@@ -28,6 +28,15 @@ class ColorIndice extends Indice {
     getColors(): Color[]{
       return this.colors
     }
+
+    toJSON() {
+      return {
+          type: "ColorIndice",
+          id: this.id,
+          colors: this.colors,
+      };
+    }
   }
+  
 
   export default ColorIndice

@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import { GameProvider } from './Contexts/GameContext';
 
 /* Page */
 import Home from './Pages/Home'; 
@@ -61,26 +62,28 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
+      <GameProvider>
 
-  //@ts-ignore
-  <IntlProvider locale={locale} messages={messages[locale]}>
-    <ThemeProvider>
-      <BrowserRouter>  
-        {/* <AppNavbar changeLocale={changeLocale} /> */}
-        {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/play" element={<Play/>} />
-          <Route path="/lobby" element={<Lobby/>} />
-          <Route path="/endgame" element={<EndGame/>} />
-          <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale} />} />
-          <Route path="/info" element={<InfoPage/>} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
-  </IntlProvider>
+      {/*@ts-ignore*/}
+        <IntlProvider locale={locale} messages={messages[locale]}>
+          <ThemeProvider>
+            <BrowserRouter>  
+              {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/play" element={<Play/>} />
+                <Route path="/lobby" element={<Lobby/>} />
+                <Route path="/endgame" element={<EndGame/>} />
+                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>} />
+                <Route path="/info" element={<InfoPage/>} />
+      </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
+        </IntlProvider>
+      </GameProvider>
+  
   );
 }
 
