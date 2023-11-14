@@ -11,6 +11,9 @@ import { BiLogInCircle } from 'react-icons/bi';
 import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { HiLanguage } from 'react-icons/hi2';
 
+/* Images */
+import logo from '../res/img/logo2_preview_rev_1.png';
+
 /* Components */
 import './NavBar.css';
 
@@ -20,10 +23,7 @@ function AppNavbar({changeLocale}) {
         <Navbar expand="lg" className="custom-navbar">
         <Container>
             <Navbar.Brand href="/">
-                <div>
-                    <h2>Cryptide</h2>
-                    <h6>by Crypteam</h6>
-                </div>
+                <img src={logo} alt="logo" className="logo"/>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
