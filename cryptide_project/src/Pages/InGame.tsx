@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
 
 /* Style */
@@ -49,6 +49,23 @@ const InGame = ({locale, changeLocale}) => {
   if (solotmp == "false"){
     IsSolo=false
   }
+
+  //* Historique
+  const [history, setHistory] = useState<string[]>([]);
+
+  // Fonction pour ajouter un élément à l'historique
+  const addToHistory = (message: string) => {
+    setHistory(prevHistory => [...prevHistory, message]);
+  };
+  
+  useEffect(() => {
+    const historyContainer = document.getElementById('history-container');
+    if (historyContainer) {
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+  }, [history]);
+
+
 
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
@@ -132,7 +149,12 @@ const InGame = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} changecptTour={changecptTour} solo={IsSolo} />
+          <GraphContainer onNodeClick={handleNodeClick} 
+                          handleShowTurnBar={handleShowTurnBar} 
+                          handleTurnBarTextChange={handleTurnBarTextChange} 
+                          changecptTour={changecptTour} 
+                          addToHistory={addToHistory}
+                          solo={IsSolo} />
         </div>
 
 
@@ -141,7 +163,7 @@ const InGame = ({locale, changeLocale}) => {
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
-              Tour : {cptTour}
+              Coups : {cptTour}
             </div>
           ) : (
             <div className='playerlistDiv'>
@@ -157,6 +179,12 @@ const InGame = ({locale, changeLocale}) => {
           )
         }
         
+        
+        <div className='historique' id="history-container">
+            {history.map((item, index) => (
+                <div key={index}>{item}</div>
+            ))}
+        </div>
 
         <div className='paramDiv'>
           <button className='button'
