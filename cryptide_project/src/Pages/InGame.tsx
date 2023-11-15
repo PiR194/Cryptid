@@ -19,6 +19,7 @@ import Replay from "../res/icon/replay.png";
 import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
+import MGlass from "../res/icon/magnifying-glass.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -34,6 +35,7 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -138,7 +140,7 @@ const InGame = ({locale, changeLocale}) => {
 
         {IsSolo ? (
             <div className='nbLaps' style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
             }}>
               Tour : {cptTour}
@@ -147,7 +149,7 @@ const InGame = ({locale, changeLocale}) => {
             <div className='playerlistDiv'>
               <button className='button' 
                 style={{ 
-                    backgroundColor: theme.colors.primary,
+                    backgroundColor: theme.colors.tertiary,
                     borderColor: theme.colors.secondary
                 }}
                 onClick={handleChangeP}>
@@ -161,7 +163,7 @@ const InGame = ({locale, changeLocale}) => {
         <div className='paramDiv'>
           <button className='button'
             style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
             }}
             onClick={handleChangeS}>
@@ -173,7 +175,7 @@ const InGame = ({locale, changeLocale}) => {
           <Link to='/info' target='_blank'>
             <button className='button' 
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Info} alt="info" height="40"/>
@@ -186,7 +188,7 @@ const InGame = ({locale, changeLocale}) => {
           <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Check} alt="check" height="40"/>
@@ -195,10 +197,10 @@ const InGame = ({locale, changeLocale}) => {
 
           <button className='button' onClick={handleChange}
             style={{ 
-              backgroundColor: theme.colors.primary,
+              backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
-            <img src={Alpha} alt="indice" height="40"/>
+            <img src={MGlass} alt="indice" height="40"/>
           </button>
         </div>
 
