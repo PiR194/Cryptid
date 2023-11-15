@@ -12,7 +12,7 @@ class NbEdgesIndiceTester implements IndiceTester{
     }
 
     Works(person: Person): boolean {
-        return person.getFriends().length >= this.nbEdgesIndice.getNbEdges()
+        return person.getFriends().length == this.nbEdgesIndice.getNbEdges()
     }
 }
 

@@ -21,17 +21,20 @@ import { Link } from 'react-router-dom';
 
 /* lang */
 import { FormattedMessage } from 'react-intl';
+import { useGame } from '../Contexts/GameContext';
 
 
 function EndGame() {
 
+    const {winner, person} =useGame()
+    console.log(winner)
     const theme = useTheme();
     return (
         <div>
             <div className="head">
                 <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                    <h1>Dummy a gagné !</h1>
-                    <h3>Le tueur était <u>Bob</u></h3>
+                    <h1>{winner?.name} a gagné !</h1>
+                    <h3>Le tueur était <u>{person?.getName()}</u></h3>
                 </header>
             </div>
             <div className='winner'>
@@ -42,9 +45,12 @@ function EndGame() {
                     <BigButtonNav dest="/play" img={Leave}/>
                 </div>
                 <div className='centerDivH'>
-                    <PersonStatus state={Replay} name="Dummy"/>
-                    <PersonStatus state={Leave} name="bot2"/>
-                    <PersonStatus state={Leave} name="bot3"/>
+                    {/*
+                    <PersonStatus img={Person} state={Replay} name="Dummy"/>
+                    <PersonStatus img={Person} state={Leave} name="bot2"/>
+                    <PersonStatus img={Person} state={Leave} name="bot3"/>
+                    */}
+                    
                 </div>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/lobby" img={Replay}/>

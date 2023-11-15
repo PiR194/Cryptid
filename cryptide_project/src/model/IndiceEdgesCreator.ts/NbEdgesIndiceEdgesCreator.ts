@@ -18,7 +18,7 @@ class NbEdgesIndiceEdgesCreator implements IndiceEdgesCreator{
 
     createWorkingEdges(personNetwork: PersonNetwork, person: Person, indices: Indice[]): number {
         let indiceTest = new NbEdgesIndiceTester(this.indice)
-        const nbEdges = this.indice.getNbEdges() + Math.floor(Math.random() * 2)
+        const nbEdges = this.indice.getNbEdges()
         personNetwork.getPersons().forEach(p => {
             if (person.getFriends().length == nbEdges){
                 return

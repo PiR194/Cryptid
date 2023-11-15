@@ -84,4 +84,20 @@ io.on('connection', (socket) => {
     io.to(room).emit("node checked", id, works, color, playerIndex)
   })
   
+  socket.on("put correct background", (id) =>{
+    io.to(id).emit("put correct background")
+  })
+
+  socket.on("put grey background", (id, player) =>{
+    io.to(id).emit("put grey background", player)
+  })
+
+  socket.on("put imossible grey", (id) =>{
+    io.to(id).emit("put imossible grey")
+  })
+
+  socket.on("end game", (winnerIndex, room) =>{
+    console.log("endgame")
+    io.to(room).emit("end game", winnerIndex)
+  })
 });

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DataSet, Network} from "vis-network/standalone/esm/vis-network";
 import EdgesCreator from "../model/EdgesCreator";
 import GraphCreator from "../model/Graph/GraphCreator";
@@ -20,12 +20,15 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
 import { colorToEmoji, positionToColor } from "../ColorHelper";
+import { ColorToHexa } from "../model/EnumExtender";
 
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
   handleTurnBarTextChange: (newTurnBarText: string) => void
+  setPlayerTouched: (newPlayerTouch: number) => void;
+  playerTouched: number
 }
 
 let lastAskingPlayer = 0
@@ -34,17 +37,35 @@ let first = true
 let askedWrong = false
 let solo: boolean = true
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
+let touchedPlayer = -1
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched}) => {
 
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, onlyFalse, setOnlyFalseData } = useGame();
-
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
   const solotmp = params.get('solo');
   const navigate = useNavigate();
 
 
+  useEffect(() =>{
+    touchedPlayer=playerTouched
+    if (touchedPlayer == -1){
+      if (!askedWrong){
+        socket.emit("put correct background", socket.id)
+      }
+    }
+    else if (touchedPlayer < players.length && touchedPlayer>=0){
+      if(!askedWrong){
+        socket.emit("put correct background", socket.id)
+        socket.emit("put grey background", socket.id, touchedPlayer)
+      }
+    }
+    else if(touchedPlayer == players.length){
+      socket.emit("put imossible grey", socket.id)
+    }
+  }, [playerTouched])
+  
 
   let playerIndex: number = turnPlayerIndex
   let index = 0
@@ -111,6 +132,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
+
     if (!solo){
       socket.on("asked all", (id) =>{
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
@@ -124,9 +146,18 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
+          if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
+            const p = personNetwork.getPersons().find((p)=> p.getId() == id)
+            const tab = mapIndexPersons.get(askedIndex)
+            if (p!=undefined && tab != undefined){
+              tab.push(p)
+            } 
+          }
+          
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
             networkData.nodes.update({id: id, label: node.label + colorToEmoji(positionToColor(askedIndex), works)})
           }
+          
           if (playerIndex === thisPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
             handleShowTurnBar(true)
@@ -144,15 +175,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
   
       socket.on("asked wrong", () =>{
-        setOnlyFalseData(true)
         askedWrong = true
         handleShowTurnBar(true)
         handleTurnBarTextChange("Mauvais choix, posez un carré !")
+        socket.emit("put grey background", socket.id, thisPlayerIndex)
       })
   
   
       socket.on("asked", (nodeId, askingPlayer, askingPlayerIndex) => {
-        console.log(askingPlayerIndex)
         if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
           lastAskingPlayer = askingPlayer.id
           lastNodeId = nodeId
@@ -191,6 +221,61 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
     }
     
+
+    socket.on("put correct background", () =>{
+      if (personNetwork != null){
+        for(const person of personNetwork.getPersons()){
+          networkData.nodes.update({id: person.getId(), color: ColorToHexa(person.getColor())})
+        }
+      }
+    })
+
+    socket.on("put grey background", (player) =>{
+      if (personNetwork != null){
+        const tab = mapIndexPersons.get(player)
+        if (tab != undefined){
+          if (player != thisPlayerIndex){
+            for(const person of personNetwork.getPersons().filter((p) => tab.includes(p))){
+              networkData.nodes.update({id: person.getId(), color: "#808080"})
+            }
+          }
+          else if(indice != null){
+            const tester = IndiceTesterFactory.Create(indice)
+            for(const person of personNetwork.getPersons().filter((p) => tab.includes(p) || tester.Works(p))){
+              networkData.nodes.update({id: person.getId(), color: "#808080"})
+            }
+          }
+        }
+      }
+    })
+
+    socket.on("put imossible grey", ()=>{
+      if (personNetwork != null && indice!=null){
+        const tabNodes: any = []
+        const tester = IndiceTesterFactory.Create(indice)
+        for (const pers of personNetwork.getPersons()){
+          const node = nodes.get().find((n) => pers.getId() == n.id)
+          if (node != undefined){
+            for(let i=0; i<players.length; i++){
+              if (node.label.includes(colorToEmoji(positionToColor(i), false)) || !tester.Works(pers)){
+                console.log(tester.Works(pers))
+                tabNodes.push(node)
+                break
+              }
+            }
+          }
+          
+        }
+        for(const n of tabNodes){
+          networkData.nodes.update({id: n.id, color: "#808080"})
+        }
+      }
+    })
+
+    socket.on("end game", (winnerIndex) =>{
+      setWinnerData(players[winnerIndex])
+      navigate("/endgame")
+    })
 
 
     
@@ -234,24 +319,59 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   playerIndex = 0
                 }
                 socket.emit("node checked", params.nodes[0], false, thisPlayerIndex, room, playerIndex)
+                socket.emit("put correct background", socket.id)
+                touchedPlayer=-1
                 askedPersons.push(person)
                 askedWrong = false
               }
             }
           }
-          else if (thisPlayerIndex == playerIndex){
-            onNodeClick(true)
+          else if(touchedPlayer != - 1 && playerIndex == actualPlayerIndex && touchedPlayer<players.length){
+            socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
+            socket.emit("put correct background", socket.id)
+            touchedPlayer=-1
           }
-          else{
-            onNodeClick(false)
+          else if(playerIndex == actualPlayerIndex && touchedPlayer==players.length){
+            const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
+            if (person != undefined){
+              const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])
+              let nextPlayerIndex = actualPlayerIndex + 1
+              if (nextPlayerIndex == players.length){
+                nextPlayerIndex = 0
+              }
+      
+              let playerIndex = actualPlayerIndex + 1
+              if (indiceTester.Works(person)){
+                socket.emit("node checked", params.nodes[0], true, actualPlayerIndex, room, nextPlayerIndex)
+                while(playerIndex != actualPlayerIndex){
+                  if (playerIndex == players.length){
+                    playerIndex = 0
+                  }
+                  const tester = IndiceTesterFactory.Create(indices[playerIndex])
+                  const works = tester.Works(person)
+                  await delay(500);
+                  socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
+                  socket.emit("node checked", params.nodes[0], works, playerIndex, room, nextPlayerIndex)
+                  if(!works){
+                    socket.emit("put correct background", socket.id)
+                    touchedPlayer=-1
+                    return
+                  }
+                  playerIndex ++
+                }
+                touchedPlayer=-1
+                socket.emit("put correct background", socket.id)
+                await delay(1000)
+                socket.emit("end game", thisPlayerIndex, room)
+              }
+            }
           }
-        }
+        } 
         else{
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
             let index =0
             let works = true
-            let promises: Promise<void>[] = []
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(person)
@@ -278,6 +398,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       else{
         // Renvoyer un false pour cacher la choice bar
         onNodeClick(false)
+        setPlayerTouched(-1)
       }
     });
   }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
@@ -290,6 +411,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function putGreyBackgroud(index: number){
+    /*
+    
+    */
   }
 }
 
