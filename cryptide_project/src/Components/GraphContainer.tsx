@@ -26,21 +26,22 @@ interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
   handleTurnBarTextChange: (newTurnBarText: string) => void
+  changecptTour: (newcptTour : number) => void
+  solo : boolean
 }
 
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
 let askedWrong = false
-let solo: boolean = true
+let cptTour: number = 0
 
-
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, changecptTour, solo}) => {
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, onlyFalse, setOnlyFalseData } = useGame();
 
   const params = new URLSearchParams(window.location.search);
-  const solotmp = params.get('solo');
+  
 
 
   let playerIndex: number = turnPlayerIndex
@@ -53,12 +54,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }
   let thisPlayerIndex = index
   
-
+  
   if (first){
     first = false
-    if (solotmp == "false"){
-      solo=false
-    }
     if (!solo){
       setActualPlayerIndexData(index)
       if (playerIndex == thisPlayerIndex){
@@ -213,7 +211,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
       });
 
-    network.on("click", (params) => {
+    network.on("click", async (params) => {
       
       if(params.nodes.length > 0){
         setNodeIdData(params.nodes[0])
@@ -240,17 +238,23 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             onNodeClick(false)
           }
         }
-        else{
+        else{ // si solo -> Mastermind
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
-            indices.forEach(async (i, index) =>{
+            let index = 0;
+            // indices.forEach(async (i, index) =>{
+            for(const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(person)
               const node = nodes.get().find((n) => params.nodes[0] == n.id)
               if (node!=undefined){
                 networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
+                await delay(500);
               }
-            })
+              index ++;
+            }
+            cptTour ++; // On Incrémente le nombre de tour du joueur
+            changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
           }
         }
       }

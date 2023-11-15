@@ -109,7 +109,7 @@ const SoloGame = ({locale, changeLocale}) => {
         <div id="mainDiv">
             <TurnBar text="je suis dans la page solo"/>
             <div id='graphDiv'>
-                <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} FromSolo={true}/>
+                {/* <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} FromSolo={true}/> */}
             </div>
 
             <div className='nbLaps' style={{ 

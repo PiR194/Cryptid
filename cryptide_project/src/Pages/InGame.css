@@ -60,6 +60,22 @@
     top :50px;
 }
 
+.nbLaps{ /*nombre de tour*/
+    position: absolute;
+    z-index: 1;
+    left: 10px;
+    top :50px;
+
+    margin: 10px 20px;
+    padding: 20px;
+    border-radius: 15px;
+    border: solid 2px;
+
+    font-size: 30px;
+    color: #fff;
+}
+
+
 #endgamebutton{
     position: absolute;
     z-index: 1;
