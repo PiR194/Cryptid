@@ -19,16 +19,30 @@ import param from '../res/icon/param.png';
 import share from '../res/icon/share.png';
 import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
+import GameCreator from '../model/GameCreator';
+import { useGame } from '../Contexts/GameContext';
 
 
 function Play() {
     const theme=useTheme()
+
+    const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
+
 
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();
 
     function createLobby(){
         socket.emit("lobby created")
+    }
+
+    function launchMastermind(){
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(5, 30)
+        setPersonData(choosenPerson)
+        setPersonNetworkData(networkPerson)
+        setIndicesData(choosenIndices)
+        setIndicesData(choosenIndices)
+        navigate('/game?solo=true');
     }
 
     
@@ -48,12 +62,12 @@ function Play() {
         
       }, []);  // Aucune dépendance ici
 
-    useEffect(() => {
+      useEffect(() => {
         if (room !== null) {
-            const nouvelleURL = `/lobby?room=${room}`;
-        navigate(nouvelleURL);
+          const nouvelleURL = `/lobby?room=${room}`;
+          navigate(nouvelleURL);
         }
-    }, [room, navigate]);
+      }, [room, navigate]);
 
 
 
@@ -78,13 +92,10 @@ function Play() {
                             />
                 </div>
                 <div className='buttonGroupVertical'>
-                    <Link to="/">
-                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
-                    </Link>
+                    <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
-                    <Link to="/solo">
-                        <button className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
-                    </Link>
+                    <button  className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
+                    
                 </div>
             </div>
             <div className='rightContainer'>

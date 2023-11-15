@@ -42,7 +42,7 @@ const InGame = ({locale, changeLocale}) => {
 
     const [showChoiceBar, setShowChoiceBar] = useState(false);
     const [showTurnBar, setShowTurnBar] = useState(false);
-
+    const [turnBarText, setTurnBarText] = useState("");
   
     const handleNodeClick = (shouldShowChoiceBar: boolean) => {
       setShowChoiceBar(shouldShowChoiceBar);
@@ -52,6 +52,10 @@ const InGame = ({locale, changeLocale}) => {
     const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
       setShowTurnBar(shouldShowTurnBar);
     };
+    
+    const handleTurnBarTextChange = (newTurnBarText: string) =>{
+      setTurnBarText(newTurnBarText)
+    }
 
     /* offcanvas */
     //? faire une fonction pour close et show en fonction de l'etat du canva ?
@@ -108,9 +112,9 @@ const InGame = ({locale, changeLocale}) => {
 
     return (
       <div id="mainDiv">
-        {showTurnBar && <TurnBar text="je suis dans la page InGame"/>}
+        {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} FromSolo={false}/>
+          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} />
         </div>
 
         <div className='playerlistDiv'>

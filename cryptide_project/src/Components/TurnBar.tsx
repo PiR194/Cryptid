@@ -1,8 +1,11 @@
 import React from "react";
 import { useTheme } from "../Style/ThemeContext";
 
-//@ts-ignore
-const TurnBar = ({text}) => {
+interface TurnBarProps{
+    text: string
+}
+
+const TurnBar: React.FC<TurnBarProps> = ({text})=> {
     const theme = useTheme();
     return (
         <div className='upperInfo' 

@@ -24,17 +24,24 @@ import { colorToEmoji, positionToColor } from "../ColorHelper";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
-  handleShowTurnBar: (shouldShowTurnBar: boolean) => void;
-  FromSolo: boolean;
+  handleShowTurnBar: (shouldShowTurnBar: boolean) => void
+  handleTurnBarTextChange: (newTurnBarText: string) => void
 }
 
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
+let askedWrong = false
+let solo: boolean = true
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, FromSolo}) => {
 
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex } = useGame();
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange}) => {
+
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, onlyFalse, setOnlyFalseData } = useGame();
+
+  const params = new URLSearchParams(window.location.search);
+  const solotmp = params.get('solo');
+
 
   let playerIndex: number = turnPlayerIndex
   let index = 0
@@ -49,13 +56,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   if (first){
     first = false
-    setActualPlayerIndexData(index)
-    if (playerIndex == thisPlayerIndex){
-      handleShowTurnBar(true)
+    if (solotmp == "false"){
+      solo=false
     }
-    indices.forEach(i => {
-      console.log(i.ToString("en"))
-    });
+    if (!solo){
+      setActualPlayerIndexData(index)
+      if (playerIndex == thisPlayerIndex){
+        handleTurnBarTextChange("À vous de jouer")
+        handleShowTurnBar(true)
+      }
+    }
   }
 
   useEffect(() => {
@@ -69,7 +79,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       console.error("Container not found");
       return;
     }
-
     // Charger les données dans le graph
     const nodes = new DataSet(graph.nodesPerson);
 
@@ -96,82 +105,86 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
-
-    if(FromSolo){
-
-      //* lsti = Generate indice (paramNbIndice) //une couleur par indice
-      /*
-      Onclick :
-        nbcoup = 0;
-        pour chaque indice i :
-          jeton = IsNodeInIndice(node,i)
-          lstJ.add(jeton)
-          if jeton == X :
-            rep = false
-        if(rep) :
-          endgame()
-          break
-        afficheJeton(jeton)
-      */
-
-        
-    }
-    else {
-        socket.on("node checked",(id, works, color, newPlayerIndex) => {
-          const node = nodes.get().find((n) => id == n.id)
-          if (node!=undefined){
-            onNodeClick(false)
-            playerIndex = newPlayerIndex
+    if (!solo){
+      socket.on("asked all", (id) =>{
+        const pers = personNetwork.getPersons().find((p) => p.getId() == id)
+        if (pers!=undefined){
+          askedPersons.push(pers)
+        }
+      })
+      
+      socket.on("node checked",(id, works, color, newPlayerIndex) => {
+        const node = nodes.get().find((n) => id == n.id)
+        if (node!=undefined){
+          onNodeClick(false)
+          playerIndex = newPlayerIndex
+          if (!node.label.includes(colorToEmoji(color, works))){
             networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
-            if (playerIndex === thisPlayerIndex){
-              handleShowTurnBar(true)
-            }
-            else{
-              handleShowTurnBar(false)
-              console.log("je passe bien ici ?????")
-            }
           }
-          lastAskingPlayer = 0
-          lastNodeId = -1
-        })
-
-        socket.on("already asked", (nodeId, askedPlayer) =>{
-          console.log("player: " + askedPlayer + " already asked on node " + nodeId)
-        })
-
-
-        socket.on("asked", (nodeId, askingPlayer) => {
-          if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
-            lastAskingPlayer = askingPlayer.id
-            lastNodeId = nodeId
-            const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
-            if (pers!=undefined){
-              if (askedPersons.includes(pers)){
-                socket.emit("already asked", nodeId, askingPlayer, socket.id)
-                return
-              }
-              else{
-                askedPersons.push(pers)
-                const node = nodes.get().find((n) => nodeId == n.id)
-                if (node != undefined && indice != null){
-                  var tester = IndiceTesterFactory.Create(indice)
-                  playerIndex = playerIndex + 1
-                  if(playerIndex == players.length){
-                    playerIndex = 0
-                  }
-                  if (tester.Works(pers)){
-                    socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
-                  }
-                  else{
-                    socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, playerIndex)
-                  }
-                }
-              }     
-            }
+          if (playerIndex === thisPlayerIndex){
+            handleTurnBarTextChange("À vous de jouer")
+            handleShowTurnBar(true)
+          }
+          else{
+            handleShowTurnBar(false)
           }
         }
-      
-        )
+        lastAskingPlayer = 0
+        lastNodeId = -1
+      })
+  
+      socket.on("already asked", (nodeId, askedPlayer) =>{
+        console.log("player: " + askedPlayer + " already asked on node " + nodeId)
+      })
+  
+      socket.on("asked wrong", () =>{
+        setOnlyFalseData(true)
+        askedWrong = true
+        handleShowTurnBar(true)
+        handleTurnBarTextChange("Mauvais choix, posez un carré !")
+      })
+  
+  
+      socket.on("asked", (nodeId, askingPlayer, askingPlayerIndex) => {
+        console.log(askingPlayerIndex)
+        if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
+          lastAskingPlayer = askingPlayer.id
+          lastNodeId = nodeId
+          const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
+          if (pers!=undefined){
+            if (askedPersons.includes(pers)){
+              socket.emit("already asked", nodeId, askingPlayer, socket.id)
+              return
+            }
+            else{
+              askedPersons.push(pers)
+              const node = nodes.get().find((n) => nodeId == n.id)
+              if (node != undefined && indice != null){
+                var tester = IndiceTesterFactory.Create(indice)
+                let maybe = thisPlayerIndex
+                playerIndex = playerIndex + 1
+                if(playerIndex == players.length){
+                  playerIndex = 0
+                }
+                if (tester.Works(pers)){
+                  socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
+                }
+                else{
+                  maybe = maybe - 1
+                  if(maybe == 0){
+                    maybe = players.length - 1
+                  }
+                  socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, maybe)
+                  socket.emit("asked wrong", askingPlayer, room)
+                }
+              }
+            }     
+          }
+        }
+        
+      })
+    }
+    
 
 
 
@@ -200,13 +213,27 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
       });
 
-      network.on("click", (params) => {
-        
-        if(params.nodes.length > 0){
-          setNodeIdData(params.nodes[0])
-
-          // Renvoyer un true pour afficher la choice bar
-          if (thisPlayerIndex == playerIndex){
+    network.on("click", (params) => {
+      
+      if(params.nodes.length > 0){
+        setNodeIdData(params.nodes[0])
+        if (!solo){
+          if (askedWrong){
+            const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
+            if (person !== undefined && indice !== null){
+              const tester = IndiceTesterFactory.Create(indice)
+              if (!tester.Works(person) && !askedPersons.includes(person)){
+                playerIndex = thisPlayerIndex + 1
+                if(playerIndex == players.length){
+                  playerIndex = 0
+                }
+                socket.emit("node checked", params.nodes[0], false, positionToColor(thisPlayerIndex), room, playerIndex)
+                askedPersons.push(person)
+                askedWrong = false
+              }
+            }
+          }
+          else if (thisPlayerIndex == playerIndex){
             onNodeClick(true)
           }
           else{
@@ -214,12 +241,25 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
         }
         else{
-          // Renvoyer un false pour cacher la choice bar
-          onNodeClick(false)
+          const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
+          if (person != undefined){
+            indices.forEach(async (i, index) =>{
+              const tester = IndiceTesterFactory.Create(i)
+              const test = tester.Works(person)
+              const node = nodes.get().find((n) => params.nodes[0] == n.id)
+              if (node!=undefined){
+                networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
+              }
+            })
+          }
         }
-      });
-  } //notfromsolo
-
+      }
+        // Renvoyer un true pour afficher la choice bar
+      else{
+        // Renvoyer un false pour cacher la choice bar
+        onNodeClick(false)
+      }
+    });
   }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
 
   return (
@@ -227,6 +267,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       <div id="graph-container"/>
     </>
   );
+
+  function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 

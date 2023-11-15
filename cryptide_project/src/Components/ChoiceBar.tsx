@@ -13,11 +13,11 @@ const ChoiceBar = () => {
 
   function askPlayer(playerId: string){
     if (nodeId !== null){
-      socket.emit("ask player", nodeId, playerId, players.find((p) => p.id === socket.id))
+      socket.emit("ask player", nodeId, playerId, players.find((p) => p.id === socket.id, actualPlayerIndex))
     }
   }
 
-  function askEveryone(){
+  async function askEveryone(){
     if (nodeId !== null){
       const person = personNetwork?.getPersons().find((p) => p.getId() == nodeId)
       if (person != undefined){
@@ -36,6 +36,8 @@ const ChoiceBar = () => {
             }
             const tester = IndiceTesterFactory.Create(indices[playerIndex])
             const works = tester.Works(person)
+            await delay(500);
+            socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
             socket.emit("node checked", nodeId, works, positionToColor(playerIndex), room, nextPlayerIndex)
             if(!works){
               return
@@ -47,11 +49,15 @@ const ChoiceBar = () => {
     }
   }
 
+  function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   return (
     <div className="choice-bar-container">
       <h3 className="choice-bar-heading">Quel joueur voulez-vous interroger ?</h3>
       <div>
-      <button className="choice-bar-button" onClick={() => askEveryone()} style={{ backgroundColor: theme.colors.primary }}>Tout le monde</button>
+      <button className="choice-bar-button" onClick={async () => await askEveryone()} style={{ backgroundColor: theme.colors.primary }}>Tout le monde</button>
         {players.map((player, index) => (
           player.id !== socket.id &&
           <button key={index} className="choice-bar-button" onClick={() => askPlayer(player.id)} style={{ backgroundColor: theme.colors.primary }}>

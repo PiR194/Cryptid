@@ -48,15 +48,23 @@ io.on('connection', (socket) => {
   })
 
   socket.on("lobby created", () =>{
-    io.to(socket.id).emit("lobby created", 134)
+    io.to(socket.id).emit("lobby created", Math.floor(Math.random() * 10000))
   })
 
   socket.on("already asked", (nodeId, askingPlayer, askedPlayer) =>{
     io.to(askingPlayer.id).emit("already asked", nodeId, askedPlayer)
   })
 
-  socket.on("ask player", (nodeId, playerId, askingPlayer) =>{
-    io.to(playerId).emit("asked", nodeId, askingPlayer)
+  socket.on("ask player", (nodeId, playerId, askingPlayer, askingPlayerIndex) =>{
+    io.to(playerId).emit("asked", nodeId, askingPlayer, askingPlayerIndex)
+  })
+
+  socket.on("asked all 1by1", (id, playerId) =>{
+    io.to(playerId).emit("asked all", id)
+  })
+
+  socket.on("asked wrong", (askingPlayer) =>{
+    io.to(askingPlayer.id).emit("asked wrong")
   })
 
   socket.on("disconnect", () =>{
