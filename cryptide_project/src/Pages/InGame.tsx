@@ -172,7 +172,7 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
         <div className='menuGame'>
-          <Link to='/info' target='_blank'>
+          <Link to='/info#indice-possible' target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,
