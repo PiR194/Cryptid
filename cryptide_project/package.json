@@ -26,6 +26,7 @@
     "react-router-dom": "^6.18.0",
     "react-scripts": "5.0.1",
     "react-switch": "^7.0.0",
+    "sqlite3": "^5.1.6",
     "typescript": "^5.2.2",
     "vis-network": "^9.1.9",
     "web-vitals": "^2.1.4"

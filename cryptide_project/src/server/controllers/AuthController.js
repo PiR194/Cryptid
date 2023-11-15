@@ -2,16 +2,18 @@ const UserService = require('../services/UserService');
 const DatabaseService = require('../services/DatabaseService');
 const bcrypt = require('bcrypt');
 
+const sqlite3 = require('sqlite3');
+
 class AuthController {
   static async signUp(req, res) {
     const databaseService = new DatabaseService();
-    
+    const pseudo = req.body.pseudo;
     try {
         await databaseService.connect();
 
-        const pseudo = req.body.pseudo;
-        const verifUser = await databaseService.getUserByPseudo(pseudo);
-        if (verifUser) {
+        // Vérifier que le pseudo n'existe pas déjà
+        const verif = await databaseService.getUserByPseudo(pseudo);
+        if (verif) {
             res.status(400).json({ error: 'Le pseudo est déjà utilisé.' });
             return;
         }
@@ -19,9 +21,22 @@ class AuthController {
         // Créer un nouvel utilisateur
         const currentUser = await UserService.createUser(req.body);
         const insertedUser = await databaseService.insertUser(currentUser);
+        
+        const user = await databaseService.getUserByPseudo(pseudo);
 
+        // Initialiser les stats de l'utilisateur
+        await databaseService.initSoloStats(user.idUser);
+        await databaseService.initOnlineStats(user.idUser);
+
+        const soloStats = await databaseService.getSoloStatsByUserId(user.idUser);
+        const onlineStats = await databaseService.getOnlineStatsByUserId(user.idUser);
+
+        console.log(soloStats);
+        console.log(onlineStats);
+
+        await databaseService.updateUserIDStats(user.idUser, soloStats.idSoloStats, onlineStats.idOnlineStats);
         // Envoyer une réponse réussie
-        res.status(201).json({ message: 'Inscription réussie', user: insertedUser });
+        res.status(201).json({ message: 'Inscription réussie', user: insertedUser});
     } 
     catch (error) {
         // Gérer les erreurs

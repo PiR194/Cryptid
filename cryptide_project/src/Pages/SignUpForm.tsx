@@ -28,7 +28,7 @@ const SignUp = () => {
                 setError(null);
 
                 const result = await AuthService.signUp(data);
-                // console.log(result);
+                console.log(result);
 
                 setShowConfirmation(true);
                 setTimeout(() => {
