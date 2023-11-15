@@ -53,14 +53,7 @@
     border-radius: 20px 20px 0px 0px;
 }
 
-.playerlistDiv{
-    position: absolute;
-    z-index: 1;
-    left: 10px;
-    top :50px;
-}
-
-.nbLaps{ /*nombre de tour*/
+.nbLaps{
     position: absolute;
     z-index: 1;
     left: 10px;
@@ -74,7 +67,6 @@
     font-size: 30px;
     color: #fff;
 }
-
 
 #endgamebutton{
     position: absolute;
@@ -113,8 +105,3 @@
     width: 100px;
     height: 60px;
 }
-
-/* #playerCanvasBody{
-    columns: 2 auto;
-    grid-row: 2;
-} */

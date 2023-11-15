@@ -72,7 +72,7 @@ function Lobby() {
         setPersonNetworkData(network)
         setIndicesData(choosenIndices)
         first = true
-        navigate('/game');
+        navigate('/game?solo=false');
     });
 
     socket.on("new player", (tab) =>{

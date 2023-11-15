@@ -16,6 +16,6 @@ const TurnBar: React.FC<TurnBarProps> = ({text})=> {
             <p>{text}</p>
         </div>
     );
-  };
-  
-  export default TurnBar;
+};
+
+export default TurnBar;
