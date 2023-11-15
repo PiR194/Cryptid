@@ -37,7 +37,7 @@ function Play() {
     }
 
     function launchMastermind(){
-        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(5, 30)
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)

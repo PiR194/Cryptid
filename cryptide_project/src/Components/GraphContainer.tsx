@@ -16,7 +16,7 @@ import JSONParser from "../JSONParser";
 import PersonNetwork from "../model/PersonsNetwork";
 import Person from "../model/Person";
 import Indice from "../model/Indices/Indice";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
 import { colorToEmoji, positionToColor } from "../ColorHelper";
@@ -33,6 +33,7 @@ let lastNodeId = -1
 let first = true
 let askedWrong = false
 let solo: boolean = true
+let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange}) => {
@@ -41,6 +42,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   const params = new URLSearchParams(window.location.search);
   const solotmp = params.get('solo');
+  const navigate = useNavigate();
+
 
 
   let playerIndex: number = turnPlayerIndex
@@ -60,6 +63,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       solo=false
     }
     if (!solo){
+      for(let i = 0; i<indices.length; i++){
+        mapIndexPersons.set(i, [])
+      }
       setActualPlayerIndexData(index)
       if (playerIndex == thisPlayerIndex){
         handleTurnBarTextChange("À vous de jouer")
@@ -113,13 +119,13 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
       })
       
-      socket.on("node checked",(id, works, color, newPlayerIndex) => {
+      socket.on("node checked",(id, works, askedIndex, newPlayerIndex) => {
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
-          if (!node.label.includes(colorToEmoji(color, works))){
-            networkData.nodes.update({id: id, label: node.label + colorToEmoji(color, works)})
+          if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
+            networkData.nodes.update({id: id, label: node.label + colorToEmoji(positionToColor(askedIndex), works)})
           }
           if (playerIndex === thisPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
@@ -167,14 +173,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   playerIndex = 0
                 }
                 if (tester.Works(pers)){
-                  socket.emit("node checked", nodeId, true, positionToColor(thisPlayerIndex), room, playerIndex)
+                  socket.emit("node checked", nodeId, true, thisPlayerIndex, room, playerIndex)
                 }
                 else{
                   maybe = maybe - 1
                   if(maybe == 0){
                     maybe = players.length - 1
                   }
-                  socket.emit("node checked", nodeId, false, positionToColor(thisPlayerIndex), room, maybe)
+                  socket.emit("node checked", nodeId, false, thisPlayerIndex, room, maybe)
                   socket.emit("asked wrong", askingPlayer, room)
                 }
               }
@@ -213,7 +219,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
     });
 
-    network.on("click", (params) => {
+    network.on("click", async (params) => {
       
       if(params.nodes.length > 0){
         setNodeIdData(params.nodes[0])
@@ -227,7 +233,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 if(playerIndex == players.length){
                   playerIndex = 0
                 }
-                socket.emit("node checked", params.nodes[0], false, positionToColor(thisPlayerIndex), room, playerIndex)
+                socket.emit("node checked", params.nodes[0], false, thisPlayerIndex, room, playerIndex)
                 askedPersons.push(person)
                 askedWrong = false
               }
@@ -243,14 +249,28 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         else{
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
-            indices.forEach(async (i, index) =>{
+            let index =0
+            let works = true
+            let promises: Promise<void>[] = []
+            for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(person)
               const node = nodes.get().find((n) => params.nodes[0] == n.id)
               if (node!=undefined){
-                networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
+                if (!node.label.includes(colorToEmoji(positionToColor(index), test))){
+                  networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
+                  await delay(500)
+                  if(!test){
+                    works = false
+                  }
+                  if (index == indices.length - 1 && works){
+                    navigate("/endgame")
+                  }
+                  
+                }
               }
-            })
+              index++
+            }
           }
         }
       }
@@ -268,7 +288,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     </>
   );
 
-  function delay(ms: number) {
+  function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
