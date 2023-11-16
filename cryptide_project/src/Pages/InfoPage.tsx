@@ -55,32 +55,32 @@ function InfoPage() { //! cette page n'affiche que des informations et est sucep
                     <h4>
                         Pions
                     </h4>
-                    <h6>Chaque joueur possèdera une couleur désigné, elle différencira les actions représenté par les pions suivant :</h6>
+                    <h6>Chaque joueur sera associé à une couleur spécifique qui distinguera les actions représentées par les pions comme suit :</h6>
                 <ul>
                     <p>
                         <li><h5 className='h5title'>Les jetons <b>carrés</b> : 🟪🟦🟩🟨🟥🟫</h5></li>
-                        Il designe une négation, le joueur ayant déposé celui ci indique que son indice innocente la personne designé.
+                        Ces jetons indiquent une négation. Lorsqu'un joueur place un jeton carré, il signifie que son indice innocente la personne désignée.
 
                         <li><h5 className='h5title'>Les jetons <b>rond</b> : 🟣🔵🟢🟡🔴🟤</h5></li>
-                        Il designe un "peut être", l'indice du joueur l'ayant déposé afirme qu'il est un suspect, cependant, il n'est pas forcément coupable.
-                        Il y a un seul suspect ayant un jeton rond pour tout les joueurs de la partie, il s'agit du coupable ! 
+                        Ces jetons représentent un "peut-être". Le joueur déposant ce jeton affirme que la personne est un suspect, mais cela ne garantit pas sa culpabilité. 
+                        Il y a un seul suspect portant un jeton rond pour tous les joueurs de la partie, et il s'agit du coupable ! 
                     </p>
                 </ul>
                     <h4>
                     <hr/>
                         Caractèristiques des personnages
                     </h4>
-                    <h6>En plus de leur nom, les personnages sont représenté avec d'autres caractèristique :</h6>
+                    <h6>En plus de leur nom, les personnages sont représentés avec d'autres caractéristiques :</h6>
                     <p>
                         {/* 
                             //TODO mettre icon des ages apres le merge
                         */}
                         <h5 className='h5title'>Les Âges :</h5> 
-                        Chaque personne possède un age pour les authentifiers, cet âge varie entre 0 et 60ans.
-                        L'age est une caractèristique qui sera authentifier avec les indices par <Link to="#indice-possible">tranche d'âge</Link>.
+                        Chaque personne possède un âge pour les authentifier, variant entre 0 et 60 ans. 
+                        L'âge est une caractéristique qui sera confirmée par des indices sous forme de <Link to="#indice-possible">tranches d'âge</Link>.
 
                         <h5 className='h5title'>Les Couleurs de cheveux</h5>
-                        Les personnages Possède aussi une couleur de cheveux, que l'on retrouve dans les couleurs suivante :
+                        Les personnages possèdent également une couleur de cheveux, que l'on retrouve parmi les couleurs suivantes :
                         <ul>
                             <li>
                                 <span style={styles.blanc}></span>
@@ -105,7 +105,7 @@ function InfoPage() { //! cette page n'affiche que des informations et est sucep
                         </ul>
 
                         <h5 className='h5title'>Les Sports : ⚾🏀🎳⚽🎾</h5>
-                        Les hobbies des personnages sont designé par 5 sports, respectivement :
+                        Les loisirs des personnages sont représentés par cinq sports respectivement :
                             <ul>
                                 <li>⚾ Baseball</li>
                                 <li>🏀 Basketball</li>
@@ -113,7 +113,7 @@ function InfoPage() { //! cette page n'affiche que des informations et est sucep
                                 <li>⚽ Football</li>
                                 <li>🎾 Tennis</li>
                             </ul>
-                        Parmis eux, ils auront entre 0 à 3 sports chacun, permettant de les identifiers avec les indices que vous possédez.
+                            Parmi ces sports, chaque personnage peut avoir entre 0 et 3 sports, ce qui facilite leur identification à l'aide des indices que vous possédez.
                     </p>
             </section>
             <hr/>
