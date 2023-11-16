@@ -61,5 +61,83 @@
     "nb_sports_indice_end": "sport(s)",
 
     "sport_start": "Le suspect pratique au moins du",
-    "sport_end": ""
+    "sport_end": "",
+
+
+
+
+
+
+
+
+
+
+
+    "informations" : "Informations",
+    "info.intro.title":"Introduction au jeu :",
+    "info.intro.text":"Bienvenue dans notre jeu de déduction captivant, où l'intrigue et la malice se rejoignent dans une aventure palpitante ! Plongez-vous dans un monde de mystère et d'intrigue, où chaque interaction compte, et chaque indice vous rapproche de la vérité.Imaginez un graphique complexe où chaque sommet représente une personne, chaque axe une relation, et chaque détail compte. Vous êtes plongé dans un défi stimulant pour découvrir qui parmi ces individus est le mystérieux tueur. Chaque joueur détient un indice crucial, et seul le partage stratégique de ces indices vous mènera à la résolution du mystère. Explorez notre page de règles pour comprendre les subtilités du jeu, découvrez les indices qui peuvent vous guider, et élaborez des stratégies intelligentes pour identifier le coupable. Manipuler vos amis, afin d'être le premier à découvrir qui est le meurtrier ! Êtes-vous prêt à relever le défi et à démasquer le tueur caché dans le graphe ? Que l'enquête commence !",
+
+    "info.sommaire":"Sommaire",
+
+    "info.title.composant":"Composants du jeu",
+    "info.title.objectif":"Objectif du jeu",
+    "info.title.deroulement":"Déroulement du jeu",
+    "info.title.indice_possible":"Indice possible du jeu",
+
+    "info.pions" : "Pions",
+    "info.composant.text" : "Chaque joueur sera associé à une couleur spécifique qui distinguera les actions représentées par les pions comme suit :",
+    
+    "info.composant.carre.title":"Les jetons carrés",
+    "info.composant.carre":"Ces jetons indiquent une négation. Lorsqu'un joueur place un jeton carré, il signifie que son indice innocente la personne désignée.",
+    
+    "info.composant.rond.title":"Les jetons ronds",
+    "info.composant.rond":"Ces jetons représentent un 'peut-être'. Le joueur déposant ce jeton affirme que la personne est un suspect, mais cela ne garantit pas sa culpabilité.Il y a un seul suspect portant un jeton rond pour tous les joueurs de la partie, et il s'agit du coupable ! ",
+
+    "info.car_perso":"Caractèristiques des personnages",
+    "info.composant.textcar":"En plus de leur nom, les personnages sont représentés avec d'autres caractéristiques :",
+    
+    "info.composant.age.title":"Les Âges",
+    "info.composant.age":"Chaque personne possède un âge pour les authentifier, variant entre 0 et 60 ans. L'âge est une caractéristique qui sera confirmée par des indices sous forme de ",
+    "info.composant.age.link":"tranches d'âge",
+
+    "info.composant.hair_col.title":"Les Couleurs de cheveux",
+    "info.composant.hair_col":"Les personnages possèdent également une couleur de cheveux, que l'on retrouve parmi les couleurs suivantes :",
+
+    "hair.blanc":"Blanc",
+    "hair.blond":"Blond",
+    "hair.roux":"Roux",
+    "hair.chatain":"Châtain",
+    "hair.noir":"Noir",
+
+    "info.composant.sport.title":"Les Sports",
+    "info.composant.sport":"Les loisirs des personnages sont représentés par cinq sports respectivement :",
+    
+    "info.composant.baseball":"Baseball",
+    "info.composant.basketball":"Basketball",
+    "info.composant.bowling":"Bowling",
+    "info.composant.football":"Football",
+    "info.composant.tennis":"Tennis",
+    "info.composant.sport.bis":"Parmi ces sports, chaque personnage peut avoir entre 0 et 3 sports, ce qui facilite leur identification à l'aide des indices que vous possédez.",
+
+    "info.objectif.intro":"Bienvenue dans l'univers astucieux de notre jeu de déduction, où la tromperie et la ruse sont les clés du succès. Votre mission est de démêler le mystère qui se cache derrière chaque interaction du graphique complexe représentant les relations entre les individus.",
+    "info.objectif.t1":"Manipulation Subtile",
+    "info.objectif.t1.text":"Le but ultime est de découvrir qui parmi les individus est le tueur, mais pas par une collaboration ouverte. Au contraire, vous utiliserez la manipulation subtile pour brouiller les pistes et détourner l'attention de vos adversaires. Posez des questions stratégiques, répondez avec malice, et plantez des indices trompeurs pour vous rapprocher du dénouement.",
+    "info.objectif.t2":"Jeu de Duperie",
+    "info.objectif.t2.text":"Chaque tour offre l'opportunité de semer le doute parmi vos adversaires. Lorsqu'un joueur vous interroge, répondez en plaçant habilement un jeton carré pour indiquer que 'selon votre indice, cette personne ne peut être le coupable' ou un jeton rond pour suggérer qu'elle reste dans la liste des suspects. Soyez prudent, car chaque geste peut être interprété, et la vérité est souvent cachée derrière une façade d'indices trompeurs.",
+    "info.objectif.t3":"Contre-manipulation",
+    "info.objectif.t3.text":"Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en posant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient une arme redoutable pour détourner l'accusation et semer la confusion.",
+
+    "etape":"Étape",
+
+    "info.deroulement.e1":"Poser des Questions Stratégiques",
+    "info.deroulement.e1.text":"Chaque tour commence par un joueur posant une question à un autre joueur concernant une personne sur le graphe. Les réponses sont formulées en plaçant des jetons carrés ou ronds pour indiquer la certitude ou le doute quant à l'implication de cette personne.",
+    "info.deroulement.e2":"Contre-manipulation et Contre-questions",
+    "info.deroulement.e2.text":"Si un joueur place un jeton carré, le questionneur doit également poser un jeton carré sur un nœud du graphique. Les contre-questions sont un moyen de semer la confusion parmi les joueurs et de détourner l'accusation.",
+    "info.deroulement.e3":"Le 'Guess' Final",
+    "info.deroulement.e3.text":"La partie atteint son apogée lorsqu'un joueur tente le 'Guess' final, affirmant que telle personne est le tueur. Les autres joueurs peuvent alors contredire cette affirmation en plaçant leurs propres jetons carrés. Si aucune réfutation n'est faite, le joueur ayant fait le 'Guess' remporte la partie, démontrant ainsi sa maîtrise dans l'art de la manipulation.",
+
+    "info.indice-possible.age":"Âge d'une personne",
+    "info.indice-possible.hair":"Couleur de cheveux d'une personne",
+    "info.indice-possible.sport":"Sport(s) d'une personne",
+    "info.indice-possible.voisin":"Caractèristique des voisins"
 }
