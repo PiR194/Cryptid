@@ -1,3 +1,5 @@
+import EasyBot from "./model/EasyBot";
+import Human from "./model/Human";
 import AgeIndice from "./model/Indices/AgeIndice";
 import ColorEdgesIndice from "./model/Indices/ColorEdgesIndice";
 import ColorIndice from "./model/Indices/ColorIndice";
@@ -7,6 +9,7 @@ import NbSportIndice from "./model/Indices/NbSportIndice";
 import SportIndice from "./model/Indices/SportIndice";
 import Person from "./model/Person";
 import PersonNetwork from "./model/PersonsNetwork";
+import Player from "./model/Player";
 
 class JSONParser{
 
@@ -77,6 +80,17 @@ class JSONParser{
             tabIndice.push(this.JSONToIndice(i))
         });
         return tabIndice
+    }
+
+    static JSONToPlayer(json: any): Player{
+        switch (json.type){
+            case "Human":
+                return new Human(json.id, json.name)
+            case "EasyBot":
+                return new EasyBot(json.id, json.name)
+            default:
+                throw new Error("PARSER unable to parse player: " + json.type);
+        }
     }
 }
 

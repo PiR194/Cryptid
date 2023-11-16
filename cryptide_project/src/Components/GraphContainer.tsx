@@ -47,6 +47,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const solotmp = params.get('solo');
   const navigate = useNavigate();
 
+  console.log(person)
 
   useEffect(() =>{
     touchedPlayer=playerTouched

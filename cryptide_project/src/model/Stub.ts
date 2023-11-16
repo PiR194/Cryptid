@@ -48,8 +48,14 @@ class Stub{
         }
 
         for (let i=1; i<3; i++){
-            indices.push(new NbSportIndice(test, i))
-            test++
+            for (let j=0; j<3; j++){
+                if (j==i){
+                    continue
+                }
+                indices.push(new NbSportIndice(test, [i, j]))
+                test++
+            }
+            
         }
         return indices
     }

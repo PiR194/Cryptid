@@ -28,20 +28,22 @@ io.on('connection', (socket) => {
     io.to(room).emit("game created", network, person, indices, Math.floor(Math.random() * map.get(room).length))
   });
 
-  socket.on("lobby joined", (room, name) =>{
-    socket.join(room)
+  socket.on("lobby joined", (room, player) =>{
+    if (player.type=="Human"){
+      socket.join(room)
+    }
     if (map.get(room) == undefined){
-      map.set(room, [{id: socket.id, name: name}])
+      map.set(room, [{type: player.type, id: player.id, name: player.name}])
     }
     else{
       const tab = map.get(room)
       for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === socket.id){
+        if (tab[i].id === player.id){
           tab.splice(i, 1)
         }
       }
 
-      map.get(room).push({id: socket.id, name: name})
+      map.get(room).push({type: player.type, id: player.id, name: player.name})
     }
     
     io.to(room).emit("new player", map.get(room))

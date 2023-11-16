@@ -26,7 +26,7 @@ import { useGame } from '../Contexts/GameContext';
 
 function EndGame() {
 
-    const {winner, person} =useGame()
+    const {winner, person, players, indices} =useGame()
     console.log(winner)
     const theme = useTheme();
     return (
@@ -39,19 +39,27 @@ function EndGame() {
             </div>
             <div className='winner'>
                 <img src={Person} width='300' height='300'/>
+                <h3>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
             </div>
             <div className='bottom'>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/play" img={Leave}/>
                 </div>
-                <div className='centerDivH'>
-                    {/*
-                    <PersonStatus img={Person} state={Replay} name="Dummy"/>
-                    <PersonStatus img={Person} state={Leave} name="bot2"/>
-                    <PersonStatus img={Person} state={Leave} name="bot3"/>
-                    */}
+                <ul className='centerDivH'>
+                    {
+                    players.map((player, index) => (
+                        <div className="playerContainer">
+                            {player.id!=winner?.id && 
+                            <>
+                                <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                <h5 style={{width: 50}}>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h5>
+                            </>
+                            }
+                        </div>
+                    ))
+                    }
                     
-                </div>
+                </ul>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/lobby" img={Replay}/>
                 </div>

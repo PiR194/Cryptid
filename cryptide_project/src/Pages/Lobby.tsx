@@ -23,6 +23,8 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from "../SocketConfig";
 import { random } from 'lodash';
 import Player from '../model/Player';
+import Human from '../model/Human';
+import EasyBot from '../model/EasyBot';
 
 
 
@@ -38,10 +40,14 @@ function Lobby() {
     const params = new URLSearchParams(window.location.search);
     const room = params.get('room');
 
+    function addBot(){
+        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100)).toJson())
+    }
+
     useEffect(() => {
         if (first){
             first = false
-            socket.emit("lobby joined", room, "test name" + Math.floor(Math.random() * 10))
+            socket.emit("lobby joined", room, new Human(socket.id, "Test" + Math.floor(Math.random() * 100)).toJson())
         
             return () => {
                 socket.off('game created');
@@ -78,9 +84,10 @@ function Lobby() {
     socket.on("new player", (tab) =>{
         const tmpTab: Player[] = []
         for (const p of tab){
-            tmpTab.push(new Player(p.id, p.name))
+            tmpTab.push(JSONParser.JSONToPlayer(p))
+            console.log(tmpTab)
         }
-        setPlayersData(tab.map((p: any) => new Player(p.id, p.name)))
+        setPlayersData(tmpTab)
     })
 
     const [codeShowed, setCodeShowed] = useState(true);
@@ -111,6 +118,14 @@ function Lobby() {
                     {players.map((player, index) => (
                         <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
                     ))}
+                    <div className='centerButton'>
+                            <button className='button' onClick={addBot}
+                                style={{
+                                    backgroundColor: theme.colors.primary,
+                                    borderColor: theme.colors.secondary}}>
+                                +
+                            </button>
+                    </div>
                 </div>
             </div>
 

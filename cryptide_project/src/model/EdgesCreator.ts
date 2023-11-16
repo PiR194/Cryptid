@@ -11,9 +11,8 @@ class EdgesCreator{
 
     CreateWorkingEdge(personNetwork: PersonNetwork, choosenPerson: Person, indice: Indice, indices: Indice[]){
         let creator = IndiceEdgesFactory.Create(indice)
-        const nbMaxEdge = Math.floor(Math.random() * 5) + 1
 
-        creator.createWorkingEdges(personNetwork, choosenPerson, indices)
+        const nbMaxEdge = creator.createWorkingEdges(personNetwork, choosenPerson, indices)
 
         if (choosenPerson.getFriends().length < nbMaxEdge){
             for (const p of personNetwork.getPersons()){
