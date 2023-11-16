@@ -36,6 +36,7 @@ import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -172,7 +173,10 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
         <div className='menuGame'>
-          <Link to='/info#indice-possible' target='_blank'>
+          {/* <Link to='/info#indice-possible' target='_blank'> 
+            //? redirection impossible apparament (securité des navigateur
+          */}
+          <Link to='/info' target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,
