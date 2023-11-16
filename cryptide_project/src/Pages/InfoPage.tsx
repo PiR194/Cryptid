@@ -29,164 +29,166 @@ function InfoPage() { //! cette page n'affiche que des informations et est sucep
     return (
         
     <div className='infoPage'>
-        <h1>Informations</h1>
+        <h1><FormattedMessage id="informations"/></h1>
         
         <div>
-            <h2> Introduction au jeu :</h2>
+            <h2><FormattedMessage id="info.intro.title"/></h2>
             <p>
-                Bienvenue dans notre jeu de déduction captivant, où l'intrigue et la malice se rejoignent dans une aventure palpitante ! Plongez-vous dans un monde de mystère et d'intrigue, où chaque interaction compte, et chaque indice vous rapproche de la vérité.
-                Imaginez un graphique complexe où chaque sommet représente une personne, chaque axe une relation, et chaque détail compte. Vous êtes plongé dans un défi stimulant pour découvrir qui parmi ces individus est le mystérieux tueur. Chaque joueur détient un indice crucial, et seul le partage stratégique de ces indices vous mènera à la résolution du mystère.
-                Explorez notre page de règles pour comprendre les subtilités du jeu, découvrez les indices qui peuvent vous guider, et élaborez des stratégies intelligentes pour identifier le coupable. Manipuler vos amis, afin d'être le premier à découvrir qui est le meurtrier ! Êtes-vous prêt à relever le défi et à démasquer le tueur caché dans le graphe ? Que l'enquête commence !  
+                <FormattedMessage id="info.intro.text"/>
             </p>
         </div>
 
         <div className="list">
-            <h2> Sommaire </h2>
+            <h2> <FormattedMessage id="info.sommaire"/> </h2>
             <ul>
-                <li><Link to="#composants-du-jeu"><span>Composants du jeu</span></Link></li>
-                <li><Link to="#objectif-du-jeu"><span>Objectif du jeu</span></Link></li>
-                <li><Link to="#deroulement-du-jeu"><span>Déroulement du jeu</span></Link></li>
-                <li><Link to="#indice-possible"><span>Indice possible</span></Link></li>
+                <li><Link to="#composants-du-jeu"><span><FormattedMessage id="info.title.composant"/></span></Link></li>
+                <li><Link to="#objectif-du-jeu"><span><FormattedMessage id="info.title.objectif"/></span></Link></li>
+                <li><Link to="#deroulement-du-jeu"><span><FormattedMessage id="info.title.deroulement"/></span></Link></li>
+                <li><Link to="#indice-possible"><span><FormattedMessage id="info.title.indice_possible"/></span></Link></li>
             </ul>
         </div>
 
             <section id="composants-du-jeu">
-                <h2>Composants du jeu :</h2>
+                <h2><FormattedMessage id="info.pions"/> :</h2>
                     <h4>
-                        Pions
+                        <FormattedMessage id="info.sommaire"/> 
                     </h4>
-                    <h6>Chaque joueur sera associé à une couleur spécifique qui distinguera les actions représentées par les pions comme suit :</h6>
+                    <h6><FormattedMessage id="info.composant.text"/></h6>
                 <ul>
                     <p>
-                        <li><h5 className='h5title'>Les jetons <b>carrés</b> : 🟪🟦🟩🟨🟥🟫</h5></li>
-                        Ces jetons indiquent une négation. Lorsqu'un joueur place un jeton carré, il signifie que son indice innocente la personne désignée.
+                        <li><h5 className='h5title'><FormattedMessage id="info.composant.carre.title"/> : 🟪🟦🟩🟨🟥🟫</h5></li>
+                        <FormattedMessage id="info.composant.carre"/>
 
-                        <li><h5 className='h5title'>Les jetons <b>rond</b> : 🟣🔵🟢🟡🔴🟤</h5></li>
-                        Ces jetons représentent un "peut-être". Le joueur déposant ce jeton affirme que la personne est un suspect, mais cela ne garantit pas sa culpabilité. 
-                        Il y a un seul suspect portant un jeton rond pour tous les joueurs de la partie, et il s'agit du coupable ! 
+                        <li><h5 className='h5title'><FormattedMessage id="info.composant.rond.title"/> : 🟣🔵🟢🟡🔴🟤</h5></li>
+                        <FormattedMessage id="info.composant.rond"/>
                     </p>
                 </ul>
-                    <h4>
                     <hr/>
-                        Caractèristiques des personnages
+                    <h4>
+                        <FormattedMessage id="info.car_perso"/>
                     </h4>
-                    <h6>En plus de leur nom, les personnages sont représentés avec d'autres caractéristiques :</h6>
+                    <h6><FormattedMessage id="info.composant.textcar"/></h6>
                     <p>
                         {/* 
                             //TODO mettre icon des ages apres le merge
                         */}
-                        <h5 className='h5title'>Les Âges :</h5> 
-                        Chaque personne possède un âge pour les authentifier, variant entre 0 et 60 ans. 
-                        L'âge est une caractéristique qui sera confirmée par des indices sous forme de <Link to="#indice-possible">tranches d'âge</Link>.
+                        <h5 className='h5title'><FormattedMessage id="info.composant.age.title"/> :</h5> 
+                        <FormattedMessage id="info.composant.age"/><Link to="#indice-possible"><FormattedMessage id="info.composant.age.link"/></Link>.
 
-                        <h5 className='h5title'>Les Couleurs de cheveux</h5>
-                        Les personnages possèdent également une couleur de cheveux, que l'on retrouve parmi les couleurs suivantes :
+                        <h5 className='h5title'><FormattedMessage id="info.composant.hair_col.title"/> :</h5>
+                            <FormattedMessage id="info.composant.hair_col"/>
                         <ul>
                             <li>
                                 <span style={styles.blanc}></span>
-                                Blanc
+                                <FormattedMessage id="hair.blanc"/>
                             </li>
                             <li>
                                 <span style={styles.blond}></span>
-                                Blond
+                                <FormattedMessage id="hair.blond"/>
                             </li>
                             <li>
                                 <span style={styles.roux}></span>
-                                Roux
+                                <FormattedMessage id="hair.roux"/>
                             </li>
                             <li>
                                 <span style={styles.chatain}></span>
-                                Chatain
+                                <FormattedMessage id="hair.chatain"/>
                             </li>
                             <li>
                                 <span style={styles.noir}></span>
-                                Noir
+                                <FormattedMessage id="hair.noir"/>
                             </li>
                         </ul>
 
-                        <h5 className='h5title'>Les Sports : ⚾🏀🎳⚽🎾</h5>
-                        Les loisirs des personnages sont représentés par cinq sports respectivement :
+                        <h5 className='h5title'><FormattedMessage id="info.composant.sport.title"/> : ⚾🏀🎳⚽🎾</h5>
+                        <FormattedMessage id="info.composant.sport"/>
                             <ul>
-                                <li>⚾ Baseball</li>
-                                <li>🏀 Basketball</li>
-                                <li>🎳 Bowling</li>
-                                <li>⚽ Football</li>
-                                <li>🎾 Tennis</li>
+                                <li>⚾ <FormattedMessage id="info.composant.baseball"/></li>
+                                <li>🏀 <FormattedMessage id="info.composant.basketball"/></li>
+                                <li>🎳 <FormattedMessage id="info.composant.bowling"/></li>
+                                <li>⚽ <FormattedMessage id="info.composant.football"/></li>
+                                <li>🎾 <FormattedMessage id="info.composant.tennis"/></li>
                             </ul>
-                            Parmi ces sports, chaque personnage peut avoir entre 0 et 3 sports, ce qui facilite leur identification à l'aide des indices que vous possédez.
+                            <FormattedMessage id="info.composant.sport.bis"/>                    
                     </p>
             </section>
             <hr/>
             <section id="objectif-du-jeu">
-                <h2>Objectif du jeu :</h2>
+                <h2><FormattedMessage id="info.title.objectif"/> :</h2>
                 <p>
-                    Bienvenue dans l'univers astucieux de notre jeu de déduction, où la tromperie et la ruse sont les clés du succès. Votre mission est de démêler le mystère qui se cache derrière chaque interaction du graphique complexe représentant les relations entre les individus.
+                    <FormattedMessage id="info.objectif.intro"/>
                 </p>
                 <h4>
-                    Manipulation Subtile :
+                    <FormattedMessage id="info.objectif.t1"/> :
                 </h4>
                 <p>
-                    Le but ultime est de découvrir qui parmi les individus est le tueur, mais pas par une collaboration ouverte. Au contraire, vous utiliserez la manipulation subtile pour brouiller les pistes et détourner l'attention de vos adversaires. Posez des questions stratégiques, répondez avec malice, et plantez des indices trompeurs pour vous rapprocher du dénouement.
+                    <FormattedMessage id="info.objectif.t1.text"/>
                 </p>
-                <h4>Jeu de Duperie :</h4>
+                <h4><FormattedMessage id="info.objectif.t2"/> :</h4>
                 <p>
-                    Chaque tour offre l'opportunité de semer le doute parmi vos adversaires. Lorsqu'un joueur vous interroge, répondez en plaçant habilement un jeton carré pour indiquer que "selon votre indice, cette personne ne peut être le coupable" ou un jeton rond pour suggérer qu'elle reste dans la liste des suspects. Soyez prudent, car chaque geste peut être interprété, et la vérité est souvent cachée derrière une façade d'indices trompeurs.
+                    <FormattedMessage id="info.objectif.t2.text"/>
                 </p>
-                <h4>Contre-manipulation :</h4>
+                <h4><FormattedMessage id="info.objectif.t3"/> :</h4>
                 <p>
-                    Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en posant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient une arme redoutable pour détourner l'accusation et semer la confusion.
+                    <FormattedMessage id="info.objectif.t3.text"/>
                 </p>
 
                 <h4>
                     Interface :
+                    {/* 
+                    //TODO
+                    */}
                 </h4>
             </section>
             <hr/>
             <section id="deroulement-du-jeu">
-                <h2>Déroulement du jeu :</h2>
+                <h2><FormattedMessage id="info.title.deroulement"/> :</h2>
                 <h4>
-                    <u>Étape 1</u> : Poser des Questions Stratégiques
+                    <u><FormattedMessage id="etape"/> 1</u> : <FormattedMessage id="info.deroulement.e1"/>
                 </h4>
                 <p>
-                    Chaque tour commence par un joueur posant une question à un autre joueur concernant une personne sur le graphe. Les réponses sont formulées en plaçant des jetons carrés ou ronds pour indiquer la certitude ou le doute quant à l'implication de cette personne.
+                    <FormattedMessage id="info.deroulement.e1.text"/>
                 </p>
                 <h4>
-                    <u>Étape 2</u> : Contre-manipulation et Contre-questions
+                    <u><FormattedMessage id="etape"/> 2</u> : <FormattedMessage id="info.deroulement.e2"/>
                 </h4>
                 <p>
-                    Si un joueur place un jeton carré, le questionneur doit également poser un jeton carré sur un nœud du graphique. Les contre-questions sont un moyen de semer la confusion parmi les joueurs et de détourner l'accusation.
+                    <FormattedMessage id="info.deroulement.e2.text"/>
                 </p>
                 <h4>
-                    <u>Étape 3</u> : Le "Guess" Final
+                    <u><FormattedMessage id="etape"/> 3</u> : <FormattedMessage id="info.deroulement.e3"/>
                 </h4>
                 <p>
-                    La partie atteint son apogée lorsqu'un joueur tente le "Guess" final, affirmant que telle personne est le tueur. Les autres joueurs peuvent alors contredire cette affirmation en plaçant leurs propres jetons carrés. Si aucune réfutation n'est faite, le joueur ayant fait le "Guess" remporte la partie, démontrant ainsi sa maîtrise dans l'art de la manipulation.
+                    <FormattedMessage id="info.deroulement.e3.text"/>
                 </p>
             </section>
             <hr/>
             <section id="indice-possible">
-                <h2>Indice possible :</h2>
+                <h2><FormattedMessage id="info.title.indice_possible"/> :</h2>
                 <br/>
                 <h4>
-                    Âge d'une personne :
+                    <FormattedMessage id="info.indice-possible.age"/>
                 </h4>
+                {/*
+                //todo voir pour le changement de lang
+                */}
                 <IndiceList instance={AgeIndice} lang='fr'/>
                 
                 <h4>
-                    Couleur de cheveux d'une personne :
+                    <FormattedMessage id="info.indice-possible.hair"/>
                 </h4>
                 <IndiceList instance={ColorIndice} lang='fr'/>
                 <IndiceList instance={ColorEdgesIndice} lang='fr'/>
                 <hr/>
                 <h4>
-                    Sport d'une personne
+                    <FormattedMessage id="info.indice-possible.sport"/>
                 </h4>
                 <IndiceList instance={SportIndice} lang='fr'/>
                 <IndiceList instance={NbSportIndice} lang='fr'/>
                 
                 
                 <h4>
-                    Caractèristique des voisins
+                    <FormattedMessage id="info.indice-possible.voisin"/>
                 </h4>
                 <IndiceList instance={EdgesIndice} lang='fr'/>
                 <IndiceList instance={NbEdgesIndice} lang='fr'/>
