@@ -21,6 +21,7 @@ import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
 import { colorToEmoji, positionToColor } from "../ColorHelper";
 import { ColorToHexa } from "../model/EnumExtender";
+import Bot from "../model/Bot";
 
 
 interface MyGraphComponentProps {
@@ -29,6 +30,8 @@ interface MyGraphComponentProps {
   handleTurnBarTextChange: (newTurnBarText: string) => void
   setPlayerTouched: (newPlayerTouch: number) => void;
   playerTouched: number
+  changecptTour: (newcptTour : number) => void
+  solo : boolean
 }
 
 let lastAskingPlayer = 0
@@ -40,14 +43,14 @@ let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo}) => {
+let cptTour: number = 0
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
-  const solotmp = params.get('solo');
+
   const navigate = useNavigate();
 
-  console.log(person)
 
   useEffect(() =>{
     touchedPlayer=playerTouched
@@ -78,12 +81,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }
   let thisPlayerIndex = index
   
-
+  
   if (first){
     first = false
-    if (solotmp == "false"){
-      solo=false
-    }
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -259,7 +259,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           if (node != undefined){
             for(let i=0; i<players.length; i++){
               if (node.label.includes(colorToEmoji(positionToColor(i), false)) || !tester.Works(pers)){
-                console.log(tester.Works(pers))
                 tabNodes.push(node)
                 break
               }
@@ -279,31 +278,31 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     })
 
 
-    
-    personNetwork.getPersons().forEach(p => {
-      let a = 0
-      for (let i of indices){
-        let tester = IndiceTesterFactory.Create(i)
-        if (tester.Works(p)){
-          a++
-        }
-      }
-      if (a==indices.length){
-        //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-        console.log(p)
-      }
-      
-    });
-    
 
-    // Gérer le changement entre la physique et le déplacement manuel
-    network.on("dragging", (params) => {
-        if (params.nodes.length > 0) {
-            // Un nœud a été cliqué
-            initialOptions.physics.enabled = false;
-            network.setOptions(initialOptions);
+      personNetwork.getPersons().forEach(p => {
+        let a = 0
+        for (let i of indices){
+          let tester = IndiceTesterFactory.Create(i)
+          if (tester.Works(p)){
+            a++
+          }
         }
-    });
+        if (a==indices.length){
+          //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
+          console.log(p)
+        }
+        
+      });
+      
+
+      // Gérer le changement entre la physique et le déplacement manuel
+      network.on("dragging", (params) => {
+          if (params.nodes.length > 0) {
+              // Un nœud a été cliqué
+              initialOptions.physics.enabled = false;
+              network.setOptions(initialOptions);
+          }
+      });
 
     network.on("click", async (params) => {
       
@@ -327,10 +326,15 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
             }
           }
-          else if(touchedPlayer != - 1 && playerIndex == actualPlayerIndex && touchedPlayer<players.length){
-            socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
-            socket.emit("put correct background", socket.id)
-            touchedPlayer=-1
+          else if(touchedPlayer != -1 && playerIndex == actualPlayerIndex && touchedPlayer<players.length){
+            if (players[touchedPlayer] instanceof Bot){
+              console.log("BOT")
+            }
+            else{
+              socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
+              socket.emit("put correct background", socket.id)
+              touchedPlayer=-1
+            }
           }
           else if(playerIndex == actualPlayerIndex && touchedPlayer==players.length){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
@@ -392,6 +396,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
               index++
             }
+            cptTour ++; // On Incrémente le nombre de tour du joueur
+            changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
           }
         }
       }

@@ -33,6 +33,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
+import SoloGame from './Pages/SoloGame';
 
 const messages = {
   fr: messagesFr,
@@ -76,8 +77,9 @@ function App() {
                 <Route path="/play" element={<Play/>} />
                 <Route path="/lobby" element={<Lobby/>} />
                 <Route path="/endgame" element={<EndGame/>} />
-                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>} />
+                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                 <Route path="/info" element={<InfoPage/>} />
+                {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
               </Routes>
             </BrowserRouter>
           </ThemeProvider>

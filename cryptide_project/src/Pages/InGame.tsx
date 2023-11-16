@@ -10,6 +10,7 @@ import ChoiceBar from '../Components/ChoiceBar';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import PersonStatus from '../Components/PersonStatus';
 import PlayerList from '../Components/PlayerList';
+import TurnBar from '../Components/TurnBar';
 
 /* Icon */
 import Leave from "../res/icon/leave.png";
@@ -32,50 +33,67 @@ import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
-import TurnBar from '../Components/TurnBar';
 import { useGame } from '../Contexts/GameContext';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
-
-  const theme = useTheme();
-
-    const [showChoiceBar, setShowChoiceBar] = useState(false);
-    const [showTurnBar, setShowTurnBar] = useState(false);
-    const [turnBarText, setTurnBarText] = useState("");
-    const [playerTouched, setPlayerTouched] = useState(-2)
   
-    const handleNodeClick = (shouldShowChoiceBar: boolean) => {
-      setShowChoiceBar(shouldShowChoiceBar);
-    };
+  const theme = useTheme();
+  
+  
+  const params = new URLSearchParams(window.location.search);
+  
+  //* Gestion solo
+  let IsSolo: boolean = true
+  const solotmp = params.get('solo');
+  if (solotmp == "false"){
+    IsSolo=false
+  }
+
+
+  const [showChoiceBar, setShowChoiceBar] = useState(false);
+  const [showTurnBar, setShowTurnBar] = useState(false);
+  const [turnBarText, setTurnBarText] = useState("");
+  const [playerTouched, setPlayerTouched] = useState(-2)
+
+  const handleNodeClick = (shouldShowChoiceBar: boolean) => {
+    setShowChoiceBar(shouldShowChoiceBar);
+  };
 
     const handleSetPlayerTouched = (newPlayerTouched: number) => {
       setPlayerTouched(newPlayerTouched);
     };
   
 
-    const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
-      setShowTurnBar(shouldShowTurnBar);
-    };
-    
-    const handleTurnBarTextChange = (newTurnBarText: string) =>{
-      setTurnBarText(newTurnBarText)
-    }
-
-    /* offcanvas */
-    //? faire une fonction pour close et show en fonction de l'etat du canva ?
-    //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const [showP, setShowP] = useState(false);
-    const handleCloseP = () => setShowP(false);
-    const handleShowP = () => setShowP(true);
+  const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
+    setShowTurnBar(shouldShowTurnBar);
+  };
   
-    const [showS, setShowS] = useState(false);
-    const handleCloseS = () => setShowS(false);
-    const handleShowS = () => setShowS(true);
+  const handleTurnBarTextChange = (newTurnBarText: string) =>{
+    setTurnBarText(newTurnBarText)
+  }
+
+  /* offcanvas */
+  //? faire une fonction pour close et show en fonction de l'etat du canva ?
+  //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [showP, setShowP] = useState(false);
+  const handleCloseP = () => setShowP(false);
+  const handleShowP = () => setShowP(true);
+
+  const [showS, setShowS] = useState(false);
+  const handleCloseS = () => setShowS(false);
+  const handleShowS = () => setShowS(true);
+
+  const [cptTour, setcptTour] = useState(0);
+
+  //@ts-ignore
+  const changecptTour = (newcptTour) => {
+    setcptTour(newcptTour);
+  };
   
     const handleChange = () => {
       if (show){
@@ -119,8 +137,19 @@ const InGame = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} playerTouched={playerTouched} setPlayerTouched={handleSetPlayerTouched}/>
+          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} changecptTour={changecptTour} solo={IsSolo} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
         </div>
+
+
+        {IsSolo && 
+            <div className='nbLaps' style={{ 
+                backgroundColor: theme.colors.primary,
+                borderColor: theme.colors.secondary
+            }}>
+              Tour : {cptTour}
+            </div>
+        }
+        
 
         <div className='paramDiv'>
           <button className='button'

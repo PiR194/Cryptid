@@ -33,17 +33,22 @@ io.on('connection', (socket) => {
       socket.join(room)
     }
     if (map.get(room) == undefined){
-      map.set(room, [{type: player.type, id: player.id, name: player.name}])
+      map.set(room, [{type: player.type, id: socket.id, name: player.name}])
     }
     else{
       const tab = map.get(room)
       for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === player.id){
+        if (tab[i].id === socket.id && player.type==="Human"){
           tab.splice(i, 1)
         }
       }
 
-      map.get(room).push({type: player.type, id: player.id, name: player.name})
+      if (player.type!=="Human"){
+        map.get(room).push({type: player.type, id: player.id, name: player.name})
+      }
+      else{
+        map.get(room).push({type: player.type, id: socket.id, name: player.name})
+      }
     }
     
     io.to(room).emit("new player", map.get(room))

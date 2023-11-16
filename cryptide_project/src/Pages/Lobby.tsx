@@ -46,15 +46,15 @@ function Lobby() {
 
     useEffect(() => {
         if (first){
-            first = false
-            socket.emit("lobby joined", room, new Human(socket.id, "Test" + Math.floor(Math.random() * 100)).toJson())
-        
+            first=false
+            socket.emit("lobby joined", room, new Human("test", "Test" + Math.floor(Math.random() * 100)).toJson())
+
             return () => {
                 socket.off('game created');
             };
         }
         
-    }, []);
+    }, [socket.id]);
 
     socket.on("game created", (jsonNetwork, jsonPersonString, jsonIndicesString, playerIndex)=> {
         const jsonPerson = JSON.parse(jsonPersonString)
