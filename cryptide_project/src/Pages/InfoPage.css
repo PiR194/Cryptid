@@ -63,6 +63,16 @@ li *{
     text-decoration: none;
 }
 
+.LiInterfaceDisplay{
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+}
+
+.LiInterfaceDisplay p{
+    font-size: medium;
+}
+
 h2 {
     position: relative;
     padding: 0;
