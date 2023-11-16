@@ -18,7 +18,8 @@ import { HashLink as Link } from 'react-router-hash-link';
 import { ColorToHexa } from '../model/EnumExtender';
 import Color from '../model/Color';
 
-function InfoPage() { //! cette page n'affiche que des informations et est suceptible de changer selon le context.
+//@ts-ignore
+function InfoPage({locale, changeLocale}) { //! cette page n'affiche que des informations et est suceptible de changer selon le context.
     const styles = {
         roux: { backgroundColor: ColorToHexa(Color.REDHEAD), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
         blond: { backgroundColor: ColorToHexa(Color.BLOND), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
@@ -169,29 +170,26 @@ function InfoPage() { //! cette page n'affiche que des informations et est sucep
                 <h4>
                     <FormattedMessage id="info.indice-possible.age"/>
                 </h4>
-                {/*
-                //todo voir pour le changement de lang
-                */}
-                <IndiceList instance={AgeIndice} lang='fr'/>
+                <IndiceList instance={AgeIndice} lang={locale}/>
                 
                 <h4>
                     <FormattedMessage id="info.indice-possible.hair"/>
                 </h4>
-                <IndiceList instance={ColorIndice} lang='fr'/>
-                <IndiceList instance={ColorEdgesIndice} lang='fr'/>
+                <IndiceList instance={ColorIndice} lang={locale}/>
+                <IndiceList instance={ColorEdgesIndice} lang={locale}/>
                 <hr/>
                 <h4>
                     <FormattedMessage id="info.indice-possible.sport"/>
                 </h4>
-                <IndiceList instance={SportIndice} lang='fr'/>
-                <IndiceList instance={NbSportIndice} lang='fr'/>
+                <IndiceList instance={SportIndice} lang={locale}/>
+                <IndiceList instance={NbSportIndice} lang={locale}/>
                 
                 
                 <h4>
                     <FormattedMessage id="info.indice-possible.voisin"/>
                 </h4>
-                <IndiceList instance={EdgesIndice} lang='fr'/>
-                <IndiceList instance={NbEdgesIndice} lang='fr'/>
+                <IndiceList instance={EdgesIndice} lang={locale}/>
+                <IndiceList instance={NbEdgesIndice} lang={locale}/>
                 <hr/>
             </section>
         
