@@ -22,9 +22,11 @@ const config: Config.InitialOptions = {
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+        '^.+\\.css$': 'identity-obj-proxy',
     },
-    // Ajoutez cette ligne pour activer le support des modules ECMAScript
-    transformIgnorePatterns: ['<rootDir>/node_modules/(?!@babel/runtime)'],
+    moduleNameMapper: {
+        '\\.css$': 'identity-obj-proxy',
+    },
 };
 
 export default config;
