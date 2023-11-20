@@ -27,6 +27,7 @@ import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
 
 
+let gameStarted = false
 
 function Lobby() {
     const theme=useTheme();
@@ -79,6 +80,7 @@ function Lobby() {
         setPersonNetworkData(network)
         setIndicesData(choosenIndices)
         first = true
+        gameStarted = true
         navigate('/game?solo=false');
     });
 
@@ -88,6 +90,27 @@ function Lobby() {
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
         setPlayersData(tmpTab)
+    })
+
+    socket.on("player left", (tab, socketId) => {
+        if (gameStarted){
+            const i = players.findIndex((p) => p.id == socketId)
+            if (i != undefined){
+                let player = players[i]
+                player = new EasyBot("125", "BOT125")
+                if (player instanceof Bot){
+                    player.indice = indices[i]
+                }
+            }
+        }
+        else{
+            const tmpTab: Player[] = []
+            for (const p of tab){
+                tmpTab.push(JSONParser.JSONToPlayer(p))
+            }
+            setPlayersData(tmpTab)
+        }
+        const index = players
     })
 
     const [codeShowed, setCodeShowed] = useState(true);
