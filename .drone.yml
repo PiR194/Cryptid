@@ -88,6 +88,7 @@ steps:
       - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
       - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
       - export SONAR_SCANNER_OPTS="-server"
+      - export SONAR_TOKEN="SECRET_SONAR_LOGIN_CRYPTIDE"
       - sonar-scanner -D sonar.projectKey=SECRET_SONAR_LOGIN_CRYPTIDE -D sonar.sources=./src -D sonar.host.url=https://codefirst.iut.uca.fr/sonar
     secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
     settings:
