@@ -15,6 +15,7 @@
 
 // export default config;
 
+// jest.config.ts
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
@@ -22,6 +23,8 @@ const config: Config.InitialOptions = {
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
     },
+    // Ajoutez cette ligne pour activer le support des modules ECMAScript
+    transformIgnorePatterns: ['<rootDir>/node_modules/(?!@babel/runtime)'],
 };
 
 export default config;
