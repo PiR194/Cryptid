@@ -29,6 +29,14 @@ class ColorEdgesIndice extends EdgesIndice {
       }
       return `${string} ${json.color_edges_end}` 
     }
+
+    toJSON() {
+      return {
+          type: "ColorEdgesIndice",
+          id: this.id,
+          neighborsColors: this.neighborsColors,
+      };
+    }
   }
 
   export default ColorEdgesIndice

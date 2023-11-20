@@ -53,14 +53,7 @@
     border-radius: 20px 20px 0px 0px;
 }
 
-.playerlistDiv{
-    position: absolute;
-    z-index: 1;
-    left: 10px;
-    top :50px;
-}
-
-.nbLaps{ /*nombre de tour*/
+.nbLaps{
     position: absolute;
     z-index: 1;
     left: 10px;
@@ -74,7 +67,6 @@
     font-size: 30px;
     color: #fff;
 }
-
 
 #endgamebutton{
     position: absolute;
@@ -107,35 +99,9 @@
 .button{
     /*background-color: #85C9C2;*/
     
-    border: solid 2px #7aa3f4;
+    border: solid 2px #85C9C2;
     border-radius: 10px;
 
     width: 100px;
     height: 60px;
-}
-
-/* #playerCanvasBody{
-    columns: 2 auto;
-    grid-row: 2;
-} */
-
-/** Historique*/
-
-.historique{
-    position: absolute;
-    z-index: 1;
-    bottom: 2%;
-    left: 2%;
-
-    display: flex;
-    flex-direction: column;
-    /* justify-content: end; */
-
-    padding: 15px 25px;
-    background-color: #d9d9d9;
-    border-radius: 15px;
-
-    height: 250px;
-    width: 20%;
-    overflow-y:auto;
 }

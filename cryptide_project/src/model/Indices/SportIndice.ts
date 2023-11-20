@@ -29,6 +29,14 @@ class SportIndice extends Indice {
     getSports(): Sport[]{
       return this.sports
     }
+
+    toJSON() {
+      return {
+          type: "SportIndice",
+          id: this.id,
+          sports: this.sports,
+      };
+    }
   }
 
   export default SportIndice

@@ -18,6 +18,15 @@ class NbEdgesIndice extends EdgesIndice {
       let json = GetJsonFile(lang)
       return `${json.nb_friends_indice_start} ${this.nbNeighbors} ${json.nb_friends_indice_end}`;
     }
+
+    toJSON() {
+      return {
+          type: "NbEdgesIndice",
+          id: this.id,
+          nbNeighbors: this.nbNeighbors,
+      };
+    }
+
   }
 
   export default NbEdgesIndice

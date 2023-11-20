@@ -42,7 +42,7 @@
 
     "and": "and",
     "or": "or",
-    "or_sport": "or",
+    "or_sport": "and/or",
 
 
     "age_indice_start": "The suspect is between",
@@ -62,5 +62,82 @@
     "nb_sports_indice_end": "sport",
 
     "sport_start": "The suspect plays at least",
-    "sport_end": ""
+    "sport_end": "",
+
+
+
+
+
+
+
+
+
+
+
+    "informations" : "Information",
+    "info.intro.title":"Introduction to the game :",
+    "info.intro.text":"Welcome to our exciting deduction game, where intrigue and mischief come together in a thrilling adventure! Immerse yourself in a world of mystery and intrigue, where every interaction counts, and every clue brings you closer to the truth.Imagine a complex graph where each vertex represents a person, each axis a relationship, and every detail counts. You are plunged into a challenging challenge to discover who among these individuals is the mysterious killer. Each player has a crucial clue, and only the strategic sharing of these clues will lead you to solving the mystery. Explore our rules page to understand the intricacies of the game, discover clues that can guide you, and develop smart strategies to identify the culprit. Manipulate your friends to be the first to find out who the murderer is! Are you ready to take up the challenge and unmask the killer hidden in the graph? Let the investigation begin!",
+
+    "info.sommaire":"Contents",
+
+    "info.title.composant":"Game Components",
+    "info.title.objectif":"Objective of the game",
+    "info.title.deroulement":"Game flow",
+    "info.title.indice_possible":"Possible game clue",
+
+    "info.pions" : "Pawns",
+    "info.composant.text" : "Each player will be associated with a specific color that will distinguish the actions represented by the pawns as follows :",
+    
+    "info.composant.carre.title":"square tokens",
+    "info.composant.carre":"These chips indicate a negation. When a player places a square token, it means that his clue clears the designated person.",
+    
+    "info.composant.rond.title":"round tokens",
+    "info.composant.rond":"These chips represent a 'maybe'. The player depositing this token claims that the person is a suspect, but this does not guarantee his guilt.There is only one suspect carrying a round token for all players in the game, and this is the culprit!",
+
+    "info.car_perso":"Characteristics",
+    "info.composant.textcar":"In addition to their names, the characters are represented with other characteristics :",
+    
+    "info.composant.age.title":"Ages",
+    "info.composant.age":"Each person has an age to authenticate them, varying between 0 and 60 years. Age is a characteristic that will be confirmed by clues in the form of ",
+    "info.composant.age.link":"age groups",
+
+    "info.composant.hair_col.title":"Hair's colors",
+    "info.composant.hair_col":"The characters also have a hair colour, which can be found in the following colours :",
+
+    "hair.blanc":"Blanc",
+    "hair.blond":"Blond",
+    "hair.roux":"Red head",
+    "hair.chatain":"Brown",
+    "hair.noir":"Black",
+
+    "info.composant.sport.title":"Sports",
+    "info.composant.sport":"The characters' hobbies are represented by five sports respectively :",
+    "info.composant.baseball":"Baseball",
+    "info.composant.basketball":"Basketball",
+    "info.composant.bowling":"Bowling",
+    "info.composant.football":"Football",
+    "info.composant.tennis":"Tennis",
+    "info.composant.sport.bis":"Among these sports, each character can have between 0 and 3 sports, which facilitates their identification using the clues you have.",
+
+
+    "info.objectif.intro":"Welcome to the clever universe of our deduction game, where deception and cunning are the keys to success. Your mission is to unravel the mystery behind each interaction of the complex graph representing the relationships between individuals.",
+    "info.objectif.t1":"Subtle Manipulation",
+    "info.objectif.t1.text":"The ultimate goal is to find out who among the individuals is the killer, but not through open collaboration. On the contrary, you will use subtle manipulation to blur the lines and distract your opponents. Ask strategic questions, respond with malice, and plant misleading clues to get closer to the outcome.",
+    "info.objectif.t2":"Trickery",
+    "info.objectif.t2.text":"Each round offers the opportunity to sow doubt among your opponents. When a player questions you, respond by cleverly placing a square token to indicate that 'depending on your clue, that person cannot be the culprit' or a round token to suggest that they remain in the suspect list. Be careful, because every gesture can be interpreted, and the truth is often hidden behind a facade of misleading clues.",
+    "info.objectif.t3":"Counter-manipulation",
+    "info.objectif.t3.text":"If a player places a square token, the questioner must also play his game by placing a square token of his color on a node of the graph. Countermanipulation becomes a formidable weapon to divert the accusation and sow confusion.",
+
+    "etape":"Step",
+    "info.deroulement.e1":"Ask Strategic Questions",
+    "info.deroulement.e1.text":"Each round begins with a player asking another player a question about a person on the graph. Answers are formulated by placing square or round tokens to indicate certainty or doubt as to the involvement of this person.",
+    "info.deroulement.e2":"Counterhandling and Counterquestioning",
+    "info.deroulement.e2.text":"If a player places a square token, the questioner must also place a square token on a node in the graph. Counter-questions are a way to confuse players and deflect the accusation.",
+    "info.deroulement.e3":"The Final Guess",
+    "info.deroulement.e3.text":"The game reaches its climax when a player attempts the final 'Guess', claiming that such a person is the killer. Other players can then contradict this statement by placing their own square chips. If no refutation is made, the player who made the 'Guess' wins the game, demonstrating his mastery in the art of manipulation.",
+
+    "info.indice-possible.age":"Person's age",
+    "info.indice-possible.hair":"Hair color of a person",
+    "info.indice-possible.sport":"Sport(s) of a person",
+    "info.indice-possible.voisin":"Character of neighbours"
 }

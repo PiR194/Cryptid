@@ -17,7 +17,10 @@ abstract class Indice {
     // Méthode abstraite pour être implémentée par les classes dérivées
     abstract ToString(lang: string): string;
 
-    
+    abstract toJSON(): any
+
   }
+
+    //todo to string ?
   
 export default Indice

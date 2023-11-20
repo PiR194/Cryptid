@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
 
 /* Style */
@@ -10,6 +10,7 @@ import ChoiceBar from '../Components/ChoiceBar';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import PersonStatus from '../Components/PersonStatus';
 import PlayerList from '../Components/PlayerList';
+import TurnBar from '../Components/TurnBar';
 
 /* Icon */
 import Leave from "../res/icon/leave.png";
@@ -18,6 +19,7 @@ import Replay from "../res/icon/replay.png";
 import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
+import MGlass from "../res/icon/magnifying-glass.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -32,52 +34,81 @@ import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
+import { useGame } from '../Contexts/GameContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
-
-  const players = [
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' },
-    { state: Replay, name: 'Dummy' },
-    { state: Replay, name: 'Boat' },
-    { state: Replay, name: 'Bot-tom' }
-    // Ajouter d'autres joueurs au besoin
-  ];
-
-
+  
   const theme = useTheme();
+  
+  
+  const params = new URLSearchParams(window.location.search);
+  
+  //* Gestion solo
+  let IsSolo: boolean = true
+  const solotmp = params.get('solo');
+  if (solotmp == "false"){
+    IsSolo=false
+  }
 
-    const [showChoiceBar, setShowChoiceBar] = useState(false);
-  
-    const handleNodeClick = (shouldShowChoiceBar: boolean) => {
-      setShowChoiceBar(shouldShowChoiceBar);
-    };
-  
-    /* offcanvas */
-    //? faire une fonction pour close et show en fonction de l'etat du canva ?
-    //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  //* Historique
+  const [history, setHistory] = useState<string[]>([]);
 
-    const [showP, setShowP] = useState(false);
-    const handleCloseP = () => setShowP(false);
-    const handleShowP = () => setShowP(true);
+  // Fonction pour ajouter un élément à l'historique
+  const addToHistory = (message: string) => {
+    setHistory(prevHistory => [...prevHistory, message]);
+  };
   
-    const [showS, setShowS] = useState(false);
-    const handleCloseS = () => setShowS(false);
-    const handleShowS = () => setShowS(true);
+  useEffect(() => {
+    const historyContainer = document.getElementById('history-container');
+    if (historyContainer) {
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+  }, [history]);
+
+
+
+
+  const [showChoiceBar, setShowChoiceBar] = useState(false);
+  const [showTurnBar, setShowTurnBar] = useState(false);
+  const [turnBarText, setTurnBarText] = useState("");
+
+  const handleNodeClick = (shouldShowChoiceBar: boolean) => {
+    setShowChoiceBar(shouldShowChoiceBar);
+  };
+
+
+  const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
+    setShowTurnBar(shouldShowTurnBar);
+  };
+  
+  const handleTurnBarTextChange = (newTurnBarText: string) =>{
+    setTurnBarText(newTurnBarText)
+  }
+
+  /* offcanvas */
+  //? faire une fonction pour close et show en fonction de l'etat du canva ?
+  //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [showP, setShowP] = useState(false);
+  const handleCloseP = () => setShowP(false);
+  const handleShowP = () => setShowP(true);
+
+  const [showS, setShowS] = useState(false);
+  const handleCloseS = () => setShowS(false);
+  const handleShowS = () => setShowS(true);
+
+  const [cptTour, setcptTour] = useState(0);
+
+  //@ts-ignore
+  const changecptTour = (newcptTour) => {
+    setcptTour(newcptTour);
+  };
   
     const handleChange = () => {
       if (show){
@@ -114,35 +145,54 @@ const InGame = ({locale, changeLocale}) => {
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const indices = Stub.GenerateIndice()
+  const { indice, players } = useGame();
+
 
     return (
       <div id="mainDiv">
-        <div className='upperInfo' 
-          style={{ 
-              borderColor: theme.colors.secondary
-          }}>
-          {/* texte changeable et a traduire */}
-          <p>Dummy, à vous de jouer !</p>
-        </div>
+        {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} />
+          <GraphContainer onNodeClick={handleNodeClick} 
+                          handleShowTurnBar={handleShowTurnBar} 
+                          handleTurnBarTextChange={handleTurnBarTextChange} 
+                          changecptTour={changecptTour} 
+                          addToHistory={addToHistory}
+                          solo={IsSolo} />
         </div>
 
-        <div className='playerlistDiv'>
-          <button className='button' 
-            style={{ 
-                backgroundColor: theme.colors.primary,
+
+        {IsSolo ? (
+            <div className='nbLaps' style={{ 
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
-            }}
-            onClick={handleChangeP}>
-            Players
-          </button>
+            }}>
+              Coups : {cptTour}
+            </div>
+          ) : (
+            <div className='playerlistDiv'>
+              <button className='button' 
+                style={{ 
+                    backgroundColor: theme.colors.tertiary,
+                    borderColor: theme.colors.secondary
+                }}
+                onClick={handleChangeP}>
+                Players
+              </button>
+            </div>
+          )
+        }
+        
+        
+        <div className='historique' id="history-container">
+            {history.map((item, index) => (
+                <div key={index}>{item}</div>
+            ))}
         </div>
 
         <div className='paramDiv'>
           <button className='button'
             style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
             }}
             onClick={handleChangeS}>
@@ -151,10 +201,13 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
         <div className='menuGame'>
+          {/* <Link to='/info#indice-possible' target='_blank'> 
+            //? redirection impossible apparament (securité des navigateur
+          */}
           <Link to='/info' target='_blank'>
             <button className='button' 
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Info} alt="info" height="40"/>
@@ -167,7 +220,7 @@ const InGame = ({locale, changeLocale}) => {
           <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Check} alt="check" height="40"/>
@@ -176,10 +229,10 @@ const InGame = ({locale, changeLocale}) => {
 
           <button className='button' onClick={handleChange}
             style={{ 
-              backgroundColor: theme.colors.primary,
+              backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
-            <img src={Alpha} alt="indice" height="40"/>
+            <img src={MGlass} alt="indice" height="40"/>
           </button>
         </div>
 
@@ -211,9 +264,7 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             {/* Possède les cheveux noir <u>ou</u> joue au basket */}
-            {indices[0].ToString(locale)}<br/>
-            {indices[1].ToString(locale)}<br/>
-            {indices[2].ToString(locale)}
+            {indice?.ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
 
@@ -248,13 +299,14 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-
         <div id="bottom-container">
           {showChoiceBar && <ChoiceBar />}
         </div>
-        <div id="endgamebutton" > {/*  tmp */}
+        {/*
+        <div id="endgamebutton" > {/*  tmp 
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
         </div>
+      */}
       </div>
     );
   };

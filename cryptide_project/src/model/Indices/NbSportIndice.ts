@@ -18,6 +18,14 @@ class NbSportIndice extends Indice {
       let json = GetJsonFile(lang)
       return `${json.nb_sports_indice_start} ${this.nbSport} ${json.nb_sports_indice_end}`;
     }
+
+    toJSON() {
+      return {
+          type: "NbSportIndice",
+          id: this.id,
+          nbSport: this.nbSport,
+      };
+    }
   }
 
   export default NbSportIndice
