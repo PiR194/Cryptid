@@ -177,6 +177,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             }
             else{
               askedPersons.push(pers)
+              //@ts-ignore
               const node = nodes.get().find((n) => nodeId == n.id)
               if (node != undefined && indice != null){
                 var tester = IndiceTesterFactory.Create(indice)
@@ -238,6 +239,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setNodeIdData(params.nodes[0])
         if (!solo){
           if (askedWrong){
+            //@ts-ignore
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
             if (person !== undefined && indice !== null){
               const tester = IndiceTesterFactory.Create(indice)
@@ -260,6 +262,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
         }
         else{ // si solo -> Mastermind
+          //@ts-ignore
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
             let index = 0;
@@ -267,6 +270,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             for(const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(person)
+              //@ts-ignore
               const node = nodes.get().find((n) => params.nodes[0] == n.id)
               if (node!=undefined){
                 networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
