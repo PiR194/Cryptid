@@ -65,12 +65,32 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     }
   }
+  
+  //* fonction qui reinitialise le graphe 
+  const resGraph = () => { //? comment accéder au nework ??
+    const savedGraphStateString = localStorage.getItem('graphState');
+    if (savedGraphStateString !== null) {
+      const savedGraphState = JSON.parse(savedGraphStateString);
+      //network.setData(savedGraphState);
+    } else {
+      // La clé 'graphState' n'existe pas dans le localStorage, prenez une action en conséquence.
+      console.log("ayoooooo");
+    }
+
+  };
 
   useEffect(() => {
     if (personNetwork == null){
       return
     }
     const graph = GraphCreator.CreateGraph(personNetwork)
+
+    let n = graph.nodesPerson;
+    let e = graph.edges;
+    const graphState = { n, e };
+
+    // Sauvegarder l'état dans localStorage
+    localStorage.setItem('graphState', JSON.stringify(graphState));
 
     const container = document.getElementById('graph-container');
     if (!container) {
@@ -269,6 +289,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   return (
     <>
       <div id="graph-container"/>
+      <button onClick={resGraph}>
+        reinitialisation
+      </button>
     </>
   );
 
