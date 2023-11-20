@@ -28,6 +28,12 @@ function EndGame() {
 
     const {winner, person, players, indices} =useGame()
     console.log(winner)
+    let indice = indices[0]
+    const index = players.findIndex((p) => p.id == winner?.id)
+    if (index != -1) {
+        indice = indices[index]
+    }
+    
     const theme = useTheme();
     return (
         <div>
@@ -39,7 +45,7 @@ function EndGame() {
             </div>
             <div className='winner'>
                 <img src={Person} width='300' height='300'/>
-                <h3>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
+                <h3>{indice.ToString("fr")}</h3>
             </div>
             <div className='bottom'>
                 <div className='centerDivH'>

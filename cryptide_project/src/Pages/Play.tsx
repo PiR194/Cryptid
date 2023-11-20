@@ -22,11 +22,15 @@ import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
+import { set } from 'lodash';
 
 
 function Play() {
     const theme=useTheme()
     const [username, setUsername] = useState('');
+    const [nbSoloGames, setNbSoloGames] = useState(0);
+    const [soloBestScore, setSoloBestScore] = useState(0);
+    const [soloAverageTry, setSoloAverageTry] = useState(0);
 
     useEffect(() => {
         const fetchUserInformation = async () => {
@@ -37,6 +41,9 @@ function Play() {
             // Vérifie si il y a une session
             if (sessionData.user) {
               setUsername(sessionData.user.pseudo);
+              setNbSoloGames(sessionData.user.soloStats.nbGames);
+              setSoloBestScore(sessionData.user.soloStats.bestScore);
+              setSoloAverageTry(sessionData.user.soloStats.averageTry);
             } else {
               // Pas de session on génère un guest random
               setUsername(`Guest ${Math.floor(Math.random() * 100000)}`);
@@ -130,16 +137,16 @@ function Play() {
                     <div className='textBoard'>
                         <div>
                             <h4>
-                                Partie Jouées : <br/>
-                                Partie gagnées : <br/>
-                                Pions posés : <br/>
+                                Parties jouées : <br/>
+                                High-Score : <br/>
+                                Nombre d'essaie moyen : <br/>
                             </h4>
                         </div>
                         <div>
                             <h4>
-                                10 <br/>
-                                2 <br/>
-                                45 <br/>
+                                {nbSoloGames} <br/>
+                                {soloBestScore} <br/>
+                                {soloAverageTry} <br/>
                             </h4>
                         </div>
                     </div>
