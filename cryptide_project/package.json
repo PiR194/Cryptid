@@ -57,9 +57,14 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.23.3",
     "@jest/types": "^29.6.3",
     "@types/react-router-hash-link": "^2.4.9",
-    "@types/uuid": "^9.0.7"
+    "@types/uuid": "^9.0.7",
+    "babel-jest": "^29.7.0"
+  },
+  "babel": {
+    "presets": ["@babel/preset-react"]
   },
   "jest": {
     "preset": "jest-expo",
