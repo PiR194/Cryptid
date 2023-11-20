@@ -21,6 +21,7 @@ import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
+import ScoreBoard from '../Components/ScoreBoard';
 
 
 function Play() {
@@ -62,12 +63,12 @@ function Play() {
         
       }, []);  // Aucune dépendance ici
 
-      useEffect(() => {
-        if (room !== null) {
-          const nouvelleURL = `/lobby?room=${room}`;
-          navigate(nouvelleURL);
-        }
-      }, [room, navigate]);
+    useEffect(() => {
+    if (room !== null) {
+        const nouvelleURL = `/lobby?room=${room}`;
+        navigate(nouvelleURL);
+    }
+    }, [room, navigate]);
 
 
 
@@ -99,33 +100,7 @@ function Play() {
                 </div>
             </div>
             <div className='rightContainer'>
-                <div className='LeaderBoardiv'>
-                    <img src={trophy}
-                                height='100'
-                                width='100'
-                                alt="Person2"
-                                />
-                    <div className='textBoard'>
-                        <div>
-                            <h4>
-                                Partie Jouées : <br/>
-                                Partie gagnées : <br/>
-                                Pions posés : <br/>
-                            </h4>
-                        </div>
-                        <div>
-                            <h4>
-                                10 <br/>
-                                2 <br/>
-                                45 <br/>
-                            </h4>
-                        </div>
-                    </div>
-                    {/* <button className='ButtonNav'>
-                        Share
-                    </button> */}
-                    <ButtonImgNav dest='/' img={share}/>
-                </div>
+                <ScoreBoard/>
             </div>
         </div>
     );
