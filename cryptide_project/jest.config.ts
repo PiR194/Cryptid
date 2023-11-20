@@ -19,13 +19,13 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'css'],
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-        '^.+\\.css$': 'identity-obj-proxy',
+        '^.+\\.css$': '<rootDir>/path/to/your/babel-css-transformer.js',
     },
     moduleNameMapper: {
-        '\\.css$': 'identity-obj-proxy',
+        '\\.css$': '<rootDir>/path/to/your/empty-module.js',
     },
 };
 
