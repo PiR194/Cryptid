@@ -29,7 +29,7 @@ const ChoiceBar = () => {
 
         let playerIndex = actualPlayerIndex + 1
         if (indiceTester.Works(person)){
-          socket.emit("node checked", nodeId, true, positionToColor(actualPlayerIndex), room, nextPlayerIndex)
+          socket.emit("node checked", nodeId, true, actualPlayerIndex, room, nextPlayerIndex)
           while(playerIndex != actualPlayerIndex){
             if (playerIndex == players.length){
               playerIndex = 0
@@ -38,7 +38,7 @@ const ChoiceBar = () => {
             const works = tester.Works(person)
             await delay(500);
             socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
-            socket.emit("node checked", nodeId, works, positionToColor(playerIndex), room, nextPlayerIndex)
+            socket.emit("node checked", nodeId, works, playerIndex, room, nextPlayerIndex)
             if(!works){
               return
             }

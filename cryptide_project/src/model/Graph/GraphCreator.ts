@@ -11,7 +11,7 @@ class GraphCreator{
         const nodesPerson : NodePerson[] = []
         const edges: Edge[] = []
         network.getPersons().forEach((p) =>{
-            let label = p.getName() + "\n" + p.getAge() + "\n"
+            let label = p.getName() + "\n" + p.getAge() + "🎂" + "\n"
             for (let i = 0; i<p.getSports().length; i++){
                 label += SportToIcon(p.getSports()[i])
             }
