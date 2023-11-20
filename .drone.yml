@@ -1,3 +1,40 @@
+# kind: pipeline
+# type: docker
+# name: default
+
+# trigger:
+#   event:
+#     - push
+
+# steps:
+  
+#   - name: build
+#     image: node:20 #voir pour changer la version ?    
+#     commands:
+#       - cd cryptide_project
+#       - npm install --legacy-peer-deps
+#       - CI=false npm run build
+  
+#   - name: sonar-analyses
+#     image: node:20
+#     commands:
+#       - cd ./cryptide_project
+#       #- npm install --legacy-peer-deps
+#       - npm run test
+#       - ls ./test/coverage
+#       - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=$${PLUGIN_SONAR_HOST}
+#         -Dsonar.login=$${PLUGIN_SONAR_TOKEN} -Dsonar.javascript.lcov.reportPaths=./test/coverage/lcov.info 
+#         -Dsonar.exclusions=**/lcov-report/**
+#     secrets: [ SECRET_SONAR_LOGIN_CRYPTIDE ]
+#     settings:
+#       sonar_host: https://codefirst.iut.uca.fr/sonar/
+#       sonar_token:
+#         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
+#     when:
+#       event:
+#         - push
+#         - push_request
+
 kind: pipeline
 type: docker
 name: default
@@ -7,25 +44,30 @@ trigger:
     - push
 
 steps:
-  
   - name: build
-    image: node:20 #voir pour changer la version ?    
+    image: node:20
     commands:
       - cd cryptide_project
       - npm install --legacy-peer-deps
       - CI=false npm run build
-  
+
+  - name: cleanup-node-modules
+    image: node:20
+    commands:
+      - cd cryptide_project
+      - rm -rf node_modules
+
   - name: sonar-analyses
     image: node:20
     commands:
-      - cd ./cryptide_project
-      #- npm install --legacy-peer-deps
+      - cd cryptide_project
+      - npm install --legacy-peer-deps
       - npm run test
       - ls ./test/coverage
-      - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=$${PLUGIN_SONAR_HOST}
-        -Dsonar.login=$${PLUGIN_SONAR_TOKEN} -Dsonar.javascript.lcov.reportPaths=./test/coverage/lcov.info 
+      - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=${PLUGIN_SONAR_HOST}
+        -Dsonar.login=${PLUGIN_SONAR_TOKEN} -Dsonar.javascript.lcov.reportPaths=./test/coverage/lcov.info 
         -Dsonar.exclusions=**/lcov-report/**
-    secrets: [ SECRET_SONAR_LOGIN_CRYPTIDE ]
+    secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
     settings:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
