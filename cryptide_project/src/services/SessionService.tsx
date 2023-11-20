@@ -1,7 +1,7 @@
 class SessionService {
     static async getSession() {
         try {
-            const response = await fetch('http://localhost:3000/session', {
+            const response = await fetch('http://localhost:3003/session', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

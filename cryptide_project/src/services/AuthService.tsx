@@ -12,7 +12,7 @@ class AuthService{
 
     static async signUp(data: any) {
         try {
-            const response = await fetch('http://localhost:3000/auth/signup', {
+            const response = await fetch('http://localhost:3003/auth/signup', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ class AuthService{
 
     static async signIn(data: any) {
         try {
-            const response = await fetch('http://localhost:3000/auth/signin', {
+            const response = await fetch('http://localhost:3003/auth/signin', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
