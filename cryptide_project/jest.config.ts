@@ -22,11 +22,11 @@ const config: Config.InitialOptions = {
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'css'],
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-        '^.+\\.css$': '<rootDir>/path/to/your/babel-css-transformer.js',
+        '^.+\\.css$': '<rootDir>/babel-css-transformer.js',
     },
     moduleNameMapper: {
-        '\\.css$': '<rootDir>/path/to/your/empty-module.js',
+        '\\.css$': '<rootDir>/empty-module.js',
     },
 };
-
+    
 export default config;
