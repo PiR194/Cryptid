@@ -18,7 +18,9 @@ abstract class Indice {
     abstract ToString(lang: string): string;
 
     abstract toJSON(): any
+
   }
 
+    //todo to string ?
   
 export default Indice

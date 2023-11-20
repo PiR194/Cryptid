@@ -78,7 +78,7 @@ function App() {
                 <Route path="/lobby" element={<Lobby/>} />
                 <Route path="/endgame" element={<EndGame/>} />
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                <Route path="/info" element={<InfoPage/>} />
+                <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
                 {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
               </Routes>
             </BrowserRouter>

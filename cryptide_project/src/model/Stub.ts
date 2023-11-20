@@ -11,8 +11,8 @@ import Sport from "./Sport"
 class Stub{
 
     static GenerateIndice(): Indice[]{
-        let indice = new NbEdgesIndice(1, 3)
-        let indice1 = new NbEdgesIndice(2, 4)
+        let indice = new NbEdgesIndice(1, 2)
+        let indice1 = new NbEdgesIndice(2, 3)
         let ageIndice = new AgeIndice(3, 0, 14)
         let ageIndice1 = new AgeIndice(4, 15, 19)
         let ageIndice2 = new AgeIndice(5, 20, 29)
@@ -40,12 +40,14 @@ class Stub{
                 test++
             }
         }
-
+        
+        //* Voisin couleur
         for (let i: Color=0; i<5; i++){
             indices.push(new ColorEdgesIndice(test, [i]))
             test++
         }
 
+        //* Nombre de sport
         for (let i=1; i<3; i++){
             indices.push(new NbSportIndice(test, i))
             test++

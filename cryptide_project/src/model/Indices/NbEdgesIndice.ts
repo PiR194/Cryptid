@@ -26,6 +26,7 @@ class NbEdgesIndice extends EdgesIndice {
           nbNeighbors: this.nbNeighbors,
       };
     }
+
   }
 
   export default NbEdgesIndice
