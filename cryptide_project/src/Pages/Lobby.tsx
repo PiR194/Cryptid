@@ -5,7 +5,6 @@ import { useTheme } from '../Style/ThemeContext';
 /* res */
 import PlayerItemList from '../Components/PlayerItemList'
 import PersonImg from '../res/img/Person.png';
-import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
@@ -25,6 +24,7 @@ import { random } from 'lodash';
 import Player from '../model/Player';
 import Human from '../model/Human';
 import EasyBot from '../model/EasyBot';
+import Bot from '../model/Bot';
 
 
 
@@ -61,19 +61,20 @@ function Lobby() {
         const network: PersonNetwork = JSONParser.JSONToNetwork(jsonNetwork)
         const choosenOne: Person = network.getPersons().filter((i) => i.getId() == jsonPerson.id)[0]
         const choosenIndices : Indice[] = JSONParser.JSONToIndices(jsonIndicesString)
-        let index = 0
         for (let i=0; i<players.length; i++){
-            if(players[i].id == socket.id){
-                index=i
-                break
+            const player = players[i]
+            if(player.id == socket.id){
+                setActualPlayerIndexData(i)
+                setIndiceData(choosenIndices[i])
+            }
+            if (player instanceof Bot){
+                player.indice = choosenIndices[i]
             }
         }
         if (room != null){
             setRoomData(room)
         }
         setTurnPlayerIndexData(playerIndex)
-        setActualPlayerIndexData(index)
-        setIndiceData(choosenIndices[index])
         setPersonData(choosenOne)
         setPersonNetworkData(network)
         setIndicesData(choosenIndices)
@@ -85,7 +86,6 @@ function Lobby() {
         const tmpTab: Player[] = []
         for (const p of tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
-            console.log(tmpTab)
         }
         setPlayersData(tmpTab)
     })
@@ -98,7 +98,8 @@ function Lobby() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room);
+        let start = 0
+        socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 
     return (

@@ -7,7 +7,7 @@ class NetworkGenerator{
 
     static GenerateNetwork(nbPerson: number): PersonNetwork{
         let json = require("../res/names.json")
-        const tabSports: Sport[] = [0, 1, 2, 3, 4, 5, 5, 5, 5]
+        const tabSports: Sport[] = [0, 1, 2, 3, 4, 5, 5, 5]
         const tabColor: Color[] = [0, 1, 2, 3, 4]
         const tabJeune: number[] = []
         const tabAdo: number[] = []

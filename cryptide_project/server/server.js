@@ -24,8 +24,8 @@ server.listen(3002, () => {
 io.on('connection', (socket) => {
   console.log(socket.id);  
 
-  socket.on('network created', (network, person, indices, room) =>{
-    io.to(room).emit("game created", network, person, indices, Math.floor(Math.random() * map.get(room).length))
+  socket.on('network created', (network, person, indices, room, start) =>{
+    io.to(room).emit("game created", network, person, indices, start)
   });
 
   socket.on("lobby joined", (room, player) =>{
@@ -62,8 +62,8 @@ io.on('connection', (socket) => {
     io.to(askingPlayer.id).emit("already asked", nodeId, askedPlayer)
   })
 
-  socket.on("ask player", (nodeId, playerId, askingPlayer, askingPlayerIndex) =>{
-    io.to(playerId).emit("asked", nodeId, askingPlayer, askingPlayerIndex)
+  socket.on("ask player", (nodeId, playerId, askingPlayer) =>{
+    io.to(playerId).emit("asked", nodeId, askingPlayer)
   })
 
   socket.on("asked all 1by1", (id, playerId) =>{
@@ -80,15 +80,14 @@ io.on('connection', (socket) => {
         for (let i = 0; i<tab.length; i++){
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
+            io.to(k).emit("new player", tab)
           }
         }
     }
   })
 
-
   socket.on("node checked", (id, works, color, room, playerIndex) =>{
-    console.log(playerIndex)
-    io.to(room).emit("node checked", id, works, color, playerIndex)
+    io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
   })
   
   socket.on("put correct background", (id) =>{

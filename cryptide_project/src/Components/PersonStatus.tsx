@@ -31,7 +31,6 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
     const [touchedPlayer, setTouchedPlayer] = useState(-2)
     useEffect(() =>{
         setTouchedPlayer(playerTouched)
-        console.log(touchedPlayer)
     }, [playerTouched])
     return (
         <div className='centerDivV' onClick={() => setPlayerTouched(index)}>

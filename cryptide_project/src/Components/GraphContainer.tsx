@@ -41,15 +41,20 @@ let askedWrong = false
 let solo: boolean = true
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
+let botIndex = -1
+let askedWrongBot = false
+let botTurnToCube = false
+let lastSocketId= ""
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo}) => {
 let cptTour: number = 0
 
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setWinnerData } = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
+  const [lastIndex, setLastIndex] = useState(-1)
 
 
   useEffect(() =>{
@@ -69,7 +74,6 @@ let cptTour: number = 0
       socket.emit("put imossible grey", socket.id)
     }
   }, [playerTouched])
-  
 
   let playerIndex: number = turnPlayerIndex
   let index = 0
@@ -80,13 +84,109 @@ let cptTour: number = 0
     }
   }
   let thisPlayerIndex = index
-  
+
+  useEffect(() =>{
+    if (actualPlayerIndex==0){
+      const bot = players[lastIndex]
+      if(bot instanceof Bot && botIndex != lastIndex){
+        botIndex = lastIndex
+        if (personNetwork!=null){
+          const [choosedPlayerIndex, personIndex] = bot.playRound(personNetwork, players)
+          const person = personNetwork.getPersons().find((p) => p.getId() == personIndex)
+          if (choosedPlayerIndex == players.length && person != undefined){
+            console.log(lastIndex + " All in sur => " + personNetwork.getPersons().find((p) => p.getId() == personIndex)?.getName())
+            let nextPlayerIndex = lastIndex + 1
+            if (nextPlayerIndex == players.length){
+              nextPlayerIndex = 0
+            }
+            let playerIndex = lastIndex + 1
+            let i = 0
+            socket.emit("node checked", personIndex, true, lastIndex, room, lastIndex)
+            while(playerIndex != lastIndex){
+              i++
+              if (playerIndex == players.length){
+                playerIndex = 0
+              }
+              const tester = IndiceTesterFactory.Create(indices[playerIndex])
+              const works = tester.Works(person)
+              socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
+              if (i==players.length){
+                socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
+              }
+              else{
+                socket.emit("node checked", personIndex, works, playerIndex, room, lastIndex)
+              }
+              if(!works){
+                socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
+                return
+              }
+              playerIndex ++
+            }
+            socket.emit("end game", lastIndex, room)
+          }
+          else{
+            if (person!=undefined){
+              if (players[choosedPlayerIndex] instanceof Bot){
+                console.log("BOT")
+                const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
+                const works = tester.Works(person)
+                if (works){
+                  playerIndex = lastIndex + 1
+                  if(playerIndex == players.length){
+                    playerIndex = 0
+                  }
+                  console.log(lastIndex + " interroge " + choosedPlayerIndex + " a propos de " + person.getName() + " et dit oui")
+                  socket.emit("node checked", personIndex, true, choosedPlayerIndex, room, playerIndex)
+                }
+                else{
+                  console.log(lastIndex + " interroge " + choosedPlayerIndex + " a propos de " + person.getName() + " et dit non")
+                  socket.emit("node checked", personIndex, false, choosedPlayerIndex, room, lastIndex)
+                  const ind = bot.placeSquare(personNetwork, players)
+                  console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
+                  playerIndex = lastIndex + 1
+                  if(playerIndex == players.length){
+                    playerIndex = 0
+                  }
+                  socket.emit("node checked", ind, false, lastIndex, room, playerIndex)
+                }
+              }
+              else{
+                console.log(choosedPlayerIndex + " => Pas bot" )
+                socket.emit("ask player", personIndex, players[choosedPlayerIndex].id, players[lastIndex])
+                console.log(lastIndex + " interroge " + +choosedPlayerIndex + " sur " + personNetwork.getPersons()[personIndex].getName())
+                const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
+                if (!tester.Works(person)){
+                  const ind = bot.placeSquare(personNetwork, players)
+                  console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
+                  playerIndex = lastIndex + 1
+                  if(playerIndex == players.length){
+                    playerIndex = 0
+                  }
+                  socket.emit("node checked", ind, false, lastIndex, room, playerIndex)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, [lastIndex])
+
+
   
   if (first){
     first = false
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
+      }
+      if (actualPlayerIndex==0){
+        players.forEach((p, index) =>{
+          if (p instanceof Bot && personNetwork!=null){
+            p.index=index
+            p.initiateMap(personNetwork)
+          }
+        })
       }
       setActualPlayerIndexData(index)
       if (playerIndex == thisPlayerIndex){
@@ -142,9 +242,10 @@ let cptTour: number = 0
         }
       })
       
-      socket.on("node checked",(id, works, askedIndex, newPlayerIndex) => {
+      socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
+          
           onNodeClick(false)
           playerIndex = newPlayerIndex
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
@@ -152,13 +253,19 @@ let cptTour: number = 0
             const tab = mapIndexPersons.get(askedIndex)
             if (p!=undefined && tab != undefined){
               tab.push(p)
+              if (actualPlayerIndex == 0){
+                players.forEach((player) => {
+                  if (player instanceof Bot){
+                    player.newInformation(p, askedIndex, works)
+                  }
+                })
+              }
             } 
           }
           
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
             networkData.nodes.update({id: id, label: node.label + colorToEmoji(positionToColor(askedIndex), works)})
           }
-          
           if (playerIndex === thisPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
             handleShowTurnBar(true)
@@ -167,8 +274,10 @@ let cptTour: number = 0
             handleShowTurnBar(false)
           }
         }
+        lastSocketId = socketId
         lastAskingPlayer = 0
         lastNodeId = -1
+        setLastIndex(newPlayerIndex)
       })
   
       socket.on("already asked", (nodeId, askedPlayer) =>{
@@ -177,13 +286,14 @@ let cptTour: number = 0
   
       socket.on("asked wrong", () =>{
         askedWrong = true
+        askedWrongBot=true
         handleShowTurnBar(true)
         handleTurnBarTextChange("Mauvais choix, posez un carré !")
         socket.emit("put grey background", socket.id, thisPlayerIndex)
       })
   
   
-      socket.on("asked", (nodeId, askingPlayer, askingPlayerIndex) => {
+      socket.on("asked", (nodeId, askingPlayer) => {
         if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
           lastAskingPlayer = askingPlayer.id
           lastNodeId = nodeId
@@ -199,20 +309,30 @@ let cptTour: number = 0
               if (node != undefined && indice != null){
                 var tester = IndiceTesterFactory.Create(indice)
                 let maybe = thisPlayerIndex
-                playerIndex = playerIndex + 1
-                if(playerIndex == players.length){
-                  playerIndex = 0
-                }
                 if (tester.Works(pers)){
+                  playerIndex = playerIndex + 1
+                  if(playerIndex == players.length){
+                    playerIndex = 0
+                  }
                   socket.emit("node checked", nodeId, true, thisPlayerIndex, room, playerIndex)
                 }
                 else{
-                  maybe = maybe - 1
+                  maybe = thisPlayerIndex - 1
                   if(maybe == 0){
                     maybe = players.length - 1
                   }
-                  socket.emit("node checked", nodeId, false, thisPlayerIndex, room, maybe)
-                  socket.emit("asked wrong", askingPlayer, room)
+                  let index = players.findIndex((p) => p.id == askingPlayer.id)
+                  if (players[index] instanceof Bot){
+                    index = playerIndex + 1
+                    if(index == players.length){
+                      index = 0
+                    }
+                  }
+                  if (index != undefined){
+                    socket.emit("node checked", nodeId, false, thisPlayerIndex, room, index)
+                    socket.emit("asked wrong", askingPlayer, room)
+                  }
+    
                 }
               }
             }     
@@ -327,8 +447,24 @@ let cptTour: number = 0
             }
           }
           else if(touchedPlayer != -1 && playerIndex == actualPlayerIndex && touchedPlayer<players.length){
+            botIndex = -1
             if (players[touchedPlayer] instanceof Bot){
-              console.log("BOT")
+              const ind = indices[touchedPlayer]
+              const test = IndiceTesterFactory.Create(ind)
+              const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
+              if (person != undefined){
+                if (test.Works(person)){
+                  let nextPlayerIndex = actualPlayerIndex + 1
+                  if (nextPlayerIndex == players.length){
+                    nextPlayerIndex = 0
+                  }
+                  socket.emit("node checked", params.nodes[0], true, touchedPlayer, room, nextPlayerIndex)
+                }
+                else{
+                  socket.emit("node checked", params.nodes[0], false, touchedPlayer, room, actualPlayerIndex)
+                  socket.emit("asked wrong", players[actualPlayerIndex])
+                }
+              }
             }
             else{
               socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
@@ -337,6 +473,7 @@ let cptTour: number = 0
             }
           }
           else if(playerIndex == actualPlayerIndex && touchedPlayer==players.length){
+            botIndex = -1
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
             if (person != undefined){
               const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])
@@ -347,7 +484,8 @@ let cptTour: number = 0
       
               let playerIndex = actualPlayerIndex + 1
               if (indiceTester.Works(person)){
-                socket.emit("node checked", params.nodes[0], true, actualPlayerIndex, room, nextPlayerIndex)
+                let i = 0
+                socket.emit("node checked", params.nodes[0], true, actualPlayerIndex, room, actualPlayerIndex)
                 while(playerIndex != actualPlayerIndex){
                   if (playerIndex == players.length){
                     playerIndex = 0
@@ -356,18 +494,28 @@ let cptTour: number = 0
                   const works = tester.Works(person)
                   await delay(500);
                   socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
-                  socket.emit("node checked", params.nodes[0], works, playerIndex, room, nextPlayerIndex)
+                  if (works){
+                    socket.emit("node checked", params.nodes[0], true, playerIndex, room, actualPlayerIndex)
+                  }
                   if(!works){
+                    socket.emit("node checked", params.nodes[0], works, playerIndex, room, nextPlayerIndex)
                     socket.emit("put correct background", socket.id)
                     touchedPlayer=-1
                     return
                   }
+                  if (i == players.length - 1){
+                    socket.emit("put correct background", socket.id)
+                    await delay(1000)
+                    socket.emit("end game", actualPlayerIndex, room)
+                    return
+                  }
                   playerIndex ++
+                  i++
                 }
                 touchedPlayer=-1
                 socket.emit("put correct background", socket.id)
                 await delay(1000)
-                socket.emit("end game", thisPlayerIndex, room)
+                socket.emit("end game", actualPlayerIndex, room)
               }
             }
           }
