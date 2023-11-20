@@ -35,25 +35,7 @@
     width: 30%;
 }
 
-.LeaderBoardiv{
-    background-color: #D7D4C6;
-    opacity: 80%;
-    border-radius: 25px;
 
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    margin: 15px;
-}
-
-
-.textBoard{
-    display: flex;
-    flex-wrap: column;
-    justify-content: space-between;
-    width: 300px;
-}
 
 /* .textBoard div{
     display: flex;
