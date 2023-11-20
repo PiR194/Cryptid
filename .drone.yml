@@ -90,3 +90,7 @@ steps:
       - export SONAR_SCANNER_OPTS="-server"
       - sonar-scanner -D sonar.projectKey=SECRET_SONAR_LOGIN_CRYPTIDE -D sonar.sources=./src -D sonar.host.url=https://codefirst.iut.uca.fr/sonar
     secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
+    settings:
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_token:
+        from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
