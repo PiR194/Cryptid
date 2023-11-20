@@ -65,22 +65,5 @@
   },
   "babel": {
     "presets": ["@babel/preset-react"]
-  },
-  "jest": {
-    "preset": "jest-expo",
-    "verbose": true,
-    "testMatch": [
-      "**.test.js",
-      "**.test.ts",
-      "**.test.tsx"
-    ],
-    "testEnvironment": "node",
-    "testEnvironmentOptions": {
-      "browsers": [
-        "chrome",
-        "firefox",
-        "safari"
-      ]
-    }
   }
 }
