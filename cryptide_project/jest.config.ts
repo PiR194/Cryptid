@@ -22,12 +22,13 @@ const config: Config.InitialOptions = {
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'png'],
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-        '^.+\\.png$': 'identity-obj-proxy',
+        '\\.(png)$': '<rootDir>/fileTransformer.js',
     },
     moduleNameMapper: {
         '\\.(css|less)$': 'identity-obj-proxy',
-        '\\.(gif|ttf|eot|svg)$': '<rootDir>/path/to/your/empty-module.js',
+        '\\.(gif|ttf|eot|svg)$': '<rootDir>/empty-module.js',
     },
 };
 
 export default config;
+
