@@ -22,11 +22,8 @@ import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
-<<<<<<< HEAD
-import { set } from 'lodash';
-=======
 import ScoreBoard from '../Components/ScoreBoard';
->>>>>>> origin
+import { set } from 'lodash';
 
 
 function Play() {
@@ -98,21 +95,11 @@ function Play() {
       }, []);  // Aucune dépendance ici
 
     useEffect(() => {
-<<<<<<< HEAD
         if (room !== null) {
             const nouvelleURL = `/lobby?room=${room}`;
             navigate(nouvelleURL);
         }
     }, [room, navigate]);
-=======
-    if (room !== null) {
-        const nouvelleURL = `/lobby?room=${room}`;
-        navigate(nouvelleURL);
-    }
-    }, [room, navigate]);
-
-
->>>>>>> origin
 
     return (
 
@@ -142,37 +129,7 @@ function Play() {
                 </div>
             </div>
             <div className='rightContainer'>
-<<<<<<< HEAD
-                <div className='LeaderBoardiv'>
-                    <img src={trophy}
-                                height='100'
-                                width='100'
-                                alt="Person2"
-                                />
-                    <div className='textBoard'>
-                        <div>
-                            <h4>
-                                Parties jouées : <br/>
-                                High-Score : <br/>
-                                Nombre d'essaie moyen : <br/>
-                            </h4>
-                        </div>
-                        <div>
-                            <h4>
-                                {nbSoloGames} <br/>
-                                {soloBestScore} <br/>
-                                {soloAverageTry} <br/>
-                            </h4>
-                        </div>
-                    </div>
-                    {/* <button className='ButtonNav'>
-                        Share
-                    </button> */}
-                    <ButtonImgNav dest='/' img={share}/>
-                </div>
-=======
                 <ScoreBoard/>
->>>>>>> origin
             </div>
         </div>
     );
