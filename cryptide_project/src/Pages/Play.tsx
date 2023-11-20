@@ -87,10 +87,10 @@ function Play() {
       }, []);  // Aucune dépendance ici
 
     useEffect(() => {
-    if (room !== null) {
-        const nouvelleURL = `/lobby?room=${room}`;
-        navigate(nouvelleURL);
-    }
+        if (room !== null) {
+            const nouvelleURL = `/lobby?room=${room}`;
+            navigate(nouvelleURL);
+        }
     }, [room, navigate]);
 
     return (
