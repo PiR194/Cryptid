@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
 
 /* Style */
@@ -19,6 +19,7 @@ import Replay from "../res/icon/replay.png";
 import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
+import MGlass from "../res/icon/magnifying-glass.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -34,6 +35,8 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -49,6 +52,23 @@ const InGame = ({locale, changeLocale}) => {
   if (solotmp == "false"){
     IsSolo=false
   }
+
+  //* Historique
+  const [history, setHistory] = useState<string[]>([]);
+
+  // Fonction pour ajouter un élément à l'historique
+  const addToHistory = (message: string) => {
+    setHistory(prevHistory => [...prevHistory, message]);
+  };
+  
+  useEffect(() => {
+    const historyContainer = document.getElementById('history-container');
+    if (historyContainer) {
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+  }, [history]);
+
+
 
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
@@ -137,7 +157,14 @@ const InGame = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} changecptTour={changecptTour} solo={IsSolo} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+          <GraphContainer onNodeClick={handleNodeClick} 
+                          handleShowTurnBar={handleShowTurnBar} 
+                          handleTurnBarTextChange={handleTurnBarTextChange} 
+                          changecptTour={changecptTour} 
+                          addToHistory={addToHistory}
+                          solo={IsSolo} 
+                          setPlayerTouched={handleSetPlayerTouched} 
+                          playerTouched={playerTouched}/>
         </div>
 
 
@@ -150,11 +177,17 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
+        
+        <div className='historique' id="history-container">
+            {history.map((item, index) => (
+                <div key={index}>{item}</div>
+            ))}
+        </div>
 
         <div className='paramDiv'>
           <button className='button'
             style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
             }}
             onClick={handleChangeS}>
@@ -163,10 +196,13 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
         <div className='menuGame'>
+          {/* <Link to='/info#indice-possible' target='_blank'> 
+            //? redirection impossible apparament (securité des navigateur
+          */}
           <Link to='/info' target='_blank'>
             <button className='button' 
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Info} alt="info" height="40"/>
@@ -179,7 +215,7 @@ const InGame = ({locale, changeLocale}) => {
           <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
               <img src={Check} alt="check" height="40"/>
@@ -188,10 +224,10 @@ const InGame = ({locale, changeLocale}) => {
 
           <button className='button' onClick={handleChange}
             style={{ 
-              backgroundColor: theme.colors.primary,
+              backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
-            <img src={Alpha} alt="indice" height="40"/>
+            <img src={MGlass} alt="indice" height="40"/>
           </button>
         </div>
 

@@ -31,6 +31,7 @@ interface MyGraphComponentProps {
   setPlayerTouched: (newPlayerTouch: number) => void;
   playerTouched: number
   changecptTour: (newcptTour : number) => void
+  addToHistory: (message : string) => void
   solo : boolean
 }
 
@@ -45,9 +46,11 @@ let botIndex = -1
 let askedWrongBot = false
 let botTurnToCube = false
 let lastSocketId= ""
+let firstLap = true
+let cptHistory = 0
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory}) => {
 let cptTour: number = 0
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
@@ -265,7 +268,12 @@ let cptTour: number = 0
           
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
             networkData.nodes.update({id: id, label: node.label + colorToEmoji(positionToColor(askedIndex), works)})
+            cptHistory++
+            if (cptHistory % 2 == 0){
+              addToHistory(players[askedIndex].name + " à mis un " + colorToEmoji(positionToColor(askedIndex), works))
+            }
           }
+
           if (playerIndex === thisPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
             handleShowTurnBar(true)
@@ -340,6 +348,12 @@ let cptTour: number = 0
         }
         
       })
+    }
+    else {
+      if (firstLap){
+        firstLap=false
+        addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+      }
     }
     
 
@@ -428,6 +442,7 @@ let cptTour: number = 0
       
       if(params.nodes.length > 0){
         setNodeIdData(params.nodes[0])
+        // addToHistory("Le joueur a cliqué") //! TEST DEBUG
         if (!solo){
           if (askedWrong){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
@@ -544,7 +559,12 @@ let cptTour: number = 0
               }
               index++
             }
+            addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
+
+            //TODO METTRE LA WIN CONDITION ICI AVEC LE MERGE
             cptTour ++; // On Incrémente le nombre de tour du joueur
+            const tour = cptTour+1;
+            addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
             changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
           }
         }

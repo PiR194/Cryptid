@@ -49,3 +49,7 @@
 form{
     margin : auto 150px;
 }
+
+.listContainer{
+    columns: 2 auto;
+}

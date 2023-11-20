@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"); /** import de la font */
+
+
+.infoPage{
+    margin: 20px 100px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}   
+
+/** Sommaire */
+.list {
+    max-width: 25%;
+    position: relative;
+}
+.list ul {
+    position: relative;
+}
+.list ul li {
+    position: relative;
+    left: 0;
+    color: #fce4ec;
+    list-style: none;
+    margin: 4px 0;
+    border-left: 2px solid #0052B8;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.list ul li:hover {
+    left: 10px;
+}
+.list ul li span {
+    position: relative;
+    padding: 8px;
+    padding-left: 12px;
+    display: inline-block;
+    z-index: 1;
+    transition: 0.5s;
+    color: #000;
+}
+.list ul li:hover span {
+    color: #fff;
+}
+.list ul li:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #0052B8;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: 0.5s;
+}
+.list ul li:hover:before {
+    transform: scaleX(1);
+}
+li *{
+    font-size: larger;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.LiInterfaceDisplay{
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+}
+
+.LiInterfaceDisplay p{
+    font-size: medium;
+}
+
+h2 {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    color: #080808;
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+h2 span {
+    display: block;
+    font-size: 0.5em;
+    line-height: 1.3;
+}
+h2 em {
+    font-style: normal;
+    font-weight: 600;
+}
+.infoPage h2 {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5em;
+    padding-bottom: 15px;
+    position: relative;
+}
+.infoPage h2:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    width: 55px;
+    background-color: #111;
+}
+.infoPage h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    height: 1px;
+    width: 95%;
+    max-width: 255px;
+    background-color: #333; 
+}
+
+h4{
+    font-size: 25px;
+    position: relative;
+    padding: 0;
+    margin: 20px 0 0 0;
+    font-family: "Raleway", sans-serif;
+}
+
+.h5title{
+    margin: 50px 0 0 0;
+    font-family: "Raleway", sans-serif;
+}
+
+/* .infoPage h2{
+    text-decoration: underline;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+} */

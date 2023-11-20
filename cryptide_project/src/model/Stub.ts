@@ -41,12 +41,14 @@ class Stub{
                 test++
             }
         }
-
+        
+        //* Voisin couleur
         for (let i: Color=0; i<5; i++){
             indices.push(new ColorEdgesIndice(test, [i]))
             test++
         }
 
+        //* Nombre de sport
         for (let i=1; i<3; i++){
             for (let j=0; j<3; j++){
                 if (j==i){
