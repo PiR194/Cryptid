@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001"], // Remplacez par l'URL de votre application React
+    origin: ["http://172.20.10.4:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i<tab.length; i++){
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
-            io.to(k).emit("new player", tab)
+            io.to(k).emit("player left", tab, socket.id)
           }
         }
     }

@@ -22,7 +22,11 @@ import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
+<<<<<<< HEAD
 import { set } from 'lodash';
+=======
+import ScoreBoard from '../Components/ScoreBoard';
+>>>>>>> origin
 
 
 function Play() {
@@ -94,11 +98,21 @@ function Play() {
       }, []);  // Aucune dépendance ici
 
     useEffect(() => {
+<<<<<<< HEAD
         if (room !== null) {
             const nouvelleURL = `/lobby?room=${room}`;
             navigate(nouvelleURL);
         }
     }, [room, navigate]);
+=======
+    if (room !== null) {
+        const nouvelleURL = `/lobby?room=${room}`;
+        navigate(nouvelleURL);
+    }
+    }, [room, navigate]);
+
+
+>>>>>>> origin
 
     return (
 
@@ -128,6 +142,7 @@ function Play() {
                 </div>
             </div>
             <div className='rightContainer'>
+<<<<<<< HEAD
                 <div className='LeaderBoardiv'>
                     <img src={trophy}
                                 height='100'
@@ -155,6 +170,9 @@ function Play() {
                     </button> */}
                     <ButtonImgNav dest='/' img={share}/>
                 </div>
+=======
+                <ScoreBoard/>
+>>>>>>> origin
             </div>
         </div>
     );
