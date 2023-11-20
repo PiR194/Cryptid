@@ -65,7 +65,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     }
   }
-  
+
   //* fonction qui reinitialise le graphe 
   const resGraph = () => { //? comment accéder au nework ??
     const savedGraphStateString = localStorage.getItem('graphState');
@@ -132,6 +132,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, color, newPlayerIndex) => {
+        //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)

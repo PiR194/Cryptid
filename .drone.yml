@@ -2,6 +2,10 @@ kind: pipeline
 type: docker
 name: default
 
+trigger:
+  event:
+    - push
+
 steps:
   
   - name: build
@@ -15,7 +19,7 @@ steps:
     image: node:20
     commands:
       - cd ./cryptide_project
-      - npm install --legacy-peer-deps
+      #- npm install --legacy-peer-deps
       - npm run test
       - ls ./test/coverage
       - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=$${PLUGIN_SONAR_HOST}
