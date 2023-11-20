@@ -51,28 +51,42 @@ steps:
       - npm install --legacy-peer-deps
       - CI=false npm run build
 
-  - name: cleanup-node-modules
-    image: node:20
-    commands:
-      - cd cryptide_project
-      - rm -rf node_modules
+  # - name: cleanup-node-modules
+  #   image: node:20
+  #   commands:
+  #     - cd cryptide_project
+  #     - rm -rf node_modules
 
-  - name: sonar-analyses
+  # - name: sonar-analyses
+  #   image: node:20
+  #   commands:
+  #     - cd cryptide_project
+  #     - npm install --legacy-peer-deps
+  #     #- npm run test
+  #     #- ls ./test/coverage
+  #     - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=${PLUGIN_SONAR_HOST}
+  #       -Dsonar.login=${PLUGIN_SONAR_TOKEN} -Dsonar.javascript.lcov.reportPaths=./test/coverage/lcov.info 
+  #       -Dsonar.exclusions=**/lcov-report/**
+  #   secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
+  #   settings:
+  #     sonar_host: https://codefirst.iut.uca.fr/sonar/
+  #     sonar_token:
+  #       from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
+  #   when:
+  #     event:
+  #       - push
+  #       - push_request
+
+  - name: code-analysis
     image: node:20
-    commands:
-      - cd cryptide_project
-      - npm install --legacy-peer-deps
-      - npm run test
-      - ls ./test/coverage
-      - sonar-scanner -Dsonar.projectKey=Learnihon -Dsonar.sources=. -Dsonar.host.url=${PLUGIN_SONAR_HOST}
-        -Dsonar.login=${PLUGIN_SONAR_TOKEN} -Dsonar.javascript.lcov.reportPaths=./test/coverage/lcov.info 
-        -Dsonar.exclusions=**/lcov-report/**
-    secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
     settings:
-      sonar_host: https://codefirst.iut.uca.fr/sonar/
-      sonar_token:
-        from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
-    when:
-      event:
-        - push
-        - push_request
+      sources: ./src
+    commands:
+      - export SONAR_SCANNER_VERSION=4.7.0.2747
+      - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+      - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+      - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+      - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+      - export SONAR_SCANNER_OPTS="-server"
+      - sonar-scanner -D sonar.projectKey=SECRET_SONAR_LOGIN_CRYPTIDE -D sonar.sources=./src -D sonar.host.url=https://codefirst.iut.uca.fr/sonar
+    secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
