@@ -1,7 +1,7 @@
 // theme.js
 const theme = {
     colors: {
-        primary: '#0064E0',
+        primary: '#7AA3F4',
         secondary: '#0052B8',
         tertiary: '#7aa3f4', //* Pour les boutons de l'interface.
         text: '#fff'

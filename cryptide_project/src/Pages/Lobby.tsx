@@ -5,7 +5,6 @@ import { useTheme } from '../Style/ThemeContext';
 /* res */
 import PlayerItemList from '../Components/PlayerItemList'
 import PersonImg from '../res/img/Person.png';
-import Bot from '../res/img/bot.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
@@ -23,8 +22,12 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from "../SocketConfig";
 import { random } from 'lodash';
 import Player from '../model/Player';
+import Human from '../model/Human';
+import EasyBot from '../model/EasyBot';
+import Bot from '../model/Bot';
 
 
+let gameStarted = false
 
 function Lobby() {
     const theme=useTheme();
@@ -38,49 +41,76 @@ function Lobby() {
     const params = new URLSearchParams(window.location.search);
     const room = params.get('room');
 
+    function addBot(){
+        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100)).toJson())
+    }
+
     useEffect(() => {
         if (first){
-            first = false
-            socket.emit("lobby joined", room, "test name" + Math.floor(Math.random() * 10))
-        
+            first=false
+            socket.emit("lobby joined", room, new Human("test", "Test" + Math.floor(Math.random() * 100)).toJson())
+
             return () => {
                 socket.off('game created');
             };
         }
         
-    }, []);
+    }, [socket.id]);
 
     socket.on("game created", (jsonNetwork, jsonPersonString, jsonIndicesString, playerIndex)=> {
         const jsonPerson = JSON.parse(jsonPersonString)
         const network: PersonNetwork = JSONParser.JSONToNetwork(jsonNetwork)
         const choosenOne: Person = network.getPersons().filter((i) => i.getId() == jsonPerson.id)[0]
         const choosenIndices : Indice[] = JSONParser.JSONToIndices(jsonIndicesString)
-        let index = 0
         for (let i=0; i<players.length; i++){
-            if(players[i].id == socket.id){
-                index=i
-                break
+            const player = players[i]
+            if(player.id == socket.id){
+                setActualPlayerIndexData(i)
+                setIndiceData(choosenIndices[i])
+            }
+            if (player instanceof Bot){
+                player.indice = choosenIndices[i]
             }
         }
         if (room != null){
             setRoomData(room)
         }
         setTurnPlayerIndexData(playerIndex)
-        setActualPlayerIndexData(index)
-        setIndiceData(choosenIndices[index])
         setPersonData(choosenOne)
         setPersonNetworkData(network)
         setIndicesData(choosenIndices)
         first = true
+        gameStarted = true
         navigate('/game?solo=false');
     });
 
     socket.on("new player", (tab) =>{
         const tmpTab: Player[] = []
         for (const p of tab){
-            tmpTab.push(new Player(p.id, p.name))
+            tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        setPlayersData(tab.map((p: any) => new Player(p.id, p.name)))
+        setPlayersData(tmpTab)
+    })
+
+    socket.on("player left", (tab, socketId) => {
+        if (gameStarted){
+            const i = players.findIndex((p) => p.id == socketId)
+            if (i != undefined){
+                let player = players[i]
+                player = new EasyBot("125", "BOT125")
+                if (player instanceof Bot){
+                    player.indice = indices[i]
+                }
+            }
+        }
+        else{
+            const tmpTab: Player[] = []
+            for (const p of tab){
+                tmpTab.push(JSONParser.JSONToPlayer(p))
+            }
+            setPlayersData(tmpTab)
+        }
+        const index = players
     })
 
     const [codeShowed, setCodeShowed] = useState(true);
@@ -91,7 +121,8 @@ function Lobby() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room);
+        let start = 0
+        socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 
     return (
@@ -111,6 +142,14 @@ function Lobby() {
                     {players.map((player, index) => (
                         <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
                     ))}
+                    <div className='centerButton'>
+                            <button className='button' onClick={addBot}
+                                style={{
+                                    backgroundColor: theme.colors.primary,
+                                    borderColor: theme.colors.secondary}}>
+                                +
+                            </button>
+                    </div>
                 </div>
             </div>
 

@@ -74,11 +74,16 @@ const InGame = ({locale, changeLocale}) => {
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
+  const [playerTouched, setPlayerTouched] = useState(-2)
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
     setShowChoiceBar(shouldShowChoiceBar);
   };
 
+    const handleSetPlayerTouched = (newPlayerTouched: number) => {
+      setPlayerTouched(newPlayerTouched);
+    };
+  
 
   const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
     setShowTurnBar(shouldShowTurnBar);
@@ -157,29 +162,19 @@ const InGame = ({locale, changeLocale}) => {
                           handleTurnBarTextChange={handleTurnBarTextChange} 
                           changecptTour={changecptTour} 
                           addToHistory={addToHistory}
-                          solo={IsSolo} />
+                          solo={IsSolo} 
+                          setPlayerTouched={handleSetPlayerTouched} 
+                          playerTouched={playerTouched}/>
         </div>
 
 
-        {IsSolo ? (
+        {IsSolo && 
             <div className='nbLaps' style={{ 
-                backgroundColor: theme.colors.tertiary,
+                backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
-              Coups : {cptTour}
+              Tour : {cptTour}
             </div>
-          ) : (
-            <div className='playerlistDiv'>
-              <button className='button' 
-                style={{ 
-                    backgroundColor: theme.colors.tertiary,
-                    borderColor: theme.colors.secondary
-                }}
-                onClick={handleChangeP}>
-                Players
-              </button>
-            </div>
-          )
         }
         
         
@@ -236,6 +231,7 @@ const InGame = ({locale, changeLocale}) => {
           </button>
         </div>
 
+{/*
         <Offcanvas show={showP} 
                   onHide={handleCloseP}>
           <Offcanvas.Header closeButton>
@@ -243,15 +239,14 @@ const InGame = ({locale, changeLocale}) => {
             <h3>Il y a {players.length} joueurs</h3>
           </Offcanvas.Header>
           <Offcanvas.Body>
-              {/* affichage d'une liste responsive dynamic */}
-            {/* <div className='playerCanvasBody'>
-              <PersonStatus state={Replay} name="Dummy"/>
-              <PersonStatus state={Replay} name="Boat"/>
-              <PersonStatus state={Replay} name="Bot-tom"/>
-            </div> */}
-            <PlayerList players={players} />
+
           </Offcanvas.Body>
         </Offcanvas>
+          */}
+          <div className='playerlistDiv'>
+            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+          </div>
+
 
         <Offcanvas show={show} 
                   onHide={handleClose} 

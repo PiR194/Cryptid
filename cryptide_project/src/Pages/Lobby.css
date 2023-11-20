@@ -11,6 +11,7 @@
     padding: 20px;
     margin-right: 10px; 
     margin-left: 30px; 
+    
 }
 
 .lobby-vertical-divider{
@@ -53,4 +54,9 @@
     color: gray;
     font-size: 20px;
     cursor: pointer;
+}
+
+.centerButton {
+    display: flex;
+    justify-content: center;
 }

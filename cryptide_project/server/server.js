@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001"], // Remplacez par l'URL de votre application React
+    origin: ["http://172.20.10.4:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -24,24 +24,31 @@ server.listen(3002, () => {
 io.on('connection', (socket) => {
   console.log(socket.id);  
 
-  socket.on('network created', (network, person, indices, room) =>{
-    io.to(room).emit("game created", network, person, indices, Math.floor(Math.random() * map.get(room).length))
+  socket.on('network created', (network, person, indices, room, start) =>{
+    io.to(room).emit("game created", network, person, indices, start)
   });
 
-  socket.on("lobby joined", (room, name) =>{
-    socket.join(room)
+  socket.on("lobby joined", (room, player) =>{
+    if (player.type=="Human"){
+      socket.join(room)
+    }
     if (map.get(room) == undefined){
-      map.set(room, [{id: socket.id, name: name}])
+      map.set(room, [{type: player.type, id: socket.id, name: player.name}])
     }
     else{
       const tab = map.get(room)
       for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === socket.id){
+        if (tab[i].id === socket.id && player.type==="Human"){
           tab.splice(i, 1)
         }
       }
 
-      map.get(room).push({id: socket.id, name: name})
+      if (player.type!=="Human"){
+        map.get(room).push({type: player.type, id: player.id, name: player.name})
+      }
+      else{
+        map.get(room).push({type: player.type, id: socket.id, name: player.name})
+      }
     }
     
     io.to(room).emit("new player", map.get(room))
@@ -55,8 +62,8 @@ io.on('connection', (socket) => {
     io.to(askingPlayer.id).emit("already asked", nodeId, askedPlayer)
   })
 
-  socket.on("ask player", (nodeId, playerId, askingPlayer, askingPlayerIndex) =>{
-    io.to(playerId).emit("asked", nodeId, askingPlayer, askingPlayerIndex)
+  socket.on("ask player", (nodeId, playerId, askingPlayer) =>{
+    io.to(playerId).emit("asked", nodeId, askingPlayer)
   })
 
   socket.on("asked all 1by1", (id, playerId) =>{
@@ -73,15 +80,30 @@ io.on('connection', (socket) => {
         for (let i = 0; i<tab.length; i++){
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
+            io.to(k).emit("player left", tab, socket.id)
           }
         }
     }
   })
 
-
   socket.on("node checked", (id, works, color, room, playerIndex) =>{
-    console.log(playerIndex)
-    io.to(room).emit("node checked", id, works, color, playerIndex)
+    io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
   })
   
+  socket.on("put correct background", (id) =>{
+    io.to(id).emit("put correct background")
+  })
+
+  socket.on("put grey background", (id, player) =>{
+    io.to(id).emit("put grey background", player)
+  })
+
+  socket.on("put imossible grey", (id) =>{
+    io.to(id).emit("put imossible grey")
+  })
+
+  socket.on("end game", (winnerIndex, room) =>{
+    console.log("endgame")
+    io.to(room).emit("end game", winnerIndex)
+  })
 });

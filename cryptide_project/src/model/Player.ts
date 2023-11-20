@@ -1,5 +1,4 @@
-class Player{
-
+abstract class Player{
     public id: string
     public name: string;
 
@@ -7,6 +6,8 @@ class Player{
         this.id=id
         this.name=name
     }
+
+    abstract toJson(): any
 }
 
 export default Player
