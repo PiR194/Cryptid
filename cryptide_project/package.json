@@ -59,6 +59,20 @@
     "@types/uuid": "^9.0.7"
   },
   "jest": {
-    "verbose": true
+    "preset": "jest-expo",
+    "verbose": true,
+    "testMatch": [
+      "**.test.js",
+      "**.test.ts",
+      "**.test.tsx"
+    ],
+    "testEnvironment": "node",
+    "testEnvironmentOptions": {
+      "browsers": [
+        "chrome",
+        "firefox",
+        "safari"
+      ]
+    }
   }
 }
