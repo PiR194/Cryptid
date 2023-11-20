@@ -79,8 +79,9 @@ steps:
 
   - name: code-analysis
     image: node:20
-    settings:
-      sources: ./src
+    environment:
+      SONAR_TOKEN:
+        from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
     commands:
       - export SONAR_SCANNER_VERSION=4.7.0.2747
       - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
@@ -88,7 +89,6 @@ steps:
       - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
       - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
       - export SONAR_SCANNER_OPTS="-server"
-      - export SONAR_TOKEN="SECRET_SONAR_LOGIN_CRYPTIDE"
       - sonar-scanner -D sonar.projectKey=SECRET_SONAR_LOGIN_CRYPTIDE -D sonar.sources=./src -D sonar.host.url=https://codefirst.iut.uca.fr/sonar
     secrets: [SECRET_SONAR_LOGIN_CRYPTIDE]
     settings:
