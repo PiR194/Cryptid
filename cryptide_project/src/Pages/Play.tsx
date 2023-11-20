@@ -1,4 +1,5 @@
 import React from 'react';
+import {useEffect, useState} from 'react';
 
 /* Style */
 import './Play.css';
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 /* Component */
 import ButtonImgNav from "../Components/ButtonImgNav"
+import SessionService from "../services/SessionService";
 
 /* Img */
 import Person from '../res/img/Person.png';
@@ -21,6 +23,31 @@ import share from '../res/icon/share.png';
 
 function Play() {
     const theme=useTheme()
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const fetchUserInformation = async () => {
+          try {
+            const sessionData = await SessionService.getSession();
+      
+            console.log(sessionData);
+            // Vérifie si il y a une session
+            if (sessionData.user) {
+              setUsername(sessionData.user.pseudo);
+            } else {
+              // Pas de session on génère un guest random
+              setUsername(`Guest ${Math.floor(Math.random() * 100000)}`);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        };
+      
+        fetchUserInformation();
+    }, []);
+      
+
+
     return (
 
         <div className="MainContainer">
@@ -33,7 +60,7 @@ function Play() {
             <div className="MidContainer">
                 <div>
                     <h2>
-                        Guest 177013
+                        {username}
                     </h2>
                     <img src={Person}
                             height='300'

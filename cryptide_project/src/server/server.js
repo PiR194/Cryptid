@@ -10,7 +10,12 @@ const app = express();
 const port = 3000;
 
 // Middleware
-app.use(cors());                // Autoriser les requêtes cross-origin
+app.use(cors(
+  {
+    origin: 'http://localhost:3001',
+    credentials: true
+  }
+));                            // Autoriser les requêtes cross-origin
 app.use(bodyParser.json());     // Parser le body des requêtes en JSON
 
 // Session
@@ -19,8 +24,9 @@ app.use(session({
   secret: secret,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: process.env.NODE_ENV === 'production' ? true : false,
-            maxAge: 60 * 60 * 1000
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+    maxAge: 60 * 60 * 1000
   }
 }));
 

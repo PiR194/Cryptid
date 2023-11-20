@@ -70,10 +70,9 @@ class AuthController {
             return;
         }
 
-        // Stocker l'utilisateur dans la session
-        if(!req.session.user && req.body.remember){
-            req.session.user = user;
-        }
+        // Stocker l'utilisateur dans la session){
+        console.log(req.session);
+        req.session.user = user;
 
         // Envoyer une réponse réussie
         res.status(200).json({ message: 'Connexion réussie', user: user });
@@ -87,6 +86,19 @@ class AuthController {
         await databaseService.disconnect();
     }
   }
+
+  static getSession(req, res) {
+    console.log(req.session);
+    // Vérifier si l'utilisateur est connecté
+    if (req.session.user) {
+        // Envoyer une réponse réussie
+        res.status(200).json({ message: 'Utilisateur connecté', user: req.session.user });
+    } else {
+        // Envoyer une réponse d'erreur
+        res.status(401).json({ error: 'Utilisateur non connecté' });
+    }
+  }
+  
 }
 
 module.exports = AuthController;
