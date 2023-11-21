@@ -20,6 +20,8 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Oeye from "../res/icon/eye.png";
+import Ceye from "../res/icon/hidden.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -37,6 +39,7 @@ import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { last } from 'lodash';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -110,6 +113,9 @@ const InGame = ({locale, changeLocale}) => {
 
   const [cptTour, setcptTour] = useState(0);
 
+  const [LastVisible, setLastVisible] = useState(false);
+  
+
   //@ts-ignore
   const changecptTour = (newcptTour) => {
     setcptTour(newcptTour);
@@ -141,6 +147,11 @@ const InGame = ({locale, changeLocale}) => {
         handleShowS()
       }
     };
+
+    const changeVisibility = () => {
+      setLastVisible(!LastVisible);
+    }
+    const eye = LastVisible ? Oeye : Ceye; //icon que l'on affiche pour l'oeil : fermé ou ouvert.
 
     /* Windows open */
     //@ts-ignore
@@ -229,6 +240,14 @@ const InGame = ({locale, changeLocale}) => {
             }}>
             <img src={MGlass} alt="indice" height="40"/>
           </button>
+
+          <button className='button' onClick={changeVisibility}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={ eye } alt="indice" height="40"/>
+          </button>
         </div>
 
 {/*
@@ -243,10 +262,12 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Body>
         </Offcanvas>
           */}
-          <div className='playerlistDiv'>
-            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
-          </div>
 
+          { !IsSolo &&
+            <div className='playerlistDiv'>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+            </div>
+          }
 
         <Offcanvas show={show} 
                   onHide={handleClose} 
