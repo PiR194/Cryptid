@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useAuth } from '../Contexts/AuthContext';
+import SessionService from '../services/SessionService';
 import './Home.css';
 import '../App.css';
 import { useTheme } from '../Style/ThemeContext';
@@ -9,6 +11,25 @@ import ButtonImgNav from '../Components/ButtonImgNav';
 
 function Home() {
     const theme=useTheme();
+    const {isLoggedIn, login} = useAuth();
+
+    useEffect(() => {
+        // Verifie la connexion
+        const verifSession = async () => {
+            try {
+                const sessionData = await SessionService.getSession();
+                if (sessionData.user) {
+                    login();
+                }
+            }
+            catch (error) {
+                console.log(error);
+            };
+        }
+
+        verifSession();
+    }, []);
+
     return (
         
     <div className="home-container">

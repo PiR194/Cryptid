@@ -21,6 +21,7 @@
 
     "log_in":" Log in ",
     "sign_up":" Sign up ",
+    "log_out":" Log out ",
 
     "join" : "Join",
     "create_room" : "Create room",

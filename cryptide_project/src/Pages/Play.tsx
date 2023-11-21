@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+/* Context */
+import { useAuth } from '../Contexts/AuthContext';
+
 /* Style */
 import './Play.css';
 import { useTheme } from '../Style/ThemeContext';
-
-/* Nav */
-import { Link } from 'react-router-dom';
 
 /* Component */
 import ButtonImgNav from "../Components/ButtonImgNav"
@@ -15,43 +15,66 @@ import SessionService from "../services/SessionService";
 import Person from '../res/img/Person.png';
 
 /* Icon */
-import trophy from '../res/icon/trophy.png';
-import param from '../res/icon/param.png';
-import share from '../res/icon/share.png';
 import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
-import { set } from 'lodash';
+
+/* Types */
+import { PlayerProps } from '../types/Player';
 
 
 function Play() {
     const theme=useTheme()
-    const [username, setUsername] = useState('');
-    const [nbSoloGames, setNbSoloGames] = useState(0);
-    const [soloBestScore, setSoloBestScore] = useState(0);
-    const [soloAverageTry, setSoloAverageTry] = useState(0);
+    const {isLoggedIn, login} = useAuth();
+    const [player, setPlayer] = useState<PlayerProps | null>(null);
 
     useEffect(() => {
         const fetchUserInformation = async () => {
-          try {
-            const sessionData = await SessionService.getSession();
-      
-            console.log(sessionData);
-            // Vérifie si il y a une session
-            if (sessionData.user) {
-              setUsername(sessionData.user.pseudo);
-              setNbSoloGames(sessionData.user.soloStats.nbGames);
-              setSoloBestScore(sessionData.user.soloStats.bestScore);
-              setSoloAverageTry(sessionData.user.soloStats.averageTry);
-            } else {
-              // Pas de session on génère un guest random
-              setUsername(`Guest ${Math.floor(Math.random() * 100000)}`);
+            try {
+                const sessionData = await SessionService.getSession();
+                
+                // Vérifie si il y a une session
+                if (sessionData.user) {
+                    // Il y a une session on récupère les infos du joueur
+                    const updatedPlayer: PlayerProps = {
+                        pseudo: sessionData.user.pseudo,
+                        profilePicture: sessionData.user.profilePicture,
+                        soloStats: {
+                            nbGames: sessionData.user.soloStats.nbGames,
+                            bestScore: sessionData.user.soloStats.bestScore,
+                            avgNbTry: sessionData.user.soloStats.avgNbTry,
+                        },
+                        onlineStats: {
+                            nbGames: sessionData.user.onlineStats.nbGames,
+                            nbWins: sessionData.user.onlineStats.nbWins,
+                            ratio: sessionData.user.onlineStats.ratio,
+                        },
+                    };
+                    login();
+                    setPlayer(updatedPlayer);
+                } else {
+                    // Pas de session on génère un guest random
+                    const guestPlayer: PlayerProps = {
+                        pseudo: 'Guest_' + Math.floor(Math.random() * 1000000),
+                        profilePicture: '',
+                        soloStats: {
+                            nbGames: 0,
+                            bestScore: 0,
+                            avgNbTry: 0,
+                        },
+                        onlineStats: {
+                            nbGames: 0,
+                            nbWins: 0,
+                            ratio: 0,
+                        },
+                    };
+                    setPlayer(guestPlayer);
+                }
+            } catch (error) {
+                console.error(error);
             }
-          } catch (error) {
-            console.error(error);
-          }
         };
       
         fetchUserInformation();
@@ -113,7 +136,7 @@ function Play() {
             <div className="MidContainer">
                 <div>
                     <h2>
-                        {username}
+                        {player && player.pseudo}
                     </h2>
                     <img src={Person}
                             height='300'
@@ -129,7 +152,7 @@ function Play() {
                 </div>
             </div>
             <div className='rightContainer'>
-                <ScoreBoard/>
+                {player && (<ScoreBoard Player={player}/>)}
             </div>
         </div>
     );

@@ -3,6 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { GameProvider } from './Contexts/GameContext';
+import { AuthProvider } from './Contexts/AuthContext';
 
 /* Page */
 import Home from './Pages/Home'; 
@@ -63,9 +64,10 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
+    
+    <AuthProvider>
       <GameProvider>
-
-      {/*@ts-ignore*/}
+        {/*@ts-ignore*/}
         <IntlProvider locale={locale} messages={messages[locale]}>
           <ThemeProvider>
             <BrowserRouter>  
@@ -85,7 +87,7 @@ function App() {
           </ThemeProvider>
         </IntlProvider>
       </GameProvider>
-  
+    </AuthProvider>
   );
 }
 

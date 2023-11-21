@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 /* Naviagtion */
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
 /* Icon */
-import { BiLogInCircle } from 'react-icons/bi';
+import { BiDoorOpen, BiLogInCircle } from 'react-icons/bi';
 import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { HiLanguage } from 'react-icons/hi2';
 
@@ -17,16 +17,22 @@ import logo from '../res/img/logo2_preview_rev_1.png';
 /* Components */
 import ReactCountryFlag from "react-country-flag"
 
+/* Services */
+import SessionService from '../services/SessionService';
+import AuthService from '../services/AuthService';
 
 /* Style */
 import './NavBar.css';
 
 /* Style */
 import { useTheme } from '../Style/ThemeContext';
+import { useAuth } from '../Contexts/AuthContext';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
+    const {isLoggedIn, logout} = useAuth();
+
     return (
         <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
         <Container>
@@ -45,14 +51,26 @@ function AppNavbar({changeLocale}) {
             </Nav>
             <div className='leftdiv'>
                 <Nav className="ml-auto navbar-title-dd">
-                    <Nav.Link href="login" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}> 
-                        <BiLogInCircle/>
-                        <FormattedMessage id="log_in"/> 
-                    </Nav.Link>
-                    <Nav.Link href="signup" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}> 
-                        <BsFillPersonPlusFill/>
-                        <FormattedMessage id="sign_up"/> 
-                    </Nav.Link>
+                    {/* Affichage dynamique selon état de connexion */}
+                    {isLoggedIn ? (
+                                        <Nav.Link href="/play" onClick={logout} className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
+                                            <BiDoorOpen />
+                                            <FormattedMessage id="log_out" />
+                                        </Nav.Link>
+                                    ) 
+                                    : (
+                                        <>
+                                            <Nav.Link href="/login" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
+                                                <BiLogInCircle />
+                                                <FormattedMessage id="log_in" />
+                                            </Nav.Link>
+                                            <Nav.Link href="/signup" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
+                                                <BsFillPersonPlusFill />
+                                                <FormattedMessage id="sign_up" />
+                                            </Nav.Link>
+                                        </>
+                                    )
+                    }
                 </Nav>
                 <Nav className="me-auto">
                     <NavDropdown 

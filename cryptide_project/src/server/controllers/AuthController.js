@@ -87,16 +87,16 @@ class AuthController {
     }
   }
 
-  static getSession(req, res) {
-    console.log(req.session);
-    // Vérifier si l'utilisateur est connecté
-    if (req.session.user) {
-        // Envoyer une réponse réussie
-        res.status(200).json({ message: 'Utilisateur connecté', user: req.session.user });
-    } else {
-        // Envoyer une réponse d'erreur
-        res.status(401).json({ error: 'Utilisateur non connecté' });
-    }
+  static async logout(req, res) {
+    // Détruire la session pour déconnecter l'utilisateur
+    req.session.destroy((err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
+        } else {
+            res.status(200).json({ message: 'Déconnexion réussie' });
+        }
+    });
   }
   
 }

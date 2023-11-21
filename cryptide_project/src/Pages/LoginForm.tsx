@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineSend } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Contexts/AuthContext'; 
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
 const SignIn = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const { login } = useAuth(); 
 
     const [error, setError] = useState<string | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -32,6 +34,7 @@ const SignIn = () => {
 
                 setShowConfirmation(true);
                 setTimeout(() => {
+                    login();
                     navigate('/play');         // 3 secondes avant de rediriger vers la page de connexion
                 }, 3000);
             }
