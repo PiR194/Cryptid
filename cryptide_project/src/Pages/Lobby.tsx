@@ -81,6 +81,8 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
+        socket.off("player left")
+        socket.off("new player")
         navigate('/game?solo=false');
     });
 
@@ -92,25 +94,12 @@ function Lobby() {
         setPlayersData(tmpTab)
     })
 
-    socket.on("player left", (tab, socketId) => {
-        if (gameStarted){
-            const i = players.findIndex((p) => p.id == socketId)
-            if (i != undefined){
-                let player = players[i]
-                player = new EasyBot("125", "BOT125")
-                if (player instanceof Bot){
-                    player.indice = indices[i]
-                }
-            }
+    socket.on("player left", (tab, i) => {
+        const tmpTab: Player[] = []
+        for (const p of tab){
+            tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        else{
-            const tmpTab: Player[] = []
-            for (const p of tab){
-                tmpTab.push(JSONParser.JSONToPlayer(p))
-            }
-            setPlayersData(tmpTab)
-        }
-        const index = players
+        setPlayersData(tmpTab)
     })
 
     const [codeShowed, setCodeShowed] = useState(true);

@@ -53,7 +53,10 @@ class NetworkGenerator{
             }
             let sports = []
             for (let j = 0; j < 3; j++){
-                if (tmpTabSport.length == 0) tmpTabSport = [...tabSports]
+                if (tmpTabSport.length == 0){
+                    tmpTabSport = [...tabSports]
+                    break
+                }
                 const rand = Math.floor(Math.random() * tmpTabSport.length)
                 if (tmpTabSport[rand] != Sport.AUCUN){
                     sports.push(tmpTabSport[rand])

@@ -8,6 +8,8 @@ class NodePerson{
     public color: string
     public font: Font
     public shape: string
+    public shadow: boolean = true
+    public opacity: number = 1
 
     constructor(id: number, label: string, color: Color, font: Font, shape: string){
         this.id=id

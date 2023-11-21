@@ -37,6 +37,7 @@ import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { socket } from '../SocketConfig';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -55,21 +56,28 @@ const InGame = ({locale, changeLocale}) => {
 
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
+  const [showLast, setShowLast] = useState(false)
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
     setHistory(prevHistory => [...prevHistory, message]);
   };
   
+  const setShowLastData = () =>{
+    if (showLast){
+      setShowLast(false)
+    }
+    else{
+      setShowLast(true)
+    }
+  }
+
   useEffect(() => {
     const historyContainer = document.getElementById('history-container');
     if (historyContainer) {
       historyContainer.scrollTop = historyContainer.scrollHeight;
     }
   }, [history]);
-
-
-
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
@@ -91,6 +99,10 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const resetGraph = () => {
+    socket.emit("reset graph", socket.id)
   }
 
   /* offcanvas */
@@ -164,7 +176,8 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           setPlayerTouched={handleSetPlayerTouched} 
-                          playerTouched={playerTouched}/>
+                          playerTouched={playerTouched}
+                          showLast={showLast}/>
         </div>
 
 
@@ -191,6 +204,29 @@ const InGame = ({locale, changeLocale}) => {
                 borderColor: theme.colors.secondary
             }}
             onClick={handleChangeS}>
+            <img src={Param} alt="paramètres" height='40'/>
+          </button>
+        </div>
+
+        <div className='opacityDiv'>
+          <button className='button'
+            style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={setShowLastData}>
+            <img src={Param} alt="paramètres" height='40'/>
+          </button>
+        </div>
+
+
+        <div className='resetDiv'>
+          <button className='button'
+            style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={resetGraph}>
             <img src={Param} alt="paramètres" height='40'/>
           </button>
         </div>
