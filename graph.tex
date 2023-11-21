@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{paralist}
+\usetikzlibrary {shapes.multipart}
+\newcommand{\Basketball}{\includegraphics[width=.5cm]{ballon-de-basket.png}}
+\newcommand{\Football}{\includegraphics[width=.4cm]{ballon-de-foot.png}}
+\newcommand{\Bowling}{\includegraphics[width=.5cm]{bowling.png}}
+\newcommand{\Baseball}{\includegraphics[width=.5cm]{baseball.png}}
+\newcommand{\Tennis}{\includegraphics[width=.5cm]{tennis.png}}
+\begin{document}
+\thispagestyle{empty}
+Voici le graphe de SocialGraphe
+\begin{center}
+\begin{tikzpicture}[scale=.9]
+  \node[draw, circle split] (0) at (0,0) { Aaliyah \nodepart{lower} \Football{}};
+  \node[draw, circle split] (1) at (2,0) { Evelyn \nodepart{lower} \Baseball{} \Bowling{}};
+  \node[draw, circle split] (2) at (4,0) { Sebastian \nodepart{lower} \Tennis{} \Basketball{}};
+  \node[draw, circle split] (3) at (6,0) { Emily \nodepart{lower} \Bowling{} \Tennis{}};
+  \node[draw, circle split] (4) at (8,0) { Stella \nodepart{lower} \Baseball{} \Football{}};
+  \node[draw, circle split] (5) at (0,2) { Sadie \nodepart{lower} \Basketball{} \Tennis{}};
+  \node[draw, circle split] (6) at (2,2) { Savannah \nodepart{lower} \Baseball{} \Bowling{}};
+  \node[draw, circle split] (7) at (4,2) { Ivy \nodepart{lower} \Basketball{} \Football{}};
+  \node[draw, circle split] (8) at (6,2) { Olivia \nodepart{lower} \Basketball{}};
+  \node[draw, circle split] (9) at (8,2) { Nora \nodepart{lower} \Baseball{} \Tennis{} \Bowling{}};
+  \node[draw, circle split] (10) at (0,4) { Peyton \nodepart{lower} \Football{} \Bowling{}};
+  \node[draw, circle split] (11) at (2,4) { Zoe \nodepart{lower} \Football{} \Baseball{}};
+  \node[draw, circle split] (12) at (4,4) { Mason \nodepart{lower} \Tennis{}};
+  \node[draw, circle split] (13) at (6,4) { Layla \nodepart{lower} \Basketball{} \Tennis{}};
+  \node[draw, circle split] (14) at (8,4) { Chloe \nodepart{lower} \Baseball{} \Football{} \Basketball{}};
+  \node[draw, circle split] (15) at (0,6) { Mia \nodepart{lower} \Bowling{}};
+  \node[draw, circle split] (16) at (2,6) { Daniel \nodepart{lower} \Football{}};
+  \node[draw, circle split] (17) at (4,6) { Charlotte \nodepart{lower} \Tennis{} \Basketball{}};
+  \node[draw, circle split] (18) at (6,6) { Connor \nodepart{lower} \Baseball{} \Bowling{} \Tennis{}};
+  \node[draw, circle split] (19) at (8,6) { Elijah \nodepart{lower} \Bowling{} \Football{}};
+  \node[draw, circle split] (20) at (0,8) { Luke \nodepart{lower} \Baseball{}};
+  \node[draw, circle split] (21) at (2,8) { Michael \nodepart{lower} \Basketball{} \Football{}};
+  \node[draw, circle split] (22) at (4,8) { Aurora \nodepart{lower} \Basketball{} \Bowling{} \Baseball{}};
+  \node[draw, circle split] (23) at (6,8) { Carter \nodepart{lower} \Tennis{}};
+  \node[draw, circle split] (24) at (8,8) { James \nodepart{lower} \Bowling{} \Tennis{} \Basketball{}};
+  \node[draw, circle split] (25) at (0,10) { Joshua \nodepart{lower} \Football{} \Baseball{}};
+  \node[draw, circle split] (26) at (2,10) { Owen \nodepart{lower} \Football{}};
+  \node[draw, circle split] (27) at (4,10) { Joseph \nodepart{lower} \Basketball{} \Baseball{}};
+  \node[draw, circle split] (28) at (6,10) { Oliver \nodepart{lower} \Bowling{} \Tennis{}};
+  \node[draw, circle split] (29) at (8,10) { Hazel \nodepart{lower} \Tennis{} \Basketball{}};
+  \draw (0) -- (29);
+  \draw (0) -- (26);
+  \draw (1) -- (23);
+  \draw (2) -- (27);
+  \draw (2) -- (26);
+  \draw (3) -- (28);
+  \draw (3) -- (11);
+  \draw (3) -- (18);
+  \draw (3) -- (22);
+  \draw (4) -- (18);
+  \draw (4) -- (21);
+  \draw (4) -- (17);
+  \draw (4) -- (10);
+  \draw (5) -- (19);
+  \draw (6) -- (19);
+  \draw (7) -- (29);
+  \draw (7) -- (23);
+  \draw (7) -- (15);
+  \draw (8) -- (21);
+  \draw (8) -- (22);
+  \draw (8) -- (25);
+  \draw (8) -- (20);
+  \draw (9) -- (29);
+  \draw (9) -- (20);
+  \draw (10) -- (4);
+  \draw (10) -- (24);
+  \draw (11) -- (3);
+  \draw (12) -- (19);
+  \draw (12) -- (21);
+  \draw (12) -- (20);
+  \draw (12) -- (22);
+  \draw (13) -- (25);
+  \draw (13) -- (16);
+  \draw (13) -- (23);
+  \draw (14) -- (25);
+  \draw (14) -- (21);
+  \draw (14) -- (16);
+  \draw (14) -- (22);
+  \draw (15) -- (7);
+  \draw (15) -- (25);
+  \draw (16) -- (13);
+  \draw (16) -- (14);
+  \draw (17) -- (4);
+  \draw (18) -- (3);
+  \draw (18) -- (4);
+  \draw (19) -- (5);
+  \draw (19) -- (6);
+  \draw (19) -- (12);
+  \draw (20) -- (8);
+  \draw (20) -- (9);
+  \draw (20) -- (12);
+  \draw (21) -- (4);
+  \draw (21) -- (8);
+  \draw (21) -- (12);
+  \draw (21) -- (14);
+  \draw (22) -- (3);
+  \draw (22) -- (8);
+  \draw (22) -- (12);
+  \draw (22) -- (14);
+  \draw (23) -- (1);
+  \draw (23) -- (7);
+  \draw (23) -- (13);
+  \draw (24) -- (10);
+  \draw (25) -- (8);
+  \draw (25) -- (13);
+  \draw (25) -- (14);
+  \draw (25) -- (15);
+  \draw (26) -- (0);
+  \draw (26) -- (2);
+  \draw (27) -- (2);
+  \draw (28) -- (3);
+  \draw (29) -- (0);
+  \draw (29) -- (7);
+  \draw (29) -- (9);
+\end{tikzpicture}
+\end{center}
+
+
+\paragraph{Première énigme}
+Trouver qui est le coupable avec les indices suivants.
+\begin{compactitem}
+\item Indice 1 : Le suspect a entre 20 et 29 ans.
+\item Indice 2 : Le suspect pratique au moins du Tennis et/ou du Football .
+\item Indice 3 : Le suspect a les cheveux Brun ou Blond .
+\item Indice 4 : Le suspect a au moins un ami avec les cheveux Blond .
+\end{compactitem}
+% Solution : Oliver
+\end{document}
