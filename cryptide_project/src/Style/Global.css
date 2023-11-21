@@ -53,3 +53,30 @@ form{
 .listContainer{
     columns: 2 auto;
 }
+
+/* LeaderBoard */
+.LeaderBoardiv{  
+    border: solid;
+    border-width: 0px 1px 1px 1px;
+    border-color: lightgray;
+    border-radius: 0px 0px 20px 20px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 15px;
+}
+
+
+.textBoard{
+    display: flex;
+    flex-wrap: column;
+    justify-content: space-between;
+    width: 300px;
+}
+
+.leftRow{
+    display: flex;
+    justify-content: end;
+}

@@ -75,7 +75,7 @@ let cptTour: number = 0
     for(const n of lastNodes.reverse()){
       if (!tab.find((node) => node.id == n.id)){
         tab.push(n)
-        if (tab.length > players.length * 1.5) break
+        if (tab.length > players.length * 2) break
       }
     }
     lastNodes = tab
