@@ -8,10 +8,11 @@ import Stub from "../src/model/Stub";
 import GameCreator from "../src/model/GameCreator";
 import Indice from "../src/model/Indices/Indice";
 import { SportToString } from "../src/model/EnumExtender";
+import GraphCreator from "../src/model/Graph/GraphCreator";
+import { DataSet, Network } from "vis-network";
 
 function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, choosenIndices : Indice[]) {
     let latexCode = "";
-    
 
 
     //*Setup
@@ -22,11 +23,6 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     latexCode += "\\usepackage{paralist}\n"
     
     latexCode += "\\usetikzlibrary {shapes.multipart}\n"
-
-
-    //! A quoi sert "fille" ?
-    // latexCode += "%\\newcommand{\\fille}[1]{\\underline{#1}}"
-    // latexCode += "\\newcommand{\\fille}[1]{#1} % Solution"
 
     latexCode += "\\newcommand{\\Basketball}{\\includegraphics[width=.5cm]{ballon-de-basket.png}}\n"
     latexCode += "\\newcommand{\\Football}{\\includegraphics[width=.4cm]{ballon-de-foot.png}}\n"
@@ -43,16 +39,81 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     latexCode+= "\\begin{tikzpicture}[scale=.9]\n"
 
 
+    //? Coordonnée en position.
+    //! marche pas
+    // const graph = GraphCreator.CreateGraph(personsNet)
 
+    // const container = document.getElementById('graph-container');
+    // if (!container) {
+    //     console.error("Container not found");
+    //     return;
+    // }
+    // // Charger les données dans le graph
+    // const nodes = new DataSet(graph.nodesPerson);
+
+    // // Configuration des options du Graphe
+    // const initialOptions = {
+    //     layout: {
+    //         improvedLayout: true,
+    //         hierarchical: {
+    //             enabled: false,
+    //             direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
+    //             sortMethod: 'hubsize'
+    //         }
+    //     },
+    //     physics: {
+    //         enabled: true,
+    //         barnesHut: {
+    //             gravitationalConstant: -1000,
+    //             springConstant: 0.001,
+    //             springLength: 100
+    //         }
+    //     }
+    // };
+    
+    // const networkData = { nodes: nodes, edges: graph.edges };
+    // const network = new Network(container, networkData, initialOptions);
+    
+    
     personsNet.getPersons().forEach((person, index) => {
 
+
+        // //? Coordonnée en forme de grille.
         const xCoordinate = index % 5;
         const yCoordinate = Math.floor(index / 5);
-
-        const scaledX = xCoordinate * 2;
-        const scaledY = yCoordinate * 2;
-
+        const scaledX = xCoordinate * 4;
+        const scaledY = yCoordinate * 4;
+        
         latexCode += `  \\node[draw, circle split] (${person.getId()}) at (${scaledX},${scaledY}) { ${person.getName()} \\nodepart{lower}`;
+
+
+
+        //? Coordonnée en position.
+        //! marche pas
+        // var nodesData = network.getPositions();
+        // // for (var nodeId in nodesData) {
+        // //     if (nodesData.hasOwnProperty(nodeId)) {
+        // //         var position = nodesData[nodeId];
+        // //         console.log("Nœud " + nodeId + " - Position : x = " + position.x + ", y = " + position.y);
+        // //     }
+        // // }
+        // // latexCode += `  \\node[draw, circle split] (${person.getId()}) at (${x},${y}) { ${person.getName()} \\nodepart{lower}`; //x et y de la  position
+
+        // // Obtenir les coordonnées du nœud
+        // const nodeId = person.getId().toString();
+        // const position = nodesData[nodeId];
+        // if (position) {
+        //     const x = position.x.toFixed(2); // Arrondir à 2 décimales
+        //     const y = position.y.toFixed(2);
+    
+        //     latexCode += `  \\node[draw, circle split] (${person.getId()}) at (${x},${y}) { ${person.getName()} \\nodepart{lower}`;
+            
+        //     person.getSports().forEach((sport) => { latexCode += ` \\${SportToString(sport, 'fr')}{}` });
+        //     latexCode += "};\n";
+        // } else {
+        //     console.error(`Les coordonnées du nœud ${nodeId} ne sont pas disponibles.`);
+        // }
+
 
         person.getSports().forEach((sport) => { latexCode += ` \\${SportToString(sport, 'fr')}{}`})
         latexCode += "};\n";
@@ -68,6 +129,7 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     latexCode += "\\end{tikzpicture}\n";
     latexCode += "\\end{center}\n";
 
+    //* Zone d'énoncé :
 
     latexCode += "\n\n\\paragraph{Première énigme}\n"
 
@@ -96,5 +158,10 @@ const latexCode = generateLatexCode(networkPerson, choosenPerson, choosenIndices
 
 
 const filePath = './graph.tex';
-fs.writeFileSync(filePath, latexCode, 'utf-8');
+if (typeof latexCode === 'undefined') {
+    console.log('Variable is undefined');
+}
+else{
+    fs.writeFileSync(filePath, latexCode, 'utf-8');
+}
 console.log(`Le code LaTeX a été enregistré dans le fichier : ${filePath}`);
