@@ -33,10 +33,31 @@
     align-items: center;
 }
 
-.playerContainer {
+.playersContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: "5px";
-  }
-  
+    /* padding-left: "5px"; */
+
+    width: 100px;
+    background-color: red;
+}
+
+.playerContainer{
+    /* display: flex;
+    align-items: center; */
+    /* flex-direction: column; */
+
+    width: 300px;
+    
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    
+    background-color: white;
+}
+
+.losingPlayer{
+    display: flex;
+
+    background-color: yellow;
+}

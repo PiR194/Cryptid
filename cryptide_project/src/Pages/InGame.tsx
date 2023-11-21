@@ -20,6 +20,7 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
 
@@ -33,7 +34,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 /* Model */
 import Stub from '../model/Stub';
 import { HiLanguage } from 'react-icons/hi2';
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
@@ -67,12 +68,8 @@ const InGame = ({locale, changeLocale}) => {
   };
   
   const setShowLastData = () =>{
-    if (showLast){
-      setShowLast(false)
-    }
-    else{
-      setShowLast(true)
-    }
+    setLastVisible(!showLast);
+    setShowLast(!showLast);
   }
 
   useEffect(() => {
@@ -105,7 +102,11 @@ const InGame = ({locale, changeLocale}) => {
   }
 
   const resetGraph = () => {
+    setisLoading(true);
     socket.emit("reset graph", socket.id)
+    setTimeout(() => {
+      setisLoading(false);
+    }, 2000);  
   }
 
   /* offcanvas */
@@ -126,6 +127,8 @@ const InGame = ({locale, changeLocale}) => {
   const [cptTour, setcptTour] = useState(0);
 
   const [LastVisible, setLastVisible] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
   
 
   //@ts-ignore
@@ -220,18 +223,32 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
 
-        <div className='resetDiv'>
-          <button className='button'
-            style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-            }}
-            onClick={resetGraph}>
-            <img src={Param} alt="paramètres" height='40'/>
-          </button>
-        </div>
 
         <div className='menuGame'>
+          <div className='resetDiv'>
+            <button className='button'
+              style={{ 
+                  backgroundColor: theme.colors.tertiary,
+                  borderColor: theme.colors.secondary
+              }}
+              onClick={resetGraph}>
+              
+              {
+                isLoading ? (
+                  <Spinner animation="grow" />
+                  )
+                  : (
+                  <img src={Reset} alt="paramètres" height='40'/>
+                )
+              }
+              
+              
+            </button>
+          </div>
+
+
+
+
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
