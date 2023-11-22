@@ -1,21 +1,30 @@
 // AuthContext.js
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import Player from '../model/Player';
+import User from '../model/User';
 import AuthService from '../services/AuthService';
 
 interface AuthContextProps {
   isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
+  user: User | null
+  setUserData: (newPlayer: User) => void
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<User| null>(null)
 
   const login = () => {
     setIsLoggedIn(true);
   };
+
+  const setUserData = (player: User | null) => {
+    setUser(player)
+  }
 
   const logout = async() => {
     try {
@@ -28,7 +37,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, setUserData }}>
       {children}
     </AuthContext.Provider>
   );

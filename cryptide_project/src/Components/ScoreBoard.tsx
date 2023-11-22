@@ -20,12 +20,12 @@ import Col from 'react-bootstrap/Col';
 
 /* Component */
 import ButtonImgNav from './ButtonImgNav';
+import User from '../model/User';
 
 /* Types */
-import { PlayerProps } from '../types/Player';
 
 //@ts-ignore
-const ScoreBoard: React.FC<{ Player: PlayerProps }> = ({ Player }) => {
+const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
 
     return (

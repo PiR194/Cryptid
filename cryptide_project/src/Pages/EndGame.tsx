@@ -55,7 +55,7 @@ function EndGame() {
         <div>
             <div className="head">
                 <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                    <h1>{winner?.name} a gagné !</h1>
+                    <h1>{winner?.pseudo} a gagné !</h1>
                     <h3>Le tueur était <u>{person?.getName()}</u></h3>
                 </header>
             </div>
@@ -72,7 +72,7 @@ function EndGame() {
                         <div className="playerContainer" key={index}>
                             {player.id !== winner?.id && (
                                 <div>
-                                    <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                    <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
                                     <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
                                 </div>
                             )}
