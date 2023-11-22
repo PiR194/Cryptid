@@ -42,11 +42,11 @@
 
     "and": "and",
     "or": "or",
-    "or_sport": "and/or",
+    "or_sport": "or",
 
 
     "age_indice_start": "The suspect is between",
-    "age_indice_more_start": "The suspect is older than or",
+    "age_indice_more_start": "The suspect is at least",
     "age_indice_end": "years old",
     
     "color_edges_start": "The suspect has at least one friend with",

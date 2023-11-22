@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
+import {saveAs} from "file-saver"
 
 /* Style */
 import "./InGame.css"
@@ -42,6 +43,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import { last } from 'lodash';
 import { socket } from '../SocketConfig';
+import { Network } from 'vis-network';
+import generateLatexCode from '../Script/LatexScript';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -79,10 +82,19 @@ const InGame = ({locale, changeLocale}) => {
     }
   }, [history]);
 
+
+  const {personNetwork, person, indices} = useGame()
+
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+
+  const [network, setNetwork] = useState<Network | null>(null)
+
+  const setNetworkData = (network: Network) => {
+    setNetwork(network)
+  }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
     setShowChoiceBar(shouldShowChoiceBar);
@@ -99,6 +111,16 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const generateTEX = () => {
+    if (network != null && personNetwork != null && person != null){
+      const tex = generateLatexCode(personNetwork, person, indices, network)
+      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+
+      // Utiliser FileSaver pour télécharger le fichier
+      saveAs(blob, 'socialGraph.tex');
+    }
   }
 
   const resetGraph = () => {
@@ -175,7 +197,7 @@ const InGame = ({locale, changeLocale}) => {
     };
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
-  const indices = Stub.GenerateIndice()
+  const allIndices = Stub.GenerateIndice()
   const { indice, players } = useGame();
 
 
@@ -191,6 +213,7 @@ const InGame = ({locale, changeLocale}) => {
                           solo={IsSolo} 
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
+                          setNetwork={setNetworkData}
                           showLast={showLast}/>
         </div>
 
@@ -289,6 +312,14 @@ const InGame = ({locale, changeLocale}) => {
               borderColor: theme.colors.secondary
             }}>
             <img src={ eye } alt="indice" height="40"/>
+          </button>
+
+          <button className='button' onClick={generateTEX}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={MGlass} alt="indice" height="40"/>
           </button>
         </div>
 
