@@ -37,6 +37,8 @@ import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { Network } from 'vis-network';
+import generateLatexCode from '../Script/LatexScript';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -69,12 +71,18 @@ const InGame = ({locale, changeLocale}) => {
   }, [history]);
 
 
-
+  const {personNetwork, person, indices} = useGame()
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+
+  const [network, setNetwork] = useState<Network | null>(null)
+
+  const setNetworkData = (network: Network) => {
+    setNetwork(network)
+  }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
     setShowChoiceBar(shouldShowChoiceBar);
@@ -91,6 +99,12 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const generateTEX = () => {
+    if (network != null && personNetwork != null && person != null){
+      generateLatexCode(personNetwork, person, indices, network)
+    }
   }
 
   /* offcanvas */
@@ -149,7 +163,7 @@ const InGame = ({locale, changeLocale}) => {
     };
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
-  const indices = Stub.GenerateIndice()
+  const allIndices = Stub.GenerateIndice()
   const { indice, players } = useGame();
 
 
@@ -164,7 +178,8 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           setPlayerTouched={handleSetPlayerTouched} 
-                          playerTouched={playerTouched}/>
+                          playerTouched={playerTouched}
+                          setNetwork={setNetworkData}/>
         </div>
 
 
@@ -194,7 +209,6 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Param} alt="paramètres" height='40'/>
           </button>
         </div>
-
         <div className='menuGame'>
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
@@ -223,6 +237,14 @@ const InGame = ({locale, changeLocale}) => {
           </Link>
 
           <button className='button' onClick={handleChange}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={MGlass} alt="indice" height="40"/>
+          </button>
+
+          <button className='button' onClick={generateTEX}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary

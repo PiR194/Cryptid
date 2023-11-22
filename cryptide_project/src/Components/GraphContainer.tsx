@@ -33,6 +33,7 @@ interface MyGraphComponentProps {
   changecptTour: (newcptTour : number) => void
   addToHistory: (message : string) => void
   solo : boolean
+  setNetwork: (network: Network) => void
 }
 
 let lastAskingPlayer = 0
@@ -50,7 +51,7 @@ let firstLap = true
 let cptHistory = 0
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, setNetwork}) => {
 let cptTour: number = 0
 
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
@@ -236,6 +237,8 @@ let cptTour: number = 0
     
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
+
+    setNetwork(network)
 
     if (!solo){
       socket.on("asked all", (id) =>{
@@ -435,6 +438,7 @@ let cptTour: number = 0
               // Un nœud a été cliqué
               initialOptions.physics.enabled = false;
               network.setOptions(initialOptions);
+              setNetwork(network)
           }
       });
 
