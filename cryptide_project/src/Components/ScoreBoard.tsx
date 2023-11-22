@@ -28,7 +28,7 @@ function ScoreBoard({Player = null}) {
         // <div className='LeaderBoardiv'>
         <div className='LeaderBoardiv'>
             <Tabs style={{width:"100%"}}
-                defaultActiveKey="profile"
+                defaultActiveKey="daily"
                 id="ScoreBoard"
                 className="mb-3">
                 

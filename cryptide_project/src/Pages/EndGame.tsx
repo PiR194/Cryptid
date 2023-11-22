@@ -38,29 +38,6 @@ function EndGame() {
     }
 
     const theme = useTheme();
-
-
-    const playersRows = [];
-    for (let i = 0; i < losingPlayers.length; i += 3) {
-        const rowPlayers = losingPlayers.slice(i, i + 3);
-        playersRows.push(
-            <div className="playerRow" key={i}>
-                {rowPlayers.map((player, index) => (
-                    <div className="playerContainer" key={index}>
-                        {player.id !== winner?.id && (
-                            <div>
-                                <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
-                                <h6>
-                                    {indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}
-                                </h6>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
     
     return (
         <div>
@@ -71,32 +48,25 @@ function EndGame() {
                 </header>
             </div>
             <div className='winner'>
-                <img src={Person} width='300' height='300'/>
-                <h3>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
+                <img src={Person} width='250' height='250'/>
+                <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
             </div>
             <div className='bottom'>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/play" img={Leave}/>
                 </div>
-                {/* <div className='losingPlayer'> */}
-                    {/* {
-                        losingPlayers.map((player, index) => (
-                            <div className="playersContainer">
-                                {player.id!=winner?.id && 
-                                <>
-                                    <div className='playerContainer'>
-                                        <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
-                                        <h5 style={{width: 50}}>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h5>
-                                    </div>
-                                </>
-                                }
-                            </div>
-                        ))
-                    } */}
-
-                    {playersRows}
-                    
-                {/* </div> */}
+                <div className="losingPlayersContainer">
+                    {losingPlayers.map((player, index) => (
+                        <div className="playerContainer" key={index}>
+                            {player.id !== winner?.id && (
+                                <div>
+                                    <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                    <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/lobby" img={Replay}/>
                 </div>
