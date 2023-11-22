@@ -15,6 +15,9 @@ import InGame from './Pages/InGame';
 import EndGame from './Pages/EndGame';
 import InfoPage from './Pages/InfoPage';
 
+import SoloGame from './Pages/SoloGame'; //! useless
+import DeducGrid from './Pages/DeducGrid'; 
+
 /* Component */
 import AppNavbar from './Components/NavBar';
 
@@ -33,7 +36,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
-import SoloGame from './Pages/SoloGame';
 
 const messages = {
   fr: messagesFr,
@@ -53,7 +55,7 @@ function App() {
 
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
+  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame", "/deduc"]//.includes(window.location.pathname);
 
 
   return (
@@ -63,29 +65,29 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
-      <GameProvider>
+    <GameProvider>
 
-      {/*@ts-ignore*/}
-        <IntlProvider locale={locale} messages={messages[locale]}>
-          <ThemeProvider>
-            <BrowserRouter>  
-              {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/play" element={<Play/>} />
-                <Route path="/lobby" element={<Lobby/>} />
-                <Route path="/endgame" element={<EndGame/>} />
-                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
-        </IntlProvider>
-      </GameProvider>
-  
+    {/*@ts-ignore*/}
+      <IntlProvider locale={locale} messages={messages[locale]}>
+        <ThemeProvider>
+          <BrowserRouter>  
+            {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/play" element={<Play/>} />
+              <Route path="/lobby" element={<Lobby/>} />
+              <Route path="/endgame" element={<EndGame/>} />
+              <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+              <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+              <Route path="/deduc" element={<DeducGrid/>} />
+              {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </IntlProvider>
+    </GameProvider>
   );
 }
 
