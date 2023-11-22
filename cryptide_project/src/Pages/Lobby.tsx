@@ -129,7 +129,8 @@ function Lobby() {
                     </div>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
                     {players.map((player, index) => (
-                        <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                        // <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                        <PlayerItemList key={player.id} player={player}/>
                     ))}
                     <div className='centerButton'>
                             <button className='button' onClick={addBot}
