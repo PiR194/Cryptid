@@ -21,6 +21,8 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Oeye from "../res/icon/eye.png";
+import Ceye from "../res/icon/hidden.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -38,6 +40,8 @@ import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { last } from 'lodash';
+import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
 import generateLatexCode from '../Script/LatexScript';
 
@@ -58,12 +62,22 @@ const InGame = ({locale, changeLocale}) => {
 
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
+  const [showLast, setShowLast] = useState(false)
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
     setHistory(prevHistory => [...prevHistory, message]);
   };
   
+  const setShowLastData = () =>{
+    if (showLast){
+      setShowLast(false)
+    }
+    else{
+      setShowLast(true)
+    }
+  }
+
   useEffect(() => {
     const historyContainer = document.getElementById('history-container');
     if (historyContainer) {
@@ -112,6 +126,10 @@ const InGame = ({locale, changeLocale}) => {
     }
   }
 
+  const resetGraph = () => {
+    socket.emit("reset graph", socket.id)
+  }
+
   /* offcanvas */
   //? faire une fonction pour close et show en fonction de l'etat du canva ?
   //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
@@ -128,6 +146,9 @@ const InGame = ({locale, changeLocale}) => {
   const handleShowS = () => setShowS(true);
 
   const [cptTour, setcptTour] = useState(0);
+
+  const [LastVisible, setLastVisible] = useState(false);
+  
 
   //@ts-ignore
   const changecptTour = (newcptTour) => {
@@ -161,6 +182,11 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
 
+    const changeVisibility = () => {
+      setLastVisible(!LastVisible);
+    }
+    const eye = LastVisible ? Oeye : Ceye; //icon que l'on affiche pour l'oeil : fermé ou ouvert.
+
     /* Windows open */
     //@ts-ignore
     const openInNewTab = (url) => { //! avec url ==> dangereux
@@ -184,7 +210,8 @@ const InGame = ({locale, changeLocale}) => {
                           solo={IsSolo} 
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
-                          setNetwork={setNetworkData}/>
+                          setNetwork={setNetworkData}
+                          showLast={showLast}/>
         </div>
 
 
@@ -214,6 +241,19 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Param} alt="paramètres" height='40'/>
           </button>
         </div>
+
+
+        <div className='resetDiv'>
+          <button className='button'
+            style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={resetGraph}>
+            <img src={Param} alt="paramètres" height='40'/>
+          </button>
+        </div>
+
         <div className='menuGame'>
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
@@ -249,6 +289,14 @@ const InGame = ({locale, changeLocale}) => {
             <img src={MGlass} alt="indice" height="40"/>
           </button>
 
+          <button className='button' onClick={setShowLastData}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={ eye } alt="indice" height="40"/>
+          </button>
+
           <button className='button' onClick={generateTEX}
             style={{ 
               backgroundColor: theme.colors.tertiary,
@@ -270,10 +318,12 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Body>
         </Offcanvas>
           */}
-          <div className='playerlistDiv'>
-            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
-          </div>
 
+          { !IsSolo &&
+            <div className='playerlistDiv'>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+            </div>
+          }
 
         <Offcanvas show={show} 
                   onHide={handleClose} 
