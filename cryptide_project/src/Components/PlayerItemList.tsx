@@ -1,31 +1,69 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
+/* img */
+import BotPDP from '../res/img/bot.png';
+import PersonPDP from '../res/img/Person.png';
+import Trash from '../res/icon/trash.png';
+
+/* style */
 import '../Style/Global.css';
-import Bot from '../res/img/bot.png';
 
 /* Boostrap */
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import Button from 'react-bootstrap/Button';
+
+/* model */
+import Player from '../model/Player';
+import Bot from '../model/Bot';
+
+/* server */
+import { socket } from '../SocketConfig';
+
+interface MyPlayerItemListProps {
+    player : Player,
+    room : string | null
+}
 
 //@ts-ignore
-function PlayerItemList({ pdp, name, id}) {
-    const isBot = pdp === Bot;
+const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
+    // const isBot = pdp === Bot;
+    let pdp;
+    const isBot = player instanceof Bot;
+    isBot ? pdp = BotPDP :  pdp = PersonPDP;
+    
+
+    const delBot = () => {
+        if (isBot && room != null) {
+            console.log(room);
+            socket.emit("bot deleted", player, room);
+        }
+    };
 
     return (
         <div className='item-horizontal-div-container'>
+            
             <div className='item-horizontal-div'>
-                <img src={pdp} alt='player-image' height='100' width='100' />
-                <h4>{name}</h4>
+                <div>
+                    <img src={pdp} alt='player-image' height='100' width='100' />
+                    <h4>{player.name}</h4>
+                </div>
+                {isBot && (
+                    <Button className='suprButton' onClick={delBot} variant="danger">
+                        <img src={Trash} alt='Trash-icon' height='30' width='30' />
+                    </Button>
+                )}
             </div>
             {isBot && (
-                <ToggleButtonGroup type='radio' name={`options-${id}`} defaultValue={1}>
-                    <ToggleButton id={`tbg-radio-1-${id}`} value={1}>
+                <ToggleButtonGroup type='radio' name={`options-${player.id}`} defaultValue={1}>
+                    <ToggleButton id={`tbg-radio-1-${player.id}`} value={1}>
                         Facile
                     </ToggleButton>
-                    <ToggleButton id={`tbg-radio-2-${id}`} value={2}>
+                    <ToggleButton id={`tbg-radio-2-${player.id}`} value={2}>
                         Intermédiaire
                     </ToggleButton>
-                    <ToggleButton id={`tbg-radio-3-${id}`} value={3}>
+                    <ToggleButton id={`tbg-radio-3-${player.id}`} value={3}>
                         Fort
                     </ToggleButton>
                 </ToggleButtonGroup>

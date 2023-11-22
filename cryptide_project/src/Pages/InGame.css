@@ -40,10 +40,12 @@
 }
 
 .resetDiv{
-    z-index: 1;
-    position: absolute;
-    top: 190px;
     right: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 #graphDiv{
