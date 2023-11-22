@@ -33,10 +33,50 @@
     align-items: center;
 }
 
-.playerContainer {
+.playersContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: "5px";
-  }
-  
+    /* padding-left: "5px"; */
+
+    width: 100px;
+    background-color: red;
+}
+
+.playerContainer{
+    /* display: flex;
+    align-items: center; */
+    /* flex-direction: column; */
+
+    /* width: 300px; */
+    width: 30%;
+    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
+
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    
+    background-color: white;
+}
+
+.losingPlayersContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    
+    margin: 10px 0; 
+    
+    max-width: 50%;
+    
+    overflow-y: scroll;
+    max-height: 200px;
+    /* background-color: yellow; */
+}
+
+.indiceDisplay{
+    border: solid 2px whitesmoke;
+    border-radius: 10px;
+    margin: 0 15px 0 15px;
+    padding: 10px;  
+    box-shadow: 5px 5px 5px rgb(246, 246, 246);    
+}

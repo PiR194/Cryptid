@@ -18,7 +18,7 @@ const map = new Map()
 // ... le reste de votre configuration du serveur
 
 server.listen(3002, () => {
-  console.log('Serveur Socket.IO écoutant sur le port 3001');
+  console.log('Serveur Socket.IO écoutant sur le port 3002');
 });
 
 io.on('connection', (socket) => {
@@ -54,6 +54,19 @@ io.on('connection', (socket) => {
     io.to(room).emit("new player", map.get(room))
   })
 
+
+  socket.on("bot deleted", (bot, room) =>{
+    // map.set(room, map.get(room).filter(player => player.id !== bot.id));
+    const tab = map.get(room)
+    for(let i = 0; i<tab.length; i++){
+      if (tab[i].id === bot.id){
+        tab.splice(i, 1)
+      }
+    }
+    io.to(room).emit("new player", map.get(room))
+  })
+
+
   socket.on("lobby created", () =>{
     io.to(socket.id).emit("lobby created", Math.floor(Math.random() * 10000))
   })
@@ -80,7 +93,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i<tab.length; i++){
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
-            io.to(k).emit("player left", tab, socket.id)
+            io.to(k).emit("player left", tab, i)
           }
         }
     }
@@ -102,8 +115,19 @@ io.on('connection', (socket) => {
     io.to(id).emit("put imossible grey")
   })
 
+  socket.on("opacity activated", (id) => {
+    io.to(id).emit("opacity activated")
+  })
+
+  socket.on("opacity deactivated", (id) => {
+    io.to(id).emit("opacity deactivated")
+  })
+
+  socket.on("reset graph", (id) => {
+    io.to(id).emit("reset graph")
+  })  
+
   socket.on("end game", (winnerIndex, room) =>{
-    console.log("endgame")
     io.to(room).emit("end game", winnerIndex)
   })
 });

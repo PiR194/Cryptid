@@ -27,7 +27,7 @@
 
 .player-board{
     height: 100%;
-    width: max-content;
+    width: 800px;
     background-color: rgb(243, 241, 235);
     border-radius: 20px;
 

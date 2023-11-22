@@ -43,10 +43,10 @@
 
     "and": "et",
     "or": "ou",
-    "or_sport": "et/ou du",
+    "or_sport": "ou du",
 
     "age_indice_start": "Le suspect a entre",
-    "age_indice_more_start": "Le suspect a ou a plus de",
+    "age_indice_more_start": "Le suspect a au moins",
     "age_indice_end": "ans",
 
     "color_edges_start": "Le suspect a au moins un ami avec les cheveux",

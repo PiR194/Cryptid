@@ -8,4 +8,3 @@ enum Sport {
 }
 
 export default Sport
-  

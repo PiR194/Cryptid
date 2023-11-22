@@ -29,6 +29,7 @@ interface GameContextProps {
   setRoomData: (newRoom: string) => void;
   setOnlyFalseData: (newOnlyFalse: boolean) => void
   setWinnerData: (winner: Player) => void
+  reset: () => void
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -101,8 +102,22 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setWinner(winner)
   }
 
+  const reset = () => {
+    setIndices([])
+    setActualPlayerIndex(-1)
+    setAskedPersons([])
+    setPlayers([])
+    setPerson(null)
+    setPersonNetwork(null)
+    setRoom("")
+    setWinner(null)
+    setTurnPlayerIndex(-1)
+    setNodeId(-1)
+    setIndice(null)
+  }
+
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData }}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset }}>
       {children}
     </GameContext.Provider>
   );

@@ -32,7 +32,7 @@ const ScoreBoard: React.FC<{ Player: PlayerProps }> = ({ Player }) => {
         // <div className='LeaderBoardiv'>
         <div className='LeaderBoardiv'>
             <Tabs style={{width:"100%"}}
-                defaultActiveKey="profile"
+                defaultActiveKey="daily"
                 id="ScoreBoard"
                 className="mb-3">
                 <Tab eventKey="perso" title="Vos Stats" disabled = { !Player.pseudo.startsWith("Guest_") ? false : true}>

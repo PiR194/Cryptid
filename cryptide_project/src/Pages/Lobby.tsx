@@ -45,6 +45,10 @@ function Lobby() {
         socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100)).toJson())
     }
 
+    // function delBot(selectedBot: Bot){
+        
+    // }
+
     useEffect(() => {
         if (first){
             first=false
@@ -81,6 +85,8 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
+        socket.off("player left")
+        socket.off("new player")
         navigate('/game?solo=false');
     });
 
@@ -92,25 +98,12 @@ function Lobby() {
         setPlayersData(tmpTab)
     })
 
-    socket.on("player left", (tab, socketId) => {
-        if (gameStarted){
-            const i = players.findIndex((p) => p.id == socketId)
-            if (i != undefined){
-                let player = players[i]
-                player = new EasyBot("125", "BOT125")
-                if (player instanceof Bot){
-                    player.indice = indices[i]
-                }
-            }
+    socket.on("player left", (tab, i) => {
+        const tmpTab: Player[] = []
+        for (const p of tab){
+            tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        else{
-            const tmpTab: Player[] = []
-            for (const p of tab){
-                tmpTab.push(JSONParser.JSONToPlayer(p))
-            }
-            setPlayersData(tmpTab)
-        }
-        const index = players
+        setPlayersData(tmpTab)
     })
 
     const [codeShowed, setCodeShowed] = useState(true);
@@ -140,7 +133,8 @@ function Lobby() {
                     </div>
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
                     {players.map((player, index) => (
-                        <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                        // <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
+                        <PlayerItemList key={player.id} player={player} room={room}/>
                     ))}
                     <div className='centerButton'>
                             <button className='button' onClick={addBot}

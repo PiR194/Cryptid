@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
+import {saveAs} from "file-saver"
 
 /* Style */
 import "./InGame.css"
@@ -20,6 +21,10 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Download from "../res/icon/download.png"
+import Reset from "../res/icon/reset.png";
+import Oeye from "../res/icon/eye.png";
+import Ceye from "../res/icon/hidden.png";
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -31,12 +36,16 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 /* Model */
 import Stub from '../model/Stub';
 import { HiLanguage } from 'react-icons/hi2';
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { last } from 'lodash';
+import { socket } from '../SocketConfig';
+import { Network } from 'vis-network';
+import generateLatexCode from '../Script/LatexScript';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -55,12 +64,18 @@ const InGame = ({locale, changeLocale}) => {
 
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
+  const [showLast, setShowLast] = useState(false)
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
     setHistory(prevHistory => [...prevHistory, message]);
   };
   
+  const setShowLastData = () =>{
+    setLastVisible(!showLast);
+    setShowLast(!showLast);
+  }
+
   useEffect(() => {
     const historyContainer = document.getElementById('history-container');
     if (historyContainer) {
@@ -69,12 +84,18 @@ const InGame = ({locale, changeLocale}) => {
   }, [history]);
 
 
-
+  const {personNetwork, person, indices} = useGame()
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+
+  const [network, setNetwork] = useState<Network | null>(null)
+
+  const setNetworkData = (network: Network) => {
+    setNetwork(network)
+  }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
     setShowChoiceBar(shouldShowChoiceBar);
@@ -93,6 +114,24 @@ const InGame = ({locale, changeLocale}) => {
     setTurnBarText(newTurnBarText)
   }
 
+  const generateTEX = () => {
+    if (network != null && personNetwork != null && person != null){
+      const tex = generateLatexCode(personNetwork, person, indices, network)
+      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+
+      // Utiliser FileSaver pour télécharger le fichier
+      saveAs(blob, 'socialGraph.tex');
+    }
+  }
+
+  const resetGraph = () => {
+    setisLoading(true);
+    socket.emit("reset graph", socket.id)
+    setTimeout(() => {
+      setisLoading(false);
+    }, 2000);  
+  }
+
   /* offcanvas */
   //? faire une fonction pour close et show en fonction de l'etat du canva ?
   //? comment faire pour eviter la recopie de tout le code a chaque canvas boostrap ?
@@ -109,6 +148,11 @@ const InGame = ({locale, changeLocale}) => {
   const handleShowS = () => setShowS(true);
 
   const [cptTour, setcptTour] = useState(0);
+
+  const [LastVisible, setLastVisible] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
+  
 
   //@ts-ignore
   const changecptTour = (newcptTour) => {
@@ -142,6 +186,11 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
 
+    const changeVisibility = () => {
+      setLastVisible(!LastVisible);
+    }
+    const eye = LastVisible ? Oeye : Ceye; //icon que l'on affiche pour l'oeil : fermé ou ouvert.
+
     /* Windows open */
     //@ts-ignore
     const openInNewTab = (url) => { //! avec url ==> dangereux
@@ -149,7 +198,7 @@ const InGame = ({locale, changeLocale}) => {
     };
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
-  const indices = Stub.GenerateIndice()
+  const allIndices = Stub.GenerateIndice()
   const { indice, players } = useGame();
 
 
@@ -164,7 +213,9 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           setPlayerTouched={handleSetPlayerTouched} 
-                          playerTouched={playerTouched}/>
+                          playerTouched={playerTouched}
+                          setNetwork={setNetworkData}
+                          showLast={showLast}/>
         </div>
 
 
@@ -195,7 +246,33 @@ const InGame = ({locale, changeLocale}) => {
           </button>
         </div>
 
+
+
         <div className='menuGame'>
+          <div className='resetDiv'>
+            <button className='button'
+              style={{ 
+                  backgroundColor: theme.colors.tertiary,
+                  borderColor: theme.colors.secondary
+              }}
+              onClick={resetGraph}>
+              
+              {
+                isLoading ? (
+                  <Spinner animation="grow" />
+                  )
+                  : (
+                  <img src={Reset} alt="paramètres" height='40'/>
+                )
+              }
+              
+              
+            </button>
+          </div>
+
+
+
+
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
@@ -229,6 +306,22 @@ const InGame = ({locale, changeLocale}) => {
             }}>
             <img src={MGlass} alt="indice" height="40"/>
           </button>
+
+          <button className='button' onClick={setShowLastData}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={ eye } alt="indice" height="40"/>
+          </button>
+
+          <button className='button' onClick={generateTEX}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={Download} alt="indice" height="40"/>
+          </button>
         </div>
 
 {/*
@@ -243,10 +336,12 @@ const InGame = ({locale, changeLocale}) => {
           </Offcanvas.Body>
         </Offcanvas>
           */}
-          <div className='playerlistDiv'>
-            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
-          </div>
 
+          { !IsSolo &&
+            <div className='playerlistDiv'>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+            </div>
+          }
 
         <Offcanvas show={show} 
                   onHide={handleClose} 

@@ -27,7 +27,7 @@ class NetworkGenerator{
         }
         */
         for(let i = 0; i < nbPerson/3; i++){
-            const nombreAleatoire = Math.floor(Math.random() * 9) + 12;
+            const nombreAleatoire = Math.floor(Math.random() * 8) + 12;
             tabAdo.push(nombreAleatoire)
         }
         for(let i = 0; i < nbPerson/3; i++){
@@ -35,7 +35,7 @@ class NetworkGenerator{
             tabAdulte.push(nombreAleatoire)
         }
         for(let i = 0; i < nbPerson/3; i++){
-            const nombreAleatoire = Math.floor(Math.random() * 30) + 30;
+            const nombreAleatoire = Math.floor(Math.random() * 40) + 30;
             tabVieux.push(nombreAleatoire)
         }
 
@@ -53,7 +53,10 @@ class NetworkGenerator{
             }
             let sports = []
             for (let j = 0; j < 3; j++){
-                if (tmpTabSport.length == 0) tmpTabSport = [...tabSports]
+                if (tmpTabSport.length == 0){
+                    tmpTabSport = [...tabSports]
+                    break
+                }
                 const rand = Math.floor(Math.random() * tmpTabSport.length)
                 if (tmpTabSport[rand] != Sport.AUCUN){
                     sports.push(tmpTabSport[rand])
