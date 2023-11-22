@@ -78,7 +78,7 @@ function Play() {
         };
       
         fetchUserInformation();
-    }, []);
+    }, [isLoggedIn]);
       
 
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();

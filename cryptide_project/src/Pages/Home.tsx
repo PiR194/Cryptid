@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ButtonImgNav from '../Components/ButtonImgNav';
 
-
+// @ts-ignore
 function Home() {
     const theme=useTheme();
     const {isLoggedIn, login} = useAuth();

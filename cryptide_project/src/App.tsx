@@ -19,6 +19,9 @@ import InfoPage from './Pages/InfoPage';
 /* Component */
 import AppNavbar from './Components/NavBar';
 
+/* service */
+import SessionService from './services/SessionService';
+
 /* nav */
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
@@ -48,7 +51,7 @@ function App() {
   const [locale, setLocale] = useState('fr');
 
   //@ts-ignore
-  const changeLocale = (newLocale) => {
+  const changeLocale = async (newLocale) => {
     setLocale(newLocale);
   };
 
