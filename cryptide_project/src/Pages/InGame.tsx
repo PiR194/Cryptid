@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
+import {saveAs} from "file-saver"
 
 /* Style */
 import "./InGame.css"
@@ -103,7 +104,11 @@ const InGame = ({locale, changeLocale}) => {
 
   const generateTEX = () => {
     if (network != null && personNetwork != null && person != null){
-      generateLatexCode(personNetwork, person, indices, network)
+      const tex = generateLatexCode(personNetwork, person, indices, network)
+      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+
+      // Utiliser FileSaver pour télécharger le fichier
+      saveAs(blob, 'socialGraph.tex');
     }
   }
 

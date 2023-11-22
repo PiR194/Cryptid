@@ -11,7 +11,7 @@ import { ColorToString, SportToString } from "../model/EnumExtender";
 import GraphCreator from "../model/Graph/GraphCreator";
 import { DataSet, Network } from "vis-network";
 
-function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, choosenIndices : Indice[], network: Network) {
+function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, choosenIndices : Indice[], network: Network): string {
     let latexCode = "";
 
 
@@ -89,7 +89,7 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     
     latexCode += "\\end{document}\n"
 
-    console.log(latexCode)
+   return latexCode
 }
 
 export default generateLatexCode
