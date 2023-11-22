@@ -14,14 +14,13 @@ class Stub{
         let indice = new NbEdgesIndice(1, 2)
         let indice1 = new NbEdgesIndice(2, 3)
         let indice2 = new NbEdgesIndice(3, 4)
-        let ageIndice = new AgeIndice(4, 0, 14)
-        let ageIndice1 = new AgeIndice(5, 15, 19)
-        let ageIndice2 = new AgeIndice(6, 20, 29)
-        let ageIndice3 = new AgeIndice(7, 30, 100000)
+        let ageIndice = new AgeIndice(4, 12, 19)
+        let ageIndice1 = new AgeIndice(5, 20, 29)
+        let ageIndice2 = new AgeIndice(6, 30, 100000)
 
-        let indices: Indice[] = [indice, indice1, indice2, ageIndice, ageIndice1, ageIndice2, ageIndice3]
+        let indices: Indice[] = [indice, indice1, indice2, ageIndice, ageIndice1, ageIndice2]
 
-        let test = 8
+        let test = 7
         for (let i: Color=0; i<5; i++){
             for (let j: Color=0; j<5; j++){
                 if (j==i){

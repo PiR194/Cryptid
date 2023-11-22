@@ -26,6 +26,12 @@ import { useGame } from '../Contexts/GameContext';
 
 function EndGame() {
 
+    const {reset} = useGame()
+    
+    const resetAll = () => {
+        reset()
+    }
+
     const {winner, person, players, indices} =useGame()
     console.log(winner)
 
@@ -52,7 +58,7 @@ function EndGame() {
                 <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
             </div>
             <div className='bottom'>
-                <div className='centerDivH'>
+                <div className='centerDivH' onClick={resetAll}>
                     <BigButtonNav dest="/play" img={Leave}/>
                 </div>
                 <div className="losingPlayersContainer">

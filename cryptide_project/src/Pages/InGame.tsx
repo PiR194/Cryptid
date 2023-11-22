@@ -21,6 +21,7 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Download from "../res/icon/download.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
@@ -319,7 +320,7 @@ const InGame = ({locale, changeLocale}) => {
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
-            <img src={MGlass} alt="indice" height="40"/>
+            <img src={Download} alt="indice" height="40"/>
           </button>
         </div>
 

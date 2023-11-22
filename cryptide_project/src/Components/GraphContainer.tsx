@@ -7,7 +7,7 @@ import Person from "../model/Person";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
-import { colorToEmoji, positionToColor } from "../ColorHelper";
+import { colorToEmoji, positionToColor, positionToEmoji } from "../ColorHelper";
 import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
@@ -30,12 +30,10 @@ let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
 let askedWrong = false
-let solo: boolean = true
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
 let botIndex = -1
 let askedWrongBot = false
-let botTurnToCube = false
 let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
@@ -97,7 +95,6 @@ let cptTour: number = 0
         break
     }
   }
-  let thisPlayerIndex = index
 
   useEffect(() =>{
     if (actualPlayerIndex==0){
@@ -197,6 +194,7 @@ let cptTour: number = 0
   
   if (first){
     first = false
+
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -210,7 +208,7 @@ let cptTour: number = 0
         })
       }
       setActualPlayerIndexData(index)
-      if (playerIndex == thisPlayerIndex){
+      if (playerIndex == actualPlayerIndex){
         handleTurnBarTextChange("À vous de jouer")
         handleShowTurnBar(true)
       }
@@ -286,6 +284,7 @@ let cptTour: number = 0
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
+        console.log(newPlayerIndex)
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
@@ -306,15 +305,15 @@ let cptTour: number = 0
           }
           
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
-            networkData.nodes.update({id: id, label: node.label + colorToEmoji(positionToColor(askedIndex), works)})
+            networkData.nodes.update({id: id, label: node.label + positionToEmoji(askedIndex, works)})
             cptHistory++
             if (cptHistory % 2 == 0){
               lastNodes.push(node)
-              addToHistory(players[askedIndex].name + " à mis un " + colorToEmoji(positionToColor(askedIndex), works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(players[askedIndex].name + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
           }
 
-          if (playerIndex === thisPlayerIndex){
+          if (playerIndex === actualPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
             handleShowTurnBar(true)
           }
@@ -337,7 +336,7 @@ let cptTour: number = 0
         askedWrongBot=true
         handleShowTurnBar(true)
         handleTurnBarTextChange("Mauvais choix, posez un carré !")
-        socket.emit("put grey background", socket.id, thisPlayerIndex)
+        socket.emit("put grey background", socket.id, actualPlayerIndex)
       })
   
   
@@ -356,16 +355,16 @@ let cptTour: number = 0
               const node = nodes.get().find((n) => nodeId == n.id)
               if (node != undefined && indice != null){
                 var tester = IndiceTesterFactory.Create(indice)
-                let maybe = thisPlayerIndex
+                let maybe = actualPlayerIndex
                 if (tester.Works(pers)){
                   playerIndex = playerIndex + 1
                   if(playerIndex == players.length){
                     playerIndex = 0
                   }
-                  socket.emit("node checked", nodeId, true, thisPlayerIndex, room, playerIndex)
+                  socket.emit("node checked", nodeId, true, actualPlayerIndex, room, playerIndex)
                 }
                 else{
-                  maybe = thisPlayerIndex - 1
+                  maybe = actualPlayerIndex - 1
                   if(maybe == 0){
                     maybe = players.length - 1
                   }
@@ -377,7 +376,7 @@ let cptTour: number = 0
                     }
                   }
                   if (index != undefined){
-                    socket.emit("node checked", nodeId, false, thisPlayerIndex, room, index)
+                    socket.emit("node checked", nodeId, false, actualPlayerIndex, room, index)
                     socket.emit("asked wrong", askingPlayer, room)
                   }
     
@@ -409,7 +408,7 @@ let cptTour: number = 0
       if (personNetwork != null){
         const tab = mapIndexPersons.get(player)
         if (tab != undefined){
-          if (player != thisPlayerIndex){
+          if (player != actualPlayerIndex){
             for(const person of personNetwork.getPersons().filter((p) => tab.includes(p))){
               networkData.nodes.update({id: person.getId(), color: "#808080"})
             }
@@ -432,7 +431,7 @@ let cptTour: number = 0
           const node = nodes.get().find((n) => pers.getId() == n.id)
           if (node != undefined){
             for(let i=0; i<players.length; i++){
-              if (node.label.includes(colorToEmoji(positionToColor(i), false)) || !tester.Works(pers)){
+              if (node.label.includes(positionToEmoji(i, false)) || !tester.Works(pers)){
                 tabNodes.push(node)
                 break
               }
@@ -452,6 +451,23 @@ let cptTour: number = 0
       setLastIndex(-1)
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
+      first = true
+      cptHistory = 0
+      askedWrong=false
+      askedWrongBot=false
+      socket.off("end game")
+      socket.off("asked all")
+      socket.off("opacity activated")
+      socket.off("opacity deactivated")
+      socket.off("reset graph")
+      socket.off("node checked")
+      socket.off("already asked")
+      socket.off("asked wrong")
+      socket.off("asked")
+      socket.off("put correct background")
+      socket.off("put grey background")
+      socket.off("put imossible grey")
+
       navigate("/endgame")
     })
 
@@ -494,11 +510,11 @@ let cptTour: number = 0
             if (person !== undefined && indice !== null){
               const tester = IndiceTesterFactory.Create(indice)
               if (!tester.Works(person) && !askedPersons.includes(person)){
-                playerIndex = thisPlayerIndex + 1
+                playerIndex = actualPlayerIndex + 1
                 if(playerIndex == players.length){
                   playerIndex = 0
                 }
-                socket.emit("node checked", params.nodes[0], false, thisPlayerIndex, room, playerIndex)
+                socket.emit("node checked", params.nodes[0], false, actualPlayerIndex, room, playerIndex)
                 socket.emit("put correct background", socket.id)
                 touchedPlayer=-1
                 askedPersons.push(person)
@@ -599,8 +615,8 @@ let cptTour: number = 0
               const test = tester.Works(person)
               const node = nodes.get().find((n) => params.nodes[0] == n.id)
               if (node!=undefined){
-                if (!node.label.includes(colorToEmoji(positionToColor(index), test))){
-                  networkData.nodes.update({id: params.nodes[0], label: node.label + colorToEmoji(positionToColor(index), test)})
+                if (!node.label.includes(positionToEmoji(index, test))){
+                  networkData.nodes.update({id: params.nodes[0], label: node.label + positionToEmoji(index, test)})
                   await delay(500)
                   if(!test){
                     works = false
