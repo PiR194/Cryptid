@@ -54,6 +54,19 @@ io.on('connection', (socket) => {
     io.to(room).emit("new player", map.get(room))
   })
 
+
+  socket.on("bot deleted", (bot, room) =>{
+    // map.set(room, map.get(room).filter(player => player.id !== bot.id));
+    const tab = map.get(room)
+    for(let i = 0; i<tab.length; i++){
+      if (tab[i].id === bot.id){
+        tab.splice(i, 1)
+      }
+    }
+    io.to(room).emit("new player", map.get(room))
+  })
+
+
   socket.on("lobby created", () =>{
     io.to(socket.id).emit("lobby created", Math.floor(Math.random() * 10000))
   })
