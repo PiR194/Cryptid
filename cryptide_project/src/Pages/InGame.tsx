@@ -289,7 +289,7 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Check} alt="check" height="40"/>
           </button> */}
 
-          <Link to='/info' target='_blank'>
+          {!IsSolo && <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -297,31 +297,32 @@ const InGame = ({locale, changeLocale}) => {
               }}>
               <img src={Check} alt="check" height="40"/>
             </button>
-          </Link>
+          </Link>}
 
-          <button className='button' onClick={handleChange}
+          {!IsSolo && <button className='button' onClick={handleChange}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={MGlass} alt="indice" height="40"/>
-          </button>
+          </button>}
 
-          <button className='button' onClick={setShowLastData}
+          {!IsSolo && <button className='button' onClick={setShowLastData}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={ eye } alt="indice" height="40"/>
-          </button>
+          </button>}
 
-          <button className='button' onClick={generateTEX}
+          {IsSolo && <button className='button' onClick={generateTEX}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={Download} alt="indice" height="40"/>
           </button>
+          }
         </div>
 
 {/*
