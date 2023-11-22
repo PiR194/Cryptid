@@ -49,7 +49,6 @@ let cptTour: number = 0
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
 
-
   useEffect(() =>{
     touchedPlayer=playerTouched
     if (touchedPlayer == -1){
@@ -451,10 +450,14 @@ let cptTour: number = 0
       setLastIndex(-1)
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
+
+      
+
       first = true
       cptHistory = 0
       askedWrong=false
       askedWrongBot=false
+
       socket.off("end game")
       socket.off("asked all")
       socket.off("opacity activated")
