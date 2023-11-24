@@ -71,6 +71,7 @@ class AuthController {
         }
 
         // Stocker l'utilisateur dans la session){
+        console.log("SESSION")
         console.log(req.session);
         req.session.user = user;
 

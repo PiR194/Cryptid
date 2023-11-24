@@ -61,7 +61,7 @@ const ChoiceBar = () => {
         {players.map((player, index) => (
           player.id !== socket.id &&
           <button key={index} className="choice-bar-button" onClick={() => askPlayer(player.id)} style={{ backgroundColor: theme.colors.primary }}>
-            {player.name}
+            {player.pseudo}
           </button>
         ))}
       </div>

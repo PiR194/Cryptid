@@ -22,13 +22,11 @@ import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
 
 /* Types */
-import { PlayerProps } from '../types/Player';
-
+import User from '../model/User';
 
 function Play() {
     const theme=useTheme()
-    const {isLoggedIn, login} = useAuth();
-    const [player, setPlayer] = useState<PlayerProps | null>(null);
+    const {isLoggedIn, login, user, setUserData } = useAuth();
 
     useEffect(() => {
         const fetchUserInformation = async () => {
@@ -38,45 +36,39 @@ function Play() {
                 // Vérifie si il y a une session
                 if (sessionData.user) {
                     // Il y a une session on récupère les infos du joueur
-                    const updatedPlayer: PlayerProps = {
-                        pseudo: sessionData.user.pseudo,
-                        profilePicture: sessionData.user.profilePicture,
-                        soloStats: {
-                            nbGames: sessionData.user.soloStats.nbGames,
-                            bestScore: sessionData.user.soloStats.bestScore,
-                            avgNbTry: sessionData.user.soloStats.avgNbTry,
-                        },
-                        onlineStats: {
-                            nbGames: sessionData.user.onlineStats.nbGames,
-                            nbWins: sessionData.user.onlineStats.nbWins,
-                            ratio: sessionData.user.onlineStats.ratio,
-                        },
-                    };
+                    const updatedPlayer: User = new User(socket.id, sessionData.user.pseudo, sessionData.user.profilePicture, {
+                        nbGames: sessionData.user.soloStats.nbGames,
+                        bestScore: sessionData.user.soloStats.bestScore,
+                        avgNbTry: sessionData.user.soloStats.avgNbTry,
+                    },
+                    {
+                        nbGames: sessionData.user.onlineStats.nbGames,
+                        nbWins: sessionData.user.onlineStats.nbWins,
+                        ratio: sessionData.user.onlineStats.ratio,
+                    })
                     login();
-                    setPlayer(updatedPlayer);
+                    setUserData(updatedPlayer);
                 } else {
                     // Pas de session on génère un guest random
-                    const guestPlayer: PlayerProps = {
-                        pseudo: 'Guest_' + Math.floor(Math.random() * 1000000),
-                        profilePicture: '',
-                        soloStats: {
-                            nbGames: 0,
-                            bestScore: 0,
-                            avgNbTry: 0,
-                        },
-                        onlineStats: {
-                            nbGames: 0,
-                            nbWins: 0,
-                            ratio: 0,
-                        },
-                    };
-                    setPlayer(guestPlayer);
+                    const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
+                    {
+                        nbGames: 0,
+                        bestScore: 0,
+                        avgNbTry: 0,
+                    },
+                    {
+                        nbGames: 0,
+                        nbWins: 0,
+                        ratio: 0,
+                    })
+                    setUserData(guestPlayer);
                 }
             } catch (error) {
                 console.error(error);
             }
         };
       
+        console.log('isLoggedIn : ', isLoggedIn);
         fetchUserInformation();
     }, [isLoggedIn]);
       
@@ -136,7 +128,7 @@ function Play() {
             <div className="MidContainer">
                 <div>
                     <h2>
-                        {player && player.pseudo}
+                        {user && user.pseudo}
                     </h2>
                     <img src={Person}
                             height='300'
@@ -152,7 +144,7 @@ function Play() {
                 </div>
             </div>
             <div className='rightContainer'>
-                {player && (<ScoreBoard Player={player}/>)}
+                {user && (<ScoreBoard Player={user}/>)}
             </div>
         </div>
     );

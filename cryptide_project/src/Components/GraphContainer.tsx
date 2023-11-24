@@ -11,6 +11,7 @@ import { colorToEmoji, positionToColor, positionToEmoji } from "../ColorHelper";
 import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
+import { useAuth } from "../Contexts/AuthContext";
 
 
 interface MyGraphComponentProps {
@@ -43,6 +44,8 @@ let lastNodes: NodePerson[] = []
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
 let cptTour: number = 0
 
+  const {isLoggedIn, user} = useAuth()
+  console.log('isLoggedIn : ' + isLoggedIn);
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
 
@@ -308,7 +311,7 @@ let cptTour: number = 0
             cptHistory++
             if (cptHistory % 2 == 0){
               lastNodes.push(node)
-              addToHistory(players[askedIndex].name + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(players[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
           }
 
@@ -445,19 +448,36 @@ let cptTour: number = 0
     })
 
     socket.on("end game", (winnerIndex) =>{
+      const currentPlayer = players[actualPlayerIndex];
+      const winner = players[winnerIndex];
+
       setNodeIdData(-1)
       setActualPlayerIndexData(-1)
       setLastIndex(-1)
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
 
-      
+      console.log('isLoggedIn : ' + isLoggedIn);
+      if(isLoggedIn){
+        if(solo){
+
+        }
+        else{
+          if(winner.id === currentPlayer.id){
+              console.log("Vous avez gagné !");
+          }
+          else{
+              console.log("Vous avez perdu !");
+          }
+        }
+      }
 
       first = true
       cptHistory = 0
       askedWrong=false
       askedWrongBot=false
 
+      
       socket.off("end game")
       socket.off("asked all")
       socket.off("opacity activated")

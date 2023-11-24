@@ -390,9 +390,6 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-        <div id="bottom-container">
-          {showChoiceBar && <ChoiceBar />}
-        </div>
         {/*
         <div id="endgamebutton" > {/*  tmp 
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
