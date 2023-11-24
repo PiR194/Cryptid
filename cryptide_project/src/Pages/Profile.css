@@ -16,6 +16,8 @@
     background-color: white;
 
     margin: 10px;
+
+    min-height: 250px;
 }
 
 .imgContainer{

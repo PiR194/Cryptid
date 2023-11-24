@@ -3,26 +3,32 @@ import '../Pages/Profile.css'
 import dl from '../res/icon/download.png'
 import defaultImg from '../res/img/Person.png'
 
-const ProfilePDP = () => {
+//@ts-ignore
+const ProfilePDP = ({ player }) => {
     const [selectedFile, setSelectedFile] = useState(null);
 
     // @ts-ignore
     const handleFileChange = (event) => {
         let file = event.target.files[0];
-        // Validez la taille, le format, etc.
-        // if (file == null){
-        //     file = defaultImg;
-        // }
+
         setSelectedFile(file);
+        if (file) {
+            const pdpUrl = URL.createObjectURL(file);
+            player.pdp = pdpUrl
+        }
     };
 
     return (
         <div className='mainPDPContainer'>
-                {selectedFile && (
+                {selectedFile ? (
                     <div >
                     {/* @ts-ignore */}
                     {/* <p>Selected File: {selectedFile.name}</p> */}
                     <img src={URL.createObjectURL(selectedFile)} alt="Preview" className='imgContainer' width='100px' height='100px' />
+                    </div>
+                ) : (
+                    <div >
+                    <img src={player.pdp} alt="Preview" className='imgContainer' width='100px' height='100px' />
                     </div>
                 )}
                 <div className="parent">
