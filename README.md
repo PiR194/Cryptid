@@ -1,43 +1,34 @@
-## Présentation : 
+# Présentation : 
 
-Vous êtes plusieurs enquêteur sur une affaire, vous avez sous vos yeux un réseau de personne se connaissant plus ou moins entre eux.  
-Au cours de cette palpitante partie, vous allez devoir questionner vos adversaires afin de deviner leur indice et être le premier  
-inspecteur à trouver le coupable.
+Vous êtes plusieurs enquêteur sur une affaire, vous avez sous vos yeux un réseau de personne se connaissant plus ou moins entre eux. Au cours de cette palpitante partie, vous allez devoir questionner vos adversaires afin de deviner leur indice et être le premier inspecteur à trouver le coupable.
 
 ## Comment utiliser notre projet :
 
-Cette partie va vous permettre de récupérer le projet sur votre poste et de faire les configurations nécéssaire afin de pouvoir jouer en  
-local avec vos amis, des ORDIs, etc.
-
 *Prérequis :* Avoir git et npm sur son poste.
 
-### Récupérer le projet  
-Dans un premier terminal vous allez faire les commandes suivantes :  
-```
+### Etape 1 : Récupérer le projet  
+Dans un premier terminal, exécutez les commandes suivantes :  
+```bash
     git clone https://codefirst.iut.uca.fr/git/Crypteam/Cryptid.git
     cd cryptide_project
-```
-Ensuite installer les dépendances de celui-ci :  
-```
     npm i --force
 ```
 
-### Configurer le réseau  
-Il va falloir commencer par faire un partage de connexion de votre téléphone à votre ordinateur.  
+### Etape 2 : Configurer le réseau  
 
-Ensuite il va falloir récupérer votre adresse IP :
+1. Faites un partage de connexion de votre téléphone à votre ordinateur.  
 
-#### Windows
+2. Récupérez votre adresse IP :
 
+Sur Windows
 - Ouvrez l'invite de commandes (`cmd`) et tapez la commande `ipconfig`. Repérez la section de votre connexion sans fil et notez l'adresse IPv4.
 
-#### MacOS / Linux
-
+Sur MacOS / Linux
 - Ouvrez le terminal et tapez la commande `ifconfig` ou `ip addr`. Recherchez la section de votre connexion sans fil et notez l'adresse IP.
 
-A présent on va configurer Socket.IO dans `SocketConfig.ts`
+### Etape 3 : Configurer Socket.IO
 
-1. **Ouvrez le fichier `SocketConfig.ts` :**
+1. **Ouvrez le fichier `./src/SocketConfig.ts` :**
    - Localisez le fichier dans le répertoire de votre application.
 
 2. **Modifiez l'adresse IP dans la ligne `const socket = io(...)` :**
@@ -55,13 +46,13 @@ A présent on va configurer Socket.IO dans `SocketConfig.ts`
    ```
 
 ### Démarrer les serveurs  
-Vous allez pouvoir ouvrir un second terminal pour ouvrir le serveur Socket.IO qui va gérer, entre autres, le déroulement de la partie.
-```
+Dans un second terminal, ouvrez le serveur Socket.IO :
+```bash
     cd ./server
     node server.js
 ```
 
-Maintenant, ouvrez un troisième et dernier terminal pour le serveur gérant l'API  
+Dans un troisième ouvrez le serveur gérant l'API  
 ```
     cd ./src/server
     node server.js
