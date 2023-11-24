@@ -96,14 +96,23 @@ function Play() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+        navigate('/game?solo=true&daily=false');
+    }
+
+    
+    function launchEngimeJour(){
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
+        setPersonData(choosenPerson)
+        setPersonNetworkData(networkPerson)
+        setIndicesData(choosenIndices)
+        setIndicesData(choosenIndices)
         if (first){
             first = false
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate('/game?solo=true');
+        navigate('/game?solo=true&daily=true');
     }
-
     
 
     useEffect(() => {
@@ -150,6 +159,7 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
+                    <button onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul mais aujourd'hui</button>
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button  className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     
