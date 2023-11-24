@@ -22,11 +22,7 @@ import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
 
 /* Types */
-import { PlayerProps } from '../types/Player';
-import Player from '../model/Player';
-import Human from '../model/User';
 import User from '../model/User';
-
 
 function Play() {
     const theme=useTheme()
@@ -72,6 +68,7 @@ function Play() {
             }
         };
       
+        console.log('isLoggedIn : ', isLoggedIn);
         fetchUserInformation();
     }, [isLoggedIn]);
       
