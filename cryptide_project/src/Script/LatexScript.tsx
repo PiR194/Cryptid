@@ -50,7 +50,7 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
             const x = (position.x / 9).toFixed(2); // Arrondir à 2 décimales
             const y = (position.y / 9).toFixed(2);
     
-            latexCode += `  \\node[draw, circle split, align=center] (${person.getId()}) at (${x},${y}) { ${person.getName()} \\\\ ${person.getAge()} \\nodepart{lower}`;
+            latexCode += `  \\node[draw, circle split, align=center] (${person.getId()}) at (${x},${y}) { ${person.getName()}  ${person.getAge()} \\nodepart{lower}`;
             latexCode += `${ColorToString(person.getColor(), "fr")} \\\\`
             person.getSports().forEach((sport) => { latexCode += ` \\${SportToString(sport, 'fr')}{}` });
             latexCode += "};\n";
