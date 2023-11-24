@@ -39,13 +39,14 @@ let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
+let firstEnigme = true
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
 let cptTour: number = 0
 
   const {user} = useAuth()
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme } = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -257,6 +258,26 @@ let cptTour: number = 0
     const network = new Network(container, networkData, initialOptions);
 
     setNetwork(network)
+
+    dailyEnigme.forEach((pairs, index) => {
+      pairs.forEach((pair) => {
+        const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+        console.log(index)
+        const node = networkData.nodes.get().find((n) => index == n.id)
+        if (node != undefined){
+          networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
+          const test = networkData.nodes.get().find((n) => index == n.id)
+          if (test!=undefined){
+            console.log(test.label)
+          }
+        }
+      })
+    });
+
+    indices.forEach((i, index) => {
+      console.log(i.ToString("fr") + " => " + positionToEmoji(index, true))
+    })
+    
 
     if (!solo){
       socket.on("asked all", (id) =>{

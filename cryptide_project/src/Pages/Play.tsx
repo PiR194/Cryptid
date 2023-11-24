@@ -26,11 +26,15 @@ import { PlayerProps } from '../types/Player';
 import Player from '../model/Player';
 import Human from '../model/User';
 import User from '../model/User';
+import EnigmeDuJourCreator from '../model/EnigmeDuJourCreator';
+import Stub from '../model/Stub';
 
+let first = true
 
 function Play() {
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData } = useAuth();
+    const {setDailyEnigmeData} = useGame()
 
     useEffect(() => {
         const fetchUserInformation = async () => {
@@ -92,6 +96,11 @@ function Play() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+        if (first){
+            first = false
+            const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
+            setDailyEnigmeData(map)
+        }
         navigate('/game?solo=true');
     }
 
