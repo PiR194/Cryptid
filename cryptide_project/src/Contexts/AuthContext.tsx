@@ -22,8 +22,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setIsLoggedIn(true);
   };
 
-  const setUserData = (player: User | null) => {
-    setUser(player)
+  const setUserData = (newPlayer: User) => {
+    setUser(newPlayer)
   }
 
   const logout = async() => {

@@ -2,28 +2,34 @@ import React, { useState } from 'react';
 import '../Pages/Profile.css'
 import dl from '../res/icon/download.png'
 import defaultImg from '../res/img/Person.png'
+import { useAuth } from '../Contexts/AuthContext';
 
 //@ts-ignore
 const ProfilePDP = ({ player}) => {
     const [selectedFile, setSelectedFile] = useState(null);
 
-    // @ts-ignore
+
+    const {user} = useAuth()
+    console.log(user)
+    // @ts-ignores
     const handleFileChange = (event) => {
         let file = event.target.files[0];
 
         setSelectedFile(file);
         if (file) {
             const pdpUrl = URL.createObjectURL(file);
-            player.pdp = pdpUrl
+            if (user!=null){
+                user.profilePicture = pdpUrl
+            }
         }
     };
 
     //! gitans ?
-    if (player.pdp == undefined){
-        player.pdp = defaultImg;
+    if (user == null){
+        console.log("duuude");
     }
 
-    console.log("pdp joueur " + player.pdp)
+    console.log(user)
     return (
         <div className='mainPDPContainer'>
                 {selectedFile ? (
@@ -34,7 +40,7 @@ const ProfilePDP = ({ player}) => {
                     </div>
                 ) : (
                     <div >
-                    <img src={player.pdp} alt="Preview" className='imgContainer' width='100px' height='100px' />
+                    <img src={user?.profilePicture} alt="Preview" className='imgContainer' width='100px' height='100px' />
                     </div>
                 )}
                 <div className="parent">

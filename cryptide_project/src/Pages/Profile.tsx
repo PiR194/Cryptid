@@ -7,41 +7,27 @@ import './Profile.css'
 import SessionService from '../services/SessionService';
 import { PlayerProps } from '../types/Player';
 import { update } from 'lodash';
-import Human from '../model/Human';
+import User from '../model/User';
+import { socket } from '../SocketConfig';
+import { useAuth } from '../Contexts/AuthContext';
+
 
 //@ts-ignore
 const Profile = () => {
   
   //let player;
-  const [player, setPlayer] = useState<Human>(new Human("null", "nullHuman"));
+  const {user} = useAuth()
+
   //! useeffect pour l'instant, il faudra voir pour changer la facons de prendre une session
+    
   useEffect(() => {
-    const fetchUserInformation = async () => {
-        try {
-            const sessionData = await SessionService.getSession();
-            if (sessionData.user) {
-                const updatedPlayer: Human = {
-                  name: sessionData.user.pseudo,
-                  pdp: sessionData.user.profilePicture,
-                  toJson: function (): { type: string; id: string; name: string; } {
-                    throw new Error('Function not implemented.');
-                  },
-                  id: ''
-                };
-                setPlayer(updatedPlayer);
-            }
-          } catch (error) {
-            console.error(error);
-        }
-      }
-      fetchUserInformation();
-    }, []
-  )
+    console.log(user)
+  }, [user])
 
   return (
     <div className='mainContainer'>
-      <ProfilePDP player={player}/>
-      <h1> {player.name} </h1>
+      <ProfilePDP player={user}/>
+      <h1> {user?.pseudo} </h1>
     </div>
   );
 };

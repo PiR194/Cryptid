@@ -73,6 +73,9 @@ function Play() {
     }, [isLoggedIn]);
       
 
+    useEffect(() => {
+    }, [user])
+
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
 
