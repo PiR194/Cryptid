@@ -45,7 +45,7 @@ Sur MacOS / Linux
    export { socket };
    ```
 
-### Démarrer les serveurs  
+### Etape 4 : Démarrer les serveurs  
 Dans un second terminal, ouvrez le serveur Socket.IO :
 ```bash
     cd ./server
@@ -53,7 +53,22 @@ Dans un second terminal, ouvrez le serveur Socket.IO :
 ```
 
 Dans un troisième ouvrez le serveur gérant l'API  
-```
+```bash
     cd ./src/server
     node server.js
 ```
+
+### Etape 5 : Démarrer l'application 
+
+1. Revenez dans le premier terminal et exécutez la commande suivante :
+```bash
+    npm start
+```
+
+2. L'application va s'ouvrir dans votre navigateur et vous pouvez jouez à notre jeu.
+
+### Etape bonus : Jouez avec ces amis
+
+1. Sur la première page de l'application, cliquez sur Jouez > Créer une partie.
+2. Une fois dans le lobby, copiez le lien de la partie et l'envoyez à vos amis.
+3. Lancez la partie et amusez-vous !
