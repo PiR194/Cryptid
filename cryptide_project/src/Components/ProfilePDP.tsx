@@ -4,7 +4,7 @@ import dl from '../res/icon/download.png'
 import defaultImg from '../res/img/Person.png'
 
 //@ts-ignore
-const ProfilePDP = ({ player }) => {
+const ProfilePDP = ({ player}) => {
     const [selectedFile, setSelectedFile] = useState(null);
 
     // @ts-ignore
@@ -18,6 +18,12 @@ const ProfilePDP = ({ player }) => {
         }
     };
 
+    //! gitans ?
+    if (player.pdp == undefined){
+        player.pdp = defaultImg;
+    }
+
+    console.log("pdp joueur " + player.pdp)
     return (
         <div className='mainPDPContainer'>
                 {selectedFile ? (

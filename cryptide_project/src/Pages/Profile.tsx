@@ -7,43 +7,41 @@ import './Profile.css'
 import SessionService from '../services/SessionService';
 import { PlayerProps } from '../types/Player';
 import { update } from 'lodash';
+import Human from '../model/Human';
 
 //@ts-ignore
 const Profile = () => {
   
   //let player;
-  const [player, setPlayer] = useState<PlayerProps | null>(null);
+  const [player, setPlayer] = useState<Human>(new Human("null", "nullHuman"));
   //! useeffect pour l'instant, il faudra voir pour changer la facons de prendre une session
   useEffect(() => {
     const fetchUserInformation = async () => {
         try {
             const sessionData = await SessionService.getSession();
             if (sessionData.user) {
-                const updatedPlayer: PlayerProps = {
-                    pseudo: sessionData.user.pseudo,
-                    profilePicture: sessionData.user.profilePicture,
-                    soloStats: {
-                        nbGames: sessionData.user.soloStats.nbGames,
-                        bestScore: sessionData.user.soloStats.bestScore,
-                        avgNbTry: sessionData.user.soloStats.avgNbTry,
-                    },
-                    onlineStats: {
-                        nbGames: sessionData.user.onlineStats.nbGames,
-                        nbWins: sessionData.user.onlineStats.nbWins,
-                        ratio: sessionData.user.onlineStats.ratio,
-                    },
+                const updatedPlayer: Human = {
+                  name: sessionData.user.pseudo,
+                  pdp: sessionData.user.profilePicture,
+                  toJson: function (): { type: string; id: string; name: string; } {
+                    throw new Error('Function not implemented.');
+                  },
+                  id: ''
                 };
                 setPlayer(updatedPlayer);
             }
           } catch (error) {
             console.error(error);
         }
-    }})
+      }
+      fetchUserInformation();
+    }, []
+  )
 
   return (
     <div className='mainContainer'>
       <ProfilePDP player={player}/>
-      <h1> {player?.pseudo} </h1>
+      <h1> {player.name} </h1>
     </div>
   );
 };
