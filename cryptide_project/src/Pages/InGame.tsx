@@ -62,6 +62,13 @@ const InGame = ({locale, changeLocale}) => {
     IsSolo=false
   }
 
+  //* Gestion daily
+  let isDaily: boolean = true
+  const isDailytmp = params.get('daily');
+  if (isDailytmp == "false"){
+    isDaily=false
+  }
+
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -212,6 +219,7 @@ const InGame = ({locale, changeLocale}) => {
                           changecptTour={changecptTour} 
                           addToHistory={addToHistory}
                           solo={IsSolo} 
+                          isDaily={isDaily} 
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
@@ -219,7 +227,7 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
 
-        {IsSolo && 
+        {IsSolo && !isDaily &&
             <div className='nbLaps' style={{ 
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
@@ -228,12 +236,13 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        
-        <div className='historique' id="history-container">
-            {history.map((item, index) => (
-                <div key={index}>{item}</div>
-            ))}
-        </div>
+        {!isDaily &&
+          <div className='historique' id="history-container">
+              {history.map((item, index) => (
+                  <div key={index}>{item}</div>
+              ))}
+          </div>
+        }   
 
         <div className='paramDiv'>
           <button className='button'
@@ -289,7 +298,8 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Check} alt="check" height="40"/>
           </button> */}
 
-          {!IsSolo && <Link to='/info' target='_blank'>
+          {!IsSolo &&
+          <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -315,13 +325,15 @@ const InGame = ({locale, changeLocale}) => {
             <img src={ eye } alt="indice" height="40"/>
           </button>}
 
-          {IsSolo && <button className='button' onClick={generateTEX}
-            style={{ 
-              backgroundColor: theme.colors.tertiary,
-              borderColor: theme.colors.secondary
-            }}>
-            <img src={Download} alt="indice" height="40"/>
-          </button>
+          {IsSolo && 
+            
+            <button className='button' onClick={generateTEX}
+              style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+              }}>
+              <img src={Download} alt="indice" height="40"/>
+            </button>
           }
         </div>
 

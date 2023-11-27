@@ -80,3 +80,38 @@
     padding: 10px;  
     box-shadow: 5px 5px 5px rgb(246, 246, 246);    
 }
+
+.SoloContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    background-color: white;
+
+    max-width: 50%;
+}
+
+.indicesolo{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    
+    /* margin: 10px 0;  */
+    /* max-height: 200px; */
+}
+
+.solostat{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.solostat p {
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    background-color: white;
+
+    padding: 10px;
+}

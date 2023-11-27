@@ -46,3 +46,7 @@ sketch
 ### modules ###
 yarn.lock
 package-lock.json
+
+# db
+
+socialgraph.db

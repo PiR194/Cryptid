@@ -25,6 +25,7 @@ interface MyGraphComponentProps {
   changecptTour: (newcptTour : number) => void
   addToHistory: (message : string) => void
   solo : boolean
+  isDaily : boolean
   setNetwork: (network: Network) => void
   showLast: boolean
 }
@@ -42,13 +43,17 @@ let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let cptEndgame = 0
+let firstEnigme = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
-let cptTour: number = 0
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
+  let cptTour: number = 0
+
+  //* Gestion du temps :
+  const initMtn = new Date().getSeconds()
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -259,6 +264,28 @@ let cptTour: number = 0
     const network = new Network(container, networkData, initialOptions);
 
     setNetwork(network)
+
+    if (isDaily){
+      dailyEnigme.forEach((pairs, index) => {
+        pairs.forEach((pair) => {
+          const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+          console.log(index)
+          const node = networkData.nodes.get().find((n) => index == n.id)
+          if (node != undefined){
+            networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
+            const test = networkData.nodes.get().find((n) => index == n.id)
+            if (test!=undefined){
+              console.log(test.label)
+            }
+          }
+        })
+      });
+    }
+
+    indices.forEach((i, index) => {
+      console.log(i.ToString("fr") + " => " + positionToEmoji(index, true))
+    })
+    
 
     if (!solo){
       socket.on("asked all", (id) =>{
@@ -674,7 +701,13 @@ let cptTour: number = 0
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    navigate("/endgame")
+                    const Mtn = new Date().getSeconds()
+
+                    settempsData(Mtn - initMtn)
+
+                    cptTour ++;
+                    setNbCoupData(cptTour)
+                    navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   
                 }
@@ -683,7 +716,6 @@ let cptTour: number = 0
             }
             addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
 
-            //TODO METTRE LA WIN CONDITION ICI AVEC LE MERGE
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
             addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
