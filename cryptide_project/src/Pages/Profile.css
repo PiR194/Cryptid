@@ -1,5 +1,6 @@
 .mainContainer{
     display: flex;
+    /* flex-direction: column; */
     justify-content: center;
     align-items: center;
     margin: 50px;
@@ -20,6 +21,8 @@
     min-height: 250px;
 }
 
+/*Lpart*/
+
 .imgContainer{
     border: 5px solid black;
     border-radius: 50px;
@@ -27,6 +30,60 @@
 }
 
 
+
+/*Rpart*/
+
+.Rpart{
+    
+    min-width: 40%;
+    min-height: 250px;
+    margin: 20px;    
+    padding: 20px;
+    
+    background-color: white;
+
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+}
+
+
+.username-display{
+    display: flex;
+}
+
+.editbutton{
+    border-color: white;
+    background-color: white;
+    border: none;
+
+    margin-left: 15px;
+    height: 25px;
+    width: 25px;
+}
+.inputpseudo{
+    display: 'flex';
+    justify-content: 'flex-start';
+    align-items: 'center';
+    flex-direction: 'row';
+
+    width: 20vw;
+    padding: 5;
+
+    border:none;
+    border-bottom: solid 2px gray;
+    border-radius: 5;
+
+    font-size: 40px;
+}
+
+.bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    
+    height: 100px;
+}
 
 /*File upload*/
 .parent {
@@ -43,8 +100,9 @@
     /* padding: 1.5rem; */
     position: relative;
     cursor: pointer;
-    max-width: 100px;
-    max-height: 50px;
+    width: 100px;
+    height: 50px;
+
 }
 .file-upload p {
     font-size: 0.5rem;

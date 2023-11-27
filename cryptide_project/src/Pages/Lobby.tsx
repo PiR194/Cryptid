@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+/* Style */
 import './Lobby.css';
 import { useTheme } from '../Style/ThemeContext';
 
@@ -8,27 +10,37 @@ import PersonImg from '../res/img/Person.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
+
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
+
+/* Context */
+import { useGame } from '../Contexts/GameContext';
+import { useAuth } from '../Contexts/AuthContext';
+
+/* Model */
 import PersonNetwork from '../model/PersonsNetwork';
 import Person from '../model/Person';
 import GameCreator from '../model/GameCreator';
-import { useGame } from '../Contexts/GameContext';
-import JSONParser from '../JSONParser';
 import Indice from '../model/Indices/Indice';
-import { useNavigate } from 'react-router-dom';
-import { socket } from "../SocketConfig";
-import { random } from 'lodash';
+import JSONParser from '../JSONParser';
 import Player from '../model/Player';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
 import User from '../model/User';
-import { useAuth } from '../Contexts/AuthContext';
-import SessionService from '../services/SessionService';
-import defaultImg from "../res/img/Person.png"
 import {loadImageAsync} from "../ImageHelper"
+
+/* nav */
+import { useNavigate } from 'react-router-dom';
+
+/* serv */
+import { socket } from "../SocketConfig";
+import SessionService from '../services/SessionService';
+import { random } from 'lodash';
 
 
 let gameStarted = false
@@ -36,7 +48,7 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-
+    
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     

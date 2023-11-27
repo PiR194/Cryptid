@@ -38,9 +38,9 @@ const ProfilePDP = () => {
                 )}
                 <div className="parent">
                     <div className="file-upload">
-                        <img src={dl} alt="upload" width='25px' height='25px'/>
+                        <img src={dl} alt="upload" width='35px' height='35px'/>
                         {/* <h6>Cliquer ici pour ajouter une image</h6> */}
-                        <p>Taille recommandée : 100px</p>
+                        {/* <p>Taille recommandée : 100px</p> */}
                         <input type="file" accept="image/*" onChange={handleFileChange}/>
                     </div>
                 </div>
