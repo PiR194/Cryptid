@@ -45,7 +45,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 let cptTour: number = 0
 
   const {isLoggedIn, user} = useAuth()
-  console.log('isLoggedIn : ' + isLoggedIn);
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
 
@@ -258,6 +257,12 @@ let cptTour: number = 0
 
     setNetwork(network)
 
+    socket.on("reset graph", () => {
+      console.log("reset graph")
+      initialOptions.physics.enabled = true
+      network.setOptions(initialOptions)
+    })
+
     if (!solo){
       socket.on("asked all", (id) =>{
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
@@ -278,11 +283,6 @@ let cptTour: number = 0
         nodes.forEach(node => {
           networkData.nodes.update({id: node.id, opacity: 1})
         });
-      })
-
-      socket.on("reset graph", () => {
-        initialOptions.physics.enabled = true
-        network.setOptions(initialOptions)
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
@@ -457,7 +457,6 @@ let cptTour: number = 0
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
 
-      console.log('isLoggedIn : ' + isLoggedIn);
       if(isLoggedIn){
         if(solo){
 

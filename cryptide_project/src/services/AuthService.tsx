@@ -1,4 +1,6 @@
 import VerificationService from './VerificationService';
+import {ADRESSE_DBSERVER} from "../AdressConfig"
+
 
 class AuthService{
     // Méthode pour vérifier les données de connexion
@@ -12,7 +14,7 @@ class AuthService{
 
     static async signUp(data: any) {
         try {
-            const response = await fetch('http://localhost:3003/auth/signup', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signup', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ class AuthService{
 
     static async signIn(data: any) {
         try {
-            const response = await fetch('http://localhost:3003/auth/signin', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signin', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +63,7 @@ class AuthService{
 
     static async logout() {
         try {
-            const response = await fetch('http://localhost:3003/auth/logout', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/logout', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

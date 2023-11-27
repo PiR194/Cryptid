@@ -1,7 +1,9 @@
+import {ADRESSE_DBSERVER} from "../AdressConfig"
+
 class SessionService {
     static async getSession() {
         try {
-            const response = await fetch('http://localhost:3003/session', {
+            const response = await fetch(ADRESSE_DBSERVER + '/session', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
