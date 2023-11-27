@@ -38,7 +38,7 @@ function Lobby() {
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
-    const {user, setUserData} = useAuth()
+    const {user, setUserData, manager, login} = useAuth()
     let first = true
 
     const params = new URLSearchParams(window.location.search);
@@ -53,45 +53,15 @@ function Lobby() {
             first=false
 
             if (user == null){
-                try {
-                    const sessionData = SessionService.getSession();
-                    sessionData.then((s) => {
-                        if (s.user) {
-                            // Il y a une session on récupère les infos du joueur
-                            const updatedPlayer: User = new User(socket.id, s.user.pseudo, s.user.profilePicture, {
-                                nbGames: s.user.soloStats.nbGames,
-                                bestScore: s.user.soloStats.bestScore,
-                                avgNbTry: s.user.soloStats.avgNbTry,
-                            },
-                            {
-                                nbGames: s.user.onlineStats.nbGames,
-                                nbWins: s.user.onlineStats.nbWins,
-                                ratio: s.user.onlineStats.ratio,
-                            })
-                            setUserData(updatedPlayer);
-                            socket.emit("lobby joined", room, updatedPlayer.toJson())
-                        } else {
-                            // Pas de session on génère un guest random
-                            const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
-                            {
-                                nbGames: 0,
-                                bestScore: 0,
-                                avgNbTry: 0,
-                            },
-                            {
-                                nbGames: 0,
-                                nbWins: 0,
-                                ratio: 0,
-                            })
-                            setUserData(guestPlayer);
-                            socket.emit("lobby joined", room, guestPlayer.toJson())
-
+                manager.userService.fetchUserInformation().then(([u, loggedIn]) => {
+                    if (u!=null){
+                        setUserData(u)
+                        if (loggedIn){
+                            login()
                         }
-                    })
-                }
-                catch (error) {
-                    console.error(error);
-                }
+                        socket.emit("lobby joined", room, u.toJson())
+                    }
+                })
             }
             else{
                 socket.emit("lobby joined", room, user.toJson())

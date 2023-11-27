@@ -26,56 +26,8 @@ import User from '../model/User';
 
 function Play() {
     const theme=useTheme()
-    const {isLoggedIn, login, user, setUserData } = useAuth();
-
-    useEffect(() => {
-        const fetchUserInformation = async () => {
-            try {
-                const sessionData = await SessionService.getSession();
-                
-                // Vérifie si il y a une session
-                if (sessionData.user) {
-                    // Il y a une session on récupère les infos du joueur
-                    const updatedPlayer: User = new User(socket.id, sessionData.user.pseudo, sessionData.user.profilePicture, {
-                        nbGames: sessionData.user.soloStats.nbGames,
-                        bestScore: sessionData.user.soloStats.bestScore,
-                        avgNbTry: sessionData.user.soloStats.avgNbTry,
-                    },
-                    {
-                        nbGames: sessionData.user.onlineStats.nbGames,
-                        nbWins: sessionData.user.onlineStats.nbWins,
-                        ratio: sessionData.user.onlineStats.ratio,
-                    })
-                    login();
-                    setUserData(updatedPlayer);
-                } else {
-                    // Pas de session on génère un guest random
-                    const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
-                    {
-                        nbGames: 0,
-                        bestScore: 0,
-                        avgNbTry: 0,
-                    },
-                    {
-                        nbGames: 0,
-                        nbWins: 0,
-                        ratio: 0,
-                    })
-                    setUserData(guestPlayer);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    const {user} = useAuth();
       
-        console.log('isLoggedIn : ', isLoggedIn);
-        fetchUserInformation();
-    }, [isLoggedIn]);
-      
-
-    useEffect(() => {
-    }, [user])
-
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
 
@@ -85,6 +37,10 @@ function Play() {
     function createLobby(){
         socket.emit("lobby created")
     }
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     function launchMastermind(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
@@ -99,7 +55,7 @@ function Play() {
 
     useEffect(() => {
         const handleLobbyCreated = (newRoom: any) => {
-        setRoom(newRoom);
+            setRoom(newRoom);
         };
     
         // Ajouter l'event listener
@@ -133,7 +89,7 @@ function Play() {
                     <h2>
                         {user && user.pseudo}
                     </h2>
-                    <img src={Person}
+                    <img src={user?.profilePicture}
                             height='300'
                             width='300'
                             alt="Person"

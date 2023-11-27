@@ -6,7 +6,10 @@ class User extends Player{
     public soloStats: any
     public onlineStats: any
 
-    constructor(id: string, pseudo: string, profilePicture: string = defaultpdp, soloStats: any, onlineStats: any){
+    constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, onlineStats: any){
+        if (profilePicture == ""){
+            profilePicture = defaultpdp
+        }
         super(id, pseudo, profilePicture)
         this.soloStats=soloStats
         this.onlineStats=onlineStats

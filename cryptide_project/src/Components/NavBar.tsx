@@ -23,16 +23,31 @@ import './NavBar.css';
 /* Style */
 import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
-    const {isLoggedIn, logout} = useAuth();
+    const {user, isLoggedIn, logout} = useAuth();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+
+    function navigateToProfile(){
+        navigate("/profile")
+    }
+
+    function navigateToHome(){
+        navigate("/")
+    }
 
     return (
         <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
             <Container>
-                <Navbar.Brand href="/">
+                <Navbar.Brand onClick={navigateToHome}>
                     <img src={logo} alt="logo" className="logo" />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -54,7 +69,7 @@ function AppNavbar({changeLocale}) {
                                 align="end"
                                 drop='down-centered'
                             >
-                            <NavDropdown.Item href="/profile">Profil</NavDropdown.Item>
+                            <NavDropdown.Item onClick={navigateToProfile}>Profil</NavDropdown.Item>
                             <LanguageNavItem
                                 countryCode="FR"
                                 languageKey="languageSelector.french"

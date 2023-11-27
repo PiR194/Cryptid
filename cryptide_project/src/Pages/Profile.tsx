@@ -19,14 +19,10 @@ const Profile = () => {
   const {user} = useAuth()
 
   //! useeffect pour l'instant, il faudra voir pour changer la facons de prendre une session
-    
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   return (
     <div className='mainContainer'>
-      <ProfilePDP player={user}/>
+      <ProfilePDP/>
       <h1> {user?.pseudo} </h1>
     </div>
   );

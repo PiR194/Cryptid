@@ -5,12 +5,11 @@ import defaultImg from '../res/img/Person.png'
 import { useAuth } from '../Contexts/AuthContext';
 
 //@ts-ignore
-const ProfilePDP = ({ player}) => {
+const ProfilePDP = () => {
     const [selectedFile, setSelectedFile] = useState(null);
 
 
     const {user} = useAuth()
-    console.log(user)
     // @ts-ignores
     const handleFileChange = (event) => {
         let file = event.target.files[0];
@@ -24,12 +23,6 @@ const ProfilePDP = ({ player}) => {
         }
     };
 
-    //! gitans ?
-    if (user == null){
-        console.log("duuude");
-    }
-
-    console.log(user)
     return (
         <div className='mainPDPContainer'>
                 {selectedFile ? (
