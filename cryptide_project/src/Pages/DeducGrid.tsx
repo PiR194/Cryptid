@@ -31,21 +31,28 @@ import ColorEdgesIndice from '../model/Indices/ColorEdgesIndice';
 import SportIndice from '../model/Indices/SportIndice';
 import NbEdgesIndice from '../model/Indices/NbEdgesIndice';
 import NbSportIndice from '../model/Indices/NbSportIndice';
+import { useGame } from '../Contexts/GameContext';
 
 function DeducGrid() {
     const theme = useTheme();
     //const indices = Stub.GenerateIndice();
 
-    const joueurs = [
-        "bla",
-        "bli",
-        "blou"
-    ]
+
+    const { players } = useGame();
+
+    
+    console.log(players)
+
+    // const joueurs = [
+    //     "bla",
+    //     "bli",
+    //     "blou"
+    // ]
 
     return (
         <div style={{margin:'20px'}}>
-            <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
-            {joueurs.map((joueur, index) => (
+            <Tabs defaultActiveKey="0" id="uncontrolled-tab-example" className="mb-3">
+            {players.map((joueur, index) => (
                 <Tab key={index} eventKey={index.toString()} title={`${joueur} ${index + 1}`}>
                     <div className='deducDiv'>
                         <div className='sectionAccordion'>
