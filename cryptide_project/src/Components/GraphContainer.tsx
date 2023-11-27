@@ -44,10 +44,13 @@ let firstEnigme = true
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
-let cptTour: number = 0
+  let cptTour: number = 0
+
+  //* Gestion du temps :
+  const initMtn = new Date().getSeconds()
 
   const {user} = useAuth()
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme } = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -648,7 +651,13 @@ let cptTour: number = 0
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    navigate("/endgame")
+                    const Mtn = new Date().getSeconds()
+
+                    settempsData(Mtn - initMtn)
+
+                    cptTour ++;
+                    setNbCoupData(cptTour)
+                    navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   
                 }
@@ -657,7 +666,6 @@ let cptTour: number = 0
             }
             addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
 
-            //TODO METTRE LA WIN CONDITION ICI AVEC LE MERGE
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
             addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");

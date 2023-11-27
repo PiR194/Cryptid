@@ -75,10 +75,10 @@ function Play() {
                 console.error(error);
             }
         };
-      
+
         fetchUserInformation();
     }, [isLoggedIn]);
-      
+
 
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
