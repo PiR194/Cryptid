@@ -10,6 +10,7 @@ import Home from './Pages/Home';
 import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
 import Play from './Pages/Play';
+import Profile from './Pages/Profile';
 import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
 
@@ -84,6 +85,7 @@ function App() {
                 <Route path="/endgame" element={<EndGame/>} />
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                 <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                <Route path="/profile" element={<Profile/>} />
                 {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
               </Routes>
             </BrowserRouter>

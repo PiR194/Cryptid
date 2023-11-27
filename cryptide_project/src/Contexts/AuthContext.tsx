@@ -1,5 +1,7 @@
 // AuthContext.js
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import DbUserService from '../model/DataManagers/DbUserService';
+import Manager from '../model/DataManagers/Manager';
 import Player from '../model/Player';
 import User from '../model/User';
 import AuthService from '../services/AuthService';
@@ -10,6 +12,7 @@ interface AuthContextProps {
   logout: () => void;
   user: User | null
   setUserData: (newPlayer: User) => void
+  manager: Manager
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -17,19 +20,24 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<User| null>(null)
+  const [manager] = useState<Manager>(new Manager(new DbUserService()))
 
-  const login = () => {
+  const login = async () => {
     setIsLoggedIn(true);
+    const [u, bool] = await manager.userService.fetchUserInformation()
+    setUser(u)
   };
 
-  const setUserData = (player: User | null) => {
-    setUser(player)
+  const setUserData = (newPlayer: User) => {
+    setUser(newPlayer)
   }
 
   const logout = async() => {
     try {
         await AuthService.logout();
         setIsLoggedIn(false);
+        const [u, bool] = await manager.userService.fetchUserInformation()
+        setUser(u)
     }
     catch (error) {
         console.log(error);
@@ -37,7 +45,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, setUserData }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, setUserData, manager }}>
       {children}
     </AuthContext.Provider>
   );

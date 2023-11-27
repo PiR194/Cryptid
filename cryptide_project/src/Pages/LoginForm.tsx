@@ -30,11 +30,12 @@ const SignIn = () => {
                 setError(null);
 
                 const result = await AuthService.signIn(data);
+                
                 // console.log(result);
 
                 setShowConfirmation(true);
-                setTimeout(() => {
-                    login();
+                setTimeout(async () => {
+                    await login();
                     navigate('/play');         // 3 secondes avant de rediriger vers la page de connexion
                 }, 3000);
             }

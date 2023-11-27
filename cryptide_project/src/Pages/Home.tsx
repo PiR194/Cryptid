@@ -11,24 +11,22 @@ import ButtonImgNav from '../Components/ButtonImgNav';
 // @ts-ignore
 function Home() {
     const theme=useTheme();
-    const {isLoggedIn, login} = useAuth();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
 
     useEffect(() => {
-        // Verifie la connexion
-        const verifSession = async () => {
-            try {
-                const sessionData = await SessionService.getSession();
-                if (sessionData.user) {
-                    login();
-                }
-            }
-            catch (error) {
-                console.log(error);
-            };
-        }
 
-        verifSession();
-    }, []);
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    setUserData(user)
+                    if (loggedIn){
+                        login()
+                    }
+                    console.log('isLoggedIn : ', isLoggedIn);
+                }
+            })
+        }
+    }, [isLoggedIn]);
 
     return (
         

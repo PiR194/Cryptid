@@ -1,3 +1,4 @@
+
 abstract class Player{
     public id: string
     public pseudo: string;
