@@ -8,8 +8,7 @@ import './Play.css';
 import { useTheme } from '../Style/ThemeContext';
 
 /* Component */
-import ButtonImgNav from "../Components/ButtonImgNav"
-import SessionService from "../services/SessionService";
+import ButtonImgNav from "../Components/ButtonImgNav";
 
 /* Img */
 import Person from '../res/img/Person.png';
@@ -20,9 +19,6 @@ import { useNavigate } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
-
-/* Types */
-import User from '../model/User';
 
 function Play() {
     const theme=useTheme()

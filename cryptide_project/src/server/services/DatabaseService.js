@@ -50,6 +50,20 @@ class DatabaseService {
         });
     }
 
+    // Récupère l'utilisateur par son id
+    async getUserByID(id){
+        return new Promise((resolve, reject) => {
+            this.client.get('SELECT * FROM users WHERE idUser = ?', id, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
     // Récupère stats solo de l'utilisateur
     async getSoloStatsByUserId(userId){
         return new Promise((resolve, reject) => {

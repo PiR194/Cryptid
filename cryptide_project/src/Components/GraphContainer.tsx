@@ -41,12 +41,13 @@ let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
+let cptEndgame = 0
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
 let cptTour: number = 0
 
-  const {isLoggedIn, user} = useAuth();
+  const {isLoggedIn, user, manager} = useAuth();
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
 
@@ -449,53 +450,77 @@ let cptTour: number = 0
     })
 
     socket.on("end game", (winnerIndex) =>{
-      const currentPlayer = players[actualPlayerIndex];
-      const winner = players[winnerIndex];
-
-      setNodeIdData(-1)
-      setActualPlayerIndexData(-1)
-      setLastIndex(-1)
-      setPlayerTouched(-1)
-      setWinnerData(players[winnerIndex])
-
-      try{
-        if(isLoggedIn){
-          if(solo){
+      if (cptEndgame % 2 == 0){
+        cptEndgame++;
+        const currentPlayer = players[actualPlayerIndex];
+        const winner = players[winnerIndex];
   
-          }
-          else{
-            if(winner.id === currentPlayer.id){
-                // TODO: Ajouter une victoire
-                
+        setNodeIdData(-1)
+        setActualPlayerIndexData(-1)
+        setLastIndex(-1)
+        setPlayerTouched(-1)
+        setWinnerData(players[winnerIndex])
+  
+        try{
+          if(isLoggedIn){
+            if(solo){
+              if(user && user.soloStats){
+                user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
+                if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == null){
+                  user.soloStats.bestScore = cptTour;
+                }
+                user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
+
+                manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
+              }
+              else{
+                console.error("User not found");
+              }
             }
-            // TODO: Update les stats
+            else{
+              if(user && user.onlineStats){
+                // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
+                if(winner.id === currentPlayer.id){
+                  // Ajouter une victoire
+                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
+              }
+              // Update les stats
+              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
+              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
+              
+              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+              }
+              else{
+                console.error("User not found");
+              }
+            }
           }
         }
+        catch(e){
+          console.log(e);
+        }
+  
+        first = true
+        cptHistory = 0
+        askedWrong=false
+        askedWrongBot=false
+  
+        
+        socket.off("end game")
+        socket.off("asked all")
+        socket.off("opacity activated")
+        socket.off("opacity deactivated")
+        socket.off("reset graph")
+        socket.off("node checked")
+        socket.off("already asked")
+        socket.off("asked wrong")
+        socket.off("asked")
+        socket.off("put correct background")
+        socket.off("put grey background")
+        socket.off("put imossible grey")
+  
+        navigate("/endgame")
       }
-      catch(e){
-        console.log(e);
-      }
-
-      first = true
-      cptHistory = 0
-      askedWrong=false
-      askedWrongBot=false
-
-      
-      socket.off("end game")
-      socket.off("asked all")
-      socket.off("opacity activated")
-      socket.off("opacity deactivated")
-      socket.off("reset graph")
-      socket.off("node checked")
-      socket.off("already asked")
-      socket.off("asked wrong")
-      socket.off("asked")
-      socket.off("put correct background")
-      socket.off("put grey background")
-      socket.off("put imossible grey")
-
-      navigate("/endgame")
     })
 
 
