@@ -1,5 +1,5 @@
 import EasyBot from "./model/EasyBot";
-import Human from "./model/Human";
+import Human from "./model/User";
 import AgeIndice from "./model/Indices/AgeIndice";
 import ColorEdgesIndice from "./model/Indices/ColorEdgesIndice";
 import ColorIndice from "./model/Indices/ColorIndice";
@@ -10,6 +10,7 @@ import SportIndice from "./model/Indices/SportIndice";
 import Person from "./model/Person";
 import PersonNetwork from "./model/PersonsNetwork";
 import Player from "./model/Player";
+import User from "./model/User";
 
 class JSONParser{
 
@@ -84,10 +85,10 @@ class JSONParser{
 
     static JSONToPlayer(json: any): Player{
         switch (json.type){
-            case "Human":
-                return new Human(json.id, json.name)
+            case "User":
+                return new User(json.id, json.pseudo, json.profilePicture, json.soloStats, json.onlineStats)
             case "EasyBot":
-                return new EasyBot(json.id, json.name)
+                return new EasyBot(json.id, json.pseudo, json.profilePicture)
             default:
                 throw new Error("PARSER unable to parse player: " + json.type);
         }

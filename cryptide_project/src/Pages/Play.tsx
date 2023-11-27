@@ -23,12 +23,18 @@ import ScoreBoard from '../Components/ScoreBoard';
 
 /* Types */
 import { PlayerProps } from '../types/Player';
+import Player from '../model/Player';
+import Human from '../model/User';
+import User from '../model/User';
+import EnigmeDuJourCreator from '../model/EnigmeDuJourCreator';
+import Stub from '../model/Stub';
 
+let first = true
 
 function Play() {
     const theme=useTheme()
-    const {isLoggedIn, login} = useAuth();
-    const [player, setPlayer] = useState<PlayerProps | null>(null);
+    const {isLoggedIn, login, user, setUserData } = useAuth();
+    const {setDailyEnigmeData} = useGame()
 
     useEffect(() => {
         const fetchUserInformation = async () => {
@@ -38,48 +44,41 @@ function Play() {
                 // Vérifie si il y a une session
                 if (sessionData.user) {
                     // Il y a une session on récupère les infos du joueur
-                    const updatedPlayer: PlayerProps = {
-                        pseudo: sessionData.user.pseudo,
-                        profilePicture: sessionData.user.profilePicture,
-                        soloStats: {
-                            nbGames: sessionData.user.soloStats.nbGames,
-                            bestScore: sessionData.user.soloStats.bestScore,
-                            avgNbTry: sessionData.user.soloStats.avgNbTry,
-                        },
-                        onlineStats: {
-                            nbGames: sessionData.user.onlineStats.nbGames,
-                            nbWins: sessionData.user.onlineStats.nbWins,
-                            ratio: sessionData.user.onlineStats.ratio,
-                        },
-                    };
+                    const updatedPlayer: User = new User(socket.id, sessionData.user.pseudo, sessionData.user.profilePicture, {
+                        nbGames: sessionData.user.soloStats.nbGames,
+                        bestScore: sessionData.user.soloStats.bestScore,
+                        avgNbTry: sessionData.user.soloStats.avgNbTry,
+                    },
+                    {
+                        nbGames: sessionData.user.onlineStats.nbGames,
+                        nbWins: sessionData.user.onlineStats.nbWins,
+                        ratio: sessionData.user.onlineStats.ratio,
+                    })
                     login();
-                    setPlayer(updatedPlayer);
+                    setUserData(updatedPlayer);
                 } else {
                     // Pas de session on génère un guest random
-                    const guestPlayer: PlayerProps = {
-                        pseudo: 'Guest_' + Math.floor(Math.random() * 1000000),
-                        profilePicture: '',
-                        soloStats: {
-                            nbGames: 0,
-                            bestScore: 0,
-                            avgNbTry: 0,
-                        },
-                        onlineStats: {
-                            nbGames: 0,
-                            nbWins: 0,
-                            ratio: 0,
-                        },
-                    };
-                    setPlayer(guestPlayer);
+                    const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
+                    {
+                        nbGames: 0,
+                        bestScore: 0,
+                        avgNbTry: 0,
+                    },
+                    {
+                        nbGames: 0,
+                        nbWins: 0,
+                        ratio: 0,
+                    })
+                    setUserData(guestPlayer);
                 }
             } catch (error) {
                 console.error(error);
             }
         };
-      
+
         fetchUserInformation();
     }, [isLoggedIn]);
-      
+
 
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
@@ -97,9 +96,23 @@ function Play() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-        navigate('/game?solo=true');
+        navigate('/game?solo=true&daily=false');
     }
 
+    
+    function launchEngimeJour(){
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
+        setPersonData(choosenPerson)
+        setPersonNetworkData(networkPerson)
+        setIndicesData(choosenIndices)
+        setIndicesData(choosenIndices)
+        if (first){
+            first = false
+            const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
+            setDailyEnigmeData(map)
+        }
+        navigate('/game?solo=true&daily=true');
+    }
     
 
     useEffect(() => {
@@ -136,7 +149,7 @@ function Play() {
             <div className="MidContainer">
                 <div>
                     <h2>
-                        {player && player.pseudo}
+                        {user && user.pseudo}
                     </h2>
                     <img src={Person}
                             height='300'
@@ -146,13 +159,14 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
+                    <button onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul mais aujourd'hui</button>
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button  className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     
                 </div>
             </div>
             <div className='rightContainer'>
-                {player && (<ScoreBoard Player={player}/>)}
+                {user && (<ScoreBoard Player={user}/>)}
             </div>
         </div>
     );

@@ -22,62 +22,126 @@ import { Link } from 'react-router-dom';
 /* lang */
 import { FormattedMessage } from 'react-intl';
 import { useGame } from '../Contexts/GameContext';
+import { map } from 'lodash';
+import Player from '../model/Player';
 
 
 function EndGame() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    //* Gestion solo
+    let IsSolo: boolean = false
+    const solotmp = params.get('solo');
+    if (solotmp == "true"){
+        IsSolo=true
+    }
+
+
+    //* Gestion daily
+    let IsDaily: boolean = false
+    const dailytmp = params.get('daily');
+    if (dailytmp == "true"){
+        IsDaily=true
+    }
 
     const {reset} = useGame()
     
     const resetAll = () => {
         reset()
     }
-
-    const {winner, person, players, indices} =useGame()
+    
+    const {winner, person, players, indices, nbCoup, temps} =useGame()
+    
     console.log(winner)
     let indice = indices[0]
-    const index = players.findIndex((p) => p.id == winner?.id)
-    if (index != -1) {
-        indice = indices[index]
-    }
+    let losingPlayers : Player[];
     
+    if(!IsSolo){
+        const index = players.findIndex((p) => p.id == winner?.id)
+        if (index != -1) {
+            indice = indices[index]
+        }
+        
 
-    let losingPlayers;
 
-    if (winner != null) {
-        losingPlayers = players.filter(player => player.id !== winner.id);
-    } else {
-        losingPlayers = players;
+        if (winner != null) {
+            losingPlayers = players.filter(player => player.id !== winner.id);
+        } else {
+            losingPlayers = players;
+        }
     }
-
+    else{
+        losingPlayers = [];
+    }
     const theme = useTheme();
     
     return (
         <div>
+            {!IsSolo &&
+                <div>
+                    <div className="head">
+                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                            <h1>{winner?.pseudo} a gagné !</h1>
+                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                        </header>
+                    </div>
+                    <div className='winner'>
+                        <img src={Person} width='250' height='250'/>
+                        <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
+                    </div>
+                    <div className='bottom'>
+                        <div className='centerDivH' onClick={resetAll}>
+                            <BigButtonNav dest="/play" img={Leave}/>
+                        </div>
+                        <div className="losingPlayersContainer">
+                            {losingPlayers.map((player, index) => (
+                                <div className="playerContainer" key={index}>
+                                    {player.id !== winner?.id && (
+                                        <div>
+                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                            <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        <div className='centerDivH'>
+                            <BigButtonNav dest="/lobby" img={Replay}/>
+                        </div>
+                    </div>
+                </div>
+            }
             <div className="head">
-                <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                    <h1>{winner?.name} a gagné !</h1>
-                    <h3>Le tueur était <u>{person?.getName()}</u></h3>
-                </header>
+                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                            <h1>Vous avez gagné !</h1>
+                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                        </header>
             </div>
             <div className='winner'>
                 <img src={Person} width='250' height='250'/>
-                <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
+                <h1>[ {winner?.pseudo} ]</h1>
             </div>
+
             <div className='bottom'>
                 <div className='centerDivH' onClick={resetAll}>
                     <BigButtonNav dest="/play" img={Leave}/>
                 </div>
-                <div className="losingPlayersContainer">
-                    {losingPlayers.map((player, index) => (
-                        <div className="playerContainer" key={index}>
-                            {player.id !== winner?.id && (
-                                <div>
-                                    <PersonStatus img={Person} state={Person} key={index} name={player.name} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
-                                    <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                <div className="SoloContainer">
+                    <div className='solostat'>
+                        {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
+                        <p>Temps : {temps}s</p>
+                    </div>
+                    <div className='indicesolo'>
+                        {indices.map((indice, index) => (
+                                    // <div className="playerContainer" key={index}>
+                                        <div>
+                                            <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                        </div>
+                                    //</div>
+                                ))
+                        }
+                    </div>
                 </div>
                 <div className='centerDivH'>
                     <BigButtonNav dest="/lobby" img={Replay}/>
