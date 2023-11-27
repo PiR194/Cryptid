@@ -12,6 +12,8 @@ import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
+// @ts-ignore
+import DatabaseService from "../server/services/DatabaseService";
 
 
 interface MyGraphComponentProps {
@@ -44,8 +46,7 @@ let lastNodes: NodePerson[] = []
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
 let cptTour: number = 0
 
-  const {isLoggedIn, user} = useAuth()
-  console.log('isLoggedIn : ' + isLoggedIn);
+  const {isLoggedIn, user} = useAuth();
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
   const params = new URLSearchParams(window.location.search);
 
@@ -458,19 +459,22 @@ let cptTour: number = 0
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
 
-      console.log('isLoggedIn : ' + isLoggedIn);
-      if(isLoggedIn){
-        if(solo){
-
-        }
-        else{
-          if(winner.id === currentPlayer.id){
-              console.log("Vous avez gagné !");
+      try{
+        if(isLoggedIn){
+          if(solo){
+  
           }
           else{
-              console.log("Vous avez perdu !");
+            if(winner.id === currentPlayer.id){
+                // TODO: Ajouter une victoire
+                
+            }
+            // TODO: Update les stats
           }
         }
+      }
+      catch(e){
+        console.log(e);
       }
 
       first = true

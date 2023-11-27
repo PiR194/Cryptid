@@ -106,6 +106,33 @@ class DatabaseService {
         });
     }
 
+    // Mettre à jour les stats solo de l'utilisateur
+    async updateSoloStats(userId, nbGames, bestScore, avgNbTry){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE solo_stats SET nbGames = ?, bestScore = ?, avgNbTry = ? WHERE idUser = ?', [nbGames, bestScore, avgNbTry, userId], (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    // Mettre à jour les stats online de l'utilisateur
+    async updateOnlineStats(userId, nbGames, nbWins, ratio){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE online_stats SET nbGames = ?, nbWins = ?, ratio = ? WHERE idUser = ?', [nbGames, nbWins, ratio, userId], (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
 
     async initSoloStats(userId) {
         return new Promise((resolve, reject) => {
