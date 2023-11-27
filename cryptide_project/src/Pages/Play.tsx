@@ -12,8 +12,6 @@ import ButtonImgNav from "../Components/ButtonImgNav"
 import SessionService from "../services/SessionService";
 
 /* Img */
-import Person from '../res/img/Person.png';
-
 /* Icon */
 import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
@@ -21,15 +19,38 @@ import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Types */
 import User from '../model/User';
+import { loadImageAsync } from '../ImageHelper';
 
 function Play() {
     const theme=useTheme()
-    const {user} = useAuth();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
       
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
+
+    useEffect(() => {
+
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    if (loggedIn){
+                        login()
+                        setUserData(user)
+                    }
+                    else{
+                        loadImageAsync(defaultImg).then((blob) => {
+                            user.profilePicture=blob
+                            setUserData(user)
+                        })
+                    }
+                }
+            })
+        }
+    }, [isLoggedIn]);
 
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();
@@ -82,7 +103,7 @@ function Play() {
                 {/* <button className='ButtonNav'>
                     Param
                 </button> */}
-                <ButtonImgNav dest='/signup' img={Person} text="Gestion du compte"/>
+                <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/>
             </div>
             <div className="MidContainer">
                 <div>

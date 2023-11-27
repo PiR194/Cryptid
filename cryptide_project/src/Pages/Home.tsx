@@ -7,6 +7,9 @@ import { useTheme } from '../Style/ThemeContext';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ButtonImgNav from '../Components/ButtonImgNav';
+import defaultImg from "../res/img/Person.png"
+import {loadImageAsync} from "../ImageHelper"
+
 
 // @ts-ignore
 function Home() {
@@ -18,11 +21,16 @@ function Home() {
         if (user == null){
             manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
                 if (user!=null){
-                    setUserData(user)
                     if (loggedIn){
                         login()
+                        setUserData(user)
                     }
-                    console.log('isLoggedIn : ', isLoggedIn);
+                    else{
+                        loadImageAsync(defaultImg).then((blob) => {
+                            user.profilePicture=blob
+                            setUserData(user)
+                        })
+                    }
                 }
             })
         }

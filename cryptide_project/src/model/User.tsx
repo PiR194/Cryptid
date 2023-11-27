@@ -1,16 +1,12 @@
 import Player from "./Player";
-import defaultpdp from "../res/img/Person.png"
-
+import defaultImg from "../res/img/Person.png"
 class User extends Player{
 
     public soloStats: any
     public onlineStats: any
 
     constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, onlineStats: any){
-        if (profilePicture == ""){
-            profilePicture = defaultpdp
-        }
-        super(id, pseudo, profilePicture)
+        super(id, pseudo, profilePicture || defaultImg)
         this.soloStats=soloStats
         this.onlineStats=onlineStats
     }
@@ -20,6 +16,7 @@ class User extends Player{
         return {
             type: "User",
             id: this.id,
+            profilePicture: this.profilePicture,
             pseudo: this.pseudo,
             soloStats: this.soloStats,
             onlineStats: this.onlineStats

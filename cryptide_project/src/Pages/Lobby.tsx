@@ -27,6 +27,8 @@ import Bot from '../model/Bot';
 import User from '../model/User';
 import { useAuth } from '../Contexts/AuthContext';
 import SessionService from '../services/SessionService';
+import defaultImg from "../res/img/Person.png"
+import {loadImageAsync} from "../ImageHelper"
 
 
 let gameStarted = false
@@ -48,6 +50,8 @@ function Lobby() {
         socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
     }
 
+    
+
     useEffect(() => {
         if (first){
             first=false
@@ -55,9 +59,15 @@ function Lobby() {
             if (user == null){
                 manager.userService.fetchUserInformation().then(([u, loggedIn]) => {
                     if (u!=null){
-                        setUserData(u)
                         if (loggedIn){
                             login()
+                            setUserData(u)
+                        }
+                        else{
+                            loadImageAsync(defaultImg).then((blob) => {
+                                u.profilePicture=blob
+                                setUserData(u)
+                            })
                         }
                         socket.emit("lobby joined", room, u.toJson())
                     }
@@ -108,6 +118,7 @@ function Lobby() {
         for (const p of tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
