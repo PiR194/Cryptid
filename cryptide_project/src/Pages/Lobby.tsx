@@ -22,9 +22,11 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from "../SocketConfig";
 import { random } from 'lodash';
 import Player from '../model/Player';
-import Human from '../model/Human';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
+import User from '../model/User';
+import { useAuth } from '../Contexts/AuthContext';
+import SessionService from '../services/SessionService';
 
 
 let gameStarted = false
@@ -36,23 +38,64 @@ function Lobby() {
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
+    const {user, setUserData} = useAuth()
     let first = true
 
     const params = new URLSearchParams(window.location.search);
     const room = params.get('room');
 
     function addBot(){
-        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100)).toJson())
+        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
     }
-
-    // function delBot(selectedBot: Bot){
-        
-    // }
 
     useEffect(() => {
         if (first){
             first=false
-            socket.emit("lobby joined", room, new Human("test", "Test" + Math.floor(Math.random() * 100)).toJson())
+
+            if (user == null){
+                try {
+                    const sessionData = SessionService.getSession();
+                    sessionData.then((s) => {
+                        if (s.user) {
+                            // Il y a une session on récupère les infos du joueur
+                            const updatedPlayer: User = new User(socket.id, s.user.pseudo, s.user.profilePicture, {
+                                nbGames: s.user.soloStats.nbGames,
+                                bestScore: s.user.soloStats.bestScore,
+                                avgNbTry: s.user.soloStats.avgNbTry,
+                            },
+                            {
+                                nbGames: s.user.onlineStats.nbGames,
+                                nbWins: s.user.onlineStats.nbWins,
+                                ratio: s.user.onlineStats.ratio,
+                            })
+                            setUserData(updatedPlayer);
+                            socket.emit("lobby joined", room, updatedPlayer.toJson())
+                        } else {
+                            // Pas de session on génère un guest random
+                            const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
+                            {
+                                nbGames: 0,
+                                bestScore: 0,
+                                avgNbTry: 0,
+                            },
+                            {
+                                nbGames: 0,
+                                nbWins: 0,
+                                ratio: 0,
+                            })
+                            setUserData(guestPlayer);
+                            socket.emit("lobby joined", room, guestPlayer.toJson())
+
+                        }
+                    })
+                }
+                catch (error) {
+                    console.error(error);
+                }
+            }
+            else{
+                socket.emit("lobby joined", room, user.toJson())
+            }
 
             return () => {
                 socket.off('game created');
@@ -114,7 +157,12 @@ function Lobby() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        let start = 0
+        let users = players.filter((p) => p instanceof User)
+        let u = users[Math.floor(Math.random() * users.length)]
+        let start = players.findIndex((p) => p.id == u.id)
+        if (start == -1){
+            start = 0
+        }
         socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 

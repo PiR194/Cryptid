@@ -25,7 +25,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                 {
                     //@ts-ignore
                     players.map((player, index) => (
-                        player.id!=socket.id && <PersonStatus img={Person} state={Person} key={index} name={player.name + " " + colorToEmoji(positionToColor(index), true)} playerTouched={playerTouched} setPlayerTouched={setPlayerTouched} index={index} showCircle={true}/>
+                        player.id!=socket.id && <PersonStatus img={Person} state={Person} key={index} name={player.pseudo + " " + colorToEmoji(positionToColor(index), true)} playerTouched={playerTouched} setPlayerTouched={setPlayerTouched} index={index} showCircle={true}/>
                     ))
                 }
             </div>

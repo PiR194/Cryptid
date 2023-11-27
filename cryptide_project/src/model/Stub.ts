@@ -22,20 +22,14 @@ class Stub{
 
         let test = 7
         for (let i: Color=0; i<5; i++){
-            for (let j: Color=0; j<5; j++){
-                if (j==i){
-                    continue
-                }
+            for (let j: Color=i + 1; j<5; j++){
                 indices.push(new ColorIndice(test, [i, j]))
                 test++
             }
         }
 
         for (let i: Sport=0; i<5; i++){
-            for (let j: Sport=0; j<5; j++){
-                if (j==i){
-                    continue
-                }
+            for (let j: Sport=i + 1; j<5; j++){
                 indices.push(new SportIndice(test, [i, j]))
                 test++
             }

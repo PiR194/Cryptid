@@ -11,15 +11,16 @@ import Player from "./Player";
 
 class EasyBot extends Bot{
 
-    constructor(id: string, name: string){
-        super(id, name)
+    constructor(id: string, name: string, profilePicture: string){
+        super(id, name, profilePicture)
     }
 
     toJson() {
         return {
             type: "EasyBot",
             id: this.id,
-            name: this.name,
+            pseudo: this.pseudo,
+            profilePicture: this.profilePicture
         };
     }
 

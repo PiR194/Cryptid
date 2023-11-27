@@ -15,7 +15,6 @@ const io = socketIO(server, {
 
 
 const map = new Map()
-// ... le reste de votre configuration du serveur
 
 server.listen(3002, () => {
   console.log('Serveur Socket.IO écoutant sur le port 3002');
@@ -29,25 +28,26 @@ io.on('connection', (socket) => {
   });
 
   socket.on("lobby joined", (room, player) =>{
-    if (player.type=="Human"){
+    console.log(player)
+    if (player.type=="User"){
       socket.join(room)
     }
     if (map.get(room) == undefined){
-      map.set(room, [{type: player.type, id: socket.id, name: player.name}])
+      map.set(room, [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}])
     }
     else{
       const tab = map.get(room)
       for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === socket.id && player.type==="Human"){
+        if (tab[i].id === socket.id && player.type==="User"){
           tab.splice(i, 1)
         }
       }
 
-      if (player.type!=="Human"){
-        map.get(room).push({type: player.type, id: player.id, name: player.name})
+      if (player.type!=="User"){
+        map.get(room).push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
       }
       else{
-        map.get(room).push({type: player.type, id: socket.id, name: player.name})
+        map.get(room).push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
       }
     }
     
@@ -56,7 +56,6 @@ io.on('connection', (socket) => {
 
 
   socket.on("bot deleted", (bot, room) =>{
-    // map.set(room, map.get(room).filter(player => player.id !== bot.id));
     const tab = map.get(room)
     for(let i = 0; i<tab.length; i++){
       if (tab[i].id === bot.id){
