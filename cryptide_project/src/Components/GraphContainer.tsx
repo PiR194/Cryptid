@@ -12,9 +12,6 @@ import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
-// @ts-ignore
-import DatabaseService from "../server/services/DatabaseService";
-
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -477,6 +474,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     })
 
     socket.on("end game", (winnerIndex) =>{
+      console.log("JE SUIS PASSE PAR LA");
       if (cptEndgame % 2 == 0){
         cptEndgame++;
         const currentPlayer = players[actualPlayerIndex];
@@ -490,21 +488,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
         try{
           if(isLoggedIn){
-            if(solo){
-              if(user && user.soloStats){
-                user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
-                if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == null){
-                  user.soloStats.bestScore = cptTour;
-                }
-                user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
-
-                manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
-              }
-              else{
-                console.error("User not found");
-              }
-            }
-            else{
+            if(!solo){
               if(user && user.onlineStats){
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
@@ -526,27 +510,29 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         catch(e){
           console.log(e);
         }
-  
-        first = true
-        cptHistory = 0
-        askedWrong=false
-        askedWrongBot=false
-  
-        
-        socket.off("end game")
-        socket.off("asked all")
-        socket.off("opacity activated")
-        socket.off("opacity deactivated")
-        socket.off("reset graph")
-        socket.off("node checked")
-        socket.off("already asked")
-        socket.off("asked wrong")
-        socket.off("asked")
-        socket.off("put correct background")
-        socket.off("put grey background")
-        socket.off("put imossible grey")
-  
-        navigate("/endgame")
+        finally{
+          console.log("JE SUIS PASSE PAR LA");
+          first = true
+          cptHistory = 0
+          askedWrong=false
+          askedWrongBot=false
+    
+          
+          socket.off("end game")
+          socket.off("asked all")
+          socket.off("opacity activated")
+          socket.off("opacity deactivated")
+          socket.off("reset graph")
+          socket.off("node checked")
+          socket.off("already asked")
+          socket.off("asked wrong")
+          socket.off("asked")
+          socket.off("put correct background")
+          socket.off("put grey background")
+          socket.off("put imossible grey")
+    
+          navigate("/endgame")
+        }        
       }
     })
 
@@ -707,6 +693,22 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
                     cptTour ++;
                     setNbCoupData(cptTour)
+
+                    try{
+                      if(user && user.soloStats){
+                        user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
+                        if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == 0 || user.soloStats.bestScore == null){
+                          user.soloStats.bestScore = cptTour;
+                        }
+                        user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
+        
+                        manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
+                      }
+                    }
+                    catch(error){
+                      console.log(error);
+                    }
+
                     navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   

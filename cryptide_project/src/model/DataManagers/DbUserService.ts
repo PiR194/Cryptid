@@ -61,7 +61,7 @@ class DbUserService implements IUserService{
         try {
             const result = await SessionService.updateOnlineStats(pseudo, nbGames, bestScore, ratio);
             if (result) {
-                console.log();
+                console.log("Stats online updated");
             } else {
                 console.log("Stats online not updated");
             }

@@ -30,7 +30,6 @@ class SessionController {
 
     static async updateSoloStats(req, res) {
         const db = new DatabaseService();
-
         try{
             await db.connect();
 
@@ -48,7 +47,7 @@ class SessionController {
                 return;
             }
 
-            await db.updateSoloStatsByUserId(user.idUser, req.body.nbGames, req.body.bestScore, req.body.avgNbTry);
+            await db.updateSoloStats(user.idUser, req.body.nbGames, req.body.bestScore, req.body.avgNbTry);
 
             const newSoloStats = await db.getSoloStatsByUserId(user.idUser);
 
