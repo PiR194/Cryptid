@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const sqlite3 = require('sqlite3');
 
 class AuthController {
-  static async signUp(req, res) {
+    static async signUp(req, res) {
     const databaseService = new DatabaseService();
     const pseudo = req.body.pseudo;
     try {
@@ -88,18 +88,41 @@ class AuthController {
     }
   }
 
-  static async logout(req, res) {
+    static async logout(req, res) {
     // Détruire la session pour déconnecter l'utilisateur
-    req.session.destroy((err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
-        } else {
-            res.status(200).json({ message: 'Déconnexion réussie' });
+        req.session.destroy((err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
+            } else {
+                res.status(200).json({ message: 'Déconnexion réussie' });
+            }
+        });
+    }
+
+    static async delAccount(req, res){
+        const db = new DatabaseService();
+        try{
+            await db.connect();
+
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            
+            if(!user){
+                res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
+                return;
+            }
+            await db.deleteSoloStat(user.idUser);
+            await db.deleteOnlineStat(user.idUser);
+            await db.deleteUser(user.idUser);
         }
-    });
-  }
-  
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la supression du compte.' });
+        }
+        finally{
+            db.disconnect();
+        }
+    }
 }
 
 module.exports = AuthController;

@@ -7,6 +7,7 @@ const SessionController = require('../controllers/SessionController');
 router.post('/auth/signup', AuthController.signUp);
 router.post('/auth/signin', AuthController.signIn);
 router.delete('/auth/logout', AuthController.logout)
+router.delete('/auth/delAccount', AuthController.delAccount)
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);

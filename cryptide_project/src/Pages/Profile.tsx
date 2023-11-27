@@ -3,8 +3,9 @@ import ProfilePDP from '../Components/ProfilePDP';
 
 import SessionService from '../services/SessionService';
 import { PlayerProps } from '../types/Player';
-import { update } from 'lodash';
+import { delay, update } from 'lodash';
 import { socket } from '../SocketConfig';
+import AuthService from '../services/AuthService';
 
 /* Style */
 import './Profile.css'
@@ -23,14 +24,20 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 
 //@ts-ignore
 const Profile = () => {
   
-  
+  const navigate = useNavigate();
   //let player;
-  const {user} = useAuth()
+  const {user, logout} = useAuth()
   
+  // let pseudoNotNull;
+  // if(user?.pseudo != null){
+  //   pseudoNotNull = user.pseudo;
+  // }
+
   const [editingUsername, setEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(user?.pseudo);
 
@@ -62,8 +69,10 @@ const Profile = () => {
     setShowDeleteModal(false);
   };
 
-  // Confirmation avec la phrase :
+  //* Confirmation avec la phrase :
   const [confirmationPhrase, setConfirmationPhrase] = useState('');
+
+  const [showWrong, setShowWrong] = useState(false);
 
   //@ts-ignore
   const handleConfirmationPhraseChange = (e) => {
@@ -74,9 +83,27 @@ const Profile = () => {
     // Verification de la phrase
     if (confirmationPhrase.toLowerCase() === 'supprimer mon compte') {
       console.log('Compte supprimé !');
+      console.log(user);
+
+      if(user!= null){
+        const pseudo = user.pseudo;
+        AuthService.delAccount(pseudo);
+        AuthService.logout();
+        logout();
+      }
+      else{
+        console.error("l'utilisateur ne peut pas être null")
+      }
       handleCloseDeleteModal();
+
+      navigate("/play")
+
     } else {
       console.error('Phrase de confirmation incorrecte.');
+      setShowWrong(true);
+      setTimeout(async () => {
+        setShowWrong(false);
+      }, 3000);
     }
   };
 
@@ -110,7 +137,7 @@ const Profile = () => {
               <button className='editbutton' onClick={() => setEditingUsername(true)}>
                 <img src={Edit} alt='edit' width='25' height='25'/>
               </button>
-            </div>
+            </div>  
           )
         }
         <hr/>
@@ -140,6 +167,12 @@ const Profile = () => {
                   value={confirmationPhrase}
                   onChange={handleConfirmationPhraseChange}
                 />
+                {
+                  showWrong && 
+                  <Alert key='infomodel' variant='danger' style={{width:'100%'}}>
+                    La phrase de confirmation est incorrecte.
+                  </Alert>
+                }
               </Modal.Body>
               <Modal.Footer>
                 <Button variant='secondary' onClick={handleCloseDeleteModal}>

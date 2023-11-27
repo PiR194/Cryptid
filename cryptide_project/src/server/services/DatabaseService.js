@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3');
 const path = require('path');
+const { rejects } = require('assert');
 
 class DatabaseService {
     constructor(){
@@ -123,6 +124,45 @@ class DatabaseService {
     async initOnlineStats(userId) {
         return new Promise((resolve, reject) => {
             this.client.run('INSERT INTO online_stats (nbGames, nbWins, ratio, idUser) VALUES (?, ?, ?, ?)', 0, 0, 0.0, userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteUser(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM users WHERE idUser=?', userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteSoloStat(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM solo_stats WHERE idUser=?', userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteOnlineStat(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM online_stats WHERE idUser=?', userId, (err, result) => {
                 if(err){
                     reject(err);
                 }
