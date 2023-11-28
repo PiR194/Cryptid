@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
+/* Style */
 import './Lobby.css';
+import "../Style/Global.css"
 import { useTheme } from '../Style/ThemeContext';
 
 /* res */
@@ -10,22 +13,27 @@ import cible from '../res/icon/cible.png';
 
 /* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
-import { io } from 'socket.io-client';
-import { Link } from 'react-router-dom';
+
+/* Model */
 import PersonNetwork from '../model/PersonsNetwork';
 import Person from '../model/Person';
 import GameCreator from '../model/GameCreator';
-import { useGame } from '../Contexts/GameContext';
-import JSONParser from '../JSONParser';
 import Indice from '../model/Indices/Indice';
-import { useNavigate } from 'react-router-dom';
-import { socket } from "../SocketConfig";
-import { random } from 'lodash';
 import Player from '../model/Player';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
 import User from '../model/User';
+
+/* Context */
+import { useGame } from '../Contexts/GameContext';
 import { useAuth } from '../Contexts/AuthContext';
+
+import { io } from 'socket.io-client';
+import { Link } from 'react-router-dom';
+import JSONParser from '../JSONParser';
+import { useNavigate } from 'react-router-dom';
+import { socket } from "../SocketConfig";
+import { random } from 'lodash';
 import SessionService from '../services/SessionService';
 
 
@@ -214,12 +222,22 @@ function Lobby() {
                         //? indice avancé ? ==> négation, voisin du 2e degré etc.
                     }
                 </ul>
-                <center >
+                {/* <center >
                     <button className='buttonNabImg' onClick={StartGame}>
                         <img src={cible} alt="Button Image" height="50" width="50"/>
                         <p>{"la chasse !"}</p>
                     </button>
-                </center>
+                </center> */}
+
+                <div className='centerDivH'>
+                    <button className='button' onClick={StartGame}
+                        style={{ 
+                            backgroundColor: theme.colors.tertiary,
+                            borderColor: theme.colors.secondary
+                        }}>
+                        <img src={cible} alt="cible" height="40"/>
+                    </button>
+                </div>
             </div>
         </div>
     );
