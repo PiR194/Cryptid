@@ -97,7 +97,7 @@ const Profile = () => {
       }
       handleCloseDeleteModal();
 
-      navigate("/play")
+      navigate("/")
 
     } else {
       console.error('Phrase de confirmation incorrecte.');
