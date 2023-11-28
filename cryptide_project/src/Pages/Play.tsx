@@ -8,8 +8,7 @@ import './Play.css';
 import { useTheme } from '../Style/ThemeContext';
 
 /* Component */
-import ButtonImgNav from "../Components/ButtonImgNav"
-import SessionService from "../services/SessionService";
+import ButtonImgNav from "../Components/ButtonImgNav";
 
 /* Img */
 import Person from '../res/img/Person.png';
@@ -22,16 +21,15 @@ import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
 
 /* Types */
-import { PlayerProps } from '../types/Player';
-import Player from '../model/Player';
-import Human from '../model/User';
 import User from '../model/User';
 import EnigmeDuJourCreator from '../model/EnigmeDuJourCreator';
 import Stub from '../model/Stub';
 
-let first = true
+import SessionService from '../services/SessionService';
 
 function Play() {
+    let first = true
+
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData } = useAuth();
     const {setDailyEnigmeData} = useGame()
@@ -90,6 +88,10 @@ function Play() {
         socket.emit("lobby created")
     }
 
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+
     function launchMastermind(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)
@@ -117,7 +119,7 @@ function Play() {
 
     useEffect(() => {
         const handleLobbyCreated = (newRoom: any) => {
-        setRoom(newRoom);
+            setRoom(newRoom);
         };
     
         // Ajouter l'event listener
@@ -151,7 +153,7 @@ function Play() {
                     <h2>
                         {user && user.pseudo}
                     </h2>
-                    <img src={Person}
+                    <img src={user?.profilePicture}
                             height='300'
                             width='300'
                             alt="Person"

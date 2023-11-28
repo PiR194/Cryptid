@@ -1,15 +1,20 @@
 import Player from "./Player";
+import defaultpdp from "../res/img/Person.png"
 
 class User extends Player{
 
     public soloStats: any
     public onlineStats: any
 
-    constructor(id: string, name: string, profilePicture: string, soloStats: any, onlineStats: any){
-        super(id, name, profilePicture)
+    constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, onlineStats: any){
+        if (profilePicture == ""){
+            profilePicture = defaultpdp
+        }
+        super(id, pseudo, profilePicture)
         this.soloStats=soloStats
         this.onlineStats=onlineStats
     }
+
     
     toJson() {
         return {

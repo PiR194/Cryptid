@@ -10,5 +10,7 @@ router.delete('/auth/logout', AuthController.logout)
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
+router.put('/session/updateSoloStats', SessionController.updateSoloStats);
+router.put('/session/updateOnlineStats', SessionController.updateOnlineStats);
 
 module.exports = router;
