@@ -183,12 +183,8 @@ function Play() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-        if (first){
-            first = false
-            const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
-            setDailyEnigmeData(map)
-        }
-        navigate('/game?solo=true&daily=true');
+
+        navigate('/game?solo=true&daily=true&easy=true');
         setShowOverlay(false);
     };
 
@@ -206,7 +202,7 @@ function Play() {
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate('/game?solo=true&daily=true');
+        navigate('/game?solo=true&daily=true&easy=false');
         setShowOverlay(false);
     };
 
