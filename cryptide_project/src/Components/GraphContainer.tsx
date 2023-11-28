@@ -28,6 +28,7 @@ interface MyGraphComponentProps {
   isEasy: boolean
   setNetwork: (network: Network) => void
   showLast: boolean
+  setPlayerIndex: (playerIndex: number) => void
   setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
 }
 
@@ -45,11 +46,12 @@ let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let cptEndgame = 0
 let firstEnigme = true
+let firstIndex = true
 let endgame= false
 let firstHistory = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setPlayerIndex, setNetworkEnigme}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -119,6 +121,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }, [showLast])
 
   let playerIndex: number = turnPlayerIndex
+
+  if (firstIndex){
+    firstIndex=false
+    setPlayerIndex(playerIndex)
+  }
   let index = 0
   for (let i=0; i<players.length; i++){
     if(players[i].id == socket.id){
@@ -348,6 +355,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
+          setPlayerIndex(playerIndex)
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
             const p = personNetwork.getPersons().find((p)=> p.getId() == id)
             const tab = mapIndexPersons.get(askedIndex)
