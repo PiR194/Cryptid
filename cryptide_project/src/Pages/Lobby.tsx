@@ -122,7 +122,7 @@ function Lobby() {
         gameStarted = true
         socket.off("player left")
         socket.off("new player")
-        navigate('/game?solo=false');
+        navigate('/game?solo=false&daily=false');
     });
 
     socket.on("new player", (tab) =>{

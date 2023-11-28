@@ -494,7 +494,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setActualPlayerIndexData(-1)
         setLastIndex(-1)
         setPlayerTouched(-1)
-        setWinnerData(players[winnerIndex])
+        setWinnerData(winner)
         setElapsedTime(0)
 
         first = true

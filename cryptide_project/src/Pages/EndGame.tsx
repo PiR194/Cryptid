@@ -74,10 +74,12 @@ function EndGame() {
         losingPlayers = [];
     }
     const theme = useTheme();
+
+    console.log(winner)
     
     return (
         <div>
-            {!IsSolo &&
+            {!IsSolo ? (
                 <div>
                     <div className="head">
                         <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
@@ -110,42 +112,45 @@ function EndGame() {
                         </div>
                     </div>
                 </div>
-            }
-            <div className="head">
-                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                            <h1>Vous avez gagné !</h1>
-                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
-                        </header>
-            </div>
-            <div className='winner'>
-                <img src={Person} width='250' height='250'/>
-                <h1>{winner?.pseudo}</h1>
-            </div>
+            ): (
+            <div>
+                <div className="head">
+                            <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                                <h1>Vous avez gagné !</h1>
+                                <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                            </header>
+                </div>
+                <div className='winner'>
+                    <img src={Person} width='250' height='250'/>
+                    <h1>{winner?.pseudo}</h1>
+                </div>
 
-            <div className='bottom'>
-                <div className='centerDivH' onClick={resetAll}>
-                    <BigButtonNav dest="/play" img={Leave}/>
-                </div>
-                <div className="SoloContainer">
-                    <div className='solostat'>
-                        {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
-                        <p>Temps : {temps}s</p>
+                <div className='bottom'>
+                    <div className='centerDivH' onClick={resetAll}>
+                        <BigButtonNav dest="/play" img={Leave}/>
                     </div>
-                    <div className='indicesolo'>
-                        {indices.map((indice, index) => (
-                                    // <div className="playerContainer" key={index}>
-                                        <div>
-                                            <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
-                                        </div>
-                                    //</div>
-                                ))
-                        }
+                    <div className="SoloContainer">
+                        <div className='solostat'>
+                            {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
+                            <p>Temps : {temps}s</p>
+                        </div>
+                        <div className='indicesolo'>
+                            {indices.map((indice, index) => (
+                                        // <div className="playerContainer" key={index}>
+                                            <div>
+                                                <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                            </div>
+                                        //</div>
+                                    ))
+                            }
+                        </div>
                     </div>
-                </div>
-                <div className='centerDivH'>
-                    <BigButtonNav dest="/lobby" img={Replay}/>
+                    <div className='centerDivH'>
+                        <BigButtonNav dest="/lobby" img={Replay}/>
+                    </div>
                 </div>
             </div>
+            )}
         </div>
     );
 }
