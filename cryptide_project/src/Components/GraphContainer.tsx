@@ -41,13 +41,14 @@ let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let firstEnigme = true
+let endgame= false
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
-  const initMtn = new Date().getSeconds()
+  let initMtn = 0
 
   const {user} = useAuth()
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
@@ -55,6 +56,24 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
+
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    // Démarrez le timer au montage du composant
+    const intervalId = setInterval(() => {
+      setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
+      settempsData(elapsedTime)
+
+      // Vérifiez si la durée est écoulée, puis arrêtez le timer
+      if (endgame) {
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+    // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, [elapsedTime, endgame]);
 
 
   useEffect(() =>{
@@ -201,7 +220,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
   if (first){
     first = false
-
+    endgame= false
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -267,23 +286,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       dailyEnigme.forEach((pairs, index) => {
         pairs.forEach((pair) => {
           const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
-          console.log(index)
           const node = networkData.nodes.get().find((n) => index == n.id)
           if (node != undefined){
             networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
             const test = networkData.nodes.get().find((n) => index == n.id)
-            if (test!=undefined){
-              console.log(test.label)
-            }
           }
         })
       });
     }
-
-    indices.forEach((i, index) => {
-      console.log(i.ToString("fr") + " => " + positionToEmoji(index, true))
-    })
-    
 
     if (!solo){
       socket.on("asked all", (id) =>{
@@ -313,7 +323,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log(newPlayerIndex)
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
@@ -480,10 +489,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       setLastIndex(-1)
       setPlayerTouched(-1)
       setWinnerData(players[winnerIndex])
+      setElapsedTime(0)
       first = true
       cptHistory = 0
       askedWrong=false
       askedWrongBot=false
+      endgame = true
       socket.off("end game")
       socket.off("asked all")
       socket.off("opacity activated")
@@ -512,7 +523,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          console.log(p)
+          //console.log(p)
         }
         
       });
@@ -651,12 +662,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    const Mtn = new Date().getSeconds()
 
-                    settempsData(Mtn - initMtn)
-
+                    if (user!=null){
+                      setWinnerData(user)
+                    }
                     cptTour ++;
                     setNbCoupData(cptTour)
+                    setElapsedTime(0)
+                    endgame = true
                     navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   

@@ -1,7 +1,9 @@
+import { ADRESSE_DBSERVER } from "../adressConfig";
+
 class SessionService {
     static async getSession() {
         try {
-            const response = await fetch('http://172.20.10.4:3003/session', {
+            const response = await fetch(ADRESSE_DBSERVER + '/session', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

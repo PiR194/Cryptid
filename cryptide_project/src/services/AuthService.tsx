@@ -1,3 +1,4 @@
+import { ADRESSE_DBSERVER } from '../adressConfig';
 import VerificationService from './VerificationService';
 
 class AuthService{
@@ -12,7 +13,7 @@ class AuthService{
 
     static async signUp(data: any) {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/signup', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signup', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ class AuthService{
 
     static async signIn(data: any) {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/signin', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signin', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ class AuthService{
 
     static async logout() {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/logout', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/logout', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

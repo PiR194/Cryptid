@@ -216,7 +216,7 @@ function Lobby() {
                 </ul>
                 <center >
                     <button className='buttonNabImg' onClick={StartGame}>
-                        <img src={cible} alt="Button Image" height="50" width="50"/>
+                        <img src={cible} alt="Button Image" height="50" width="50" />
                         <p>{"la chasse !"}</p>
                     </button>
                 </center>

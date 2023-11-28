@@ -53,7 +53,6 @@ function EndGame() {
     
     const {winner, person, players, indices, nbCoup, temps} =useGame()
     
-    console.log(winner)
     let indice = indices[0]
     let losingPlayers : Player[];
     
@@ -120,7 +119,7 @@ function EndGame() {
             </div>
             <div className='winner'>
                 <img src={Person} width='250' height='250'/>
-                <h1>[ {winner?.pseudo} ]</h1>
+                <h1>{winner?.pseudo}</h1>
             </div>
 
             <div className='bottom'>
