@@ -1,5 +1,6 @@
 #!/bin/sh 
 
+npm install --force
 
 if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null; then
   # Tuer le processus associé au port
