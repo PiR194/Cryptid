@@ -241,7 +241,7 @@ const InGame = ({locale, changeLocale}) => {
           </div>
         }   
 
-        <div className='paramDiv'>
+        {/* <div className='paramDiv'>
           <button className='button'
             style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -250,7 +250,7 @@ const InGame = ({locale, changeLocale}) => {
             onClick={handleChangeS}>
             <img src={Param} alt="paramètres" height='40'/>
           </button>
-        </div>
+        </div> */}
 
 
 
