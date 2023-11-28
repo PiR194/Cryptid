@@ -21,6 +21,8 @@ interface GameContextProps {
   dailyEnigme: Map<number, Pair<Indice, boolean>[]>
   nbCoup : number
   temps : number
+  networkData: any
+  seed: number | string;
   setIndicesData: (newIndices: Indice[]) => void;
   setIndiceData: (newIndice: Indice) => void;
   setPersonData: (newPerson: Person) => void;
@@ -37,6 +39,8 @@ interface GameContextProps {
   setDailyEnigmeData: (map: Map<number, Pair<Indice, boolean>[]>) => void
   setNbCoupData: (newNbCoup : number) => void
   settempsData: (newtemps : number) => void
+  setNetworkDataData: (networkData: any) => void
+  setSeedData: (seed: number | string) => void
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -61,7 +65,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [dailyEnigme, setDailyEnigme] = useState<Map<number, Pair<Indice, boolean>[]>>(new Map())
   const [nbCoup, setNbCoup] = useState<number>(0);
   const [temps, settemps] = useState<number>(0);
+  const [networkData, setNetworkData] = useState<any>(null);
+  const [seed, setSeed] = useState<number | string>(0);
 
+  const setNetworkDataData = (networkData: any) => {
+    setNetworkData(networkData);
+  }
+
+  const setSeedData = (seed: number | string) => {
+    setSeed(seed);
+  }
 
   const setIndicesData = (newIndices: Indice[]) => {
     setIndices(newIndices);
@@ -142,7 +155,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   }
 
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset, dailyEnigme, setDailyEnigmeData, nbCoup, setNbCoupData, temps, settempsData}}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset, dailyEnigme, setDailyEnigmeData, nbCoup, setNbCoupData, temps, settempsData, setNetworkDataData, networkData, seed, setSeedData}}>
       {children}
     </GameContext.Provider>
   );
