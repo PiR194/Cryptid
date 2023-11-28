@@ -40,9 +40,6 @@ import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
-import { last } from 'lodash';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
 import generateLatexCode from '../Script/LatexScript';
@@ -407,6 +404,12 @@ const InGame = ({locale, changeLocale}) => {
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
         </div>
       */}
+        <div id="bottom-container">
+          {/* Ajout du bouton en bas à droite */}
+          <div className='bottomRightButton'>
+            <Button href='/'>Retour à l'accueil</Button>
+          </div>
+        </div>
       </div>
     );
   };
