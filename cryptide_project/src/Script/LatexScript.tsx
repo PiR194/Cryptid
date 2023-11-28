@@ -14,7 +14,6 @@ import Pair from "../model/Pair";
 
 function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, choosenIndices : Indice[], network: Network): string {
     let latexCode = "";
-
     //*Setup
     latexCode += "\\documentclass[11pt]{article}\n"
     latexCode += "\\usepackage[landscape]{geometry}\n"
@@ -64,7 +63,6 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
         person.getFriends().forEach((friend) => {
             latexCode += `  \\draw (${person.getId()}) -- (${friend.getId()});\n`;
         });
-        console.log(person.getFriends().length);
     });
     
     latexCode += "\\end{tikzpicture}\n";
@@ -83,6 +81,8 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     choosenIndices.forEach((indice, index) => {
 
         latexCode += `\\item Indice ${index + 1} : ${indice.ToString('fr')}.\n`
+        console.log("coucou")
+        console.log(indice.ToString("fr"))
     })
     latexCode += "\\end{compactitem}\n"
 
@@ -147,7 +147,6 @@ function generateLatexCodeEnigme(personsNet : PersonNetwork, choosenPerson : Per
         person.getFriends().forEach((friend) => {
             latexCode += `  \\draw (${person.getId()}) -- (${friend.getId()});\n`;
         });
-        console.log(person.getFriends().length);
     });
     
     latexCode += "\\end{tikzpicture}\n";

@@ -270,7 +270,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
                 sortMethod: 'hubsize'
             },
-            distanceMin: 500, // Set the minimum distance between nodes
             //randomSeed: 2
         },
         physics: {

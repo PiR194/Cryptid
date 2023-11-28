@@ -26,6 +26,11 @@ import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
 import JSZip from 'jszip';
+import ballonDeBasket from '../Script/ballon-de-basket.png';
+import ballonDeFoot from '../Script/ballon-de-foot.png';
+import baseball from '../Script/baseball.png';
+import bowling from '../Script/bowling.png';
+import tennis from '../Script/tennis.png';
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -139,7 +144,7 @@ const InGame = ({locale, changeLocale}) => {
 
       const zip = new JSZip();
       
-      if (isDaily && networkEnigme != null){
+      if (isDaily && !isEasy && networkEnigme != null){
         const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
         const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
         zip.file('socialGraph.tex', tex);
@@ -150,29 +155,25 @@ const InGame = ({locale, changeLocale}) => {
         zip.file('socialGraph.tex', tex);
       }
 
-      const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
-      const imagesFolder = 'Script';
-
-      for (const imageName of imageNames) {
-        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
-        const response = await fetch(imageUrl);
-        
-        if (response.ok) {
-          const imageBlob = await response.blob();
-          zip.file(`${imageName}`, imageBlob);
-        } else {
-          console.error(`Erreur de chargement de l'image ${imageName}`);
-        }
-      }
+      zip.file('ballon-de-basket.png', await fetchImage(ballonDeBasket));
+      zip.file('ballon-de-foot.png', await fetchImage(ballonDeFoot));
+      zip.file('baseball.png', await fetchImage(baseball));
+      zip.file('bowling.png', await fetchImage(bowling));
+      zip.file('tennis.png', await fetchImage(tennis));
 
       const content = await zip.generateAsync({ type: 'blob' });
 
       // Enregistre l'archive en tant que fichier
       saveAs(content, 'social_graph.zip');
-      
-      // Utiliser FileSaver pour télécharger le fichier
+
     }
   }
+
+  const fetchImage = async (imageUrl: string) => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return blob;
+  };
 
   const resetGraph = () => {
     setisLoading(true);

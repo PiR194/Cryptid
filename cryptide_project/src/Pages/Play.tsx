@@ -182,8 +182,6 @@ function Play() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        setIndicesData(choosenIndices)
-
         navigate('/game?solo=true&daily=true&easy=true');
         setShowOverlay(false);
     };
@@ -195,7 +193,6 @@ function Play() {
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
-        setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
         if (first){
             first = false
