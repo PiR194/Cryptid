@@ -295,6 +295,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       });
     }
 
+    socket.on("reset graph", () => {
+      console.log("reset graph")
+      initialOptions.physics.enabled = true
+      network.setOptions(initialOptions)
+    })
+
     if (!solo){
       socket.on("asked all", (id) =>{
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
@@ -315,11 +321,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         nodes.forEach(node => {
           networkData.nodes.update({id: node.id, opacity: 1})
         });
-      })
-
-      socket.on("reset graph", () => {
-        initialOptions.physics.enabled = true
-        network.setOptions(initialOptions)
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {

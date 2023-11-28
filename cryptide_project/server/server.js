@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
 
   socket.on("reset graph", (id) => {
     io.to(id).emit("reset graph")
-  })  
+  })
 
   socket.on("end game", (winnerIndex, room) =>{
     io.to(room).emit("end game", winnerIndex)

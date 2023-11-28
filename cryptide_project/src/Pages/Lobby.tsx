@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+/* Style */
 import './Lobby.css';
 import { useTheme } from '../Style/ThemeContext';
 
@@ -8,25 +10,37 @@ import PersonImg from '../res/img/Person.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
+
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
+
+/* Context */
+import { useGame } from '../Contexts/GameContext';
+import { useAuth } from '../Contexts/AuthContext';
+
+/* Model */
 import PersonNetwork from '../model/PersonsNetwork';
 import Person from '../model/Person';
 import GameCreator from '../model/GameCreator';
-import { useGame } from '../Contexts/GameContext';
-import JSONParser from '../JSONParser';
 import Indice from '../model/Indices/Indice';
-import { useNavigate } from 'react-router-dom';
-import { socket } from "../SocketConfig";
-import { random } from 'lodash';
+import JSONParser from '../JSONParser';
 import Player from '../model/Player';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
 import User from '../model/User';
-import { useAuth } from '../Contexts/AuthContext';
+import {loadImageAsync} from "../ImageHelper"
+
+/* nav */
+import { useNavigate } from 'react-router-dom';
+
+/* serv */
+import { socket } from "../SocketConfig";
 import SessionService from '../services/SessionService';
+import { random } from 'lodash';
 
 
 let gameStarted = false
@@ -34,7 +48,7 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-
+    
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
@@ -48,6 +62,8 @@ function Lobby() {
         socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
     }
 
+    
+
     useEffect(() => {
         if (first){
             first=false
@@ -55,9 +71,15 @@ function Lobby() {
             if (user == null){
                 manager.userService.fetchUserInformation().then(([u, loggedIn]) => {
                     if (u!=null){
-                        setUserData(u)
                         if (loggedIn){
                             login()
+                            setUserData(u)
+                        }
+                        else{
+                            loadImageAsync(defaultImg).then((blob) => {
+                                u.profilePicture=blob
+                                setUserData(u)
+                            })
                         }
                         socket.emit("lobby joined", room, u.toJson())
                     }
@@ -108,6 +130,7 @@ function Lobby() {
         for (const p of tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
