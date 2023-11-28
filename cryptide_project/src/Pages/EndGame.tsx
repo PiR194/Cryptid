@@ -68,8 +68,6 @@ function EndGame() {
     }
     const theme = useTheme();
 
-    console.log(winner)
-    console.log(indices)
     return (
         <div>
             {!IsSolo ? (
@@ -77,7 +75,7 @@ function EndGame() {
                     <div className="head">
                         <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                             <h1>{winner?.pseudo} a gagné !</h1>
-                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                            <h3>Le coupable était <u>{person?.getName()}</u></h3>
                         </header>
                     </div>
                     <div className='winner'>
@@ -93,7 +91,7 @@ function EndGame() {
                                 <div className="playerContainer" key={index}>
                                     {player.id !== winner?.id && (
                                         <div>
-                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false}/>
                                             <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
                                         </div>
                                     )}
@@ -114,7 +112,7 @@ function EndGame() {
                 <div className="head">
                             <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                                 <h1>Vous avez gagné !</h1>
-                                <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                                <h3>Le coupable était <u>{person?.getName()}</u></h3>
                             </header>
                 </div>
                 <div className='winner'>

@@ -32,9 +32,6 @@ function AppNavbar({changeLocale}) {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
 
     function navigateToProfile(){
         navigate("/profile")

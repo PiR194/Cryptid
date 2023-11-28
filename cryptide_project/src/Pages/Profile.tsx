@@ -84,7 +84,6 @@ const Profile = () => {
     // Verification de la phrase
     if (confirmationPhrase.toLowerCase() === 'supprimer mon compte') {
       console.log('Compte supprimé !');
-      console.log(user);
 
       if(user!= null){
         const pseudo = user.pseudo;
