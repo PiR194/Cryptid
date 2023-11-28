@@ -13,8 +13,6 @@ class EnigmeDuJourCreator{
             map.set(p.getId(), [])
         })
 
-        console.log("START ENIGME")
-
         choosenIndices.forEach((choosenIndice) => {
             const choosenIndiceTester = IndiceTesterFactory.Create(choosenIndice)
             const modifiedPersons: Pair<Person, boolean>[] = []

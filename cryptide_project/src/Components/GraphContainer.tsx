@@ -12,6 +12,8 @@ import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
+import Indice from "../model/Indices/Indice";
+import Pair from "../model/Pair";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -25,6 +27,7 @@ interface MyGraphComponentProps {
   isDaily : boolean
   setNetwork: (network: Network) => void
   showLast: boolean
+  setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
 }
 
 let lastAskingPlayer = 0
@@ -44,7 +47,7 @@ let firstEnigme = true
 let endgame= false
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork, setNetworkEnigme}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -265,6 +268,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
                 sortMethod: 'hubsize'
             },
+            distanceMin: 500, // Set the minimum distance between nodes
             //randomSeed: 2
         },
         physics: {
@@ -273,16 +277,21 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 gravitationalConstant: -1000,
                 springConstant: 0.001,
                 springLength: 100
+            },
+            solver: "repulsion",
+            repulsion: {
+              nodeDistance: 100 // Put more distance between the nodes.
             }
         }
     };
 
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
-
+    network.stabilize();
     setNetwork(network)
 
     if (isDaily){
+      setNetworkEnigme(dailyEnigme)
       dailyEnigme.forEach((pairs, index) => {
         pairs.forEach((pair) => {
           const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
