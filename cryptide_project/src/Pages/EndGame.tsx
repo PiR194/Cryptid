@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 
 /* Style */
@@ -16,14 +16,49 @@ import PersonStatus from '../Components/PersonStatus';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import BigButtonNav from '../Components/BigButtonNav';
 import { Button } from 'react-bootstrap';
+import { Network } from "vis-network/standalone/esm/vis-network";
+
 
 import { useGame } from '../Contexts/GameContext';
 import Player from '../model/Player';
 
 
 function EndGame() {
-
+    const {networkData, seed} = useGame();
     const params = new URLSearchParams(window.location.search);
+    
+    const initialOptions = {
+
+        layout: {
+            improvedLayout: true,
+            randomSeed: seed,
+            hierarchical: {
+                enabled: false,
+                direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
+                sortMethod: 'hubsize'
+            },
+            //randomSeed: 2
+        },
+        physics: {
+            enabled: true,
+            barnesHut: {
+                gravitationalConstant: -1000,
+                springConstant: 0.001,
+                springLength: 100
+            }
+        }
+    };
+
+    useEffect(() => {
+        const container = document.getElementById("vis-graph");
+        if (!container) {
+            console.error("Container not found");
+            return;
+          }
+        const network = new Network(container, networkData, initialOptions);
+        console.log(networkData)
+    
+    }, []);
 
     //* Gestion solo
     let IsSolo: boolean = false
@@ -104,10 +139,6 @@ function EndGame() {
                             <BigButtonNav dest="/lobby" img={Replay}/>
                         </div> */}
                     </div>
-
-                    <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                        <Button href='/'>Retour à l'accueil</Button>
-                    </div>
                 </div>
             ): (
             <div>
@@ -144,11 +175,15 @@ function EndGame() {
                     </div> */}
                 </div>
                 
-                <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                    <Button href='/'>Retour à l'accueil</Button>
-                </div>
+                
             </div>
             )}
+            
+            <div id="vis-graph"/>
+
+            <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
+                <Button href='/'>Retour à l'accueil</Button>
+            </div>
         </div>
     );
 }
