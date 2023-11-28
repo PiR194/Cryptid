@@ -77,10 +77,10 @@ function App() {
             <BrowserRouter>  
               {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Play />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/play" element={<Play/>} />
+                <Route path="/home" element={<Home/>} />
                 <Route path="/lobby" element={<Lobby/>} />
                 <Route path="/endgame" element={<EndGame/>} />
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>

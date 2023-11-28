@@ -24,12 +24,13 @@ import Alert from 'react-bootstrap/Alert';
 import MGlass from "../res/icon/magnifying-glass.png";
 import Param from "../res/icon/param.png";
 import Info from "../res/icon/infoGreen.png"; //todo changer la couleur de l'icon
+import { useAuth } from '../Contexts/AuthContext';
+import { useEffect } from 'react';
 
 //@ts-ignore
-function InfoPage({locale, changeLocale}) {
-    
+function InfoPage({locale, changeLocale}) {    
     const theme = useTheme();
-
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
     const styles = {
         roux: { backgroundColor: ColorToHexa(Color.REDHEAD), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
         blond: { backgroundColor: ColorToHexa(Color.BLOND), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
@@ -37,6 +38,20 @@ function InfoPage({locale, changeLocale}) {
         blanc: { backgroundColor: ColorToHexa(Color.WHITE), border: '1px solid #ccc', width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
         chatain: { backgroundColor: ColorToHexa(Color.BROWN), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
     };
+
+    useEffect(() => {
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    if (loggedIn){
+                        login()
+                        setUserData(user)
+                    }
+                }
+            })
+        }
+    }, [isLoggedIn]);
+
     return (
         //! Il faudra possiblement faire une gestion des mode de jeu, pour modifier les regles en fonction de ce dernier.
     <div className='infoPage'>
