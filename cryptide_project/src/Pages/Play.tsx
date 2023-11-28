@@ -103,7 +103,7 @@ function Play() {
                 {/* <button className='ButtonNav'>
                     Param
                 </button> */}
-                <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/>
+                {/* <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/> */}
             </div>
             <div className="MidContainer">
                 <div>

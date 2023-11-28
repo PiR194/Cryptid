@@ -34,7 +34,8 @@ class SessionController {
         try{
             await db.connect();
 
-            const user = db.getUserByPseudo(req.body.pseudo);
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            console.log("utilisateur" + user.idUser + " pseudo" + user.pseudo)
             if (!user) {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
@@ -42,10 +43,10 @@ class SessionController {
 
             await db.updatePseudo(user.idUser, req.body.newPseudo); //* update
 
-            const updatedUser = db.getUserByPseudo(req.body.newPseudo);
-
+            const updatedUser = await db.getUserByPseudo(req.body.newPseudo);
+            console.log("updaetdutilisateur" + updatedUser.idUser + " pseudo" + updatedUser.pseudo)
             req.session.user.pseudo = updatedUser.pseudo;
-            
+            console.log("req.session.user.pseudo" + req.session.user.pseudo)
             res.status(200).json({ user: req.session.user }); //verif rep
         }
         catch(error){

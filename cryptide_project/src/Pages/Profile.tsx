@@ -44,10 +44,9 @@ const Profile = () => {
 
   //@ts-ignore
   const onUsernameChange = (newUsername) => {
-    console.log("nouveau pseudo : " + newUsername)
     if(user?.pseudo != null){
       SessionService.UpdatePseudo(user.pseudo, newUsername)
-      //user.pseudo = newUsername;
+      user.pseudo = newUsername;
     }
   }
 

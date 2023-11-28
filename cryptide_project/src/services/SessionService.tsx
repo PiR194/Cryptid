@@ -25,6 +25,7 @@ class SessionService {
     }
 
     static async UpdatePseudo(pseudo : string, newPseudo : string) {
+        console.log("pseudo : " + pseudo + " newpseudo : " + newPseudo)
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/session/updatePseudo', {
                 method: 'PUT',
