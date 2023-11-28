@@ -55,7 +55,7 @@ const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
                     </Button>
                 )}
             </div>
-            {isBot && (
+            {/* {isBot && (
                 <ToggleButtonGroup type='radio' name={`options-${player.id}`} defaultValue={1}>
                     <ToggleButton id={`tbg-radio-1-${player.id}`} value={1}>
                         Facile
@@ -67,7 +67,7 @@ const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
                         Fort
                     </ToggleButton>
                 </ToggleButtonGroup>
-            )}
+            )} */}
         </div>
     )
 }

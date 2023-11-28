@@ -241,7 +241,7 @@ function Lobby() {
                 style={{flexDirection:'column',
                         alignItems:'space-around'}}>
                     <h3>Bienvenue dans votre lobby !</h3>
-                    <p>Attendez que tous vos amis se joignent avant de lancer la partie.</p>
+                    <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
                     {/* Bouton pour copier le lien */}
                     <Button variant="primary" ref={target} onClick={copyGameLink}>
                         Inviter des amis
