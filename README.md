@@ -28,37 +28,50 @@ Sur **Windows**
 Sur **MacOS** / **Linux**
 > - Ouvrez le terminal et tapez la commande `ifconfig` ou `ip addr`. Recherchez la section de votre connexion sans fil et notez l'adresse IP.
 
-### Etape 3 : Configurer Socket.IO
+### Etape 3 : Configurer les serveurs
 
-1. **Ouvrez le fichier `./src/SocketConfig.ts` :**
+1. **Ouvrez le fichier `./src/AdressSetup.ts` :**
    - Localisez le fichier dans le répertoire de votre application.
 
-2. **Modifiez l'adresse IP dans la ligne `const socket = io(...)` :**
-   - Remplacez l'adresse IP existante par celle que vous avez notée à l'étape 2.
+2. **Modifiez l'adresse des serveurs :**
+   - Remplacez les adresses IP existantes par celle que vous avez notée à l'étape 2.
 
    Exemple :
    ```typescript
-   //SocketConfig.ts
-   import { io } from "socket.io-client";
-
-   // Remplacez "http://172.20.10.4:3002" par votre propre adresse IP
-   const socket = io("http://VOTRE_ADRESSE_IP:3002");
-
-   export { socket };
+        // ./AdressSetup.ts
+        const ADRESSE_WEBSERVER = "http://{VOTRE_IP}:3002"
+        const ADRESSE_DBSERVER = "http://{VOTRE_IP}:3003"
+        const ADRESSE_WEBSITE = ""
+        
+        export {ADRESSE_DBSERVER, ADRESSE_WEBSERVER, ADRESSE_WEBSITE}
    ```
 
-### Etape 4 : Démarrer les serveurs  
-Dans un second terminal, ouvrez le serveur Socket.IO :
-```bash
-    cd ./server
-    node server.js
-```
+3.  **Ouvrez le fichier `./server/server.js` :**
+    - Localisez le fichier dans le répertoire de votre application.
 
-Dans un troisième ouvrez le serveur gérant l'API  
-```bash
-    cd ./src/server
-    node server.js
-```
+4.  **Modifiez les adresses qui peuvent accèder aux serveurs :**
+    - Ajoutez votre adresse notée à l'étape 2 dans le cors.
+
+    Exemple :
+    ```typescript
+        const app = express();
+        const server = http.createServer(app);
+        const io = socketIO(server, {
+            cors: {
+                origin: ["http://{VOTRE_IP}:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
+                methods: ["GET", "POST"],
+                credentials: true
+            }
+        });
+    ```
+
+5. **Apportez la même modification au fichier `./src/server/server.js` :**
+- Une fois le fichier ouvert, appuyez-vous sur l'exemple précédent pour apporter les modifications necéssaire.
+
+### Etape 4 : Démarrer les serveurs
+
+1. **Ouvrez un second terminal :**
+- Exécutez le script `./startServer.sh`.
 
 ### Etape 5 : Démarrer l'application 
 
