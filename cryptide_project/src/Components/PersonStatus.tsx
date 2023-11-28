@@ -17,31 +17,45 @@ interface PlayerStatusProps {
     setPlayerTouched: (newPlayerTouch: number) => void;
     playerTouched: number
     showCircle: boolean
-    IsActualPlayer : boolean
+    playerIndex: number
   }
   let touchedPlayer = -1
 
 //@ts-ignore
-const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person, name = "Dummy", index, playerTouched, setPlayerTouched, showCircle, IsActualPlayer}) => {
+const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person, name = "Dummy", index, playerTouched, setPlayerTouched, showCircle, playerIndex}) => {
     const theme=useTheme();
-    const {players} = useGame()
+    const {players, actualPlayerIndex} = useGame()
     if (players[index] instanceof Bot){
         img = BotImg
     }
+
+    const [buffer, setBuffer] = useState("")
 
     const [touchedPlayer, setTouchedPlayer] = useState(-2)
     useEffect(() =>{
         setTouchedPlayer(playerTouched)
     }, [playerTouched])
 
-    let isCurrentPlayer = true
-    let buffer = ''
-    if (isCurrentPlayer){
-        buffer = 'solid 1px green'
+    let IsActualPlayer = index != actualPlayerIndex
+
+    useEffect(() => {
+        if (playerIndex===index){
+            setBuffer('solid 1px green')
+        }
+        else{
+            setBuffer('')
+        }
+    }, [playerIndex])
+    
+    function onTouch(){
+        if (IsActualPlayer){
+            setPlayerTouched(index)
+        }
     }
+    
     return (
         <div style={{border:buffer}}>
-            <div className='centerDivV' onClick={() => setPlayerTouched(index)}>
+            <div className='centerDivV' onClick={() => onTouch()}>
                 <img src={img} alt="player" height="60" width="60"/>
                 <h5>{name}</h5>      
 
