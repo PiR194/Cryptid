@@ -13,7 +13,6 @@ import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 
-
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
@@ -23,6 +22,7 @@ interface MyGraphComponentProps {
   changecptTour: (newcptTour : number) => void
   addToHistory: (message : string) => void
   solo : boolean
+  isDaily : boolean
   setNetwork: (network: Network) => void
   showLast: boolean
 }
@@ -39,17 +39,42 @@ let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
+let cptEndgame = 0
+let firstEnigme = true
+let endgame= false
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
-let cptTour: number = 0
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
+  let cptTour: number = 0
 
-  const {isLoggedIn, user} = useAuth()
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
+  //* Gestion du temps :
+  let initMtn = 0
+
+  const {isLoggedIn, user, manager} = useAuth();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
+
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    // Démarrez le timer au montage du composant
+    const intervalId = setInterval(() => {
+      setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
+      settempsData(elapsedTime)
+
+      // Vérifiez si la durée est écoulée, puis arrêtez le timer
+      if (endgame) {
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+    // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, [elapsedTime, endgame]);
+
 
   useEffect(() =>{
     touchedPlayer=playerTouched
@@ -195,7 +220,7 @@ let cptTour: number = 0
   
   if (first){
     first = false
-
+    endgame= false
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -257,6 +282,19 @@ let cptTour: number = 0
 
     setNetwork(network)
 
+    if (isDaily){
+      dailyEnigme.forEach((pairs, index) => {
+        pairs.forEach((pair) => {
+          const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+          const node = networkData.nodes.get().find((n) => index == n.id)
+          if (node != undefined){
+            networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
+            const test = networkData.nodes.get().find((n) => index == n.id)
+          }
+        })
+      });
+    }
+
     socket.on("reset graph", () => {
       console.log("reset graph")
       initialOptions.physics.enabled = true
@@ -286,7 +324,6 @@ let cptTour: number = 0
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log(newPlayerIndex)
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
@@ -448,49 +485,65 @@ let cptTour: number = 0
     })
 
     socket.on("end game", (winnerIndex) =>{
-      const currentPlayer = players[actualPlayerIndex];
-      const winner = players[winnerIndex];
+      if (cptEndgame % 2 == 0){
+        cptEndgame++;
+        const currentPlayer = players[actualPlayerIndex];
+        const winner = players[winnerIndex];
+  
+        setNodeIdData(-1)
+        setActualPlayerIndexData(-1)
+        setLastIndex(-1)
+        setPlayerTouched(-1)
+        setWinnerData(players[winnerIndex])
+        setElapsedTime(0)
 
-      setNodeIdData(-1)
-      setActualPlayerIndexData(-1)
-      setLastIndex(-1)
-      setPlayerTouched(-1)
-      setWinnerData(players[winnerIndex])
-
-      if(isLoggedIn){
-        if(solo){
-
-        }
-        else{
-          if(winner.id === currentPlayer.id){
-              console.log("Vous avez gagné !");
+        first = true
+        cptHistory = 0
+        askedWrong=false
+        askedWrongBot=false
+        endgame = true
+  
+        try{
+          if(isLoggedIn){
+            if(!solo){
+              if(user && user.onlineStats){
+                // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
+                if(winner.id === currentPlayer.id){
+                  // Ajouter une victoire
+                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
+              }
+              // Update les stats
+              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
+              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
+              
+              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+              }
+              else{
+                console.error("User not found");
+              }
+            }
           }
-          else{
-              console.log("Vous avez perdu !");
-          }
         }
+        catch(e){
+          console.log(e);
+        }
+        finally{
+          socket.off("end game")
+          socket.off("asked all")
+          socket.off("opacity activated")
+          socket.off("opacity deactivated")
+          socket.off("reset graph")
+          socket.off("node checked")
+          socket.off("already asked")
+          socket.off("asked wrong")
+          socket.off("asked")
+          socket.off("put correct background")
+          socket.off("put grey background")
+          socket.off("put imossible grey")
+    
+          navigate("/endgame")
+        }        
       }
-
-      first = true
-      cptHistory = 0
-      askedWrong=false
-      askedWrongBot=false
-
-      
-      socket.off("end game")
-      socket.off("asked all")
-      socket.off("opacity activated")
-      socket.off("opacity deactivated")
-      socket.off("reset graph")
-      socket.off("node checked")
-      socket.off("already asked")
-      socket.off("asked wrong")
-      socket.off("asked")
-      socket.off("put correct background")
-      socket.off("put grey background")
-      socket.off("put imossible grey")
-
-      navigate("/endgame")
     })
 
 
@@ -505,7 +558,7 @@ let cptTour: number = 0
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          console.log(p)
+          //console.log(p)
         }
         
       });
@@ -644,7 +697,31 @@ let cptTour: number = 0
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    navigate("/endgame")
+
+                    if (user!=null){
+                      setWinnerData(user)
+                    }
+                    cptTour ++;
+                    setNbCoupData(cptTour)
+                    setElapsedTime(0)
+                    endgame = true
+
+                    try{
+                      if(user && user.soloStats){
+                        user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
+                        if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == 0 || user.soloStats.bestScore == null){
+                          user.soloStats.bestScore = cptTour;
+                        }
+                        user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
+        
+                        manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
+                      }
+                    }
+                    catch(error){
+                      console.log(error);
+                    }
+
+                    navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   
                 }
@@ -653,7 +730,6 @@ let cptTour: number = 0
             }
             addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
 
-            //TODO METTRE LA WIN CONDITION ICI AVEC LE MERGE
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
             addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");

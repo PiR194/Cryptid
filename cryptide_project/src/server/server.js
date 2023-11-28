@@ -6,13 +6,14 @@ const crypto = require('crypto');
 const authRoutes = require('./routes/authRoutes');
 const DatabaseService = require('./services/DatabaseService');
 
+
 const app = express();
 const port = 3003;
 
 // Middleware
 app.use(cors(
   {
-    origin: ['http://localhost:3000', "http://172.20.10.4:3000"],
+    origin: ["http://localhost:3000", "http://172.20.10.4:3000"],
     credentials: true
   }
 ));                            // Autoriser les requêtes cross-origin

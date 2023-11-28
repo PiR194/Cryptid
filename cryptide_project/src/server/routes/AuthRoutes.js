@@ -12,5 +12,7 @@ router.delete('/auth/delAccount', AuthController.delAccount)
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
+router.put('/session/updateSoloStats', SessionController.updateSoloStats);
+router.put('/session/updateOnlineStats', SessionController.updateOnlineStats);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+import { ADRESSE_DBSERVER } from '../adressConfig';
 import VerificationService from './VerificationService';
 import {ADRESSE_DBSERVER} from "../AdressConfig"
 import User from '../model/User';

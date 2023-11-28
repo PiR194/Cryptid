@@ -44,6 +44,31 @@ class DbUserService implements IUserService{
         }
     }
 
+    async updateSoloStats(pseudo: string, nbGames: number, bestScore: number, avgNbTry: number): Promise<void> {
+        try {
+            const result = await SessionService.updateSoloStats(pseudo, nbGames, bestScore, avgNbTry);
+            if (result) {
+                console.log("Stats solo updated");
+            } else {
+                console.log("Stats solo not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async updateOnlineStats(pseudo: string, nbGames: number, bestScore: number, ratio: number): Promise<void> {
+        try {
+            const result = await SessionService.updateOnlineStats(pseudo, nbGames, bestScore, ratio);
+            if (result) {
+                console.log("Stats online updated");
+            } else {
+                console.log("Stats online not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
 
 export default DbUserService
