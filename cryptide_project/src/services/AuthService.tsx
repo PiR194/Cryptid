@@ -1,5 +1,5 @@
 import VerificationService from './VerificationService';
-import {ADRESSE_DBSERVER} from "../AdressConfig"
+import {ADRESSE_DBSERVER} from "../AdressSetup"
 import User from '../model/User';
 
 

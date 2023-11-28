@@ -1,4 +1,4 @@
-import {ADRESSE_DBSERVER} from "../AdressConfig"
+import {ADRESSE_DBSERVER} from "../AdressSetup"
 
 class SessionService {
     static async getSession() {
