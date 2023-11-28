@@ -102,6 +102,8 @@ const InGame = ({locale, changeLocale}) => {
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+  const [playerIndex, setPlayerIndex] = useState(-2)
+
 
   const [network, setNetwork] = useState<Network | null>(null)
 
@@ -124,6 +126,10 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const setPlayerIndexData = (playerIndex: number) => {
+    setPlayerIndex(playerIndex)
   }
 
   const generateTEX = () => {
@@ -229,7 +235,8 @@ const InGame = ({locale, changeLocale}) => {
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
-                          showLast={showLast}/>
+                          showLast={showLast}
+                          setPlayerIndex={setPlayerIndexData}/>
         </div>
 
 
@@ -358,7 +365,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
             </div>
           }
 
