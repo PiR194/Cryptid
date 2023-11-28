@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 /* Context */
 import { useGame } from '../Contexts/GameContext';
 import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 /* Model */
 import PersonNetwork from '../model/PersonsNetwork';
@@ -35,23 +36,11 @@ import Bot from '../model/Bot';
 import User from '../model/User';
 import {loadImageAsync} from "../ImageHelper"
 
-/* nav */
-
-/* Context */
-import { useGame } from '../Contexts/GameContext';
-import { useNavigate } from 'react-router-dom';
 
 /* serv */
 import { socket } from "../SocketConfig";
-
-import { io } from 'socket.io-client';
-import { Link } from 'react-router-dom';
-import JSONParser from '../JSONParser';
-import { useNavigate } from 'react-router-dom';
-import { socket } from "../SocketConfig";
 import { random } from 'lodash';
 import SessionService from '../services/SessionService';
-import { random } from 'lodash';
 
 
 let gameStarted = false
