@@ -25,6 +25,7 @@ import Download from "../res/icon/download.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
+import JSZip from 'jszip';
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -45,7 +46,9 @@ import { NavLink } from 'react-router-dom';
 import { last } from 'lodash';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
-import generateLatexCode from '../Script/LatexScript';
+import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
+import Pair from '../model/Pair';
+import Indice from '../model/Indices/Indice';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -106,9 +109,14 @@ const InGame = ({locale, changeLocale}) => {
 
 
   const [network, setNetwork] = useState<Network | null>(null)
+  const [networkEnigme, setNetworkEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
 
   const setNetworkData = (network: Network) => {
     setNetwork(network)
+  }
+
+  const setNetworkEnigmeData = (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => {
+    setNetworkEnigme(networkEnigme)
   }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -132,13 +140,43 @@ const InGame = ({locale, changeLocale}) => {
     setPlayerIndex(playerIndex)
   }
 
-  const generateTEX = () => {
+  const generateTEX = async () => {
     if (network != null && personNetwork != null && person != null){
-      const tex = generateLatexCode(personNetwork, person, indices, network)
-      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
 
+      const zip = new JSZip();
+      
+      if (isDaily && networkEnigme != null){
+        const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+      else{
+        const tex = generateLatexCode(personNetwork, person, indices, network)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+
+      const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
+      const imagesFolder = 'Script';
+
+      for (const imageName of imageNames) {
+        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
+        const response = await fetch(imageUrl);
+        
+        if (response.ok) {
+          const imageBlob = await response.blob();
+          zip.file(`${imageName}`, imageBlob);
+        } else {
+          console.error(`Erreur de chargement de l'image ${imageName}`);
+        }
+      }
+
+      const content = await zip.generateAsync({ type: 'blob' });
+
+      // Enregistre l'archive en tant que fichier
+      saveAs(content, 'social_graph.zip');
+      
       // Utiliser FileSaver pour télécharger le fichier
-      saveAs(blob, 'socialGraph.tex');
     }
   }
 
@@ -235,6 +273,7 @@ const InGame = ({locale, changeLocale}) => {
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
+                          setNetworkEnigme={setNetworkEnigmeData}
                           showLast={showLast}
                           setPlayerIndex={setPlayerIndexData}/>
         </div>
