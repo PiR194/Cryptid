@@ -8,11 +8,15 @@ import Pair from "./Pair";
 import Person from "./Person";
 import PersonNetwork from "./PersonsNetwork";
 import Player from "./Player";
+import DefaultImg from "../res/img/bot.png"
 
 class EasyBot extends Bot{
 
-    constructor(id: string, name: string, profilePicture: string){
-        super(id, name, profilePicture)
+    constructor(id: string, pseudo: string, profilePicture: string){
+        if (profilePicture === undefined || profilePicture === ""){
+            profilePicture=DefaultImg
+        }
+        super(id, pseudo, profilePicture)
     }
 
     toJson() {

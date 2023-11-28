@@ -13,7 +13,6 @@ import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 
-
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
@@ -40,21 +39,41 @@ let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
+let cptEndgame = 0
 let firstEnigme = true
+let endgame= false
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
-  const initMtn = new Date().getSeconds()
+  let initMtn = 0
 
-  const {user} = useAuth()
+  const {isLoggedIn, user, manager} = useAuth();
   const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
+
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    // Démarrez le timer au montage du composant
+    const intervalId = setInterval(() => {
+      setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
+      settempsData(elapsedTime)
+
+      // Vérifiez si la durée est écoulée, puis arrêtez le timer
+      if (endgame) {
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+    // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, [elapsedTime, endgame]);
 
 
   useEffect(() =>{
@@ -201,7 +220,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
   if (first){
     first = false
-
+    endgame= false
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -267,23 +286,20 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       dailyEnigme.forEach((pairs, index) => {
         pairs.forEach((pair) => {
           const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
-          console.log(index)
           const node = networkData.nodes.get().find((n) => index == n.id)
           if (node != undefined){
             networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
             const test = networkData.nodes.get().find((n) => index == n.id)
-            if (test!=undefined){
-              console.log(test.label)
-            }
           }
         })
       });
     }
 
-    indices.forEach((i, index) => {
-      console.log(i.ToString("fr") + " => " + positionToEmoji(index, true))
+    socket.on("reset graph", () => {
+      console.log("reset graph")
+      initialOptions.physics.enabled = true
+      network.setOptions(initialOptions)
     })
-    
 
     if (!solo){
       socket.on("asked all", (id) =>{
@@ -306,14 +322,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           networkData.nodes.update({id: node.id, opacity: 1})
         });
       })
-
-      socket.on("reset graph", () => {
-        initialOptions.physics.enabled = true
-        network.setOptions(initialOptions)
-      })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log(newPlayerIndex)
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
@@ -408,7 +418,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     socket.emit("node checked", nodeId, false, actualPlayerIndex, room, index)
                     socket.emit("asked wrong", askingPlayer, room)
                   }
-    
                 }
               }
             }     
@@ -475,29 +484,65 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     })
 
     socket.on("end game", (winnerIndex) =>{
-      setNodeIdData(-1)
-      setActualPlayerIndexData(-1)
-      setLastIndex(-1)
-      setPlayerTouched(-1)
-      setWinnerData(players[winnerIndex])
-      first = true
-      cptHistory = 0
-      askedWrong=false
-      askedWrongBot=false
-      socket.off("end game")
-      socket.off("asked all")
-      socket.off("opacity activated")
-      socket.off("opacity deactivated")
-      socket.off("reset graph")
-      socket.off("node checked")
-      socket.off("already asked")
-      socket.off("asked wrong")
-      socket.off("asked")
-      socket.off("put correct background")
-      socket.off("put grey background")
-      socket.off("put imossible grey")
+      if (cptEndgame % 2 == 0){
+        cptEndgame++;
+        const currentPlayer = players[actualPlayerIndex];
+        const winner = players[winnerIndex];
+  
+        setNodeIdData(-1)
+        setActualPlayerIndexData(-1)
+        setLastIndex(-1)
+        setPlayerTouched(-1)
+        setWinnerData(winner)
+        setElapsedTime(0)
 
-      navigate("/endgame")
+        first = true
+        cptHistory = 0
+        askedWrong=false
+        askedWrongBot=false
+        endgame = true
+  
+        try{
+          if(isLoggedIn){
+            if(!solo){
+              if(user && user.onlineStats){
+                // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
+                if(winner.id === currentPlayer.id){
+                  // Ajouter une victoire
+                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
+              }
+              // Update les stats
+              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
+              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
+              
+              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+              }
+              else{
+                console.error("User not found");
+              }
+            }
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+        finally{
+          socket.off("end game")
+          socket.off("asked all")
+          socket.off("opacity activated")
+          socket.off("opacity deactivated")
+          socket.off("reset graph")
+          socket.off("node checked")
+          socket.off("already asked")
+          socket.off("asked wrong")
+          socket.off("asked")
+          socket.off("put correct background")
+          socket.off("put grey background")
+          socket.off("put imossible grey")
+    
+          navigate("/endgame")
+        }        
+      }
     })
 
 
@@ -512,7 +557,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          console.log(p)
+          //console.log(p)
         }
         
       });
@@ -651,12 +696,30 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    const Mtn = new Date().getSeconds()
 
-                    settempsData(Mtn - initMtn)
-
+                    if (user!=null){
+                      setWinnerData(user)
+                    }
                     cptTour ++;
                     setNbCoupData(cptTour)
+                    setElapsedTime(0)
+                    endgame = true
+
+                    try{
+                      if(user && user.soloStats){
+                        user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
+                        if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == 0 || user.soloStats.bestScore == null){
+                          user.soloStats.bestScore = cptTour;
+                        }
+                        user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
+        
+                        manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
+                      }
+                    }
+                    catch(error){
+                      console.log(error);
+                    }
+
                     navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   

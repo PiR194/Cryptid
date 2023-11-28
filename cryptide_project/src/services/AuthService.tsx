@@ -1,4 +1,7 @@
 import VerificationService from './VerificationService';
+import {ADRESSE_DBSERVER} from "../AdressSetup"
+import User from '../model/User';
+
 
 class AuthService{
     // Méthode pour vérifier les données de connexion
@@ -12,7 +15,7 @@ class AuthService{
 
     static async signUp(data: any) {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/signup', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signup', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +39,7 @@ class AuthService{
 
     static async signIn(data: any) {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/signin', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/signin', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -61,11 +64,35 @@ class AuthService{
 
     static async logout() {
         try {
-            const response = await fetch('http://172.20.10.4:3003/auth/logout', {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/logout', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
+            });
+        
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async delAccount(pseudo: string){
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/delAccount', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ pseudo }),
                 credentials: 'include',
             });
         

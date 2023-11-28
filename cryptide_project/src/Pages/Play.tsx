@@ -8,12 +8,9 @@ import './Play.css';
 import { useTheme } from '../Style/ThemeContext';
 
 /* Component */
-import ButtonImgNav from "../Components/ButtonImgNav"
-import SessionService from "../services/SessionService";
+import ButtonImgNav from "../Components/ButtonImgNav";
 
 /* Img */
-import Person from '../res/img/Person.png';
-
 /* Icon */
 import { socket } from '../SocketConfig';
 import { useNavigate } from 'react-router-dom';
@@ -21,19 +18,21 @@ import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Types */
-import { PlayerProps } from '../types/Player';
-import Player from '../model/Player';
-import Human from '../model/User';
 import User from '../model/User';
 import EnigmeDuJourCreator from '../model/EnigmeDuJourCreator';
 import Stub from '../model/Stub';
 
-let first = true
+import SessionService from '../services/SessionService';
+import { loadImageAsync } from '../ImageHelper';
 
 function Play() {
+    let first = true
+
     const theme=useTheme()
-    const {isLoggedIn, login, user, setUserData } = useAuth();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
     const {setDailyEnigmeData} = useGame()
 
     useEffect(() => {
@@ -83,12 +82,36 @@ function Play() {
     const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
 
 
+    useEffect(() => {
+
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    if (loggedIn){
+                        login()
+                        setUserData(user)
+                    }
+                    else{
+                        loadImageAsync(defaultImg).then((blob) => {
+                            user.profilePicture=blob
+                            setUserData(user)
+                        })
+                    }
+                }
+            })
+        }
+    }, [isLoggedIn]);
+
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();
 
     function createLobby(){
         socket.emit("lobby created")
     }
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     function launchMastermind(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
@@ -117,7 +140,7 @@ function Play() {
 
     useEffect(() => {
         const handleLobbyCreated = (newRoom: any) => {
-        setRoom(newRoom);
+            setRoom(newRoom);
         };
     
         // Ajouter l'event listener
@@ -144,14 +167,14 @@ function Play() {
                 {/* <button className='ButtonNav'>
                     Param
                 </button> */}
-                <ButtonImgNav dest='/signup' img={Person} text="Gestion du compte"/>
+                {/* <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/> */}
             </div>
             <div className="MidContainer">
                 <div>
                     <h2>
                         {user && user.pseudo}
                     </h2>
-                    <img src={Person}
+                    <img src={user?.profilePicture}
                             height='300'
                             width='300'
                             alt="Person"
@@ -159,7 +182,7 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
-                    <button onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul mais aujourd'hui</button>
+                    <button onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Résoudre une énigme</button>
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button  className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     

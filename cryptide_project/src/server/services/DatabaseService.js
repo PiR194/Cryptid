@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3');
 const path = require('path');
+const { rejects } = require('assert');
 
 class DatabaseService {
     constructor(){
@@ -40,6 +41,20 @@ class DatabaseService {
     async getUserByPseudo(pseudo){
         return new Promise((resolve, reject) => {
             this.client.get('SELECT * FROM users WHERE pseudo = ?', pseudo, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    // Récupère l'utilisateur par son id
+    async getUserByID(id){
+        return new Promise((resolve, reject) => {
+            this.client.get('SELECT * FROM users WHERE idUser = ?', id, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -106,6 +121,33 @@ class DatabaseService {
         });
     }
 
+    // Mettre à jour les stats solo de l'utilisateur
+    async updateSoloStats(userId, nbGames, bestScore, avgNbTry){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE solo_stats SET nbGames = ?, bestScore = ?, avgNbTry = ? WHERE idUser = ?', [nbGames, bestScore, avgNbTry, userId], (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    // Mettre à jour les stats online de l'utilisateur
+    async updateOnlineStats(userId, nbGames, nbWins, ratio){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE online_stats SET nbGames = ?, nbWins = ?, ratio = ? WHERE idUser = ?', [nbGames, nbWins, ratio, userId], (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
 
     async initSoloStats(userId) {
         return new Promise((resolve, reject) => {
@@ -123,6 +165,58 @@ class DatabaseService {
     async initOnlineStats(userId) {
         return new Promise((resolve, reject) => {
             this.client.run('INSERT INTO online_stats (nbGames, nbWins, ratio, idUser) VALUES (?, ?, ?, ?)', 0, 0, 0.0, userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteUser(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM users WHERE idUser=?', userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteSoloStat(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM solo_stats WHERE idUser=?', userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async deleteOnlineStat(userId){
+        return new Promise((resolve, reject) => {
+            this.client.run('DELETE FROM online_stats WHERE idUser=?', userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    async updatePseudo(userId, newPseudo){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE users SET pseudo = ? WHERE idUser = ?', newPseudo, userId, (err, result) => {
                 if(err){
                     reject(err);
                 }

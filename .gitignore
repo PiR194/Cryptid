@@ -43,6 +43,9 @@ psd
 thumb
 sketch
 
+### modules ###
+yarn.lock
+package-lock.json
 
 # db
 

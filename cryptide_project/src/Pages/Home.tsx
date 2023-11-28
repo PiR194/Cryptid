@@ -7,28 +7,34 @@ import { useTheme } from '../Style/ThemeContext';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ButtonImgNav from '../Components/ButtonImgNav';
+import defaultImg from "../res/img/Person.png"
+import {loadImageAsync} from "../ImageHelper"
+
 
 // @ts-ignore
 function Home() {
     const theme=useTheme();
-    const {isLoggedIn, login} = useAuth();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
 
     useEffect(() => {
-        // Verifie la connexion
-        const verifSession = async () => {
-            try {
-                const sessionData = await SessionService.getSession();
-                if (sessionData.user) {
-                    login();
-                }
-            }
-            catch (error) {
-                console.log(error);
-            };
-        }
 
-        verifSession();
-    }, []);
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    if (loggedIn){
+                        login()
+                        setUserData(user)
+                    }
+                    else{
+                        loadImageAsync(defaultImg).then((blob) => {
+                            user.profilePicture=blob
+                            setUserData(user)
+                        })
+                    }
+                }
+            })
+        }
+    }, [isLoggedIn]);
 
     return (
         

@@ -11,22 +11,38 @@ import PersonImg from '../res/img/Person.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
+
+import { io } from 'socket.io-client';
+import { Link } from 'react-router-dom';
+
+/* Context */
+import { useGame } from '../Contexts/GameContext';
+import { useAuth } from '../Contexts/AuthContext';
 
 /* Model */
 import PersonNetwork from '../model/PersonsNetwork';
 import Person from '../model/Person';
 import GameCreator from '../model/GameCreator';
 import Indice from '../model/Indices/Indice';
+import JSONParser from '../JSONParser';
 import Player from '../model/Player';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
 import User from '../model/User';
+import {loadImageAsync} from "../ImageHelper"
+
+/* nav */
 
 /* Context */
 import { useGame } from '../Contexts/GameContext';
-import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+/* serv */
+import { socket } from "../SocketConfig";
 
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
@@ -35,6 +51,7 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from "../SocketConfig";
 import { random } from 'lodash';
 import SessionService from '../services/SessionService';
+import { random } from 'lodash';
 
 
 let gameStarted = false
@@ -42,11 +59,11 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-
+    
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
-    const {user, setUserData} = useAuth()
+    const {user, setUserData, manager, login} = useAuth()
     let first = true
 
     const params = new URLSearchParams(window.location.search);
@@ -56,50 +73,28 @@ function Lobby() {
         socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
     }
 
+    
+
     useEffect(() => {
         if (first){
             first=false
 
             if (user == null){
-                try {
-                    const sessionData = SessionService.getSession();
-                    sessionData.then((s) => {
-                        if (s.user) {
-                            // Il y a une session on récupère les infos du joueur
-                            const updatedPlayer: User = new User(socket.id, s.user.pseudo, s.user.profilePicture, {
-                                nbGames: s.user.soloStats.nbGames,
-                                bestScore: s.user.soloStats.bestScore,
-                                avgNbTry: s.user.soloStats.avgNbTry,
-                            },
-                            {
-                                nbGames: s.user.onlineStats.nbGames,
-                                nbWins: s.user.onlineStats.nbWins,
-                                ratio: s.user.onlineStats.ratio,
-                            })
-                            setUserData(updatedPlayer);
-                            socket.emit("lobby joined", room, updatedPlayer.toJson())
-                        } else {
-                            // Pas de session on génère un guest random
-                            const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
-                            {
-                                nbGames: 0,
-                                bestScore: 0,
-                                avgNbTry: 0,
-                            },
-                            {
-                                nbGames: 0,
-                                nbWins: 0,
-                                ratio: 0,
-                            })
-                            setUserData(guestPlayer);
-                            socket.emit("lobby joined", room, guestPlayer.toJson())
-
+                manager.userService.fetchUserInformation().then(([u, loggedIn]) => {
+                    if (u!=null){
+                        if (loggedIn){
+                            login()
+                            setUserData(u)
                         }
-                    })
-                }
-                catch (error) {
-                    console.error(error);
-                }
+                        else{
+                            loadImageAsync(defaultImg).then((blob) => {
+                                u.profilePicture=blob
+                                setUserData(u)
+                            })
+                        }
+                        socket.emit("lobby joined", room, u.toJson())
+                    }
+                })
             }
             else{
                 socket.emit("lobby joined", room, user.toJson())
@@ -138,7 +133,7 @@ function Lobby() {
         gameStarted = true
         socket.off("player left")
         socket.off("new player")
-        navigate('/game?solo=false');
+        navigate('/game?solo=false&daily=false');
     });
 
     socket.on("new player", (tab) =>{
@@ -146,6 +141,7 @@ function Lobby() {
         for (const p of tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
@@ -224,7 +220,7 @@ function Lobby() {
                 </ul>
                 {/* <center >
                     <button className='buttonNabImg' onClick={StartGame}>
-                        <img src={cible} alt="Button Image" height="50" width="50"/>
+                        <img src={cible} alt="Button Image" height="50" width="50" />
                         <p>{"la chasse !"}</p>
                     </button>
                 </center> */}

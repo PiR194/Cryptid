@@ -5,9 +5,13 @@ const bcrypt = require('bcrypt');
 const sqlite3 = require('sqlite3');
 
 class AuthController {
-  static async signUp(req, res) {
+    static async signUp(req, res) {
     const databaseService = new DatabaseService();
     const pseudo = req.body.pseudo;
+    const date = new Date();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+
     try {
         await databaseService.connect();
 
@@ -31,11 +35,9 @@ class AuthController {
         const soloStats = await databaseService.getSoloStatsByUserId(user.idUser);
         const onlineStats = await databaseService.getOnlineStatsByUserId(user.idUser);
 
-        console.log(soloStats);
-        console.log(onlineStats);
-
         await databaseService.updateUserIDStats(user.idUser, soloStats.idSoloStats, onlineStats.idOnlineStats);
-        // Envoyer une réponse réussie
+        
+        console.log("[" + hour + ":" + minutes + "] " + user.pseudo + " have been registered.");
         res.status(201).json({ message: 'Inscription réussie', user: insertedUser});
     } 
     catch (error) {
@@ -50,6 +52,9 @@ class AuthController {
 
   static async signIn(req, res) {
     const databaseService = new DatabaseService();
+    const date = new Date();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
 
     try{
         await databaseService.connect();
@@ -70,12 +75,11 @@ class AuthController {
             return;
         }
 
-        // Stocker l'utilisateur dans la session){
-        console.log("SESSION")
-        console.log(req.session);
+        // Stocker l'utilisateur dans la session)
         req.session.user = user;
 
         // Envoyer une réponse réussie
+        console.log("[" + hour + ":" + minutes + "] " + user.pseudo + " have been connected.");
         res.status(200).json({ message: 'Connexion réussie', user: user });
     }
     catch(error){
@@ -89,17 +93,45 @@ class AuthController {
   }
 
   static async logout(req, res) {
+    const pseudo = req.session.user.pseudo;
+    const date = new Date();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
     // Détruire la session pour déconnecter l'utilisateur
-    req.session.destroy((err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
-        } else {
-            res.status(200).json({ message: 'Déconnexion réussie' });
+        req.session.destroy((err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Erreur lors de la déconnexion.' });
+            } else {
+                console.log("[" + hour + ":" + minutes + "] " + pseudo + " have been disconnected.");
+                res.status(200).json({ message: 'Déconnexion réussie' });
+            }
+        });
+    }
+
+    static async delAccount(req, res){
+        const db = new DatabaseService();
+        try{
+            await db.connect();
+
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            
+            if(!user){
+                res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
+                return;
+            }
+            await db.deleteSoloStat(user.idUser);
+            await db.deleteOnlineStat(user.idUser);
+            await db.deleteUser(user.idUser);
         }
-    });
-  }
-  
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la supression du compte.' });
+        }
+        finally{
+            db.disconnect();
+        }
+    }
 }
 
 module.exports = AuthController;
