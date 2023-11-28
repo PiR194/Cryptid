@@ -7,6 +7,7 @@ import { delay, update } from 'lodash';
 import { socket } from '../SocketConfig';
 import AuthService from '../services/AuthService';
 
+
 /* Style */
 import './Profile.css'
 import Edit from "../res/icon/edit-pen.png"
@@ -45,7 +46,8 @@ const Profile = () => {
   const onUsernameChange = (newUsername) => {
     console.log("nouveau pseudo : " + newUsername)
     if(user?.pseudo != null){
-      user.pseudo = newUsername;
+      SessionService.UpdatePseudo(user.pseudo, newUsername)
+      //user.pseudo = newUsername;
     }
   }
 

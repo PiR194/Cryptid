@@ -11,5 +11,6 @@ router.delete('/auth/delAccount', AuthController.delAccount)
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
+router.put('/session/updatePseudo', SessionController.UpdatePseudo);
 
 module.exports = router;

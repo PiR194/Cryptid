@@ -172,6 +172,19 @@ class DatabaseService {
             });
         });
     }
+
+    async updatePseudo(userId, newPseudo){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE users SET pseudo = ? WHERE idUser = ?', newPseudo, userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
 }
 
 module.exports = DatabaseService;
