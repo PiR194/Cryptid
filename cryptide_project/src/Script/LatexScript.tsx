@@ -124,7 +124,7 @@ function generateLatexCodeEnigme(personsNet : PersonNetwork, choosenPerson : Per
     latexCode+= "\\begin{tikzpicture}[scale=.18]\n"
     
     
-    personsNet.getPersons().forEach((person, index) => {
+    personsNet.getPersons().sort().forEach((person, index) => {
 
         var nodesData = network.getPositions();
         // Obtenir les coordonnées du nœud

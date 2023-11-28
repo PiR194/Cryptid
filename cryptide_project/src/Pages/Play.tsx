@@ -119,14 +119,12 @@ function Play() {
         socket.emit("lobby created")
     }
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
 
     function launchMastermind(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
+        console.log(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
         navigate('/game?solo=true&daily=false');

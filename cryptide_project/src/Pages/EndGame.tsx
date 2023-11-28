@@ -68,8 +68,6 @@ function EndGame() {
     }
     const theme = useTheme();
 
-    console.log(winner)
-    console.log(indices)
     return (
         <div>
             {!IsSolo ? (
