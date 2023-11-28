@@ -25,9 +25,11 @@ interface MyGraphComponentProps {
   addToHistory: (message : string) => void
   solo : boolean
   isDaily : boolean
+  isEasy: boolean
   setNetwork: (network: Network) => void
   showLast: boolean
   setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
+  setPlayerIndex: (playerIndex: number) => void
 }
 
 let lastAskingPlayer = 0
@@ -44,10 +46,12 @@ let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let cptEndgame = 0
 let firstEnigme = true
+let firstIndex = true
 let endgame= false
+let firstHistory = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, addToHistory, showLast, setNetwork, setNetworkEnigme}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -117,6 +121,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }, [showLast])
 
   let playerIndex: number = turnPlayerIndex
+
+  if (firstIndex){
+    firstIndex=false
+    setPlayerIndex(playerIndex)
+  }
   let index = 0
   for (let i=0; i<players.length; i++){
     if(players[i].id == socket.id){
@@ -292,16 +301,26 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     if (isDaily){
       setNetworkEnigme(dailyEnigme)
-      dailyEnigme.forEach((pairs, index) => {
-        pairs.forEach((pair) => {
-          const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
-          const node = networkData.nodes.get().find((n) => index == n.id)
-          if (node != undefined){
-            networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
-            const test = networkData.nodes.get().find((n) => index == n.id)
-          }
-        })
-      });
+      if (!isEasy){
+        dailyEnigme.forEach((pairs, index) => {
+          pairs.forEach((pair) => {
+            const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+            const node = networkData.nodes.get().find((n) => index == n.id)
+            if (node != undefined){
+              networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
+            }
+          })
+        });
+      }
+      else{
+        if (firstHistory){
+          firstHistory=false
+          indices.forEach((indice, index) => {
+            addToHistory("Indice " + positionToEmoji(index, true) + " : " + indice.ToString("fr"))
+          })
+        }
+        
+      }
     }
 
     socket.on("reset graph", () => {
@@ -337,6 +356,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
+          setPlayerIndex(playerIndex)
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
             const p = personNetwork.getPersons().find((p)=> p.getId() == id)
             const tab = mapIndexPersons.get(askedIndex)
@@ -438,7 +458,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     else {
       if (firstLap){
         firstLap=false
-        addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+        if (!isDaily){
+          addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+        }
       }
     }
     
@@ -510,7 +532,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         askedWrong=false
         askedWrongBot=false
         endgame = true
-  
+        firstHistory=true
         try{
           if(isLoggedIn){
             if(!solo){

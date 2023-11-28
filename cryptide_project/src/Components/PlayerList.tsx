@@ -14,9 +14,10 @@ interface PlayerListProps {
     players: Player[];
     playerTouched: number
     setPlayerTouched: (newPlayerTouch: number) => void;
-  }
+    playerIndex: number
+}
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched}) => {
+const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex}) => {
     const theme = useTheme();
 
     return (
@@ -25,7 +26,18 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                 {
                     //@ts-ignore
                     players.map((player, index) => (
-                        player.id!=socket.id && <PersonStatus img={player.profilePicture} state={Person} key={index} name={player.pseudo + " " + colorToEmoji(positionToColor(index), true)} playerTouched={playerTouched} setPlayerTouched={setPlayerTouched} index={index} showCircle={true}/>
+                        //player.id!=socket.id && 
+                        <PersonStatus img={player.profilePicture} 
+                                                    state={Person} 
+                                                    key={index} 
+                                                    name={player.pseudo 
+                                                    + " " + 
+                                                    colorToEmoji(positionToColor(index), true)} 
+                                                    playerTouched={playerTouched} 
+                                                    setPlayerTouched={setPlayerTouched} 
+                                                    index={index} 
+                                                    showCircle={true}
+                                                    playerIndex={playerIndex}/>
                     ))
                 }
             </div>
