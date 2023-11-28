@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 /* Style */
 import './Lobby.css';
+import "../Style/Global.css"
 import { useTheme } from '../Style/ThemeContext';
 
 /* res */
@@ -21,6 +22,7 @@ import { Link } from 'react-router-dom';
 /* Context */
 import { useGame } from '../Contexts/GameContext';
 import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 /* Model */
 import PersonNetwork from '../model/PersonsNetwork';
@@ -34,13 +36,11 @@ import Bot from '../model/Bot';
 import User from '../model/User';
 import {loadImageAsync} from "../ImageHelper"
 
-/* nav */
-import { useNavigate } from 'react-router-dom';
 
 /* serv */
 import { socket } from "../SocketConfig";
-import SessionService from '../services/SessionService';
 import { random } from 'lodash';
+import SessionService from '../services/SessionService';
 
 
 let gameStarted = false
@@ -207,12 +207,22 @@ function Lobby() {
                         //? indice avancé ? ==> négation, voisin du 2e degré etc.
                     }
                 </ul>
-                <center >
+                {/* <center >
                     <button className='buttonNabImg' onClick={StartGame}>
                         <img src={cible} alt="Button Image" height="50" width="50" />
                         <p>{"la chasse !"}</p>
                     </button>
-                </center>
+                </center> */}
+
+                <div className='centerDivH'>
+                    <button className='button' onClick={StartGame}
+                        style={{ 
+                            backgroundColor: theme.colors.tertiary,
+                            borderColor: theme.colors.secondary
+                        }}>
+                        <img src={cible} alt="cible" height="40"/>
+                    </button>
+                </div>
             </div>
         </div>
     );
