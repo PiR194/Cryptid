@@ -85,9 +85,9 @@ function EndGame() {
                         <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
                     </div>
                     <div className='bottomEnd'>
-                        <div className='centerDivH' onClick={resetAll}>
+                        {/* <div className='centerDivH' onClick={resetAll}>
                             <BigButtonNav dest="/play" img={Leave}/>
-                        </div>
+                        </div> */}
                         <div className="losingPlayersContainer">
                             {losingPlayers.map((player, index) => (
                                 <div className="playerContainer" key={index}>
@@ -100,9 +100,13 @@ function EndGame() {
                                 </div>
                             ))}
                         </div>
-                        <div className='centerDivH'>
+                        {/* <div className='centerDivH'>
                             <BigButtonNav dest="/lobby" img={Replay}/>
-                        </div>
+                        </div> */}
+                    </div>
+
+                    <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
+                        <Button href='/'>Retour à l'accueil</Button>
                     </div>
                 </div>
             ): (
