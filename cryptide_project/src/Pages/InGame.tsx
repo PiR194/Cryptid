@@ -358,7 +358,7 @@ const InGame = ({locale, changeLocale}) => {
                   placement='end'
                   scroll={true}
                   backdrop={false}
-                  style={{ height: '20%', width: '25%', top: '60vh' }}>
+                  style={{ height: '20%', width: '25%', top: '0' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
