@@ -62,8 +62,6 @@ function EndGame() {
             indice = indices[index]
         }
         
-
-
         if (winner != null) {
             losingPlayers = players.filter(player => player.id !== winner.id);
         } else {
@@ -76,7 +74,7 @@ function EndGame() {
     const theme = useTheme();
 
     console.log(winner)
-    
+    console.log(indices)
     return (
         <div>
             {!IsSolo ? (
@@ -91,7 +89,7 @@ function EndGame() {
                         <img src={Person} width='250' height='250'/>
                         <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
                     </div>
-                    <div className='bottom'>
+                    <div className='bottomEnd'>
                         <div className='centerDivH' onClick={resetAll}>
                             <BigButtonNav dest="/play" img={Leave}/>
                         </div>
@@ -125,7 +123,7 @@ function EndGame() {
                     <h1>{winner?.pseudo}</h1>
                 </div>
 
-                <div className='bottom'>
+                <div className='bottomEnd'>
                     <div className='centerDivH' onClick={resetAll}>
                         <BigButtonNav dest="/play" img={Leave}/>
                     </div>

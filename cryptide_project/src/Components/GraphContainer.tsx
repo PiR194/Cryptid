@@ -418,7 +418,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     socket.emit("node checked", nodeId, false, actualPlayerIndex, room, index)
                     socket.emit("asked wrong", askingPlayer, room)
                   }
-    
                 }
               }
             }     
