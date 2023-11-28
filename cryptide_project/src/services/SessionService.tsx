@@ -23,7 +23,6 @@ class SessionService {
     }
 
     static async updateSoloStats(pseudo: string, nbGames: number, bestScore: number, avgNbTry: number){
-        console.log("updateSoloStats : ", pseudo, nbGames, bestScore, avgNbTry);
         try {
             const response = await fetch('http://localhost:3003/session/updateSoloStats', {
                 method: 'PUT',

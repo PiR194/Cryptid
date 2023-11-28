@@ -3,6 +3,9 @@ const DatabaseService = require('../services/DatabaseService');
 class SessionController {
     static async getUserInformation(req, res) {
         const db = new DatabaseService();
+        const date = new Date();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
 
         try{
             await db.connect();
@@ -15,8 +18,7 @@ class SessionController {
             req.session.user.soloStats = await db.getSoloStatsByUserId(req.session.user.idUser);
             req.session.user.onlineStats = await db.getOnlineStatsByUserId(req.session.user.idUser);
 
-            console.log(req.session.user);
-
+            console.log("[" + hour + ":" + minutes + "] " + req.session.user.pseudo + " have a session.");
             res.status(200).json({ user: req.session.user });
         }
         catch(error){
@@ -30,6 +32,10 @@ class SessionController {
 
     static async updateSoloStats(req, res) {
         const db = new DatabaseService();
+        const date = new Date();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+
         try{
             await db.connect();
 
@@ -53,6 +59,7 @@ class SessionController {
 
             req.session.user.soloStats = newSoloStats;
 
+            console.log("[" + hour + ":" + minutes + "] " + req.session.user.pseudo + "'s solot_stats are updated.");
             res.status(200).json({ user: req.session.user });
         }
         catch(error){
@@ -66,8 +73,9 @@ class SessionController {
 
     static async updateOnlineStats(req, res) {
         const db = new DatabaseService();
-
-        console.log(req.body);
+        const date = new Date();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
 
         try{
             await db.connect();
@@ -90,9 +98,9 @@ class SessionController {
 
             const newOnlineStats = await db.getOnlineStatsByUserId(user.idUser);
 
-            console.log(req.session.user);
             req.session.user.onlineStats = newOnlineStats;
 
+            console.log("[" + hour + ":" + minutes + "] " + req.session.user.pseudo + "'s online_stats are updated.");
             res.status(200).json({ user: req.session.user });
         }
         catch(error){
