@@ -70,7 +70,7 @@ function AppNavbar({changeLocale}) {
                                 drop='down-centered'
                             >
                             <NavDropdown.Item onClick={navigateToProfile}>Profil</NavDropdown.Item>
-                            <LanguageNavItem
+                            {/* <LanguageNavItem
                                 countryCode="FR"
                                 languageKey="languageSelector.french"
                                 onClick={() => changeLocale('fr')}
@@ -79,7 +79,7 @@ function AppNavbar({changeLocale}) {
                                 countryCode="GB"
                                 languageKey="languageSelector.english"
                                 onClick={() => changeLocale('en')}
-                            />
+                            /> */}
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={logout}>Déconnexion</NavDropdown.Item>
                             </NavDropdown>
@@ -93,7 +93,7 @@ function AppNavbar({changeLocale}) {
                                 <BsFillPersonPlusFill />
                                 <FormattedMessage id="sign_up" />
                             </Nav.Link>
-                            <LangDropDown changeLocale={changeLocale}/>
+                            {/* <LangDropDown changeLocale={changeLocale}/> */}
                             </>
                         )}
                         </Nav>
