@@ -46,9 +46,6 @@ import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
-import { last } from 'lodash';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
 import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
@@ -290,7 +287,7 @@ const InGame = ({locale, changeLocale}) => {
           </div>
         }   
 
-        <div className='paramDiv'>
+        {/* <div className='paramDiv'>
           <button className='button'
             style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -299,7 +296,7 @@ const InGame = ({locale, changeLocale}) => {
             onClick={handleChangeS}>
             <img src={Param} alt="paramètres" height='40'/>
           </button>
-        </div>
+        </div> */}
 
 
 
@@ -407,7 +404,7 @@ const InGame = ({locale, changeLocale}) => {
                   placement='end'
                   scroll={true}
                   backdrop={false}
-                  style={{ height: '20%', width: '25%', top: '60vh' }}>
+                  style={{ height: '20%', width: '25%', top: '0' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
@@ -453,6 +450,12 @@ const InGame = ({locale, changeLocale}) => {
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
         </div>
       */}
+        <div id="bottom-container">
+          {/* Ajout du bouton en bas à droite */}
+          <div className='bottomRightButton'>
+            <Button href='/'>Retour à l'accueil</Button>
+          </div>
+        </div>
       </div>
     );
   };

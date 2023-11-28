@@ -33,7 +33,7 @@ const SignUp = () => {
                 setShowConfirmation(true);
                 setTimeout(() => {
                     navigate('/login');         // 3 secondes avant de rediriger vers la page de connexion
-                }, 3000);
+                }, 1250);
             }
         } catch (error: any) {
             setError(error.message);
@@ -100,8 +100,8 @@ const SignUp = () => {
             )}
 
             {showConfirmation && (
-                <div className="alert alert-success" role="alert">
-                    Inscription réussie ! Vous serez redirigé vers la page de connexion dans 3 secondes.
+                <div className="alert alert-success text-center" role="alert">
+                    Inscription réussie ! Vous serez redirigé vers la page de connexion.
                 </div>
             )}
         </div>

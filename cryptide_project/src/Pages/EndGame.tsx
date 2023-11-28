@@ -15,14 +15,9 @@ import Replay from '../res/icon/replay.png';
 import PersonStatus from '../Components/PersonStatus';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import BigButtonNav from '../Components/BigButtonNav';
+import { Button } from 'react-bootstrap';
 
-/* nav */
-import { Link } from 'react-router-dom';
-
-/* lang */
-import { FormattedMessage } from 'react-intl';
 import { useGame } from '../Contexts/GameContext';
-import { map } from 'lodash';
 import Player from '../model/Player';
 
 
@@ -124,9 +119,6 @@ function EndGame() {
                 </div>
 
                 <div className='bottomEnd'>
-                    <div className='centerDivH' onClick={resetAll}>
-                        <BigButtonNav dest="/play" img={Leave}/>
-                    </div>
                     <div className="SoloContainer">
                         <div className='solostat'>
                             {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
@@ -143,9 +135,13 @@ function EndGame() {
                             }
                         </div>
                     </div>
-                    <div className='centerDivH'>
+                    {/* <div className='centerDivH'>
                         <BigButtonNav dest="/lobby" img={Replay}/>
-                    </div>
+                    </div> */}
+                </div>
+                
+                <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
+                    <Button href='/'>Retour à l'accueil</Button>
                 </div>
             </div>
             )}

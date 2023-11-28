@@ -36,8 +36,8 @@ const SignIn = () => {
                 setShowConfirmation(true);
                 setTimeout(async () => {
                     await login();
-                    navigate('/play');         // 3 secondes avant de rediriger vers la page de connexion
-                }, 3000);
+                    navigate('/');         // 3 secondes avant de rediriger vers la page de connexion
+                }, 1250);
             }
         } catch (error: any) {
             setError(error.message);
@@ -103,8 +103,8 @@ const SignIn = () => {
             )}
 
             {showConfirmation && (
-                <div className="alert alert-success" role="alert">
-                    Connexion réussie ! Vous serez redirigé vers votre profil dans 3 secondes.
+                <div className="alert alert-success text-center" role="alert">
+                    Connexion réussie ! Vous allez être redirigé vers la page principale.
                 </div>
             )}
         </div>
