@@ -77,7 +77,7 @@ function EndGame() {
                     <div className="head">
                         <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                             <h1>{winner?.pseudo} a gagné !</h1>
-                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                            <h3>Le coupable était <u>{person?.getName()}</u></h3>
                         </header>
                     </div>
                     <div className='winner'>
@@ -110,7 +110,7 @@ function EndGame() {
                 <div className="head">
                             <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                                 <h1>Vous avez gagné !</h1>
-                                <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                                <h3>Le coupable était <u>{person?.getName()}</u></h3>
                             </header>
                 </div>
                 <div className='winner'>
