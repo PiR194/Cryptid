@@ -43,6 +43,11 @@ import { random } from 'lodash';
 import SessionService from '../services/SessionService';
 
 
+import { useRef } from 'react';
+import Button from 'react-bootstrap/Button';
+import Overlay from 'react-bootstrap/Overlay';
+
+
 let gameStarted = false
 
 function Lobby() {
@@ -159,6 +164,24 @@ function Lobby() {
         socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 
+
+
+    const copyGameLink = () => {
+        setShow(!show)
+        
+        const gameLink = "http://localhost:3000/lobby?room="+ room;
+        navigator.clipboard.writeText(gameLink)
+            .then(() => {
+                console.log('Lien copié avec succès !');
+            })
+            .catch((err) => {
+                console.error('Erreur lors de la copie du lien :', err);
+            });
+    };
+
+    const [show, setShow] = useState(false);
+        const target = useRef(null);
+
     return (
         <div className='lobby-container'>
             <div className='left-part'>
@@ -191,22 +214,22 @@ function Lobby() {
             <div className="lobby-vertical-divider" style={{backgroundColor: theme.colors.secondary}}></div>
 
             <div className='right-part'>
-                <div className='title-param-div'>
+                {/* <div className='title-param-div'>
                     <img src={param} alt="param"/>
                     <h2>Paramètre de la partie</h2>
                 </div>
-                <ul>
-                    <li><h4> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim</h4></li>
+                <ul> */}
+                    {/* <li><h4> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim</h4></li>
                     <li><h4>paramètre super important pour la partie</h4></li>
                     <li><h4>paramètre super important pour la partie</h4></li>
                     <li><h4>paramètre super important pour la partie</h4></li>
-                    <li><h4>Niveau des bots : Facile </h4></li> {/* mettre un dropdown ou un swiper */}
-                    <li><h4>Thèmes : basique </h4></li> {/* mettre un dropdown*/}
+                    <li><h4>Niveau des bots : Facile </h4></li>
+                    <li><h4>Thèmes : basique </h4></li> */}
                     {
                         //? mettre un timer pour chaques personne ?
                         //? indice avancé ? ==> négation, voisin du 2e degré etc.
                     }
-                </ul>
+                {/* </ul> */}
                 {/* <center >
                     <button className='buttonNabImg' onClick={StartGame}>
                         <img src={cible} alt="Button Image" height="50" width="50" />
@@ -214,13 +237,48 @@ function Lobby() {
                     </button>
                 </center> */}
 
-                <div className='centerDivH'>
+                <div className='lobbyR' 
+                style={{flexDirection:'column',
+                        alignItems:'space-around'}}>
+                    <h3>Bienvenue dans votre lobby !</h3>
+                    <p>Attendez que tous vos amis se joignent avant de lancer la partie.</p>
+                    {/* Bouton pour copier le lien */}
+                    <Button variant="primary" ref={target} onClick={copyGameLink}>
+                        Inviter des amis
+                    </Button>
+                    <Overlay target={target.current} show={show} placement="top">
+                        {({
+                        placement: _placement,
+                        arrowProps: _arrowProps,
+                        show: _show,
+                        popper: _popper,
+                        hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                        ...props
+                        }) => (
+                        <div
+                            {...props}
+                            style={{
+                            position: 'absolute',
+                            backgroundColor: theme.colors.secondary,
+                            padding: '2px 10px',
+                            color: 'white',
+                            borderRadius: 3,
+                            ...props.style,
+                            }}
+                        >
+                            Lien copié
+                        </div>
+                        )}
+                    </Overlay>
+
                     <button className='button' onClick={StartGame}
                         style={{ 
                             backgroundColor: theme.colors.tertiary,
-                            borderColor: theme.colors.secondary
+                            borderColor: theme.colors.secondary,
+                            width: 'auto',
+                            height: 'auto'
                         }}>
-                        <img src={cible} alt="cible" height="40"/>
+                        Démarrer la partie !
                     </button>
                 </div>
             </div>

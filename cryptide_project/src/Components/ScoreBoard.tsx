@@ -32,11 +32,19 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
         // <div className='LeaderBoardiv'>
         <div className='LeaderBoardiv'>
             <Tabs style={{width:"100%"}}
-                defaultActiveKey="daily"
+                defaultActiveKey="perso"
                 id="ScoreBoard"
                 className="mb-3">
-                <Tab eventKey="perso" title="Vos Stats" disabled = { !Player.pseudo.startsWith("Guest_") ? false : true}>
-                <Container fluid>
+                <Tab eventKey="perso" title="Vos Stats">
+                
+                { Player.pseudo.startsWith("Guest_") ? (
+                    <div className='guestDisplay'>
+                        <h4> 
+                            <i>Veuillez vous connecter pour bénéficier des statistiques personnalisées.</i>
+                        </h4>
+                    </div>
+                ) : (
+                    <Container fluid>
                         <Row>Stats en solo :</Row>
                         <Row>
                             <Col sm={10}>Partie Jouées :</Col>
@@ -65,8 +73,9 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <Col className='leftRow'>{Player !== null ? Player.onlineStats.ratio : "0"}</Col>
                         </Row>
                     </Container>
+                )}
                 </Tab>
-                <Tab eventKey="daily" title="Daily"
+                {/* <Tab eventKey="daily" title="Daily"
                     style={{display:"flex", flexDirection:'column', alignItems:'center'}}>
                     <img src={trophy}
                             height='100'
@@ -101,10 +110,10 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                 height='100'
                                 width='100'
                                 alt="Person2"/>
-                </Tab>
+                </Tab> */}
             </Tabs>
             
-                <ButtonImgNav dest='/' img={share}/>
+                {/* <ButtonImgNav dest='/' img={share}/> */}
                 </div>
         //</div>
     );
