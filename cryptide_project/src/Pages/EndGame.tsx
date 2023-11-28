@@ -93,7 +93,7 @@ function EndGame() {
                                 <div className="playerContainer" key={index}>
                                     {player.id !== winner?.id && (
                                         <div>
-                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} showCircle={false}/>
+                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false}/>
                                             <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
                                         </div>
                                     )}

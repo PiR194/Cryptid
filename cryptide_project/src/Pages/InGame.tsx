@@ -25,6 +25,12 @@ import Download from "../res/icon/download.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
+import JSZip from 'jszip';
+import ballonDeBasket from '../Script/ballon-de-basket.png';
+import ballonDeFoot from '../Script/ballon-de-foot.png';
+import baseball from '../Script/baseball.png';
+import bowling from '../Script/bowling.png';
+import tennis from '../Script/tennis.png';
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -42,7 +48,9 @@ import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
-import generateLatexCode from '../Script/LatexScript';
+import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
+import Pair from '../model/Pair';
+import Indice from '../model/Indices/Indice';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -66,6 +74,11 @@ const InGame = ({locale, changeLocale}) => {
     isDaily=false
   }
 
+  let isEasy: boolean = true
+  const isEasytmp = params.get('easy');
+  if (isEasytmp == "false"){
+    isEasy=false
+  }
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -94,11 +107,18 @@ const InGame = ({locale, changeLocale}) => {
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+  const [playerIndex, setPlayerIndex] = useState(-2)
+
 
   const [network, setNetwork] = useState<Network | null>(null)
+  const [networkEnigme, setNetworkEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
 
   const setNetworkData = (network: Network) => {
     setNetwork(network)
+  }
+
+  const setNetworkEnigmeData = (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => {
+    setNetworkEnigme(networkEnigme)
   }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -118,15 +138,45 @@ const InGame = ({locale, changeLocale}) => {
     setTurnBarText(newTurnBarText)
   }
 
-  const generateTEX = () => {
-    if (network != null && personNetwork != null && person != null){
-      const tex = generateLatexCode(personNetwork, person, indices, network)
-      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+  const setPlayerIndexData = (playerIndex: number) => {
+    setPlayerIndex(playerIndex)
+  }
 
-      // Utiliser FileSaver pour télécharger le fichier
-      saveAs(blob, 'socialGraph.tex');
+  const generateTEX = async () => {
+    if (network != null && personNetwork != null && person != null){
+
+      const zip = new JSZip();
+      
+      if (isDaily && !isEasy && networkEnigme != null){
+        const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+      else{
+        const tex = generateLatexCode(personNetwork, person, indices, network)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+
+      zip.file('ballon-de-basket.png', await fetchImage(ballonDeBasket));
+      zip.file('ballon-de-foot.png', await fetchImage(ballonDeFoot));
+      zip.file('baseball.png', await fetchImage(baseball));
+      zip.file('bowling.png', await fetchImage(bowling));
+      zip.file('tennis.png', await fetchImage(tennis));
+
+      const content = await zip.generateAsync({ type: 'blob' });
+
+      // Enregistre l'archive en tant que fichier
+      saveAs(content, 'social_graph.zip');
+
     }
   }
+
+  const fetchImage = async (imageUrl: string) => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return blob;
+  };
 
   const resetGraph = () => {
     setisLoading(true);
@@ -217,10 +267,13 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           isDaily={isDaily} 
+                          isEasy={isEasy}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
-                          showLast={showLast}/>
+                          setNetworkEnigme={setNetworkEnigmeData}
+                          showLast={showLast}
+                          setPlayerIndex={setPlayerIndexData}/>
         </div>
 
 
@@ -233,7 +286,7 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        {!isDaily &&
+        {(!isDaily || (isDaily && isEasy)) &&
           <div className='historique' id="history-container">
               {history.map((item, index) => (
                   <div key={index}>{item}</div>
@@ -349,7 +402,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
             </div>
           }
 
