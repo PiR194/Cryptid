@@ -13,9 +13,10 @@ import Play from './Pages/Play';
 import Profile from './Pages/Profile';
 import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
-
 import EndGame from './Pages/EndGame';
 import InfoPage from './Pages/InfoPage';
+import SoloGame from './Pages/SoloGame';
+import Lobbies from './Pages/Lobbies';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
@@ -38,7 +39,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
-import SoloGame from './Pages/SoloGame';
 
 const messages = {
   fr: messagesFr,
@@ -86,6 +86,7 @@ function App() {
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                 <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
                 <Route path="/profile" element={<Profile/>} />
+                <Route path="/join" element={<Lobbies/>}/>
                 {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
               </Routes>
             </BrowserRouter>

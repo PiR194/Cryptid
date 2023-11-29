@@ -1,0 +1,35 @@
+.lobbyMainContainer{
+    display: flex;
+    flex-direction: column;
+    
+    background-color: white;
+    
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px rgb(246, 246, 246);    
+
+    width: 300px;
+    /* max-width: 300px; */
+    /* max-width: 20%; */
+    max-height: 200px;
+
+    padding: 20px;
+    margin: 20px;
+}
+
+.lobbyList{
+    display: flex;
+    /* justify-content: space-around; */
+    /* columns: 4; */
+    flex-wrap: wrap;
+
+    justify-content: center;
+}
+
+.searchLobby{
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    padding: 15px;
+
+    width: 50%;
+}
