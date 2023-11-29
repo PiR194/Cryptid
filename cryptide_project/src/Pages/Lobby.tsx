@@ -179,6 +179,18 @@ function Lobby() {
             });
     };
 
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const linkToCopy = "http://localhost:3000/lobby?room="+ room
+    const handleCopyClick = () => {
+        setShow(!show)
+        if(textAreaRef.current != null){
+            textAreaRef.current.select();
+            document.execCommand('copy');
+        }
+    };
+
+
+
     const [show, setShow] = useState(false);
         const target = useRef(null);
 
@@ -238,34 +250,44 @@ function Lobby() {
                 </center> */}
 
                 <div className='lobbyR' 
-                style={{flexDirection:'column',
-                        alignItems:'space-around'}}>
-                    <h3>Bienvenue dans votre lobby !</h3>
-                    <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
-                    {/* Bouton pour copier le lien */}
-                    <Button variant="primary" ref={target} onClick={copyGameLink}>
-                        Inviter des amis
-                    </Button>
-                    <Overlay target={target.current} show={show} placement="top">
-                        {({
-                        placement: _placement,
-                        arrowProps: _arrowProps,
-                        show: _show,
-                        popper: _popper,
-                        hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                        ...props
-                        }) => (
-                        <div
-                            {...props}
-                            style={{
-                            position: 'absolute',
-                            backgroundColor: theme.colors.secondary,
-                            padding: '2px 10px',
-                            color: 'white',
-                            borderRadius: 3,
-                            ...props.style,
-                            }}
-                        >
+                    style={{flexDirection:'column',
+                            alignItems:'space-around'}}>
+                        <h3>Bienvenue dans votre lobby !</h3>
+                        <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
+                        {/* Bouton pour copier le lien */}
+                        {/* <Button variant="primary" ref={target} onClick={copyGameLink}>
+                            Inviter des amis
+                        </Button> */}
+                        <div>
+                            <textarea
+                                ref={textAreaRef}
+                                readOnly
+                                value={linkToCopy}
+                                style={{ position: 'absolute', left: '-9999px' }}
+                            />
+                            <Button onClick={handleCopyClick}>Inviter des amis</Button>
+                        </div>
+
+                        <Overlay target={target.current} show={show} placement="top">
+                            {({
+                            placement: _placement,
+                            arrowProps: _arrowProps,
+                            show: _show,
+                            popper: _popper,
+                            hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                            ...props
+                            }) => (
+                            <div
+                                {...props}
+                                style={{
+                                position: 'absolute',
+                                backgroundColor: theme.colors.secondary,
+                                padding: '2px 10px',
+                                color: 'white',
+                                borderRadius: 3,
+                                ...props.style,
+                                }}
+                            >
                             Lien copié
                         </div>
                         )}
