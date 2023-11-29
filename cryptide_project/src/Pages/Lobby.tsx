@@ -53,12 +53,6 @@ function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
 
-    //@ts-ignore
-    const handleNumberChange = (event) => {
-        const newNumber = Math.max(20, Math.min(60, parseInt(event.target.value, 10)));
-        setEnteredNumber(newNumber);
-    };
-
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
     const {user, setUserData, manager, login} = useAuth()
