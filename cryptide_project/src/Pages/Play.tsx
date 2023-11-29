@@ -27,10 +27,7 @@ import Stub from '../model/Stub';
 
 import SessionService from '../services/SessionService';
 import { loadImageAsync } from '../ImageHelper';
-
-
 import { Overlay, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
-
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
@@ -43,7 +40,6 @@ function Play() {
     const {setDailyEnigmeData} = useGame()
 
     const target = useRef(null);
-
 
     useEffect(() => {
         const fetchUserInformation = async () => {
