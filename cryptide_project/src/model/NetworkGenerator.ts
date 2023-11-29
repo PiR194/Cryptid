@@ -17,7 +17,7 @@ class NetworkGenerator{
 
         const tabPerson: Person[] = []
 
-        const tabNames = json.names
+        const tabNames = [...json.names]
 
         /*
         let id = 0
