@@ -72,6 +72,7 @@ const InGame = ({locale, changeLocale}) => {
     isDaily=false
   }
 
+
   let isEasy: boolean = true
   const isEasytmp = params.get('easy');
   if (isEasytmp == "false"){
