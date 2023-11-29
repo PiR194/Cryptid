@@ -244,35 +244,35 @@ function Lobby() {
                         <p>{"la chasse !"}</p>
                     </button>
                 </center> */}
-<div className='lobbyR' 
-                style={{flexDirection:'column',
-                        alignItems:'space-around'}}>
-                    <h3>Bienvenue dans votre lobby !</h3>
-                    <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
-                    {/* Bouton pour copier le lien */}
-                    <Button variant="primary" ref={target} onClick={copyGameLink}>
-                        Inviter des amis
-                    </Button>
-                    <Overlay target={target.current} show={show} placement="top">
-                        {({
-                        placement: _placement,
-                        arrowProps: _arrowProps,
-                        show: _show,
-                        popper: _popper,
-                        hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                        ...props
-                        }) => (
-                        <div
-                            {...props}
-                            style={{
-                            position: 'absolute',
-                            backgroundColor: theme.colors.secondary,
-                            padding: '2px 10px',
-                            color: 'white',
-                            borderRadius: 3,
-                            ...props.style,
-                            }}
-                        >
+                <div className='lobbyR' 
+                    style={{flexDirection:'column',
+                            alignItems:'space-around'}}>
+                        <h3>Bienvenue dans votre lobby !</h3>
+                        <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
+                        {/* Bouton pour copier le lien */}
+                        <Button variant="primary" ref={target} onClick={copyGameLink}>
+                            Inviter des amis
+                        </Button>
+                        <Overlay target={target.current} show={show} placement="top">
+                            {({
+                            placement: _placement,
+                            arrowProps: _arrowProps,
+                            show: _show,
+                            popper: _popper,
+                            hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                            ...props
+                            }) => (
+                            <div
+                                {...props}
+                                style={{
+                                position: 'absolute',
+                                backgroundColor: theme.colors.secondary,
+                                padding: '2px 10px',
+                                color: 'white',
+                                borderRadius: 3,
+                                ...props.style,
+                                }}
+                            >
                             Lien copié
                         </div>
                         )}
