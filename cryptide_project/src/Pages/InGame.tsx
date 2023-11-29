@@ -284,7 +284,7 @@ const InGame = ({locale, changeLocale}) => {
         </div>
 
 
-        {IsSolo && !isDaily &&
+        {IsSolo &&
             <div className='nbLaps' style={{ 
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
