@@ -114,6 +114,10 @@ io.on('connection', (socket) => {
     io.to(id).emit("put imossible grey")
   })
 
+  socket.on("can't put square", (askingPlayer, room) => {
+    io.to(room).emit("can't put square" , askingPlayer)
+  })
+
   socket.on("opacity activated", (id) => {
     io.to(id).emit("opacity activated")
   })
