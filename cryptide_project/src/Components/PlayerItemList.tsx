@@ -31,7 +31,7 @@ const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
     // const isBot = pdp === Bot;
     let pdp;
     const isBot = player instanceof Bot;
-    isBot ? pdp = BotPDP :  pdp = player.profilePicture;
+    isBot ? pdp = BotPDP :  pdp = PersonPDP;
     
 
     const delBot = () => {
