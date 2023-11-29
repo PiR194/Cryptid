@@ -72,6 +72,12 @@ const InGame = ({locale, changeLocale}) => {
     isDaily=false
   }
 
+  let isEasy: boolean = true
+  const isEasytmp = params.get('easy');
+  if (isEasytmp == "false"){
+    isEasy=false
+  }
+
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -258,6 +264,7 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           isDaily={isDaily} 
+                          isEasy={isEasy}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
@@ -275,7 +282,7 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        {!isDaily &&
+        {(!isDaily || (isDaily && isEasy)) &&
           <div className='historique' id="history-container">
               {history.map((item, index) => (
                   <div key={index}>{item}</div>

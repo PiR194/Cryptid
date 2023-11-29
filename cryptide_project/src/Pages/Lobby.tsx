@@ -273,18 +273,23 @@ function Lobby() {
                         )}
                     </Overlay>
 
-                <div>
-                    <label htmlFor="numberInput">Séléctionner le nombre de noeud (entre 20 et 60) :</label>
-                    <input
-                        type="number"
-                        id="numberInput"
-                        value={enteredNumber}
-                        onChange={handleNumberChange}
-                        min={20}
-                        max={60}/>
-                    <p>La valeur saisie : {enteredNumber}</p>
+                <div className='nbNodeDiv'>
+                    <label htmlFor="numberInput">Sélectionner le nombre de noeud (entre 20 et 60) :</label>
+                    <div>
+                        <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
+                            style={{borderColor:theme.colors.secondary}}> - </button>
+                        <input
+                            // type="number"
+                            id="numberInput"
+                            disabled
+                            value={ "Nombre de noeuds : " + enteredNumber}
+                            onChange={handleNumberChange}
+                            min={20}
+                            max={60}/>
+                        <button className='valuebutton' onClick={() => { if (enteredNumber<60) setEnteredNumber(enteredNumber+1)}}
+                            style={{borderColor:theme.colors.secondary}}> + </button>
+                    </div>
                 </div>
-
 
 
                     <button className='button' onClick={StartGame}
