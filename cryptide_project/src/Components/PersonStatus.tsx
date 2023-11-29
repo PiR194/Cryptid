@@ -18,11 +18,12 @@ interface PlayerStatusProps {
     playerTouched: number
     showCircle: boolean
     playerIndex: number
+    askedWrong: boolean
   }
   let touchedPlayer = -1
 
 //@ts-ignore
-const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person, name = "Dummy", index, playerTouched, setPlayerTouched, showCircle, playerIndex}) => {
+const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person, name = "Dummy", index, playerTouched, setPlayerTouched, showCircle, playerIndex, askedWrong}) => {
     const theme=useTheme();
     const {players, actualPlayerIndex} = useGame()
     if (players[index] instanceof Bot){
@@ -48,7 +49,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
     }, [playerIndex])
     
     function onTouch(){
-        if (IsActualPlayer){
+        if (IsActualPlayer && !askedWrong){
             setPlayerTouched(index)
         }
     }

@@ -82,6 +82,7 @@ const InGame = ({locale, changeLocale}) => {
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
+  const [askedWrong, setAskedWrong] = useState(false)
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
@@ -91,6 +92,10 @@ const InGame = ({locale, changeLocale}) => {
   const setShowLastData = () =>{
     setLastVisible(!showLast);
     setShowLast(!showLast);
+  }
+
+  const setAskedWrongData = (askedWrong: boolean) => {
+    setAskedWrong(askedWrong)
   }
 
   useEffect(() => {
@@ -273,7 +278,9 @@ const InGame = ({locale, changeLocale}) => {
                           setNetwork={setNetworkData}
                           setNetworkEnigme={setNetworkEnigmeData}
                           showLast={showLast}
-                          setPlayerIndex={setPlayerIndexData}/>
+                          setPlayerIndex={setPlayerIndexData}
+                          askedWrong={askedWrong}
+                          setAskedWrong={setAskedWrongData}/>
         </div>
 
 
@@ -402,7 +409,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
             </div>
           }
 
