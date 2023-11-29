@@ -14,6 +14,7 @@ import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 import Indice from "../model/Indices/Indice";
 import Pair from "../model/Pair";
+import { tab } from "@testing-library/user-event/dist/tab";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -51,6 +52,8 @@ let firstEnigme = true
 let firstIndex = true
 let endgame= false
 let firstHistory = true
+let cptSquare = 0
+let cptOnAskedWrong = 0
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setPlayerIndex, setNetworkEnigme, askedWrong, setAskedWrong}) => {
@@ -402,12 +405,59 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
   
       socket.on("asked wrong", () =>{
-        askedWrongLocal= true
-        setAskedWrong(true)
-        askedWrongBot=true
-        handleShowTurnBar(true)
-        handleTurnBarTextChange("Mauvais choix, posez un carré !")
-        socket.emit("put grey background", socket.id, actualPlayerIndex)
+        cptSquare++
+        if (cptSquare % 2 == 0){
+          if (indice==null){
+            return
+          }
+          const tester = IndiceTesterFactory.Create(indice)
+          const tabPossible: Person[] = []
+          for(const person of personNetwork.getPersons()){
+            const node = nodes.get().find((n) => n.id == person.getId())
+            if (node != undefined) {
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (!tester.Works(person) && !isSquare){
+                tabPossible.push(person)
+              }
+            }
+          }
+          if (tabPossible.length>0){
+            askedWrongLocal= true
+            setAskedWrong(true)
+            askedWrongBot=true
+            handleShowTurnBar(true)
+            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            socket.emit("put grey background", socket.id, actualPlayerIndex)
+          }
+          else{
+            socket.emit("can't put square", actualPlayerIndex, room)
+          }
+        }
+      })
+
+      socket.on("can't put square", (askingPlayer) => {
+        cptOnAskedWrong ++
+        if (cptOnAskedWrong % 2 == 0){
+          addToHistory(players[askingPlayer].pseudo + " ne peut plus poser de carré")
+          playerIndex = askingPlayer + 1
+          if(playerIndex == players.length){
+            playerIndex = 0
+          }
+          setPlayerIndex(playerIndex)
+          if (playerIndex === actualPlayerIndex){
+            handleTurnBarTextChange("À vous de jouer")
+            handleShowTurnBar(true)
+          }
+          else{
+            handleShowTurnBar(false)
+            socket.emit("put correct background", socket.id)
+          }
+        }
       })
   
   
@@ -481,14 +531,26 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         const tab = mapIndexPersons.get(player)
         if (tab != undefined){
           if (player != actualPlayerIndex){
+            console.log("player != actualPlayerIndex")
             for(const person of personNetwork.getPersons().filter((p) => tab.includes(p))){
               networkData.nodes.update({id: person.getId(), color: "#808080"})
             }
           }
           else if(indice != null){
+            //Pour poser un carré
             const tester = IndiceTesterFactory.Create(indice)
-            for(const person of personNetwork.getPersons().filter((p) => tab.includes(p) || tester.Works(p))){
-              networkData.nodes.update({id: person.getId(), color: "#808080"})
+            for(const person of personNetwork.getPersons()){
+              const node = nodes.get().find((n) => n.id == person.getId())
+              if (node == undefined) continue
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (tab.includes(person) || tester.Works(person) || isSquare){
+                networkData.nodes.update({id: person.getId(), color: "#808080"})
+              }
             }
           }
         }
@@ -497,6 +559,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     socket.on("put imossible grey", ()=>{
       if (personNetwork != null && indice!=null){
+        console.log("impossible grey")
         const tabNodes: any = []
         const tester = IndiceTesterFactory.Create(indice)
         for (const pers of personNetwork.getPersons()){
@@ -592,7 +655,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          //console.log(p)
+          console.log(p)
         }
         
       });
@@ -616,9 +679,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (!solo){
           if (askedWrongLocal){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
-            if (person !== undefined && indice !== null){
+            const node = nodes.get().find((n) => n.id == params.nodes[0])
+            if (person !== undefined && indice !== null && node!=undefined){
               const tester = IndiceTesterFactory.Create(indice)
-              if (!tester.Works(person) && !askedPersons.includes(person)){
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (!tester.Works(person) && !askedPersons.includes(person) && !isSquare){
                 playerIndex = actualPlayerIndex + 1
                 if(playerIndex == players.length){
                   playerIndex = 0
@@ -655,7 +725,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
             }
             else{
-              if (touchedPlayer > 0){
+              if (touchedPlayer >= 0){
                 console.log(touchedPlayer)
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
                 socket.emit("put correct background", socket.id)
