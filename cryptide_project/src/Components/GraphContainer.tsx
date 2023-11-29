@@ -655,7 +655,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
             }
             else{
-              if (touchedPlayer > 0){
+              if (touchedPlayer >= 0){
                 console.log(touchedPlayer)
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
                 socket.emit("put correct background", socket.id)
