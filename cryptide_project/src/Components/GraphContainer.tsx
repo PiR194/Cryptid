@@ -28,13 +28,15 @@ interface MyGraphComponentProps {
   setNetwork: (network: Network) => void
   showLast: boolean
   setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
+  askedWrong: boolean
+  setAskedWrong: (askedWrong: boolean) => void
   setPlayerIndex: (playerIndex: number) => void
 }
 
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
-let askedWrong = false
+let askedWrongLocal = false
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
 let botIndex = -1
@@ -50,7 +52,7 @@ let endgame= false
 let firstHistory = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -85,12 +87,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   useEffect(() =>{
     touchedPlayer=playerTouched
     if (touchedPlayer == -1){
-      if (!askedWrong){
+      if (!askedWrongLocal){
         socket.emit("put correct background", socket.id)
       }
     }
     else if (touchedPlayer < players.length && touchedPlayer>=0){
-      if(!askedWrong){
+      if(!askedWrongLocal){
         socket.emit("put correct background", socket.id)
         socket.emit("put grey background", socket.id, touchedPlayer)
       }
@@ -432,7 +434,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
   
       socket.on("asked wrong", () =>{
-        askedWrong = true
+        askedWrongLocal= true
+        setAskedWrong(true)
         askedWrongBot=true
         handleShowTurnBar(true)
         handleTurnBarTextChange("Mauvais choix, posez un carré !")
@@ -566,7 +569,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
         first = true
         cptHistory = 0
-        askedWrong=false
+        askedWrongLocal=false
+        setAskedWrong(false)
         askedWrongBot=false
         endgame = true
         firstHistory=true
@@ -647,8 +651,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setNodeIdData(params.nodes[0])
         // addToHistory("Le joueur a cliqué") //! TEST DEBUG
         if (!solo){
-          if (askedWrong){
-            //@ts-ignore
+          if (askedWrongLocal){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
             if (person !== undefined && indice !== null){
               const tester = IndiceTesterFactory.Create(indice)
@@ -661,7 +664,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 socket.emit("put correct background", socket.id)
                 touchedPlayer=-1
                 askedPersons.push(person)
-                askedWrong = false
+                askedWrongLocal=false
+                setAskedWrong(false)
               }
             }
           }
