@@ -52,7 +52,7 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-
+    
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
     const {user, setUserData, manager, login} = useAuth()
