@@ -52,7 +52,12 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-    
+
+    //@ts-ignore
+    const handleNumberChange = (event) => {
+        const newNumber = Math.max(20, Math.min(60, parseInt(event.target.value, 10)));
+        setEnteredNumber(newNumber);
+    };
 
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
@@ -303,6 +308,20 @@ function Lobby() {
                     </button>
                 </div>
                 {/* <div className='centerDivH'>
+                <div>
+                    <label htmlFor="numberInput">Séléctionner le nombre de noeud (entre 20 et 60) :</label>
+                    <input
+                        type="number"
+                        id="numberInput"
+                        value={enteredNumber}
+                        onChange={handleNumberChange}
+                        min={20}
+                        max={60}/>
+                    <p>La valeur saisie : {enteredNumber}</p>
+                </div>
+
+
+                <div className='centerDivH'>
                     <button className='button' onClick={StartGame}
                         style={{ 
                             backgroundColor: theme.colors.tertiary,

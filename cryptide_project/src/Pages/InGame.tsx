@@ -72,12 +72,12 @@ const InGame = ({locale, changeLocale}) => {
     isDaily=false
   }
 
+
   let isEasy: boolean = true
   const isEasytmp = params.get('easy');
   if (isEasytmp == "false"){
     isEasy=false
   }
-
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -106,6 +106,8 @@ const InGame = ({locale, changeLocale}) => {
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+  const [playerIndex, setPlayerIndex] = useState(-2)
+
 
   const [network, setNetwork] = useState<Network | null>(null)
   const [networkEnigme, setNetworkEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
@@ -133,6 +135,10 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const setPlayerIndexData = (playerIndex: number) => {
+    setPlayerIndex(playerIndex)
   }
 
   const generateTEX = async () => {
@@ -269,7 +275,8 @@ const InGame = ({locale, changeLocale}) => {
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
                           setNetworkEnigme={setNetworkEnigmeData}
-                          showLast={showLast}/>
+                          showLast={showLast}
+                          setPlayerIndex={setPlayerIndexData}/>
         </div>
 
 
@@ -398,7 +405,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
             </div>
           }
 

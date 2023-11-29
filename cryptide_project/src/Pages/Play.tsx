@@ -134,18 +134,7 @@ function Play() {
         
         if (!showOverlay)setShowOverlay(true)
         else setShowOverlay(true)
-        
-        // const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
-        // setPersonData(choosenPerson)
-        // setPersonNetworkData(networkPerson)
-        // setIndicesData(choosenIndices)
-        // setIndicesData(choosenIndices)
-        // if (first){
-        //     first = false
-        //     const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
-        //     setDailyEnigmeData(map)
-        // }
-        // navigate('/game?solo=true&daily=true');
+
     }
     
 
@@ -172,6 +161,7 @@ function Play() {
     }, [room, navigate]);
 
 
+
     const [showOverlay, setShowOverlay] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
 
@@ -183,11 +173,13 @@ function Play() {
     const handleStartEasyGame = () => {
 
         //* Mode facile 
+        //todo différencier les deux
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+
         navigate('/game?solo=true&daily=true&easy=true');
         setShowOverlay(false);
     };
@@ -209,7 +201,6 @@ function Play() {
         navigate('/game?solo=true&daily=true&easy=false');
         setShowOverlay(false);
     };
-
 
 
     return (
@@ -234,6 +225,8 @@ function Play() {
                 </div>
                 <div className='buttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
+                    
+                    
                     <button ref={target} onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Résoudre une énigme</button>
                     <Overlay show={showOverlay} target={target.current} placement="bottom" rootClose={true} rootCloseEvent='click'>
                         {({ placement, arrowProps, show: _show, popper, ...props }) => (
@@ -253,7 +246,6 @@ function Play() {
                             </div>
                         )}
                     </Overlay>
-
 
 
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
