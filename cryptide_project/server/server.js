@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["http://172.20.10.4:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
+    origin: ["http://172.20.10.4:3000", "http://172.20.10.4:3000"], // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -112,6 +112,10 @@ io.on('connection', (socket) => {
 
   socket.on("put imossible grey", (id) =>{
     io.to(id).emit("put imossible grey")
+  })
+
+  socket.on("can't put square", (askingPlayer, room) => {
+    io.to(room).emit("can't put square" , askingPlayer)
   })
 
   socket.on("opacity activated", (id) => {

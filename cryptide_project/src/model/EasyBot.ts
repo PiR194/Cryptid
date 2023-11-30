@@ -98,6 +98,9 @@ class EasyBot extends Bot{
                 tabFilterPerson.push(p)
             }
         })
+        if (tabFilterPerson.length == 0){
+            return -1
+        }
         return tabFilterPerson[Math.floor(Math.random() * tabFilterPerson.length)].getId()
     }
 

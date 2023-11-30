@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { colorToEmoji, positionToColor } from '../ColorHelper';
+import { colorToEmoji, positionToColor, positionToEmoji } from '../ColorHelper';
 import Player from '../model/Player';
 import { useTheme } from '../Style/ThemeContext';
 import PersonStatus from './PersonStatus';
@@ -39,7 +39,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                                                     key={index} 
                                                     name={player.pseudo 
                                                     + " " + 
-                                                    colorToEmoji(positionToColor(index), true)} 
+                                                    positionToEmoji(index, true)} 
                                                     playerTouched={playerTouched} 
                                                     setPlayerTouched={setPlayerTouched} 
                                                     index={index} 
