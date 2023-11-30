@@ -9,6 +9,8 @@ import { FormattedMessage } from 'react-intl';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import defaultImg from "../res/img/Person.png"
 import {loadImageAsync} from "../ImageHelper"
+import { socket } from '../SocketConfig';
+import JSONParser from '../JSONParser';
 
 
 // @ts-ignore
