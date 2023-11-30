@@ -30,6 +30,13 @@ import { useNavigate } from 'react-router-dom';
 //@ts-ignore
 const Profile = () => {
   
+  useEffect(() => {
+    // Déclenchez l'erreur à l'intérieur de useEffect pour éviter des problèmes à la compilation
+    //@ts-ignore
+    console.log(undefinedVariable);
+  }, []); // Déclenchez cette fonction une seule fois après le rendu initial
+
+
   const navigate = useNavigate();
   //let player;
   const {user, logout} = useAuth()

@@ -73,7 +73,7 @@ function App() {
   //   </header>
   // </div>
     
-    <ErrorBoundary>
+    <ErrorBoundary fallback={(error, errorInfo) => <ErrorPage />}>
       <AuthProvider>
         <GameProvider>
           {/*@ts-ignore*/}
