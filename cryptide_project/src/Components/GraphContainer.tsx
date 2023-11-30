@@ -325,6 +325,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         dailyEnigme.forEach((pairs, index) => {
           pairs.forEach((pair) => {
             const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+            //@ts-ignore
             const node = networkData.nodes.get().find((n) => index == n.id)
             if (node != undefined){
               networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
