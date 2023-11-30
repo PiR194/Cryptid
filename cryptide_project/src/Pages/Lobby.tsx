@@ -172,7 +172,7 @@ function Lobby() {
     const copyGameLink = () => {
         setShow(!show)
         
-        const gameLink = "http://172.20.10.4:3000/lobby?room="+ room;
+        const gameLink = "http://localhost:3000/lobby?room="+ room;
         navigator.clipboard.writeText(gameLink)
             .then(() => {
                 console.log('Lien copié avec succès !');
@@ -183,7 +183,7 @@ function Lobby() {
     };
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const linkToCopy = "http://172.20.10.4:3000/lobby?room="+ room
+    const linkToCopy = "http://localhost:3000/lobby?room="+ room
     const handleCopyClick = () => {
         setShow(!show)
         if(textAreaRef.current != null){
