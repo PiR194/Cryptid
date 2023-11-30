@@ -351,7 +351,7 @@ const InGame = ({locale, changeLocale}) => {
               <img src={Info} alt="info" height="40"/>
             </button>
           </Link>
-          {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
+          {/* <button className='button' onClick={() => openInNewTab('http://172.20.10.4:3000/play')}> //! avec url =={'>'} dangereux
             <img src={Check} alt="check" height="40"/>
           </button> */}
 
