@@ -93,6 +93,9 @@ io.on('connection', (socket) => {
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
             io.to(k).emit("player left", tab, i)
+            if (tab.filter((p) => p.type=="User").length == 0){
+              map.delete(k)
+            }
           }
         }
     }
