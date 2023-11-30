@@ -173,9 +173,6 @@ function EndGame() {
                 </div>
 
                 <div className='bottomEnd'>
-                    <div className='centerDivH' onClick={resetAll}>
-                        <BigButtonNav dest="/play" img={Leave}/>
-                    </div>
                     <div className="SoloContainer">
                         <div className='solostat'>
                             {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
@@ -191,9 +188,6 @@ function EndGame() {
                                     ))
                             }
                         </div>
-                    </div>
-                    <div className='centerDivH'>
-                        <BigButtonNav dest="/lobby" img={Replay}/>
                     </div>
                 </div>
             </div>

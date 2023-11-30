@@ -804,9 +804,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   return (
     <>
       <div id="graph-container"/>
-      <button onClick={resGraph}>
-        reinitialisation
-      </button>
     </>
   );
 
