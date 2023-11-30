@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 
 /* Context */
 import { useAuth } from '../Contexts/AuthContext';
-
 /* Style */
 import './Play.css';
 import { useTheme } from '../Style/ThemeContext';
@@ -13,7 +12,7 @@ import ButtonImgNav from "../Components/ButtonImgNav";
 /* Img */
 /* Icon */
 import { socket } from '../SocketConfig';
-import { useNavigate } from 'react-router-dom';
+import { NavigationType, useNavigate, useNavigationType } from 'react-router-dom';
 import GameCreator from '../model/GameCreator';
 import { useGame } from '../Contexts/GameContext';
 import ScoreBoard from '../Components/ScoreBoard';
@@ -32,6 +31,9 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 
+let cptNavigation = 0
+
+
 function Play() {
     let first = true
 
@@ -40,6 +42,16 @@ function Play() {
     const {setDailyEnigmeData} = useGame()
 
     const target = useRef(null);
+
+    const navigationType = useNavigationType()
+    cptNavigation++
+    if (cptNavigation % 2 == 0){
+        if (navigationType.toString() == "POP"){
+            socket.emit("player quit")
+        }
+    }
+
+
 
     useEffect(() => {
         const fetchUserInformation = async () => {
@@ -107,6 +119,7 @@ function Play() {
             })
         }
     }, [isLoggedIn]);
+
 
     const [room, setRoom] = useState(null);
     const navigate = useNavigate();

@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
   socket.on('network created', (network, person, indices, room, start) =>{
     io.to(room).emit("game created", network, person, indices, start)
     map.get(room).started = true
+    map.get(room).actualPlayer=start
     const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
     const playerJson = JSON.stringify(playerArray);
     io.emit("request lobbies", playerJson)
@@ -37,7 +38,7 @@ io.on('connection', (socket) => {
       socket.join(room)
     }
     if (map.get(room) == undefined){
-      map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false})
+      map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false, actualPlayer: 0})
     }
     else{
       const tab = map.get(room).tab
@@ -102,14 +103,66 @@ io.on('connection', (socket) => {
     io.to(askingPlayer.id).emit("asked wrong")
   })
 
+  socket.on("who plays", (room) => {
+    let player = map.get(room).actualPlayer
+    if (map.get(room).tab[player].type != "User"){
+      player = player + 1
+      if (player == map.get(room).tab.length){
+        player=0
+      }
+    }
+    console.log(player)
+    io.to(room).emit("who plays", player)
+  })
+
   socket.on("disconnect", () =>{
     for (const k of map.keys()){
-      const tab = map.get(k).tab
-        for (let i = 0; i<tab.length; i++){
-          if (tab[i].id === socket.id){
-            tab.splice(i, 1)
-            io.to(k).emit("player left", tab, i)
-            if (tab.filter((p) => p.type=="User").length == 0){
+      const tab = map.get(k)
+        for (let i = 0; i<tab.tab.length; i++){
+          if (tab.tab[i].id === socket.id){
+            if (!tab.started){
+              tab.tab.splice(i, 1)
+              if (i==0){
+                tab.tab.sort(comparePlayersByType).reverse()
+              }
+              io.to(k).emit("player left", tab, i)
+            }
+            else{
+              tab.tab[i].type="EasyBot"
+              tab.tab[i].pseudo="TmpBot"
+              io.to(k).emit("player left ingame", tab, i)
+            }
+            if (tab.tab.filter((p) => p.type=="User").length == 0){
+              map.delete(k)
+            }
+          }
+        }
+    }
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.emit("request lobbies", playerJson)
+  })
+
+
+  socket.on("player quit", () => {
+    for (const k of map.keys()){
+      const tab = map.get(k)
+        for (let i = 0; i<tab.tab.length; i++){
+          if (tab.tab[i].id === socket.id){
+            if (!tab.started){
+              tab.tab.splice(i, 1)
+              if (i==0){
+                tab.tab.sort(comparePlayersByType).reverse()
+
+              }
+              io.to(k).emit("player left", tab, i)
+            }
+            else{
+              tab.tab[i].type="EasyBot"
+              tab.tab[i].pseudo="TmpBot"
+              io.to(k).emit("player left ingame", tab, i)
+            }
+            if (tab.tab.filter((p) => p.type=="User").length == 0){
               map.delete(k)
             }
           }
@@ -121,6 +174,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on("node checked", (id, works, color, room, playerIndex) =>{
+    map.get(room).actualPlayer=playerIndex
     io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
   })
   
@@ -157,3 +211,14 @@ io.on('connection', (socket) => {
     map.delete(room)
   })
 });
+
+
+function comparePlayersByType(a, b) {
+  if (a.type < b.type) {
+    return -1;
+  } else if (a.type > b.type) {
+    return 1;
+  } else {
+    return 0;
+  }
+}

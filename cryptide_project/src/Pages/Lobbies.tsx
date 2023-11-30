@@ -61,7 +61,7 @@ function Lobbies() {
             }
             setLobbyData(tmpTab)
         })
-    })
+    }, [])
 
     
 

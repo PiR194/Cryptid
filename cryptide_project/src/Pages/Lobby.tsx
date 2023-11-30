@@ -130,8 +130,8 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
-        socket.off("player left")
-        socket.off("new player")
+        //socket.off("player left")
+        //socket.off("new player")
         navigate('/game?solo=false&daily=false');
     });
 
@@ -146,9 +146,10 @@ function Lobby() {
 
     socket.on("player left", (tab, i) => {
         const tmpTab: Player[] = []
-        for (const p of tab){
+        for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
@@ -214,7 +215,7 @@ function Lobby() {
                         // <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
                         <PlayerItemList key={player.id} player={player} room={room}/>
                     ))}
-                    <div className='centerButton'>
+                    {(players.length < 6) && <div className='centerButton'>
                             <button className='button' onClick={addBot}
                                 style={{
                                     backgroundColor: theme.colors.primary,
@@ -222,6 +223,7 @@ function Lobby() {
                                 +
                             </button>
                     </div>
+                    }
                 </div>
             </div>
 
