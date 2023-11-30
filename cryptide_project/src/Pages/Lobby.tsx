@@ -172,7 +172,7 @@ function Lobby() {
     const copyGameLink = () => {
         setShow(!show)
         
-        const gameLink = "http://localhost:3000/lobby?room="+ room;
+        const gameLink = "http://172.20.10.4:3000/lobby?room="+ room;
         navigator.clipboard.writeText(gameLink)
             .then(() => {
                 console.log('Lien copié avec succès !');
@@ -181,6 +181,18 @@ function Lobby() {
                 console.error('Erreur lors de la copie du lien :', err);
             });
     };
+
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const linkToCopy = "http://172.20.10.4:3000/lobby?room="+ room
+    const handleCopyClick = () => {
+        setShow(!show)
+        if(textAreaRef.current != null){
+            textAreaRef.current.select();
+            document.execCommand('copy');
+        }
+    };
+
+
 
     const [show, setShow] = useState(false);
         const target = useRef(null);
