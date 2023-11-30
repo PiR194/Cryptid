@@ -173,6 +173,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               if(!works){
                 socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
                 const ind = bot.placeSquare(personNetwork, players)
+                if (ind == -1 ){
+                  addToHistory(lastIndex.toString() + "177")
+                  socket.emit("can't put square", lastIndex, room)
+                  return
+                }
                 console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                 playerIndex = lastIndex + 1
                 if(playerIndex == players.length){
@@ -203,6 +208,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   console.log(lastIndex + " interroge " + choosedPlayerIndex + " a propos de " + person.getName() + " et dit non")
                   socket.emit("node checked", personIndex, false, choosedPlayerIndex, room, lastIndex)
                   const ind = bot.placeSquare(personNetwork, players)
+                  if (ind == -1 ){
+                    addToHistory(lastIndex.toString() + "212")
+                    socket.emit("can't put square", playerIndex, room)
+                    return
+                  }
                   console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                   playerIndex = lastIndex + 1
                   if(playerIndex == players.length){
@@ -218,6 +228,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
                 if (!tester.Works(person)){
                   const ind = bot.placeSquare(personNetwork, players)
+                  if (ind == -1 ){
+                    addToHistory(lastIndex.toString() + "232")
+                    socket.emit("can't put square", playerIndex, room)
+                    return
+                  }
                   console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                   playerIndex = lastIndex + 1
                   if(playerIndex == players.length){
@@ -449,6 +464,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             playerIndex = 0
           }
           setPlayerIndex(playerIndex)
+          setLastIndex(playerIndex)
           if (playerIndex === actualPlayerIndex){
             handleTurnBarTextChange("À vous de jouer")
             handleShowTurnBar(true)
@@ -476,7 +492,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               const node = nodes.get().find((n) => nodeId == n.id)
               if (node != undefined && indice != null){
                 var tester = IndiceTesterFactory.Create(indice)
-                let maybe = actualPlayerIndex
                 if (tester.Works(pers)){
                   playerIndex = playerIndex + 1
                   if(playerIndex == players.length){
@@ -485,10 +500,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   socket.emit("node checked", nodeId, true, actualPlayerIndex, room, playerIndex)
                 }
                 else{
-                  maybe = actualPlayerIndex - 1
-                  if(maybe == 0){
-                    maybe = players.length - 1
-                  }
                   let index = players.findIndex((p) => p.id == askingPlayer.id)
                   if (players[index] instanceof Bot){
                     index = playerIndex + 1
@@ -531,7 +542,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         const tab = mapIndexPersons.get(player)
         if (tab != undefined){
           if (player != actualPlayerIndex){
-            console.log("player != actualPlayerIndex")
             for(const person of personNetwork.getPersons().filter((p) => tab.includes(p))){
               networkData.nodes.update({id: person.getId(), color: "#808080"})
             }
@@ -559,7 +569,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     socket.on("put imossible grey", ()=>{
       if (personNetwork != null && indice!=null){
-        console.log("impossible grey")
         const tabNodes: any = []
         const tester = IndiceTesterFactory.Create(indice)
         for (const pers of personNetwork.getPersons()){
@@ -655,7 +664,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          console.log(p)
+          //console.log(p)
         }
         
       });
