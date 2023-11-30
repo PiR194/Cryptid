@@ -1,0 +1,15 @@
+
+.mainErrorDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.titleError{
+    border: solid 2px #C70039;
+    border-radius: 10px;
+    margin: 15px;
+    padding: 10px;  
+    box-shadow: 5px 5px 5px #900C3F;    
+}
