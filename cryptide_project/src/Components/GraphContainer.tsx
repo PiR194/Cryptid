@@ -359,6 +359,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
 
       socket.on("opacity activated", () => {
+        //@ts-ignore
         nodes.forEach(node => {
           if (!lastNodes.find((n) => n.id == node.id)){
             networkData.nodes.update({id: node.id, opacity: 0.2})
@@ -367,6 +368,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
 
       socket.on("opacity deactivated", () => {
+        //@ts-ignore
         nodes.forEach(node => {
           networkData.nodes.update({id: node.id, opacity: 1})
         });
