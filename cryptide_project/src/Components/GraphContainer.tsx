@@ -104,6 +104,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   useEffect(() => {
     const tab: NodePerson[] = []
     for(const n of lastNodes.reverse()){
+      //@ts-ignore
       if (!tab.find((node) => node.id == n.id)){
         tab.push(n)
         if (tab.length > players.length * 2) break
@@ -140,8 +141,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         botIndex = lastIndex
         if (personNetwork!=null){
           const [choosedPlayerIndex, personIndex] = bot.playRound(personNetwork, players)
+          //@ts-ignore
           const person = personNetwork.getPersons().find((p) => p.getId() == personIndex)
           if (choosedPlayerIndex == players.length && person != undefined){
+            //@ts-ignore
             console.log(lastIndex + " All in sur => " + personNetwork.getPersons().find((p) => p.getId() == personIndex)?.getName())
             let nextPlayerIndex = lastIndex + 1
             if (nextPlayerIndex == players.length){
@@ -324,6 +327,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       if (!isEasy){
         dailyEnigme.forEach((pairs, index) => {
           pairs.forEach((pair) => {
+            //@ts-ignore
             const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
             //@ts-ignore
             const node = networkData.nodes.get().find((n) => index == n.id)
@@ -352,6 +356,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     if (!solo){
       socket.on("asked all", (id) =>{
+        //@ts-ignore
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
         if (pers!=undefined){
           askedPersons.push(pers)
@@ -361,6 +366,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       socket.on("opacity activated", () => {
         //@ts-ignore
         nodes.forEach(node => {
+          //@ts-ignore
           if (!lastNodes.find((n) => n.id == node.id)){
             networkData.nodes.update({id: node.id, opacity: 0.2})
           }
@@ -375,12 +381,15 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
+        //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
           setPlayerIndex(playerIndex)
+          //@ts-ignore
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
+            //@ts-ignore
             const p = personNetwork.getPersons().find((p)=> p.getId() == id)
             const tab = mapIndexPersons.get(askedIndex)
             if (p!=undefined && tab != undefined){
@@ -435,6 +444,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
           lastAskingPlayer = askingPlayer.id
           lastNodeId = nodeId
+          //@ts-ignore
           const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
           if (pers!=undefined){
             if (askedPersons.includes(pers)){
@@ -460,6 +470,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   if(maybe == 0){
                     maybe = players.length - 1
                   }
+                  //@ts-ignore
                   let index = players.findIndex((p) => p.id == askingPlayer.id)
                   if (players[index] instanceof Bot){
                     index = playerIndex + 1
@@ -521,6 +532,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         const tabNodes: any = []
         const tester = IndiceTesterFactory.Create(indice)
         for (const pers of personNetwork.getPersons()){
+          //@ts-ignore
           const node = nodes.get().find((n) => pers.getId() == n.id)
           if (node != undefined){
             for(let i=0; i<players.length; i++){
@@ -658,6 +670,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             if (players[touchedPlayer] instanceof Bot){
               const ind = indices[touchedPlayer]
               const test = IndiceTesterFactory.Create(ind)
+              //@ts-ignore
               const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
               if (person != undefined){
                 if (test.Works(person)){
@@ -678,6 +691,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             else{
               if (touchedPlayer > 0){
                 console.log(touchedPlayer)
+                //@ts-ignore
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
                 socket.emit("put correct background", socket.id)
                 touchedPlayer=-1
@@ -687,6 +701,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
           else if(playerIndex == actualPlayerIndex && touchedPlayer==players.length){
             botIndex = -1
+            //@ts-ignore
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
             if (person != undefined){
               const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])
@@ -737,6 +752,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
         } 
         else{
+          //@ts-ignore
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
             let index =0
