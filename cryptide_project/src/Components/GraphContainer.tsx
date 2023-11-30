@@ -4,7 +4,7 @@ import GraphCreator from "../model/Graph/GraphCreator";
 import "./GraphContainer.css";
 import IndiceTesterFactory from "../model/Factory/IndiceTesterFactory";
 import Person from "../model/Person";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
 import { colorToEmoji, positionToColor, positionToEmoji } from "../ColorHelper";
@@ -14,7 +14,6 @@ import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 import Indice from "../model/Indices/Indice";
 import Pair from "../model/Pair";
-
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
@@ -58,7 +57,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -298,6 +297,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     const network = new Network(container, networkData, initialOptions);
     network.stabilize();
     setNetwork(network)
+    setSeedData(network.getSeed())
 
     if (isDaily){
       setNetworkEnigme(dailyEnigme)
@@ -520,6 +520,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         const currentPlayer = players[actualPlayerIndex];
         const winner = players[winnerIndex];
   
+        setNetworkDataData(networkData)
         setNodeIdData(-1)
         setActualPlayerIndexData(-1)
         setLastIndex(-1)
@@ -730,6 +731,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
                     if (user!=null){
                       setWinnerData(user)
+                      setNetworkDataData(networkData)
                     }
                     cptTour ++;
                     setNbCoupData(cptTour)

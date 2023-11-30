@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  {useEffect} from 'react';
 
 
 /* Style */
@@ -15,20 +15,65 @@ import Replay from '../res/icon/replay.png';
 import PersonStatus from '../Components/PersonStatus';
 import ButtonImgNav from '../Components/ButtonImgNav';
 import BigButtonNav from '../Components/BigButtonNav';
+//
+import { Network } from "vis-network/standalone/esm/vis-network";
+import { map } from 'lodash';
 
-/* nav */
+/* Nav */
 import { Link } from 'react-router-dom';
 
-/* lang */
+/* Lang */
 import { FormattedMessage } from 'react-intl';
-import { useGame } from '../Contexts/GameContext';
-import { map } from 'lodash';
+
+/* Model */
 import Player from '../model/Player';
+
+/* Context  */
+import { useGame } from '../Contexts/GameContext';
+
+/* Boostrap */
+import { Button } from 'react-bootstrap';
+import Bot from '../model/Bot';
 
 
 function EndGame() {
-
+    const {networkData, seed} = useGame();
     const params = new URLSearchParams(window.location.search);
+    
+    const initialOptions = {
+
+        layout: {
+            improvedLayout: true,
+            randomSeed: seed,
+            hierarchical: {
+                enabled: false,
+                direction: 'LR',
+                sortMethod: 'hubsize'
+            },
+            //randomSeed: 2
+        },
+        physics: {
+            enabled: true,
+            barnesHut: {
+                gravitationalConstant: -1000,
+                springConstant: 0.001,
+                springLength: 100
+            }
+        }
+    };
+
+    useEffect(() => {
+        const container = document.getElementById("vis-graph");
+        if (!container) {
+            console.error("Container not found");
+            return;
+        }
+        const network = new Network(container, networkData, initialOptions);
+        console.log(networkData)
+    
+    }, []);
+
+
 
     //* Gestion solo
     let IsSolo: boolean = false
@@ -75,6 +120,12 @@ function EndGame() {
 
     console.log(winner)
     console.log(indices)
+
+    let indicenull = false;
+    if (indices.length == 0){
+        indicenull = true;
+    }
+
     return (
         <div>
             {!IsSolo ? (
@@ -87,26 +138,24 @@ function EndGame() {
                     </div>
                     <div className='winner'>
                         <img src={Person} width='250' height='250'/>
-                        <h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>
+
+                        {!indicenull && (<h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>)}
                     </div>
                     <div className='bottomEnd'>
-                        <div className='centerDivH' onClick={resetAll}>
+                        {/* <div className='centerDivH' onClick={resetAll}>
                             <BigButtonNav dest="/play" img={Leave}/>
-                        </div>
+                        </div> */}
                         <div className="losingPlayersContainer">
                             {losingPlayers.map((player, index) => (
                                 <div className="playerContainer" key={index}>
                                     {player.id !== winner?.id && (
                                         <div>
                                             <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false}/>
-                                            <h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>
+                                            {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
                                         </div>
                                     )}
                                 </div>
                             ))}
-                        </div>
-                        <div className='centerDivH'>
-                            <BigButtonNav dest="/lobby" img={Replay}/>
                         </div>
                     </div>
                 </div>
@@ -149,6 +198,13 @@ function EndGame() {
                 </div>
             </div>
             )}
+
+            <div id="vis-graph"/>
+
+            <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
+                <Button href='/'>Retour à l'accueil</Button>
+            </div>
+
         </div>
     );
 }
