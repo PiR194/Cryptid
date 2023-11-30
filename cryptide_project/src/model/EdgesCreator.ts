@@ -11,9 +11,8 @@ class EdgesCreator{
 
     CreateWorkingEdge(personNetwork: PersonNetwork, choosenPerson: Person, indice: Indice, indices: Indice[]){
         let creator = IndiceEdgesFactory.Create(indice)
-        const nbMaxEdge = Math.floor(Math.random() * 5) + 1
 
-        creator.createWorkingEdges(personNetwork, choosenPerson, indices)
+        const nbMaxEdge = creator.createWorkingEdges(personNetwork, choosenPerson, indices)
 
         if (choosenPerson.getFriends().length < nbMaxEdge){
             for (const p of personNetwork.getPersons()){
@@ -75,6 +74,7 @@ class EdgesCreator{
     }
 
     CreateAllEdges(personNetwork: PersonNetwork, choosenPerson: Person, indices: Indice[]){
+        const nbTryConnex = 10
         const test = new Map<number, number>()
         const tabEdgesSize: number[] = []
         for (let i = 0; i<personNetwork.getPersons().length / 4; i++){
@@ -101,6 +101,48 @@ class EdgesCreator{
                 this.CreateNotWorkingEdge(personNetwork, p, choosenPerson, indices, test)
             }
         });
+
+        let [isConnected, connectedNodes, unconnectedNodes] = personNetwork.getConnectivityDetails()
+        let i = 0
+        while(!isConnected){
+            if (i==nbTryConnex){
+                return
+            }
+            for(const pers of unconnectedNodes){
+                let canBreak = false
+                for(const newFriend of connectedNodes){
+                    if (pers != newFriend && newFriend!=choosenPerson){
+                        let testEdgeWork1 = 0
+                        let testEdgeWork2 = 0
+                        const p1 = cloneDeep(pers);
+                        const personEdge = cloneDeep(newFriend);
+                        p1.addFriend(personEdge)
+                        personEdge.addFriend(p1)
+                        indices.forEach((indice) => {
+                            const tester = IndiceTesterFactory.Create(indice)
+                            if (tester.Works(p1)){
+                                testEdgeWork1 ++
+                            } 
+                            if (tester.Works(personEdge)){
+                                testEdgeWork2 ++
+                            }
+                        });
+                        
+                        if (testEdgeWork1 < indices.length && testEdgeWork2 < indices.length){
+                            pers.addFriend(newFriend)
+                            newFriend.addFriend(pers)
+                            canBreak = true
+                            break
+                        }
+                    }
+                }
+                if (canBreak){
+                    break
+                }
+            }
+            [isConnected, connectedNodes, unconnectedNodes] = personNetwork.getConnectivityDetails()
+            i++
+        }
     }
 }
 

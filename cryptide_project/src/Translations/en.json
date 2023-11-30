@@ -21,6 +21,7 @@
 
     "log_in":" Log in ",
     "sign_up":" Sign up ",
+    "log_out":" Log out ",
 
     "join" : "Join",
     "create_room" : "Create room",
@@ -42,11 +43,11 @@
 
     "and": "and",
     "or": "or",
-    "or_sport": "and/or",
+    "or_sport": "or",
 
 
     "age_indice_start": "The suspect is between",
-    "age_indice_more_start": "The suspect is older than or",
+    "age_indice_more_start": "The suspect is at least",
     "age_indice_end": "years old",
     
     "color_edges_start": "The suspect has at least one friend with",
@@ -55,11 +56,11 @@
     "color_start": "The suspect has",
     "color_end": "hair",
 
-    "nb_friends_indice_start": "The suspect has at least",
+    "nb_friends_indice_start": "The suspect has",
     "nb_friends_indice_end": "friends",
 
     "nb_sports_indice_start": "The suspect is playing",
-    "nb_sports_indice_end": "sport",
+    "nb_sports_indice_end": "sport(s)",
 
     "sport_start": "The suspect plays at least",
     "sport_end": "",
@@ -104,7 +105,7 @@
     "info.composant.hair_col.title":"Hair's colors",
     "info.composant.hair_col":"The characters also have a hair colour, which can be found in the following colours :",
 
-    "hair.blanc":"Blanc",
+    "hair.blanc":"White",
     "hair.blond":"Blond",
     "hair.roux":"Red head",
     "hair.chatain":"Brown",

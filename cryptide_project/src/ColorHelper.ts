@@ -53,4 +53,41 @@ function colorToEmoji(color: string, works: boolean): string{
   }
 }
 
-export {colorToEmoji, positionToColor}
+
+
+function positionToEmoji(pos: number, works: boolean): string{
+  if (works){
+    switch (pos) {
+      case 0:
+        return "🔵";
+      case 1:
+        return "🟢";
+      case 2:
+        return "🟡"; 
+      case 3:
+        return "🟣"; 
+      case 4:
+        return "🔴";
+      default:
+        return "🟤"; 
+    }
+  }
+  else{
+    switch (pos) {
+      case 0:
+        return "🟦";
+      case 1:
+        return "🟩"; 
+      case 2:
+        return "🟨";
+      case 3:
+        return "🟪"; 
+      case 4:
+        return "🟥";
+      default:
+        return "🟫"; 
+    }    
+  }
+}
+
+export {colorToEmoji, positionToColor, positionToEmoji}

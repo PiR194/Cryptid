@@ -3,20 +3,26 @@ import React from 'react';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { GameProvider } from './Contexts/GameContext';
+import { AuthProvider } from './Contexts/AuthContext';
 
 /* Page */
 import Home from './Pages/Home'; 
 import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
 import Play from './Pages/Play';
+import Profile from './Pages/Profile';
 import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
-
 import EndGame from './Pages/EndGame';
 import InfoPage from './Pages/InfoPage';
+import SoloGame from './Pages/SoloGame';
+import Lobbies from './Pages/Lobbies';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
+
+/* service */
+import SessionService from './services/SessionService';
 
 /* nav */
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
@@ -33,7 +39,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
-import SoloGame from './Pages/SoloGame';
 
 const messages = {
   fr: messagesFr,
@@ -47,7 +52,7 @@ function App() {
   const [locale, setLocale] = useState('fr');
 
   //@ts-ignore
-  const changeLocale = (newLocale) => {
+  const changeLocale = async (newLocale) => {
     setLocale(newLocale);
   };
 
@@ -63,9 +68,10 @@ function App() {
   //     <img src={logo} className="App-logo" alt="logo" />
   //   </header>
   // </div>
+    
+    <AuthProvider>
       <GameProvider>
-
-      {/*@ts-ignore*/}
+        {/*@ts-ignore*/}
         <IntlProvider locale={locale} messages={messages[locale]}>
           <ThemeProvider>
             <BrowserRouter>  
@@ -79,13 +85,15 @@ function App() {
                 <Route path="/endgame" element={<EndGame/>} />
                 <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                 <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                <Route path="/profile" element={<Profile/>} />
+                <Route path="/join" element={<Lobbies/>}/>
                 {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
               </Routes>
             </BrowserRouter>
           </ThemeProvider>
         </IntlProvider>
       </GameProvider>
-  
+    </AuthProvider>
   );
 }
 

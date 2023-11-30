@@ -42,3 +42,11 @@ bower_components
 psd
 thumb
 sketch
+
+### modules ###
+yarn.lock
+package-lock.json
+
+# db
+
+socialgraph.db

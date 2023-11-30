@@ -40,7 +40,7 @@ class ColorIndiceEdgesCreator implements IndiceEdgesCreator{
                     if (testEdgeWork < indices.length){
                         p.addFriend(person)
                         person.addFriend(p)
-                        return 1
+                        return Math.floor(Math.random() * 4)
                     }
                 }
             }

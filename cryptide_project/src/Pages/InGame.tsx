@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from "react-switch";
+import {saveAs} from "file-saver"
 
 /* Style */
 import "./InGame.css"
@@ -20,6 +21,11 @@ import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
 import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
+import Download from "../res/icon/download.png"
+import Reset from "../res/icon/reset.png";
+import Oeye from "../res/icon/eye.png";
+import Ceye from "../res/icon/hidden.png";
+import JSZip from 'jszip';
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -31,12 +37,18 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 /* Model */
 import Stub from '../model/Stub';
 import { HiLanguage } from 'react-icons/hi2';
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
+import { last } from 'lodash';
+import { socket } from '../SocketConfig';
+import { Network } from 'vis-network';
+import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
+import Pair from '../model/Pair';
+import Indice from '../model/Indices/Indice';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -53,15 +65,69 @@ const InGame = ({locale, changeLocale}) => {
     IsSolo=false
   }
 
+  //* Gestion daily
+  let isDaily: boolean = true
+  const isDailytmp = params.get('daily');
+  if (isDailytmp == "false"){
+    isDaily=false
+  }
+
+
+  let isEasy: boolean = true
+  const isEasytmp = params.get('easy');
+  if (isEasytmp == "false"){
+    isEasy=false
+  }
+  //* Historique
+  const [history, setHistory] = useState<string[]>([]);
+  const [showLast, setShowLast] = useState(false)
+
+  // Fonction pour ajouter un élément à l'historique
+  const addToHistory = (message: string) => {
+    setHistory(prevHistory => [...prevHistory, message]);
+  };
+  
+  const setShowLastData = () =>{
+    setLastVisible(!showLast);
+    setShowLast(!showLast);
+  }
+
+  useEffect(() => {
+    const historyContainer = document.getElementById('history-container');
+    if (historyContainer) {
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+  }, [history]);
+
+
+  const {personNetwork, person, indices} = useGame()
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
+  const [playerTouched, setPlayerTouched] = useState(-2)
+  const [playerIndex, setPlayerIndex] = useState(-2)
+
+
+  const [network, setNetwork] = useState<Network | null>(null)
+  const [networkEnigme, setNetworkEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
+
+  const setNetworkData = (network: Network) => {
+    setNetwork(network)
+  }
+
+  const setNetworkEnigmeData = (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => {
+    setNetworkEnigme(networkEnigme)
+  }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
     setShowChoiceBar(shouldShowChoiceBar);
   };
 
+    const handleSetPlayerTouched = (newPlayerTouched: number) => {
+      setPlayerTouched(newPlayerTouched);
+    };
+  
 
   const handleShowTurnBar = (shouldShowTurnBar: boolean) => {
     setShowTurnBar(shouldShowTurnBar);
@@ -69,6 +135,58 @@ const InGame = ({locale, changeLocale}) => {
   
   const handleTurnBarTextChange = (newTurnBarText: string) =>{
     setTurnBarText(newTurnBarText)
+  }
+
+  const setPlayerIndexData = (playerIndex: number) => {
+    setPlayerIndex(playerIndex)
+  }
+
+  const generateTEX = async () => {
+    if (network != null && personNetwork != null && person != null){
+
+      const zip = new JSZip();
+      
+      if (isDaily && networkEnigme != null){
+        const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+      else{
+        const tex = generateLatexCode(personNetwork, person, indices, network)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+
+      const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
+      const imagesFolder = 'Script';
+
+      for (const imageName of imageNames) {
+        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
+        const response = await fetch(imageUrl);
+        
+        if (response.ok) {
+          const imageBlob = await response.blob();
+          zip.file(`${imageName}`, imageBlob);
+        } else {
+          console.error(`Erreur de chargement de l'image ${imageName}`);
+        }
+      }
+
+      const content = await zip.generateAsync({ type: 'blob' });
+
+      // Enregistre l'archive en tant que fichier
+      saveAs(content, 'social_graph.zip');
+      
+      // Utiliser FileSaver pour télécharger le fichier
+    }
+  }
+
+  const resetGraph = () => {
+    setisLoading(true);
+    socket.emit("reset graph", socket.id)
+    setTimeout(() => {
+      setisLoading(false);
+    }, 2000);  
   }
 
   /* offcanvas */
@@ -87,6 +205,11 @@ const InGame = ({locale, changeLocale}) => {
   const handleShowS = () => setShowS(true);
 
   const [cptTour, setcptTour] = useState(0);
+
+  const [LastVisible, setLastVisible] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
+  
 
   //@ts-ignore
   const changecptTour = (newcptTour) => {
@@ -120,6 +243,11 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
 
+    const changeVisibility = () => {
+      setLastVisible(!LastVisible);
+    }
+    const eye = LastVisible ? Oeye : Ceye; //icon que l'on affiche pour l'oeil : fermé ou ouvert.
+
     /* Windows open */
     //@ts-ignore
     const openInNewTab = (url) => { //! avec url ==> dangereux
@@ -127,7 +255,7 @@ const InGame = ({locale, changeLocale}) => {
     };
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
-  const indices = Stub.GenerateIndice()
+  const allIndices = Stub.GenerateIndice()
   const { indice, players } = useGame();
 
 
@@ -135,31 +263,39 @@ const InGame = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} handleShowTurnBar={handleShowTurnBar} handleTurnBarTextChange={handleTurnBarTextChange} changecptTour={changecptTour} solo={IsSolo} />
+          <GraphContainer onNodeClick={handleNodeClick} 
+                          handleShowTurnBar={handleShowTurnBar} 
+                          handleTurnBarTextChange={handleTurnBarTextChange} 
+                          changecptTour={changecptTour} 
+                          addToHistory={addToHistory}
+                          solo={IsSolo} 
+                          isDaily={isDaily} 
+                          isEasy={isEasy}
+                          setPlayerTouched={handleSetPlayerTouched} 
+                          playerTouched={playerTouched}
+                          setNetwork={setNetworkData}
+                          setNetworkEnigme={setNetworkEnigmeData}
+                          showLast={showLast}
+                          setPlayerIndex={setPlayerIndexData}/>
         </div>
 
 
-        {IsSolo ? (
+        {IsSolo && !isDaily &&
             <div className='nbLaps' style={{ 
-                backgroundColor: theme.colors.tertiary,
+                backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
               Tour : {cptTour}
             </div>
-          ) : (
-            <div className='playerlistDiv'>
-              <button className='button' 
-                style={{ 
-                    backgroundColor: theme.colors.tertiary,
-                    borderColor: theme.colors.secondary
-                }}
-                onClick={handleChangeP}>
-                Players
-              </button>
-            </div>
-          )
         }
         
+        {(!isDaily || (isDaily && isEasy)) &&
+          <div className='historique' id="history-container">
+              {history.map((item, index) => (
+                  <div key={index}>{item}</div>
+              ))}
+          </div>
+        }   
 
         <div className='paramDiv'>
           <button className='button'
@@ -172,7 +308,33 @@ const InGame = ({locale, changeLocale}) => {
           </button>
         </div>
 
+
+
         <div className='menuGame'>
+          <div className='resetDiv'>
+            <button className='button'
+              style={{ 
+                  backgroundColor: theme.colors.tertiary,
+                  borderColor: theme.colors.secondary
+              }}
+              onClick={resetGraph}>
+              
+              {
+                isLoading ? (
+                  <Spinner animation="grow" />
+                  )
+                  : (
+                  <img src={Reset} alt="paramètres" height='40'/>
+                )
+              }
+              
+              
+            </button>
+          </div>
+
+
+
+
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
@@ -189,6 +351,7 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Check} alt="check" height="40"/>
           </button> */}
 
+          {!IsSolo &&
           <Link to='/info' target='_blank'>
             <button className='button'
               style={{ 
@@ -197,17 +360,37 @@ const InGame = ({locale, changeLocale}) => {
               }}>
               <img src={Check} alt="check" height="40"/>
             </button>
-          </Link>
+          </Link>}
 
-          <button className='button' onClick={handleChange}
+          {!IsSolo && <button className='button' onClick={handleChange}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={MGlass} alt="indice" height="40"/>
-          </button>
+          </button>}
+
+          {!IsSolo && <button className='button' onClick={setShowLastData}
+            style={{ 
+              backgroundColor: theme.colors.tertiary,
+              borderColor: theme.colors.secondary
+            }}>
+            <img src={ eye } alt="indice" height="40"/>
+          </button>}
+
+          {IsSolo && 
+            
+            <button className='button' onClick={generateTEX}
+              style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+              }}>
+              <img src={Download} alt="indice" height="40"/>
+            </button>
+          }
         </div>
 
+{/*
         <Offcanvas show={showP} 
                   onHide={handleCloseP}>
           <Offcanvas.Header closeButton>
@@ -215,15 +398,16 @@ const InGame = ({locale, changeLocale}) => {
             <h3>Il y a {players.length} joueurs</h3>
           </Offcanvas.Header>
           <Offcanvas.Body>
-              {/* affichage d'une liste responsive dynamic */}
-            {/* <div className='playerCanvasBody'>
-              <PersonStatus state={Replay} name="Dummy"/>
-              <PersonStatus state={Replay} name="Boat"/>
-              <PersonStatus state={Replay} name="Bot-tom"/>
-            </div> */}
-            <PlayerList players={players} />
+
           </Offcanvas.Body>
         </Offcanvas>
+          */}
+
+          { !IsSolo &&
+            <div className='playerlistDiv'>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
+            </div>
+          }
 
         <Offcanvas show={show} 
                   onHide={handleClose} 
@@ -271,9 +455,6 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-        <div id="bottom-container">
-          {showChoiceBar && <ChoiceBar />}
-        </div>
         {/*
         <div id="endgamebutton" > {/*  tmp 
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>

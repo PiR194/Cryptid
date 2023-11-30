@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
+import { ADRESSE_WEBSERVER } from "./AdressSetup";
 
-
-const socket = io("http://127.20.10.4:3002");
+const socket = io(ADRESSE_WEBSERVER);
 
 export {socket}

@@ -7,36 +7,40 @@ class NetworkGenerator{
 
     static GenerateNetwork(nbPerson: number): PersonNetwork{
         let json = require("../res/names.json")
-        const tabSports: Sport[] = [0, 1, 2, 3, 4, 5, 5, 5, 5]
+        const tabSports: Sport[] = [0, 1, 2, 3, 4, 5, 5, 5]
         const tabColor: Color[] = [0, 1, 2, 3, 4]
         const tabJeune: number[] = []
         const tabAdo: number[] = []
         const tabAdulte: number[] = []
         const tabVieux: number[] = []
+        const tabTresVieux: number[] = []
 
         const tabPerson: Person[] = []
 
-        const tabNames = json.names
+        const tabNames = [...json.names]
 
+        /*
         let id = 0
-        for(let i = 0; i < nbPerson/4; i++){
+        for(let i = 0; i < nbPerson/5; i++){
             const nombreAleatoire = Math.floor(Math.random() * 14) + 1;
             tabJeune.push(nombreAleatoire)
         }
-        for(let i = 0; i < nbPerson/4; i++){
-            const nombreAleatoire = Math.floor(Math.random() * 5) + 15;
+        */
+        for(let i = 0; i < nbPerson/3; i++){
+            const nombreAleatoire = Math.floor(Math.random() * 8) + 12;
             tabAdo.push(nombreAleatoire)
         }
-        for(let i = 0; i < nbPerson/4; i++){
+        for(let i = 0; i < nbPerson/3; i++){
             const nombreAleatoire = Math.floor(Math.random() * 10) + 20;
             tabAdulte.push(nombreAleatoire)
         }
-        for(let i = 0; i < nbPerson/4; i++){
-            const nombreAleatoire = Math.floor(Math.random() * 31) + 30;
+        for(let i = 0; i < nbPerson/3; i++){
+            const nombreAleatoire = Math.floor(Math.random() * 40) + 30;
             tabVieux.push(nombreAleatoire)
         }
 
-        const tabAge: number[][] = [tabJeune, tabAdo, tabAdulte, tabVieux]
+
+        const tabAge: number[][] = [tabAdo, tabAdulte, tabVieux]
 
         let tmpTabSport=[...tabSports]
         let tmpTabColor = [...tabColor]
@@ -49,7 +53,10 @@ class NetworkGenerator{
             }
             let sports = []
             for (let j = 0; j < 3; j++){
-                if (tmpTabSport.length == 0) tmpTabSport = [...tabSports]
+                if (tmpTabSport.length == 0){
+                    tmpTabSport = [...tabSports]
+                    break
+                }
                 const rand = Math.floor(Math.random() * tmpTabSport.length)
                 if (tmpTabSport[rand] != Sport.AUCUN){
                     sports.push(tmpTabSport[rand])

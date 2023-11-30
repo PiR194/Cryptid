@@ -11,6 +11,7 @@
     padding: 20px;
     margin-right: 10px; 
     margin-left: 30px; 
+    
 }
 
 .lobby-vertical-divider{
@@ -26,7 +27,7 @@
 
 .player-board{
     height: 100%;
-    width: max-content;
+    width: 800px;
     background-color: rgb(243, 241, 235);
     border-radius: 20px;
 
@@ -53,4 +54,44 @@
     color: gray;
     font-size: 20px;
     cursor: pointer;
+}
+
+.centerButton {
+    display: flex;
+    justify-content: center;
+}
+
+.lobbyR{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lobbyR *{
+    margin: 20px 10px;
+}
+
+.valuebutton{
+    border-radius: 90px;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+}
+
+.nbNodeDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border: solid 2px whitesmoke;
+    border-radius: 15px;
+    
+    background-color: white;
+
+    width: 70%;
+}
+
+.nbNodeDiv div {
+    display: flex;
+    justify-content: center;
 }
