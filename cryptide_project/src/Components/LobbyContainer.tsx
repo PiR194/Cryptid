@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
+import { socket } from '../SocketConfig';
 
 interface LobbyContainerProps {
         roomNum : string
@@ -37,6 +38,7 @@ const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbP
         }
         else{
             if (nbPlayer < 6) {
+                socket.off("request lobbies")
                 navigate(dest);
             } else {
                 handleShow()

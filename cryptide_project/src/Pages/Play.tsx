@@ -115,10 +115,6 @@ function Play() {
         socket.emit("lobby created")
     }
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
-
     function launchMastermind(){
         const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
         setPersonData(choosenPerson)

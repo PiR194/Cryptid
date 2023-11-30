@@ -118,8 +118,6 @@ function EndGame() {
     }
     const theme = useTheme();
 
-    console.log(winner)
-    console.log(indices)
 
     let indicenull = false;
     if (indices.length == 0){

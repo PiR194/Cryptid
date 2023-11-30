@@ -52,6 +52,15 @@ io.on('connection', (socket) => {
     }
     
     io.to(room).emit("new player", map.get(room))
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
+  })
+
+  socket.on("request lobbies", () => {
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
   })
 
 
@@ -63,6 +72,9 @@ io.on('connection', (socket) => {
       }
     }
     io.to(room).emit("new player", map.get(room))
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
   })
 
 
