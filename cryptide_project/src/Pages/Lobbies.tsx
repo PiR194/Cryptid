@@ -16,11 +16,13 @@ class LobbyDataProps {
     roomNum : string
     headPlayer: Player
     nbPlayer: number
+    started: boolean
 
-    constructor(roomNum: string, player: Player, nbPlayer: number){
+    constructor(roomNum: string, player: Player, nbPlayer: number, started: boolean){
         this.roomNum = roomNum
         this.headPlayer = player
         this.nbPlayer = nbPlayer
+        this.started=started
     }
 }
 
@@ -28,7 +30,7 @@ function Lobbies() {
     const theme=useTheme();
 
 
-
+    const [first, setFirst] = useState(true)
 
     const [lobbyData, setLobbyData] = useState<LobbyDataProps[]>([])
 
@@ -39,19 +41,29 @@ function Lobbies() {
     lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
 );
 
-    useEffect(() => {
+
+    const setFirstData = (first: boolean) => {
+        setFirst(first)
+    }
+
+    if (first){
+        setFirst(false)
         socket.emit("request lobbies")
+    }
 
-
+    useEffect(() => {
         socket.on("request lobbies", (map) => {
+            console.log("wesh")
             const jsonMap = JSON.parse(map)
             const tmpTab: LobbyDataProps[]=[]
             for(const item of jsonMap){
-                tmpTab.push(new LobbyDataProps(item.key, JSONParser.JSONToPlayer(item.value[0]), item.value.length))
+                tmpTab.push(new LobbyDataProps(item.key, JSONParser.JSONToPlayer(item.value.tab[0]), item.value.tab.length, item.value.started))
             }
-            setLobbyData(tmpTab )
+            setLobbyData(tmpTab)
         })
     })
+
+    
 
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
@@ -70,6 +82,7 @@ function Lobbies() {
                     roomNum={lobby.roomNum}
                     HeadPlayer={lobby.headPlayer}
                     nbPlayer={lobby.nbPlayer}
+                    setFirst={setFirstData}
                 />
                 ))}
             </div>

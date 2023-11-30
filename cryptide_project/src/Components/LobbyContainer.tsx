@@ -13,14 +13,12 @@ interface LobbyContainerProps {
         roomNum : string
         HeadPlayer : Player
         nbPlayer : number
+        setFirst: (first: boolean) => void
     //? mettre un "nbplayermax" si le nombre de joueur max peut etre fixé ?
 }
 
-const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbPlayer}) => {
+const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbPlayer, setFirst}) => {
     const theme=useTheme();
-
-
-    
 
     const navigate = useNavigate();
     const dest = '/lobby?room=' + roomNum;
@@ -39,6 +37,7 @@ const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbP
         else{
             if (nbPlayer < 6) {
                 socket.off("request lobbies")
+                setFirst(true)
                 navigate(dest);
             } else {
                 handleShow()

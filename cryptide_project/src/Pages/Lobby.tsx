@@ -137,7 +137,7 @@ function Lobby() {
 
     socket.on("new player", (tab) =>{
         const tmpTab: Player[] = []
-        for (const p of tab){
+        for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
         console.log(tmpTab)
