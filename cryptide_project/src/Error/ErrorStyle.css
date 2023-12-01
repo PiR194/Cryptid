@@ -1,0 +1,29 @@
+
+.mainErrorDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.titleError{
+    border: solid 2px #C70039;
+    border-radius: 10px;
+    margin: 15px;
+    padding: 10px;  
+    box-shadow: 5px 5px 5px #900C3F;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 400px;
+    height: 250px;
+}
+
+.titleError h1 {
+    color: #900C3F;
+    margin: 10px !important;
+}
