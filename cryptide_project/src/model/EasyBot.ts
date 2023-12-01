@@ -8,18 +8,23 @@ import Pair from "./Pair";
 import Person from "./Person";
 import PersonNetwork from "./PersonsNetwork";
 import Player from "./Player";
+import DefaultImg from "../res/img/bot.png"
 
 class EasyBot extends Bot{
 
-    constructor(id: string, name: string){
-        super(id, name)
+    constructor(id: string, pseudo: string, profilePicture: string){
+        if (profilePicture === undefined || profilePicture === ""){
+            profilePicture=DefaultImg
+        }
+        super(id, pseudo, profilePicture)
     }
 
     toJson() {
         return {
             type: "EasyBot",
             id: this.id,
-            name: this.name,
+            pseudo: this.pseudo,
+            profilePicture: this.profilePicture
         };
     }
 
@@ -93,6 +98,9 @@ class EasyBot extends Bot{
                 tabFilterPerson.push(p)
             }
         })
+        if (tabFilterPerson.length == 0){
+            return -1
+        }
         return tabFilterPerson[Math.floor(Math.random() * tabFilterPerson.length)].getId()
     }
 

@@ -16,7 +16,7 @@ class NbSportIndice extends Indice {
     // Implémentation de la méthode abstraite
     ToString(lang: string): string {
       let json = GetJsonFile(lang)
-      let string = `${json.nb_sports_indice_start}`;
+      let string = `${json.nb_sports_indice_start} `;
       this.nbSport.forEach((i, index) =>{
         if (index == this.nbSport.length - 1){
           string += i

@@ -4,14 +4,16 @@ import GraphCreator from "../model/Graph/GraphCreator";
 import "./GraphContainer.css";
 import IndiceTesterFactory from "../model/Factory/IndiceTesterFactory";
 import Person from "../model/Person";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGame } from "../Contexts/GameContext";
 import { socket } from "../SocketConfig"
 import { colorToEmoji, positionToColor, positionToEmoji } from "../ColorHelper";
 import { ColorToHexa } from "../model/EnumExtender";
 import Bot from "../model/Bot";
 import NodePerson from "../model/Graph/NodePerson";
-
+import { useAuth } from "../Contexts/AuthContext";
+import Indice from "../model/Indices/Indice";
+import Pair from "../model/Pair";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -22,14 +24,20 @@ interface MyGraphComponentProps {
   changecptTour: (newcptTour : number) => void
   addToHistory: (message : string) => void
   solo : boolean
+  isDaily : boolean
+  isEasy: boolean
   setNetwork: (network: Network) => void
   showLast: boolean
+  setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
+  askedWrong: boolean
+  setAskedWrong: (askedWrong: boolean) => void
+  setPlayerIndex: (playerIndex: number) => void
 }
 
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
-let askedWrong = false
+let askedWrongLocal = false
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
 let botIndex = -1
@@ -38,27 +46,56 @@ let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
+let cptEndgame = 0
+let firstEnigme = true
+let firstIndex = true
+let endgame= false
+let firstHistory = true
+let cptSquare = 0
+let cptOnAskedWrong = 0
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, addToHistory, showLast, setNetwork}) => {
-let cptTour: number = 0
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong}) => {
+  let cptTour: number = 0
 
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData } = useGame();
+  //* Gestion du temps :
+  let initMtn = 0
+
+  const {isLoggedIn, user, manager} = useAuth();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
 
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    // Démarrez le timer au montage du composant
+    const intervalId = setInterval(() => {
+      setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
+      settempsData(elapsedTime)
+
+      // Vérifiez si la durée est écoulée, puis arrêtez le timer
+      if (endgame) {
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+    // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, [elapsedTime, endgame]);
+
 
   useEffect(() =>{
     touchedPlayer=playerTouched
     if (touchedPlayer == -1){
-      if (!askedWrong){
+      if (!askedWrongLocal){
         socket.emit("put correct background", socket.id)
       }
     }
     else if (touchedPlayer < players.length && touchedPlayer>=0){
-      if(!askedWrong){
+      if(!askedWrongLocal){
         socket.emit("put correct background", socket.id)
         socket.emit("put grey background", socket.id, touchedPlayer)
       }
@@ -72,6 +109,7 @@ let cptTour: number = 0
   useEffect(() => {
     const tab: NodePerson[] = []
     for(const n of lastNodes.reverse()){
+      //@ts-ignore
       if (!tab.find((node) => node.id == n.id)){
         tab.push(n)
         if (tab.length > players.length * 2) break
@@ -88,6 +126,11 @@ let cptTour: number = 0
   }, [showLast])
 
   let playerIndex: number = turnPlayerIndex
+
+  if (firstIndex){
+    firstIndex=false
+    setPlayerIndex(playerIndex)
+  }
   let index = 0
   for (let i=0; i<players.length; i++){
     if(players[i].id == socket.id){
@@ -103,8 +146,10 @@ let cptTour: number = 0
         botIndex = lastIndex
         if (personNetwork!=null){
           const [choosedPlayerIndex, personIndex] = bot.playRound(personNetwork, players)
+          //@ts-ignore
           const person = personNetwork.getPersons().find((p) => p.getId() == personIndex)
           if (choosedPlayerIndex == players.length && person != undefined){
+            //@ts-ignore
             console.log(lastIndex + " All in sur => " + personNetwork.getPersons().find((p) => p.getId() == personIndex)?.getName())
             let nextPlayerIndex = lastIndex + 1
             if (nextPlayerIndex == players.length){
@@ -130,6 +175,11 @@ let cptTour: number = 0
               if(!works){
                 socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
                 const ind = bot.placeSquare(personNetwork, players)
+                if (ind == -1 ){
+                  addToHistory(lastIndex.toString() + "177")
+                  socket.emit("can't put square", lastIndex, room)
+                  return
+                }
                 console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                 playerIndex = lastIndex + 1
                 if(playerIndex == players.length){
@@ -160,6 +210,11 @@ let cptTour: number = 0
                   console.log(lastIndex + " interroge " + choosedPlayerIndex + " a propos de " + person.getName() + " et dit non")
                   socket.emit("node checked", personIndex, false, choosedPlayerIndex, room, lastIndex)
                   const ind = bot.placeSquare(personNetwork, players)
+                  if (ind == -1 ){
+                    addToHistory(lastIndex.toString() + "212")
+                    socket.emit("can't put square", playerIndex, room)
+                    return
+                  }
                   console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                   playerIndex = lastIndex + 1
                   if(playerIndex == players.length){
@@ -175,6 +230,11 @@ let cptTour: number = 0
                 const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
                 if (!tester.Works(person)){
                   const ind = bot.placeSquare(personNetwork, players)
+                  if (ind == -1 ){
+                    addToHistory(lastIndex.toString() + "232")
+                    socket.emit("can't put square", playerIndex, room)
+                    return
+                  }
                   console.log(lastIndex + " pose carré sur " + personNetwork.getPersons()[ind].getName())
                   playerIndex = lastIndex + 1
                   if(playerIndex == players.length){
@@ -194,7 +254,7 @@ let cptTour: number = 0
   
   if (first){
     first = false
-
+    endgame= false
     if (!solo){
       for(let i = 0; i<indices.length; i++){
         mapIndexPersons.set(i, [])
@@ -215,11 +275,31 @@ let cptTour: number = 0
     }
   }
 
+  //* fonction qui reinitialise le graphe 
+  const resGraph = () => { //? comment accéder au nework ??
+    const savedGraphStateString = localStorage.getItem('graphState');
+    if (savedGraphStateString !== null) {
+      const savedGraphState = JSON.parse(savedGraphStateString);
+      //network.setData(savedGraphState);
+    } else {
+      // La clé 'graphState' n'existe pas dans le localStorage, prenez une action en conséquence.
+      console.log("ayoooooo");
+    }
+
+  };
+
   useEffect(() => {
     if (personNetwork == null){
       return
     }
     const graph = GraphCreator.CreateGraph(personNetwork)
+
+    let n = graph.nodesPerson;
+    let e = graph.edges;
+    const graphState = { n, e };
+
+    // Sauvegarder l'état dans localStorage
+    localStorage.setItem('graphState', JSON.stringify(graphState));
 
     const container = document.getElementById('graph-container');
     if (!container) {
@@ -239,6 +319,7 @@ let cptTour: number = 0
                 direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
                 sortMethod: 'hubsize'
             },
+            distanceMin: 500, // Set the minimum distance between nodes
             //randomSeed: 2
         },
         physics: {
@@ -247,17 +328,55 @@ let cptTour: number = 0
                 gravitationalConstant: -1000,
                 springConstant: 0.001,
                 springLength: 100
+            },
+            solver: "repulsion",
+            repulsion: {
+              nodeDistance: 100 // Put more distance between the nodes.
             }
         }
     };
 
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
-
+    network.stabilize();
     setNetwork(network)
+    setSeedData(network.getSeed())
+
+    if (isDaily){
+      setNetworkEnigme(dailyEnigme)
+      if (!isEasy){
+        dailyEnigme.forEach((pairs, index) => {
+          pairs.forEach((pair) => {
+            //@ts-ignore
+            const i = indices.findIndex((indice) => pair.first.getId() === indice.getId())
+            //@ts-ignore
+            const node = networkData.nodes.get().find((n) => index == n.id)
+            if (node != undefined){
+              networkData.nodes.update({id: node.id, label: node.label + positionToEmoji(i, pair.second)})
+            }
+          })
+        });
+      }
+      else{
+        if (firstHistory){
+          firstHistory=false
+          indices.forEach((indice, index) => {
+            addToHistory("Indice " + positionToEmoji(index, true) + " : " + indice.ToString("fr"))
+          })
+        }
+        
+      }
+    }
+
+    socket.on("reset graph", () => {
+      console.log("reset graph")
+      initialOptions.physics.enabled = true
+      network.setOptions(initialOptions)
+    })
 
     if (!solo){
       socket.on("asked all", (id) =>{
+        //@ts-ignore
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
         if (pers!=undefined){
           askedPersons.push(pers)
@@ -265,7 +384,9 @@ let cptTour: number = 0
       })
 
       socket.on("opacity activated", () => {
+        //@ts-ignore
         nodes.forEach(node => {
+          //@ts-ignore
           if (!lastNodes.find((n) => n.id == node.id)){
             networkData.nodes.update({id: node.id, opacity: 0.2})
           }
@@ -273,23 +394,22 @@ let cptTour: number = 0
       })
 
       socket.on("opacity deactivated", () => {
+        //@ts-ignore
         nodes.forEach(node => {
           networkData.nodes.update({id: node.id, opacity: 1})
         });
       })
-
-      socket.on("reset graph", () => {
-        initialOptions.physics.enabled = true
-        network.setOptions(initialOptions)
-      })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log(newPlayerIndex)
+        //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
+          setPlayerIndex(playerIndex)
+          //@ts-ignore
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
+            //@ts-ignore
             const p = personNetwork.getPersons().find((p)=> p.getId() == id)
             const tab = mapIndexPersons.get(askedIndex)
             if (p!=undefined && tab != undefined){
@@ -309,7 +429,7 @@ let cptTour: number = 0
             cptHistory++
             if (cptHistory % 2 == 0){
               lastNodes.push(node)
-              addToHistory(players[askedIndex].name + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(players[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
           }
 
@@ -332,11 +452,61 @@ let cptTour: number = 0
       })
   
       socket.on("asked wrong", () =>{
-        askedWrong = true
-        askedWrongBot=true
-        handleShowTurnBar(true)
-        handleTurnBarTextChange("Mauvais choix, posez un carré !")
-        socket.emit("put grey background", socket.id, actualPlayerIndex)
+        cptSquare++
+        if (cptSquare % 2 == 0){
+          if (indice==null){
+            return
+          }
+          const tester = IndiceTesterFactory.Create(indice)
+          const tabPossible: Person[] = []
+          for(const person of personNetwork.getPersons()){
+            //@ts-ignore
+            const node = nodes.get().find((n) => n.id == person.getId())
+            if (node != undefined) {
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (!tester.Works(person) && !isSquare){
+                tabPossible.push(person)
+              }
+            }
+          }
+          if (tabPossible.length>0){
+            askedWrongLocal= true
+            setAskedWrong(true)
+            askedWrongBot=true
+            handleShowTurnBar(true)
+            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            socket.emit("put grey background", socket.id, actualPlayerIndex)
+          }
+          else{
+            socket.emit("can't put square", actualPlayerIndex, room)
+          }
+        }
+      })
+
+      socket.on("can't put square", (askingPlayer) => {
+        cptOnAskedWrong ++
+        if (cptOnAskedWrong % 2 == 0){
+          addToHistory(players[askingPlayer].pseudo + " ne peut plus poser de carré")
+          playerIndex = askingPlayer + 1
+          if(playerIndex == players.length){
+            playerIndex = 0
+          }
+          setPlayerIndex(playerIndex)
+          setLastIndex(playerIndex)
+          if (playerIndex === actualPlayerIndex){
+            handleTurnBarTextChange("À vous de jouer")
+            handleShowTurnBar(true)
+          }
+          else{
+            handleShowTurnBar(false)
+            socket.emit("put correct background", socket.id)
+          }
+        }
       })
   
   
@@ -344,6 +514,7 @@ let cptTour: number = 0
         if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
           lastAskingPlayer = askingPlayer.id
           lastNodeId = nodeId
+          //@ts-ignore
           const pers = personNetwork.getPersons().find((p) => p.getId() == nodeId)
           if (pers!=undefined){
             if (askedPersons.includes(pers)){
@@ -352,10 +523,10 @@ let cptTour: number = 0
             }
             else{
               askedPersons.push(pers)
+              //@ts-ignore
               const node = nodes.get().find((n) => nodeId == n.id)
               if (node != undefined && indice != null){
                 var tester = IndiceTesterFactory.Create(indice)
-                let maybe = actualPlayerIndex
                 if (tester.Works(pers)){
                   playerIndex = playerIndex + 1
                   if(playerIndex == players.length){
@@ -364,10 +535,6 @@ let cptTour: number = 0
                   socket.emit("node checked", nodeId, true, actualPlayerIndex, room, playerIndex)
                 }
                 else{
-                  maybe = actualPlayerIndex - 1
-                  if(maybe == 0){
-                    maybe = players.length - 1
-                  }
                   let index = players.findIndex((p) => p.id == askingPlayer.id)
                   if (players[index] instanceof Bot){
                     index = playerIndex + 1
@@ -379,7 +546,6 @@ let cptTour: number = 0
                     socket.emit("node checked", nodeId, false, actualPlayerIndex, room, index)
                     socket.emit("asked wrong", askingPlayer, room)
                   }
-    
                 }
               }
             }     
@@ -391,7 +557,9 @@ let cptTour: number = 0
     else {
       if (firstLap){
         firstLap=false
-        addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+        if (!isDaily){
+          addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+        }
       }
     }
     
@@ -414,9 +582,21 @@ let cptTour: number = 0
             }
           }
           else if(indice != null){
+            //Pour poser un carré
             const tester = IndiceTesterFactory.Create(indice)
-            for(const person of personNetwork.getPersons().filter((p) => tab.includes(p) || tester.Works(p))){
-              networkData.nodes.update({id: person.getId(), color: "#808080"})
+            for(const person of personNetwork.getPersons()){
+              //@ts-ignore
+              const node = nodes.get().find((n) => n.id == person.getId())
+              if (node == undefined) continue
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (tab.includes(person) || tester.Works(person) || isSquare){
+                networkData.nodes.update({id: person.getId(), color: "#808080"})
+              }
             }
           }
         }
@@ -428,6 +608,7 @@ let cptTour: number = 0
         const tabNodes: any = []
         const tester = IndiceTesterFactory.Create(indice)
         for (const pers of personNetwork.getPersons()){
+          //@ts-ignore
           const node = nodes.get().find((n) => pers.getId() == n.id)
           if (node != undefined){
             for(let i=0; i<players.length; i++){
@@ -446,29 +627,67 @@ let cptTour: number = 0
     })
 
     socket.on("end game", (winnerIndex) =>{
-      setNodeIdData(-1)
-      setActualPlayerIndexData(-1)
-      setLastIndex(-1)
-      setPlayerTouched(-1)
-      setWinnerData(players[winnerIndex])
-      first = true
-      cptHistory = 0
-      askedWrong=false
-      askedWrongBot=false
-      socket.off("end game")
-      socket.off("asked all")
-      socket.off("opacity activated")
-      socket.off("opacity deactivated")
-      socket.off("reset graph")
-      socket.off("node checked")
-      socket.off("already asked")
-      socket.off("asked wrong")
-      socket.off("asked")
-      socket.off("put correct background")
-      socket.off("put grey background")
-      socket.off("put imossible grey")
+      if (cptEndgame % 2 == 0){
+        cptEndgame++;
+        const currentPlayer = players[actualPlayerIndex];
+        const winner = players[winnerIndex];
+  
+        setNetworkDataData(networkData)
+        setNodeIdData(-1)
+        setActualPlayerIndexData(-1)
+        setLastIndex(-1)
+        setPlayerTouched(-1)
+        setWinnerData(winner)
+        setElapsedTime(0)
 
-      navigate("/endgame")
+        first = true
+        cptHistory = 0
+        askedWrongLocal=false
+        setAskedWrong(false)
+        askedWrongBot=false
+        endgame = true
+        firstHistory=true
+        try{
+          if(isLoggedIn){
+            if(!solo){
+              if(user && user.onlineStats){
+                // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
+                if(winner.id === currentPlayer.id){
+                  // Ajouter une victoire
+                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
+              }
+              // Update les stats
+              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
+              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
+              
+              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+              }
+              else{
+                console.error("User not found");
+              }
+            }
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+        finally{
+          socket.off("end game")
+          socket.off("asked all")
+          socket.off("opacity activated")
+          socket.off("opacity deactivated")
+          socket.off("reset graph")
+          socket.off("node checked")
+          socket.off("already asked")
+          socket.off("asked wrong")
+          socket.off("asked")
+          socket.off("put correct background")
+          socket.off("put grey background")
+          socket.off("put imossible grey")
+    
+          navigate("/endgame")
+        }        
+      }
     })
 
 
@@ -483,7 +702,7 @@ let cptTour: number = 0
         }
         if (a==indices.length){
           //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          console.log(p)
+          //console.log(p)
         }
         
       });
@@ -505,11 +724,19 @@ let cptTour: number = 0
         setNodeIdData(params.nodes[0])
         // addToHistory("Le joueur a cliqué") //! TEST DEBUG
         if (!solo){
-          if (askedWrong){
+          if (askedWrongLocal){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
-            if (person !== undefined && indice !== null){
+            //@ts-ignore
+            const node = nodes.get().find((n) => n.id == params.nodes[0])
+            if (person !== undefined && indice !== null && node!=undefined){
               const tester = IndiceTesterFactory.Create(indice)
-              if (!tester.Works(person) && !askedPersons.includes(person)){
+              let isSquare = false
+              players.forEach((p, index) => {
+                if (node.label.includes(positionToEmoji(index, false))){
+                  isSquare=true
+                }
+              })
+              if (!tester.Works(person) && !askedPersons.includes(person) && !isSquare){
                 playerIndex = actualPlayerIndex + 1
                 if(playerIndex == players.length){
                   playerIndex = 0
@@ -518,7 +745,8 @@ let cptTour: number = 0
                 socket.emit("put correct background", socket.id)
                 touchedPlayer=-1
                 askedPersons.push(person)
-                askedWrong = false
+                askedWrongLocal=false
+                setAskedWrong(false)
               }
             }
           }
@@ -527,6 +755,7 @@ let cptTour: number = 0
             if (players[touchedPlayer] instanceof Bot){
               const ind = indices[touchedPlayer]
               const test = IndiceTesterFactory.Create(ind)
+              //@ts-ignore
               const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
               if (person != undefined){
                 if (test.Works(person)){
@@ -545,8 +774,9 @@ let cptTour: number = 0
               }
             }
             else{
-              if (touchedPlayer > 0){
+              if (touchedPlayer >= 0){
                 console.log(touchedPlayer)
+                //@ts-ignore
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
                 socket.emit("put correct background", socket.id)
                 touchedPlayer=-1
@@ -556,6 +786,7 @@ let cptTour: number = 0
           }
           else if(playerIndex == actualPlayerIndex && touchedPlayer==players.length){
             botIndex = -1
+            //@ts-ignore
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
             if (person != undefined){
               const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])
@@ -606,6 +837,7 @@ let cptTour: number = 0
           }
         } 
         else{
+          //@ts-ignore
           const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           if (person != undefined){
             let index =0
@@ -613,6 +845,7 @@ let cptTour: number = 0
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(person)
+              //@ts-ignore
               const node = nodes.get().find((n) => params.nodes[0] == n.id)
               if (node!=undefined){
                 if (!node.label.includes(positionToEmoji(index, test))){
@@ -622,7 +855,32 @@ let cptTour: number = 0
                     works = false
                   }
                   if (index == indices.length - 1 && works){
-                    navigate("/endgame")
+
+                    if (user!=null){
+                      setWinnerData(user)
+                      setNetworkDataData(networkData)
+                    }
+                    cptTour ++;
+                    setNbCoupData(cptTour)
+                    setElapsedTime(0)
+                    endgame = true
+
+                    try{
+                      if(user && user.soloStats){
+                        user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
+                        if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == 0 || user.soloStats.bestScore == null){
+                          user.soloStats.bestScore = cptTour;
+                        }
+                        user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
+        
+                        manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
+                      }
+                    }
+                    catch(error){
+                      console.log(error);
+                    }
+
+                    navigate("/endgame?solo=true&daily=" + isDaily)
                   }
                   
                 }
@@ -631,7 +889,6 @@ let cptTour: number = 0
             }
             addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
 
-            //TODO METTRE LA WIN CONDITION ICI AVEC LE MERGE
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
             addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");

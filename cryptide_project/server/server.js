@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["http://172.20.10.4:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
+    origin: ["http://localhost:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -15,7 +15,6 @@ const io = socketIO(server, {
 
 
 const map = new Map()
-// ... le reste de votre configuration du serveur
 
 server.listen(3002, () => {
   console.log('Serveur Socket.IO écoutant sur le port 3002');
@@ -29,34 +28,43 @@ io.on('connection', (socket) => {
   });
 
   socket.on("lobby joined", (room, player) =>{
-    if (player.type=="Human"){
+    console.log(player)
+    if (player.type=="User"){
       socket.join(room)
     }
     if (map.get(room) == undefined){
-      map.set(room, [{type: player.type, id: socket.id, name: player.name}])
+      map.set(room, [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}])
     }
     else{
       const tab = map.get(room)
       for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === socket.id && player.type==="Human"){
+        if (tab[i].id === socket.id && player.type==="User"){
           tab.splice(i, 1)
         }
       }
 
-      if (player.type!=="Human"){
-        map.get(room).push({type: player.type, id: player.id, name: player.name})
+      if (player.type!=="User"){
+        map.get(room).push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
       }
       else{
-        map.get(room).push({type: player.type, id: socket.id, name: player.name})
+        map.get(room).push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
       }
     }
     
     io.to(room).emit("new player", map.get(room))
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
+  })
+
+  socket.on("request lobbies", () => {
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
   })
 
 
   socket.on("bot deleted", (bot, room) =>{
-    // map.set(room, map.get(room).filter(player => player.id !== bot.id));
     const tab = map.get(room)
     for(let i = 0; i<tab.length; i++){
       if (tab[i].id === bot.id){
@@ -64,6 +72,9 @@ io.on('connection', (socket) => {
       }
     }
     io.to(room).emit("new player", map.get(room))
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.to(socket.id).emit("request lobbies", playerJson)
   })
 
 
@@ -94,6 +105,9 @@ io.on('connection', (socket) => {
           if (tab[i].id === socket.id){
             tab.splice(i, 1)
             io.to(k).emit("player left", tab, i)
+            if (tab.filter((p) => p.type=="User").length == 0){
+              map.delete(k)
+            }
           }
         }
     }
@@ -115,6 +129,10 @@ io.on('connection', (socket) => {
     io.to(id).emit("put imossible grey")
   })
 
+  socket.on("can't put square", (askingPlayer, room) => {
+    io.to(room).emit("can't put square" , askingPlayer)
+  })
+
   socket.on("opacity activated", (id) => {
     io.to(id).emit("opacity activated")
   })
@@ -125,7 +143,7 @@ io.on('connection', (socket) => {
 
   socket.on("reset graph", (id) => {
     io.to(id).emit("reset graph")
-  })  
+  })
 
   socket.on("end game", (winnerIndex, room) =>{
     io.to(room).emit("end game", winnerIndex)

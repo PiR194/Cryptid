@@ -1,5 +1,4 @@
-
-.custom-navbar{
+.custom-navbar {
     /* background-color: #85C9C2; */
     color: #fff;
     text-emphasis-color: #fff;
@@ -15,23 +14,20 @@
     border-radius: 15px;
 }
 
-
 .navbar-title-dd a {
-    color: #fff;
-    border-radius: 15;
+    border-radius: 15px;
     padding: 10px 20px; /* Ajustez le rembourrage selon vos préférences */
     text-decoration: none; /* Pour supprimer le soulignement des liens */
     display: inline-block; /* Pour que les styles de fond s'appliquent aux liens */
     margin-right: 10px; /* Pour ajouter de l'espace entre les boutons */
 }
 
-
-.centerdiv{
+.centerdiv {
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 }
 
-.leftdiv{
+.leftdiv {
     display: flex;
     justify-content: start;
 }

@@ -47,7 +47,7 @@ const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
             <div className='item-horizontal-div'>
                 <div>
                     <img src={pdp} alt='player-image' height='100' width='100' />
-                    <h4>{player.name}</h4>
+                    <h4>{player.pseudo}</h4>
                 </div>
                 {isBot && (
                     <Button className='suprButton' onClick={delBot} variant="danger">

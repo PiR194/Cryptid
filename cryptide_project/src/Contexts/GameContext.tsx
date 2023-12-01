@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import Indice from '../model/Indices/Indice';
+import Pair from '../model/Pair';
 import Person from '../model/Person';
 import PersonNetwork from '../model/PersonsNetwork';
 import Player from '../model/Player';
@@ -17,6 +18,11 @@ interface GameContextProps {
   room: string;
   onlyFalse: boolean
   winner: Player | null
+  dailyEnigme: Map<number, Pair<Indice, boolean>[]>
+  nbCoup : number
+  temps : number
+  networkData: any
+  seed: number | string;
   setIndicesData: (newIndices: Indice[]) => void;
   setIndiceData: (newIndice: Indice) => void;
   setPersonData: (newPerson: Person) => void;
@@ -30,6 +36,11 @@ interface GameContextProps {
   setOnlyFalseData: (newOnlyFalse: boolean) => void
   setWinnerData: (winner: Player) => void
   reset: () => void
+  setDailyEnigmeData: (map: Map<number, Pair<Indice, boolean>[]>) => void
+  setNbCoupData: (newNbCoup : number) => void
+  settempsData: (newtemps : number) => void
+  setNetworkDataData: (networkData: any) => void
+  setSeedData: (seed: number | string) => void
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -51,7 +62,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [room, setRoom] = useState<string>("")
   const [onlyFalse, setOnlyFalse] = useState<boolean>(false)
   const [winner, setWinner] = useState<Player | null>(null)
+  const [dailyEnigme, setDailyEnigme] = useState<Map<number, Pair<Indice, boolean>[]>>(new Map())
+  const [nbCoup, setNbCoup] = useState<number>(0);
+  const [temps, settemps] = useState<number>(0);
+  const [networkData, setNetworkData] = useState<any>(null);
+  const [seed, setSeed] = useState<number | string>(0);
 
+  const setNetworkDataData = (networkData: any) => {
+    setNetworkData(networkData);
+  }
+
+  const setSeedData = (seed: number | string) => {
+    setSeed(seed);
+  }
 
   const setIndicesData = (newIndices: Indice[]) => {
     setIndices(newIndices);
@@ -102,6 +125,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setWinner(winner)
   }
 
+  const setDailyEnigmeData = (map: Map<number, Pair<Indice, boolean>[]>) => {
+    setDailyEnigme(map)
+  }
+
+
+  const setNbCoupData = (newNbCoup : number) => {
+    setNbCoup(newNbCoup);
+  }
+
+  const settempsData = (newtemps : number) => {
+    settemps(newtemps);
+  }
+
   const reset = () => {
     setIndices([])
     setActualPlayerIndex(-1)
@@ -114,10 +150,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setTurnPlayerIndex(-1)
     setNodeId(-1)
     setIndice(null)
+    setNbCoup(0)
+    settemps(0)
   }
 
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset }}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset, dailyEnigme, setDailyEnigmeData, nbCoup, setNbCoupData, temps, settempsData, setNetworkDataData, networkData, seed, setSeedData}}>
       {children}
     </GameContext.Provider>
   );

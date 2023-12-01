@@ -1,10 +1,14 @@
+
 abstract class Player{
     public id: string
-    public name: string;
+    public pseudo: string;
+    public profilePicture: string
 
-    constructor(id: string, name: string){
+
+    constructor(id: string, pseudo: string, profilePicture: string){
         this.id=id
-        this.name=name
+        this.pseudo=pseudo
+        this.profilePicture=profilePicture
     }
 
     abstract toJson(): any

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
+/* Style */
 import './Lobby.css';
+import "../Style/Global.css"
 import { useTheme } from '../Style/ThemeContext';
 
 /* res */
@@ -8,23 +11,40 @@ import PersonImg from '../res/img/Person.png';
 import param from '../res/icon/param.png';
 import cible from '../res/icon/cible.png';
 
+import defaultImg from "../res/img/Person.png"
+
 /* Component */
 import ButtonImgNav from '../Components/ButtonImgNav';
+
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
+
+/* Context */
+import { useGame } from '../Contexts/GameContext';
+import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+/* Model */
 import PersonNetwork from '../model/PersonsNetwork';
 import Person from '../model/Person';
 import GameCreator from '../model/GameCreator';
-import { useGame } from '../Contexts/GameContext';
-import JSONParser from '../JSONParser';
 import Indice from '../model/Indices/Indice';
-import { useNavigate } from 'react-router-dom';
-import { socket } from "../SocketConfig";
-import { random } from 'lodash';
+import JSONParser from '../JSONParser';
 import Player from '../model/Player';
-import Human from '../model/Human';
 import EasyBot from '../model/EasyBot';
 import Bot from '../model/Bot';
+import User from '../model/User';
+import {loadImageAsync} from "../ImageHelper"
+
+
+/* serv */
+import { socket } from "../SocketConfig";
+import { random } from 'lodash';
+import SessionService from '../services/SessionService';
+
+import { useRef } from 'react';
+import Button from 'react-bootstrap/Button';
+import Overlay from 'react-bootstrap/Overlay';
 
 
 let gameStarted = false
@@ -32,27 +52,52 @@ let gameStarted = false
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
-
-
+    
     const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
     
+    const {user, setUserData, manager, login} = useAuth()
     let first = true
 
     const params = new URLSearchParams(window.location.search);
     const room = params.get('room');
 
     function addBot(){
-        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100)).toJson())
+        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
     }
 
-    // function delBot(selectedBot: Bot){
-        
-    // }
+    //* nb Node
+    const [enteredNumber, setEnteredNumber] = useState(20);
+
+    //@ts-ignore
+    const handleNumberChange = (event) => {
+        const newNumber = Math.max(20, Math.min(60, parseInt(event.target.value, 10)));
+        setEnteredNumber(newNumber);
+    };
 
     useEffect(() => {
         if (first){
             first=false
-            socket.emit("lobby joined", room, new Human("test", "Test" + Math.floor(Math.random() * 100)).toJson())
+
+            if (user == null){
+                manager.userService.fetchUserInformation().then(([u, loggedIn]) => {
+                    if (u!=null){
+                        if (loggedIn){
+                            login()
+                            setUserData(u)
+                        }
+                        else{
+                            loadImageAsync(defaultImg).then((blob) => {
+                                u.profilePicture=blob
+                                setUserData(u)
+                            })
+                        }
+                        socket.emit("lobby joined", room, u.toJson())
+                    }
+                })
+            }
+            else{
+                socket.emit("lobby joined", room, user.toJson())
+            }
 
             return () => {
                 socket.off('game created');
@@ -87,7 +132,7 @@ function Lobby() {
         gameStarted = true
         socket.off("player left")
         socket.off("new player")
-        navigate('/game?solo=false');
+        navigate('/game?solo=false&daily=false');
     });
 
     socket.on("new player", (tab) =>{
@@ -95,6 +140,7 @@ function Lobby() {
         for (const p of tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
@@ -110,14 +156,46 @@ function Lobby() {
 
 
     function StartGame(){
-        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, 30)
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, enteredNumber)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        let start = 0
+        let users = players.filter((p) => p instanceof User)
+        let u = users[Math.floor(Math.random() * users.length)]
+        let start = players.findIndex((p) => p.id == u.id)
+        if (start == -1){
+            start = 0
+        }
         socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 
+    const copyGameLink = () => {
+        setShow(!show)
+        
+        const gameLink = "http://localhost:3000/lobby?room="+ room;
+        navigator.clipboard.writeText(gameLink)
+            .then(() => {
+                console.log('Lien copié avec succès !');
+            })
+            .catch((err) => {
+                console.error('Erreur lors de la copie du lien :', err);
+            });
+    };
+
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const linkToCopy = "http://localhost:3000/lobby?room="+ room
+    const handleCopyClick = () => {
+        setShow(!show)
+        if(textAreaRef.current != null){
+            textAreaRef.current.select();
+            document.execCommand('copy');
+        }
+    };
+
+
+
+    const [show, setShow] = useState(false);
+        const target = useRef(null);
     return (
         <div className='lobby-container'>
             <div className='left-part'>
@@ -150,7 +228,7 @@ function Lobby() {
             <div className="lobby-vertical-divider" style={{backgroundColor: theme.colors.secondary}}></div>
 
             <div className='right-part'>
-                <div className='title-param-div'>
+                {/* <div className='title-param-div'>
                     <img src={param} alt="param"/>
                     <h2>Paramètre de la partie</h2>
                 </div>
@@ -159,19 +237,105 @@ function Lobby() {
                     <li><h4>paramètre super important pour la partie</h4></li>
                     <li><h4>paramètre super important pour la partie</h4></li>
                     <li><h4>paramètre super important pour la partie</h4></li>
-                    <li><h4>Niveau des bots : Facile </h4></li> {/* mettre un dropdown ou un swiper */}
-                    <li><h4>Thèmes : basique </h4></li> {/* mettre un dropdown*/}
+                    <li><h4>Niveau des bots : Facile </h4></li>
+                    <li><h4>Thèmes : basique </h4></li> */}
                     {
                         //? mettre un timer pour chaques personne ?
                         //? indice avancé ? ==> négation, voisin du 2e degré etc.
                     }
-                </ul>
-                <center >
+                {/* </ul> */}
+                {/* <center >
                     <button className='buttonNabImg' onClick={StartGame}>
-                        <img src={cible} alt="Button Image" height="50" width="50"/>
+                        <img src={cible} alt="Button Image" height="50" width="50" />
                         <p>{"la chasse !"}</p>
                     </button>
-                </center>
+                </center> */}
+                <div className='lobbyR' 
+                    style={{flexDirection:'column',
+                            alignItems:'space-around'}}>
+                        <h3>Bienvenue dans votre lobby !</h3>
+                        <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
+                        {/* Bouton pour copier le lien */}
+                        <Button variant="primary" ref={target} onClick={copyGameLink}>
+                            Inviter des amis
+                        </Button>
+                        <Overlay target={target.current} show={show} placement="top">
+                            {({
+                            placement: _placement,
+                            arrowProps: _arrowProps,
+                            show: _show,
+                            popper: _popper,
+                            hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                            ...props
+                            }) => (
+                            <div
+                                {...props}
+                                style={{
+                                position: 'absolute',
+                                backgroundColor: theme.colors.secondary,
+                                padding: '2px 10px',
+                                color: 'white',
+                                borderRadius: 3,
+                                ...props.style,
+                                }}
+                            >
+                            Lien copié
+                        </div>
+                        )}
+                    </Overlay>
+
+                <div className='nbNodeDiv'>
+                    <label htmlFor="numberInput">Sélectionner le nombre de noeud (entre 20 et 60) :</label>
+                    <div>
+                        <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
+                            style={{borderColor:theme.colors.secondary}}> - </button>
+                        <input
+                            // type="number"
+                            id="numberInput"
+                            disabled
+                            value={ "Nombre de noeuds : " + enteredNumber}
+                            onChange={handleNumberChange}
+                            min={20}
+                            max={60}/>
+                        <button className='valuebutton' onClick={() => { if (enteredNumber<60) setEnteredNumber(enteredNumber+1)}}
+                            style={{borderColor:theme.colors.secondary}}> + </button>
+                    </div>
+                </div>
+
+
+                    <button className='button' onClick={StartGame}
+                        style={{ 
+                            backgroundColor: theme.colors.tertiary,
+                            borderColor: theme.colors.secondary,
+                            width: 'auto',
+                            height: 'auto'
+                        }}>
+                        Démarrer la partie !
+                    </button>
+                </div>
+                {/* <div className='centerDivH'>
+                <div>
+                    <label htmlFor="numberInput">Séléctionner le nombre de noeud (entre 20 et 60) :</label>
+                    <input
+                        type="number"
+                        id="numberInput"
+                        value={enteredNumber}
+                        onChange={handleNumberChange}
+                        min={20}
+                        max={60}/>
+                    <p>La valeur saisie : {enteredNumber}</p>
+                </div>
+
+
+                <div className='centerDivH'>
+                    <button className='button' onClick={StartGame}
+                        style={{ 
+                            backgroundColor: theme.colors.tertiary,
+                            borderColor: theme.colors.secondary
+                        }}>
+                        <img src={cible} alt="cible" height="40"/>
+                    </button>
+                </div> */}
             </div>
         </div>
     );

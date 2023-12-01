@@ -1,0 +1,11 @@
+const ADRESSE_WEBSERVER = "http://localhost:3002"
+
+const ADRESSE_DBSERVER = "http://localhost:3003"
+
+const tmp = ADRESSE_DBSERVER
+const tmp2 = ADRESSE_WEBSERVER
+
+const ADRESSE_WEBSITE = ""
+
+
+export {ADRESSE_DBSERVER, ADRESSE_WEBSERVER, ADRESSE_WEBSITE}

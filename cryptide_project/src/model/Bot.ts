@@ -13,8 +13,8 @@ abstract class Bot extends Player{
 
     public actualNetwork: Map<Person, Pair<number, boolean>[]>
 
-    constructor( id: string, name: string){
-        super(id, name);
+    constructor( id: string, name: string, profilePicture: string){
+        super(id, name, profilePicture);
         this.actualNetwork = new Map<Person, Pair<number, boolean>[]>()
         this.index = -1
 

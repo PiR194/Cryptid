@@ -20,10 +20,14 @@ import Col from 'react-bootstrap/Col';
 
 /* Component */
 import ButtonImgNav from './ButtonImgNav';
+import User from '../model/User';
+
+/* Types */
 
 //@ts-ignore
-function ScoreBoard({Player = null}) {
+const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
+
     return (
         // <div className='LeaderBoardiv'>
         <div className='LeaderBoardiv'>
@@ -31,9 +35,36 @@ function ScoreBoard({Player = null}) {
                 defaultActiveKey="daily"
                 id="ScoreBoard"
                 className="mb-3">
-                
-                <Tab eventKey="perso" title="Vos Stats" disabled>
-                    Tab content for Contact
+                <Tab eventKey="perso" title="Vos Stats" disabled = { !Player.pseudo.startsWith("Guest_") ? false : true}>
+                <Container fluid>
+                        <Row>Stats en solo :</Row>
+                        <Row>
+                            <Col sm={10}>Partie Jouées :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.soloStats.nbGames : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Best-Score :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.soloStats.bestScore : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Moyenne d'essai :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.soloStats.avgNbTry : "0"}</Col>
+                        </Row>
+                        <hr/>
+                        <Row>Stats en ligne :</Row>
+                        <Row>
+                            <Col sm={10}>Partie jouée :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.onlineStats.nbGames : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Nombre de victoire :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.onlineStats.nbWins : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Ratio P/V :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.onlineStats.ratio : "0"}</Col>
+                        </Row>
+                    </Container>
                 </Tab>
                 <Tab eventKey="daily" title="Daily"
                     style={{display:"flex", flexDirection:'column', alignItems:'center'}}>

@@ -25,6 +25,7 @@ import Download from "../res/icon/download.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
+import JSZip from 'jszip';
 
 /* nav */
 import { Link } from 'react-router-dom';
@@ -45,7 +46,9 @@ import { NavLink } from 'react-router-dom';
 import { last } from 'lodash';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
-import generateLatexCode from '../Script/LatexScript';
+import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
+import Pair from '../model/Pair';
+import Indice from '../model/Indices/Indice';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -62,9 +65,23 @@ const InGame = ({locale, changeLocale}) => {
     IsSolo=false
   }
 
+  //* Gestion daily
+  let isDaily: boolean = true
+  const isDailytmp = params.get('daily');
+  if (isDailytmp == "false"){
+    isDaily=false
+  }
+
+
+  let isEasy: boolean = true
+  const isEasytmp = params.get('easy');
+  if (isEasytmp == "false"){
+    isEasy=false
+  }
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
+  const [askedWrong, setAskedWrong] = useState(false)
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
@@ -74,6 +91,10 @@ const InGame = ({locale, changeLocale}) => {
   const setShowLastData = () =>{
     setLastVisible(!showLast);
     setShowLast(!showLast);
+  }
+
+  const setAskedWrongData = (askedWrong: boolean) => {
+    setAskedWrong(askedWrong)
   }
 
   useEffect(() => {
@@ -90,11 +111,18 @@ const InGame = ({locale, changeLocale}) => {
   const [showTurnBar, setShowTurnBar] = useState(false);
   const [turnBarText, setTurnBarText] = useState("");
   const [playerTouched, setPlayerTouched] = useState(-2)
+  const [playerIndex, setPlayerIndex] = useState(-2)
+
 
   const [network, setNetwork] = useState<Network | null>(null)
+  const [networkEnigme, setNetworkEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
 
   const setNetworkData = (network: Network) => {
     setNetwork(network)
+  }
+
+  const setNetworkEnigmeData = (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => {
+    setNetworkEnigme(networkEnigme)
   }
 
   const handleNodeClick = (shouldShowChoiceBar: boolean) => {
@@ -114,13 +142,47 @@ const InGame = ({locale, changeLocale}) => {
     setTurnBarText(newTurnBarText)
   }
 
-  const generateTEX = () => {
-    if (network != null && personNetwork != null && person != null){
-      const tex = generateLatexCode(personNetwork, person, indices, network)
-      const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+  const setPlayerIndexData = (playerIndex: number) => {
+    setPlayerIndex(playerIndex)
+  }
 
+  const generateTEX = async () => {
+    if (network != null && personNetwork != null && person != null){
+
+      const zip = new JSZip();
+      
+      if (isDaily && networkEnigme != null){
+        const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+      else{
+        const tex = generateLatexCode(personNetwork, person, indices, network)
+        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
+        zip.file('socialGraph.tex', tex);
+      }
+
+      const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
+      const imagesFolder = 'Script';
+
+      for (const imageName of imageNames) {
+        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
+        const response = await fetch(imageUrl);
+        
+        if (response.ok) {
+          const imageBlob = await response.blob();
+          zip.file(`${imageName}`, imageBlob);
+        } else {
+          console.error(`Erreur de chargement de l'image ${imageName}`);
+        }
+      }
+
+      const content = await zip.generateAsync({ type: 'blob' });
+
+      // Enregistre l'archive en tant que fichier
+      saveAs(content, 'social_graph.zip');
+      
       // Utiliser FileSaver pour télécharger le fichier
-      saveAs(blob, 'socialGraph.tex');
     }
   }
 
@@ -212,14 +274,20 @@ const InGame = ({locale, changeLocale}) => {
                           changecptTour={changecptTour} 
                           addToHistory={addToHistory}
                           solo={IsSolo} 
+                          isDaily={isDaily} 
+                          isEasy={isEasy}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
-                          showLast={showLast}/>
+                          setNetworkEnigme={setNetworkEnigmeData}
+                          showLast={showLast}
+                          setPlayerIndex={setPlayerIndexData}
+                          askedWrong={askedWrong}
+                          setAskedWrong={setAskedWrongData}/>
         </div>
 
 
-        {IsSolo && 
+        {IsSolo && !isDaily &&
             <div className='nbLaps' style={{ 
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
@@ -228,12 +296,13 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        
-        <div className='historique' id="history-container">
-            {history.map((item, index) => (
-                <div key={index}>{item}</div>
-            ))}
-        </div>
+        {(!isDaily || (isDaily && isEasy)) &&
+          <div className='historique' id="history-container">
+              {history.map((item, index) => (
+                  <div key={index}>{item}</div>
+              ))}
+          </div>
+        }   
 
         <div className='paramDiv'>
           <button className='button'
@@ -289,6 +358,7 @@ const InGame = ({locale, changeLocale}) => {
             <img src={Check} alt="check" height="40"/>
           </button> */}
 
+          {!IsSolo &&
           <Link to='/deduc' target='_blank'>
             <button className='button'
               style={{ 
@@ -297,31 +367,34 @@ const InGame = ({locale, changeLocale}) => {
               }}>
               <img src={Check} alt="check" height="40"/>
             </button>
-          </Link>
+          </Link>}
 
-          <button className='button' onClick={handleChange}
+          {!IsSolo && <button className='button' onClick={handleChange}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={MGlass} alt="indice" height="40"/>
-          </button>
+          </button>}
 
-          <button className='button' onClick={setShowLastData}
+          {!IsSolo && <button className='button' onClick={setShowLastData}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={ eye } alt="indice" height="40"/>
-          </button>
+          </button>}
 
-          <button className='button' onClick={generateTEX}
-            style={{ 
-              backgroundColor: theme.colors.tertiary,
-              borderColor: theme.colors.secondary
-            }}>
-            <img src={Download} alt="indice" height="40"/>
-          </button>
+          {IsSolo && 
+            
+            <button className='button' onClick={generateTEX}
+              style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+              }}>
+              <img src={Download} alt="indice" height="40"/>
+            </button>
+          }
         </div>
 
 {/*
@@ -339,7 +412,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} />
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
             </div>
           }
 
@@ -389,9 +462,6 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-        <div id="bottom-container">
-          {showChoiceBar && <ChoiceBar />}
-        </div>
         {/*
         <div id="endgamebutton" > {/*  tmp 
           <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>

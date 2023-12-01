@@ -21,6 +21,7 @@
 
     "log_in":" Se connecter ",
     "sign_up":" S'inscrire ",
+    "log_out":" Se déconnecter ",
 
 
     "join" : "Rejoindre",
@@ -54,7 +55,7 @@
     "color_start": "Le suspect a les cheveux",
     "color_end": "",
 
-    "nb_friends_indice_start": "Le suspect",
+    "nb_friends_indice_start": "Le suspect a",
     "nb_friends_indice_end": "amis",
 
     "nb_sports_indice_start": "Le suspect pratique",
