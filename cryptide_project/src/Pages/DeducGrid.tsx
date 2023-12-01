@@ -38,17 +38,15 @@ function DeducGrid() {
     //const indices = Stub.GenerateIndice();
 
 
-    const { players } = useGame();
+    // const { players } = useGame();
 
-    
+    const players = [
+        "bla",
+        "bli",
+        "blou"
+    ]
+        
     console.log(players)
-
-    // const joueurs = [
-    //     "bla",
-    //     "bli",
-    //     "blou"
-    // ]
-
     return (
         <div style={{margin:'20px'}}>
             <Tabs defaultActiveKey="0" id="uncontrolled-tab-example" className="mb-3">
@@ -74,36 +72,6 @@ function DeducGrid() {
                 </Tab>
             ))}
             </Tabs>
-            {/* <Tabs
-            defaultActiveKey="home"
-            id="uncontrolled-tab-example"
-            className="mb-3">
-                <Tab eventKey="home" title="Joueur">
-                    <div className='deducDiv'>
-                        <div className='sectionAccordion'>
-                            <AccordionIndice instance={AgeIndice} head='Age' lang='fr'/>
-                        </div>
-                        <div className='sectionAccordion'>
-                            <AccordionIndice instance={ColorIndice} head='Couleur de cheveux' lang='fr'/>
-                            <AccordionIndice instance={ColorEdgesIndice} head='Couleur de cheveux voisine' lang='fr'/>
-                        </div>
-                        <div className='sectionAccordion'>
-                            <AccordionIndice instance={SportIndice} head='Sport' lang='fr'/>
-                            <AccordionIndice instance={NbSportIndice} head='Nombre de Sport' lang='fr'/>
-                        </div>
-                        <div className='sectionAccordion'>
-                            <AccordionIndice instance={EdgesIndice} head='Caractéristique des voisin' lang='fr'/>
-                            <AccordionIndice instance={NbEdgesIndice} head='Nombre de voisin' lang='fr'/>
-                        </div>
-                    </div>
-                </Tab>
-                <Tab eventKey="profile" title="joueur suivant">
-                    tables joueur suivant
-                </Tab>
-                <Tab eventKey="contact" title="joueur suivant">
-                    tables joueur suivant
-                </Tab>
-            </Tabs> */}
         </div>
     );
 }
