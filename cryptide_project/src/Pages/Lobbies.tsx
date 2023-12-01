@@ -36,14 +36,15 @@ function Lobbies() {
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const [showAvailable, setShowAvailable] = useState(true);
+    const [showAvailable, setShowAvailable] = useState(false);
 
     const filteredLobbies = lobbyData.filter((lobby) =>
         lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     const filteredLobbiesToShow = showAvailable
-    ? filteredLobbies.filter((lobby) => lobby.nbPlayer%2 == 0)
+    ? filteredLobbies.filter((lobby) => lobby.started == false)
     : filteredLobbies;
 
 
@@ -81,14 +82,6 @@ function Lobbies() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <label style={{ marginLeft: '10px' }}>
-                Afficher disponibles
-                <input
-                    type="checkbox"
-                    checked={showAvailable}
-                    onChange={() => setShowAvailable(!showAvailable)}
-                />
-            </label>
 
             <div>
                 <button style={{borderColor:'whitesmoke', borderRadius:'15px 0px 0px 15px', padding:'5px'}}
@@ -107,6 +100,7 @@ function Lobbies() {
                     HeadPlayer={lobby.headPlayer}
                     nbPlayer={lobby.nbPlayer}
                     setFirst={setFirstData}
+                    started={lobby.started}
                 />
                 ))}
             </div>
