@@ -28,7 +28,7 @@ import Ceye from "../res/icon/hidden.png";
 import JSZip from 'jszip';
 
 /* nav */
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
 /* Boostrap */
 import Button from 'react-bootstrap/Button';
@@ -50,13 +50,25 @@ import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript'
 import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
 
+let cptNavigation = 0
+
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
   
   const theme = useTheme();
   
+  const navigate = useNavigate()
   
   const params = new URLSearchParams(window.location.search);
+
+  const navigationType = useNavigationType()
+    cptNavigation++
+    if (cptNavigation % 2 == 0){
+        if (navigationType.toString() == "POP"){
+            socket.emit("player quit")
+            navigate("/play")
+        }
+    }
   
   //* Gestion solo
   let IsSolo: boolean = true

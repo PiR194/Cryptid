@@ -45,15 +45,17 @@ import SessionService from '../services/SessionService';
 import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Overlay from 'react-bootstrap/Overlay';
+import { DataSet } from 'vis-network';
 
 
 let gameStarted = false
+let firstLaunch = true
 
 function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
     
-    const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData } = useGame();
+    const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData, setNodesData } = useGame();
     
     const {user, setUserData, manager, login} = useAuth()
     let first = true
@@ -130,25 +132,77 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
-        socket.off("player left")
-        socket.off("new player")
+        //socket.off("player left")
+        //socket.off("new player")
+        navigate('/game?solo=false&daily=false');
+    });
+
+
+    socket.on("join during game", (jsonNetwork, jsonPersonString, jsonIndicesString, playerIndex, players, nodes)=> {
+        const jsonPerson = JSON.parse(jsonPersonString)
+        const networkPerson: PersonNetwork = JSONParser.JSONToNetwork(jsonNetwork)
+        const choosenOne: Person = networkPerson.getPersons().filter((i) => i.getId() == jsonPerson.id)[0]
+        const choosenIndices : Indice[] = JSONParser.JSONToIndices(jsonIndicesString)
+        for (let i=0; i<players.length; i++){
+            const player = players[i]
+            if(player.id == socket.id){
+                setActualPlayerIndexData(i)
+                setIndiceData(choosenIndices[i])
+            }
+            if (player instanceof Bot){
+                player.indice = choosenIndices[i]
+            }
+        }
+        const tmpPlayers: Player[] = []
+        console.log(players)
+        for (const p of players){
+            tmpPlayers.push(JSONParser.JSONToPlayer(p))
+        }
+        setPlayersData(tmpPlayers)
+        if (room != null){
+            setRoomData(room)
+        }
+        const tab = JSONParser.JSONToNodePersons(JSON.parse(nodes))
+        setNodesData(tab)
+        setTurnPlayerIndexData(playerIndex)
+        setPersonData(choosenOne)
+        setPersonNetworkData(networkPerson)
+        setIndicesData(choosenIndices)
+        first = true
+        gameStarted = true
         navigate('/game?solo=false&daily=false');
     });
 
     socket.on("new player", (tab) =>{
         const tmpTab: Player[] = []
-        for (const p of tab){
+        for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
         console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
+    socket.on("room full", () => {
+        //TODO POP UP pour quand la room est pleine
+        navigate("/play")
+    })
+
+    socket.on("game started", () => {
+        //TODO POP UP pour quand la room est pleine
+        navigate("/play")
+    })
+
+    socket.on("game already started", () => {
+        //TODO POP UP pour quand la room est pleine
+        navigate("/play")
+    })
+
     socket.on("player left", (tab, i) => {
         const tmpTab: Player[] = []
-        for (const p of tab){
+        for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
+        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
@@ -214,7 +268,7 @@ function Lobby() {
                         // <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
                         <PlayerItemList key={player.id} player={player} room={room}/>
                     ))}
-                    <div className='centerButton'>
+                    {(players.length < 6) && <div className='centerButton'>
                             <button className='button' onClick={addBot}
                                 style={{
                                     backgroundColor: theme.colors.primary,
@@ -222,6 +276,7 @@ function Lobby() {
                                 +
                             </button>
                     </div>
+                    }
                 </div>
             </div>
 

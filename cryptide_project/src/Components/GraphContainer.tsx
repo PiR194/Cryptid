@@ -14,6 +14,10 @@ import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 import Indice from "../model/Indices/Indice";
 import Pair from "../model/Pair";
+import Player from "../model/Player";
+import JSONParser from "../JSONParser";
+import User from "../model/User";
+import { json } from "body-parser";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -53,6 +57,11 @@ let endgame= false
 let firstHistory = true
 let cptSquare = 0
 let cptOnAskedWrong = 0
+let cptPlayerLeft = 0
+let firstPlayer = 0
+let cptBug = 0
+let cptUseEffect = 0
+let testPlayers: Player[] = []
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong}) => {
@@ -62,7 +71,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -76,6 +85,13 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
       settempsData(elapsedTime)
 
+      cptBug ++
+      if (cptBug > 10){
+        cptBug = 0
+        socket.emit("who plays", room)
+      }
+
+
       // Vérifiez si la durée est écoulée, puis arrêtez le timer
       if (endgame) {
         clearInterval(intervalId);
@@ -87,8 +103,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }, [elapsedTime, endgame]);
 
 
+  useEffect(() => {
+    testPlayers = players
+    console.log(testPlayers)
+  }, [players])
+
   useEffect(() =>{
     touchedPlayer=playerTouched
+    console.log(playerTouched)
     if (touchedPlayer == -1){
       if (!askedWrongLocal){
         socket.emit("put correct background", socket.id)
@@ -140,8 +162,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }
 
   useEffect(() =>{
-    if (actualPlayerIndex==0){
-      const bot = players[lastIndex]
+    cptBug=0
+    if (actualPlayerIndex==firstPlayer){
+      const bot = testPlayers[lastIndex]
       if(bot instanceof Bot && botIndex != lastIndex){
         botIndex = lastIndex
         if (personNetwork!=null){
@@ -165,7 +188,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
               const tester = IndiceTesterFactory.Create(indices[playerIndex])
               const works = tester.Works(person)
-              socket.emit("asked all 1by1", person.getId(), players[playerIndex].id)
+              socket.emit("asked all 1by1", person.getId(), testPlayers[playerIndex].id)
               if (i==players.length){
                 socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
               }
@@ -174,9 +197,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
               if(!works){
                 socket.emit("node checked", personIndex, works, playerIndex, room, nextPlayerIndex)
-                const ind = bot.placeSquare(personNetwork, players)
+                const ind = bot.placeSquare(personNetwork, testPlayers)
                 if (ind == -1 ){
-                  addToHistory(lastIndex.toString() + "177")
                   socket.emit("can't put square", lastIndex, room)
                   return
                 }
@@ -194,7 +216,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
           else{
             if (person!=undefined){
-              if (players[choosedPlayerIndex] instanceof Bot){
+              if (testPlayers[choosedPlayerIndex] instanceof Bot){
                 console.log("BOT")
                 const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
                 const works = tester.Works(person)
@@ -209,9 +231,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 else{
                   console.log(lastIndex + " interroge " + choosedPlayerIndex + " a propos de " + person.getName() + " et dit non")
                   socket.emit("node checked", personIndex, false, choosedPlayerIndex, room, lastIndex)
-                  const ind = bot.placeSquare(personNetwork, players)
+                  const ind = bot.placeSquare(personNetwork, testPlayers)
                   if (ind == -1 ){
-                    addToHistory(lastIndex.toString() + "212")
                     socket.emit("can't put square", playerIndex, room)
                     return
                   }
@@ -225,13 +246,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
               else{
                 console.log(choosedPlayerIndex + " => Pas bot" )
-                socket.emit("ask player", personIndex, players[choosedPlayerIndex].id, players[lastIndex])
+                socket.emit("ask player", personIndex, testPlayers[choosedPlayerIndex].id, testPlayers[lastIndex])
                 console.log(lastIndex + " interroge " + +choosedPlayerIndex + " sur " + personNetwork.getPersons()[personIndex].getName())
                 const tester = IndiceTesterFactory.Create(indices[choosedPlayerIndex])
                 if (!tester.Works(person)){
-                  const ind = bot.placeSquare(personNetwork, players)
+                  const ind = bot.placeSquare(personNetwork, testPlayers)
                   if (ind == -1 ){
-                    addToHistory(lastIndex.toString() + "232")
                     socket.emit("can't put square", playerIndex, room)
                     return
                   }
@@ -275,19 +295,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }
 
-  //* fonction qui reinitialise le graphe 
-  const resGraph = () => { //? comment accéder au nework ??
-    const savedGraphStateString = localStorage.getItem('graphState');
-    if (savedGraphStateString !== null) {
-      const savedGraphState = JSON.parse(savedGraphStateString);
-      //network.setData(savedGraphState);
-    } else {
-      // La clé 'graphState' n'existe pas dans le localStorage, prenez une action en conséquence.
-      console.log("ayoooooo");
-    }
-
-  };
-
   useEffect(() => {
     if (personNetwork == null){
       return
@@ -307,7 +314,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       return;
     }
     // Charger les données dans le graph
-    const nodes = new DataSet(graph.nodesPerson);
+    let nodes = new DataSet(graph.nodesPerson);
+    if (nodesC.length != 0){
+      nodes = new DataSet(nodesC)
+    }
 
     // Configuration des options du Graphe
     const initialOptions = {
@@ -319,7 +329,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
                 sortMethod: 'hubsize'
             },
-            distanceMin: 500, // Set the minimum distance between nodes
             //randomSeed: 2
         },
         physics: {
@@ -368,6 +377,83 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     }
 
+    socket.on("give network", (playerId) => {
+      socket.emit("give network", JSON.stringify(personNetwork, null, 2), JSON.stringify(person), JSON.stringify(indices), playerIndex, room, JSON.stringify(nodes.get()), playerId);
+    })
+
+    socket.on("player joined ingame", (tab) => {
+      const tmpTab: Player[] = []
+      let ind =0
+      for (const p of tab){
+        if (p.type === "User"){
+          tmpTab.push(JSONParser.JSONToPlayer(p))
+        }
+        else{
+          tmpTab.push(testPlayers[ind])
+        }
+        ind ++
+      }
+      setPlayersData(tmpTab)
+    })
+
+    socket.on("player left ingame", (tab, i) => {
+      cptPlayerLeft ++
+      if (cptPlayerLeft % 2 == 0){
+        const tmpTab: Player[] = []
+        let ind =0
+        for (const p of tab.tab){
+          if (ind === i || p.type === "User"){
+            tmpTab.push(JSONParser.JSONToPlayer(p))
+          }
+          else{
+            tmpTab.push(testPlayers[ind])
+          }
+          ind ++
+        }
+        if (i==firstPlayer){
+          for(let index = 0; index < tmpTab.length; index++){
+            const test = tmpTab[index]
+            if (test instanceof User){
+              firstPlayer=index
+              break
+            }
+          }
+          if (actualPlayerIndex==firstPlayer){
+            tmpTab.forEach((p, index) =>{
+              if (p instanceof Bot && personNetwork!=null){
+                p.indice=indices[index]
+                p.index=index
+                p.initiateMap(personNetwork)
+                console.log(p.indice.ToString("fr"))
+              }
+            })
+          }
+        }
+        else{
+          const bot = tmpTab[i]
+          if (bot instanceof Bot && personNetwork != null){
+            bot.indice=indices[i]
+            bot.index=index
+            bot.initiateMap(personNetwork)
+            console.log(bot.indice.ToString("fr"))
+          }
+        }
+        if (i==playerIndex){
+          playerIndex = lastIndex + 1
+          if(playerIndex == players.length){
+            playerIndex = 0
+          }
+          setPlayerIndex(playerIndex)
+          setLastIndex(playerIndex)
+          if (playerIndex===actualPlayerIndex){
+            handleTurnBarTextChange("À vous de jouer")
+            handleShowTurnBar(true)
+          }
+        }
+        setPlayersData(tmpTab)
+      }
+  })
+
     socket.on("reset graph", () => {
       console.log("reset graph")
       initialOptions.physics.enabled = true
@@ -375,6 +461,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     })
 
     if (!solo){
+
+      socket.on("who plays", (index) => {
+        playerIndex=index
+        setPlayerIndex(index)
+        setLastIndex(index)
+        if (actualPlayerIndex==index){
+          handleShowTurnBar(true)
+        }
+      })
+
       socket.on("asked all", (id) =>{
         //@ts-ignore
         const pers = personNetwork.getPersons().find((p) => p.getId() == id)
@@ -401,12 +497,15 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
+        cptBug=0
         //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
         if (node!=undefined){
           onNodeClick(false)
           playerIndex = newPlayerIndex
           setPlayerIndex(playerIndex)
+          setLastIndex(newPlayerIndex)
+          console.log(newPlayerIndex)
           //@ts-ignore
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
             //@ts-ignore
@@ -415,7 +514,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             if (p!=undefined && tab != undefined){
               tab.push(p)
               if (actualPlayerIndex == 0){
-                players.forEach((player) => {
+                testPlayers.forEach((player) => {
                   if (player instanceof Bot){
                     player.newInformation(p, askedIndex, works)
                   }
@@ -429,7 +528,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             cptHistory++
             if (cptHistory % 2 == 0){
               lastNodes.push(node)
-              addToHistory(players[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(testPlayers[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
           }
 
@@ -489,9 +588,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
 
       socket.on("can't put square", (askingPlayer) => {
+        cptBug=0
         cptOnAskedWrong ++
         if (cptOnAskedWrong % 2 == 0){
-          addToHistory(players[askingPlayer].pseudo + " ne peut plus poser de carré")
+          addToHistory(testPlayers[askingPlayer].pseudo + " ne peut plus poser de carré")
           playerIndex = askingPlayer + 1
           if(playerIndex == players.length){
             playerIndex = 0
@@ -511,6 +611,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
   
       socket.on("asked", (nodeId, askingPlayer) => {
+        
         if (askingPlayer.id !== lastAskingPlayer || nodeId !== lastNodeId ){
           lastAskingPlayer = askingPlayer.id
           lastNodeId = nodeId
@@ -535,8 +636,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   socket.emit("node checked", nodeId, true, actualPlayerIndex, room, playerIndex)
                 }
                 else{
-                  let index = players.findIndex((p) => p.id == askingPlayer.id)
-                  if (players[index] instanceof Bot){
+                  let index = testPlayers.findIndex((p) => p.id == askingPlayer.id)
+                  if (testPlayers[index] instanceof Bot){
                     index = playerIndex + 1
                     if(index == players.length){
                       index = 0
@@ -647,6 +748,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         askedWrongBot=false
         endgame = true
         firstHistory=true
+        cptBug=0
         try{
           if(isLoggedIn){
             if(!solo){
@@ -684,6 +786,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("put correct background")
           socket.off("put grey background")
           socket.off("put imossible grey")
+          socket.off("who plays")
     
           navigate("/endgame")
         }        
@@ -721,7 +824,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     network.on("click", async (params) => {
       
       if(params.nodes.length > 0){
+        console.log(touchedPlayer)
         setNodeIdData(params.nodes[0])
+        console.log(players)
         // addToHistory("Le joueur a cliqué") //! TEST DEBUG
         if (!solo){
           if (askedWrongLocal){
@@ -752,7 +857,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
           else if(touchedPlayer != -1 && playerIndex == actualPlayerIndex && touchedPlayer<players.length){
             botIndex = -1
-            if (players[touchedPlayer] instanceof Bot){
+            console.log(testPlayers[touchedPlayer])
+            if (testPlayers[touchedPlayer] instanceof Bot){
+              console.log("BOT TOUCHÉ")
               const ind = indices[touchedPlayer]
               const test = IndiceTesterFactory.Create(ind)
               //@ts-ignore
@@ -775,7 +882,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             }
             else{
               if (touchedPlayer >= 0){
-                console.log(touchedPlayer)
+                console.log("CE N'EST PAS UN BOT")
                 //@ts-ignore
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
                 socket.emit("put correct background", socket.id)
