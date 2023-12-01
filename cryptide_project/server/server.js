@@ -145,15 +145,17 @@ io.on('connection', (socket) => {
   })
 
   socket.on("who plays", (room) => {
-    let player = map.get(room).actualPlayer
-    if (map.get(room).tab[player].type != "User"){
-      player = player + 1
-      if (player == map.get(room).tab.length){
-        player=0
+    if (map.get(room) !== undefined){
+      let player = map.get(room).actualPlayer
+      if (map.get(room).tab[player].type != "User"){
+        player = player + 1
+        if (player == map.get(room).tab.length){
+          player=0
+        }
       }
+      console.log(player)
+      io.to(room).emit("who plays", player, map.get(room).lastWorks)
     }
-    console.log(player)
-    io.to(room).emit("who plays", player, map.get(room).lastWorks)
   })
 
   socket.on("disconnect", () =>{
