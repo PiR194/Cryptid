@@ -40,6 +40,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
 
+/* Gestion d' erreur */
+import ErrorBoundary from './Error/ErrorBoundary';
+import ErrorPage from './Error/ErrorPage';
+
 const messages = {
   fr: messagesFr,
   en: messagesEn,
@@ -59,41 +63,36 @@ function App() {
 
   //const location = useLocation();
   const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
-
-
   return (
-  // <div className="App">
-  //   <header className="App-header">
-  //     <Home />
-  //     <img src={logo} className="App-logo" alt="logo" />
-  //   </header>
-  // </div>
-    
-    <AuthProvider>
-      <GameProvider>
-        {/*@ts-ignore*/}
-        <IntlProvider locale={locale} messages={messages[locale]}>
-          <ThemeProvider>
-            <BrowserRouter>  
-              {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/play" element={<Play/>} />
-                <Route path="/lobby" element={<Lobby/>} />
-                <Route path="/endgame" element={<EndGame/>} />
-                <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                <Route path="/profile" element={<Profile/>} />
-                <Route path="/join" element={<Lobbies/>}/>
-                {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
-        </IntlProvider>
-      </GameProvider>
-    </AuthProvider>
+    <ErrorBoundary fallback={(error, errorInfo) => <ErrorPage />}>
+      <AuthProvider>
+        <GameProvider>
+          {/*@ts-ignore*/}
+          <IntlProvider locale={locale} messages={messages[locale]}>
+            <ThemeProvider>
+              <BrowserRouter>  
+                {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/play" element={<Play/>} />
+                  <Route path="/lobby" element={<Lobby/>} />
+                  <Route path="/endgame" element={<EndGame/>} />
+                  <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+                  <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path="/profile" element={<Profile/>} />
+                  <Route path="/join" element={<Lobbies/>}/>
+                  {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
+
+                  <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}
+                </Routes>
+              </BrowserRouter>
+            </ThemeProvider>
+          </IntlProvider>
+        </GameProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
