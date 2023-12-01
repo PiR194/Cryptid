@@ -71,3 +71,26 @@
 
     font-size:larger;
 }
+
+.returnDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin:40px 15px;
+
+    border: solid 2px whitesmoke;
+    border-radius: 15px;
+    
+    background-color: white;
+}
+
+.returnDiv p {
+    margin: 15px;
+    padding: 10px;
+    border: solid 1px whitesmoke;
+    border-radius: 10px;
+
+    font-weight:500;
+}
