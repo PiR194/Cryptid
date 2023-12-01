@@ -17,6 +17,7 @@ import Pair from "../model/Pair";
 import Player from "../model/Player";
 import JSONParser from "../JSONParser";
 import User from "../model/User";
+import { json } from "body-parser";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -59,6 +60,7 @@ let cptOnAskedWrong = 0
 let cptPlayerLeft = 0
 let firstPlayer = 0
 let cptBug = 0
+let cptUseEffect = 0
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong}) => {
@@ -68,7 +70,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -83,7 +85,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       settempsData(elapsedTime)
 
       cptBug ++
-      console.log(cptBug)
       if (cptBug > 10){
         cptBug = 0
         socket.emit("who plays", room)
@@ -287,19 +288,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }
 
-  //* fonction qui reinitialise le graphe 
-  const resGraph = () => { //? comment accéder au nework ??
-    const savedGraphStateString = localStorage.getItem('graphState');
-    if (savedGraphStateString !== null) {
-      const savedGraphState = JSON.parse(savedGraphStateString);
-      //network.setData(savedGraphState);
-    } else {
-      // La clé 'graphState' n'existe pas dans le localStorage, prenez une action en conséquence.
-      console.log("ayoooooo");
-    }
-
-  };
-
   useEffect(() => {
     if (personNetwork == null){
       return
@@ -319,7 +307,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       return;
     }
     // Charger les données dans le graph
-    const nodes = new DataSet(graph.nodesPerson);
+    let nodes = new DataSet(graph.nodesPerson);
+    if (nodesC.length != 0){
+      nodes = new DataSet(nodesC)
+    }
 
     // Configuration des options du Graphe
     const initialOptions = {
@@ -379,12 +370,38 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     }
 
+    socket.on("give network", (playerId) => {
+      socket.emit("give network", JSON.stringify(personNetwork, null, 2), JSON.stringify(person), JSON.stringify(indices), playerIndex, room, JSON.stringify(nodes.get()), playerId);
+    })
+
+    socket.on("player joined ingame", (tab) => {
+      const tmpTab: Player[] = []
+      let ind =0
+      for (const p of tab){
+        if (p.type === "User"){
+          tmpTab.push(JSONParser.JSONToPlayer(p))
+        }
+        else{
+          tmpTab.push(players[ind])
+        }
+        ind ++
+      }
+      setPlayersData(tmpTab)
+    })
+
     socket.on("player left ingame", (tab, i) => {
       cptPlayerLeft ++
       if (cptPlayerLeft % 2 == 0){
         const tmpTab: Player[] = []
+        let ind =0
         for (const p of tab.tab){
+          if (ind === i || p.type === "User"){
             tmpTab.push(JSONParser.JSONToPlayer(p))
+          }
+          else{
+            tmpTab.push(players[ind])
+          }
+          ind ++
         }
         if (i==firstPlayer){
           console.log(tmpTab)
@@ -395,7 +412,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               break
             }
           }
-          console.log(firstPlayer)
           if (actualPlayerIndex==firstPlayer){
             tmpTab.forEach((p, index) =>{
               if (p instanceof Bot && personNetwork!=null){
@@ -764,6 +780,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("put correct background")
           socket.off("put grey background")
           socket.off("put imossible grey")
+          socket.off("who plays")
     
           navigate("/endgame")
         }        
