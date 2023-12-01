@@ -119,6 +119,9 @@ function Play() {
                 }
             })
         }
+        else{
+            socket.emit("join back game", user)
+        }
     }, [isLoggedIn]);
 
     const [goBackRoom, setGoBackRoom] = useState(-1)
