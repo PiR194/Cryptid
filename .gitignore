@@ -44,11 +44,11 @@ thumb
 sketch
 
 ### modules ###
-**/yarn.lock
-**/package-lock.json
+yarn.lock
+package-lock.json
 
 # db
-**/socialgraph.db
+socialgraph.db
 
 # build
 cryptide_project/build/
