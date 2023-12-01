@@ -460,6 +460,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           const tester = IndiceTesterFactory.Create(indice)
           const tabPossible: Person[] = []
           for(const person of personNetwork.getPersons()){
+            //@ts-ignore
             const node = nodes.get().find((n) => n.id == person.getId())
             if (node != undefined) {
               let isSquare = false
@@ -584,6 +585,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             //Pour poser un carré
             const tester = IndiceTesterFactory.Create(indice)
             for(const person of personNetwork.getPersons()){
+              //@ts-ignore
               const node = nodes.get().find((n) => n.id == person.getId())
               if (node == undefined) continue
               let isSquare = false
@@ -724,6 +726,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (!solo){
           if (askedWrongLocal){
             const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0])
+            //@ts-ignore
             const node = nodes.get().find((n) => n.id == params.nodes[0])
             if (person !== undefined && indice !== null && node!=undefined){
               const tester = IndiceTesterFactory.Create(indice)
