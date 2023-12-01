@@ -63,16 +63,7 @@ function App() {
 
   //const location = useLocation();
   const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame"]//.includes(window.location.pathname);
-
-
   return (
-  // <div className="App">
-  //   <header className="App-header">
-  //     <Home />
-  //     <img src={logo} className="App-logo" alt="logo" />
-  //   </header>
-  // </div>
-    
     <ErrorBoundary fallback={(error, errorInfo) => <ErrorPage />}>
       <AuthProvider>
         <GameProvider>
@@ -94,7 +85,7 @@ function App() {
                   <Route path="/join" element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
 
-                  <Route path="*" element={<ErrorPage msg='404 not found' />} /> {/* page 404 */}
+                  <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}
                 </Routes>
               </BrowserRouter>
             </ThemeProvider>
