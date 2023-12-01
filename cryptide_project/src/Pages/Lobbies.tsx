@@ -36,7 +36,16 @@ function Lobbies() {
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const [showAvailable, setShowAvailable] = useState(false);
+    const [showAvailable, setShowAvailable] = useState(true);
+
+    const handleShowAllClick = () => {
+        setShowAvailable(false);
+    };
+    
+    const handleShowAvailableClick = () => {
+        setShowAvailable(true);
+    };
+
 
     const filteredLobbies = lobbyData.filter((lobby) =>
         lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,13 +92,40 @@ function Lobbies() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
-            <div>
+            {/* <div>
                 <button style={{borderColor:'whitesmoke', borderRadius:'15px 0px 0px 15px', padding:'5px'}}
                         onClick={() => setShowAvailable(false)}>Tous</button>
                 <button style={{borderColor:'whitesmoke', borderRadius:'0px 15px 15px 0px', padding:'5px'}}
                         onClick={() => setShowAvailable(true)}>Dispo</button>
-            </div>
+            </div> */}
 
+        <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
+            <button
+                style={{
+                    border:'solid',
+                    borderStyle:'none',
+                    borderRadius: '15px 0px 0px 15px',
+                    borderWidth: '2px',
+                    padding: '10px 15px',
+                    backgroundColor: !showAvailable ? 'white' : 'lightgray',
+                }}
+                onClick={handleShowAllClick}
+            >
+                Tous
+            </button>
+            <button
+                style={{
+                    border:'solid',
+                    borderStyle:'none',
+                    borderRadius: '0px 15px 15px 0px',
+                    padding: '10px 15px',
+                    backgroundColor: showAvailable ? 'white' : 'lightgray',
+                }}
+                onClick={handleShowAvailableClick}
+            >
+                Disponible
+            </button>
+        </div>
 
 
             <div className="lobbyList">
