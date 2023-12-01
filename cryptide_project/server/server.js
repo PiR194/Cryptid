@@ -14,6 +14,7 @@ const io = socketIO(server, {
 });
 
 
+let lastSocketJoined = ""
 const map = new Map()
 
 server.listen(3002, () => {
@@ -32,34 +33,63 @@ io.on('connection', (socket) => {
     io.emit("request lobbies", playerJson)
   });
 
+  socket.on("give network", (networkPerson, person, indices, start, room, nodes, playerId) => {
+    io.to(playerId).emit("join during game", networkPerson, person, indices, start, map.get(room).tab, nodes)
+  })
+
   socket.on("lobby joined", (room, player) =>{
-    console.log(player)
-    if (player.type=="User"){
-      socket.join(room)
-    }
-    if (map.get(room) == undefined){
-      map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false, actualPlayer: 0})
-    }
-    else{
-      const tab = map.get(room).tab
-      for(let i = 0; i<tab.length; i++){
-        if (tab[i].id === socket.id && player.type==="User"){
-          tab.splice(i, 1)
+    if (lastSocketJoined != player.id){
+      lastSocketJoined=player.id
+      const game = map.get(room)
+      if (game !== undefined){
+        if (game.tab.length == 6 && !game.started){
+          io.to(socket.id).emit("room full")
+          return
+        }
+        if (game.started){
+          for(const u of game.tab){
+            if(u.type !== "User" && u.pseudo===player.pseudo){
+              u.type = "User"
+              u.id=socket.id
+              io.to(game.tab[game.actualPlayer].id).emit("give network", socket.id)
+              io.to(room).emit("player joined ingame", game.tab)
+              socket.join(room)
+              return
+            }
+          }
+          io.to(socket.id).emit("game already started")
+          return
         }
       }
-
-      if (player.type!=="User"){
-        tab.push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+  
+  
+      if (game == undefined){
+        map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false, actualPlayer: 0, lastWorks: false})
+        socket.join(room)
       }
       else{
-        tab.push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+        const tab = game.tab
+        for(let i = 0; i<tab.length; i++){
+          if (tab[i].id === socket.id && player.type==="User"){
+            tab.splice(i, 1)
+          }
+        }
+  
+        if (player.type!=="User"){
+          tab.push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+        }
+        else{
+          tab.push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+          socket.join(room)
+        }
       }
+      
+      io.to(room).emit("new player", map.get(room))
+      const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+      const playerJson = JSON.stringify(playerArray);
+      io.emit("request lobbies", playerJson)
     }
     
-    io.to(room).emit("new player", map.get(room))
-    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
-    const playerJson = JSON.stringify(playerArray);
-    io.emit("request lobbies", playerJson)
   })
 
   socket.on("request lobbies", () => {
@@ -112,7 +142,7 @@ io.on('connection', (socket) => {
       }
     }
     console.log(player)
-    io.to(room).emit("who plays", player)
+    io.to(room).emit("who plays", player, map.get(room).lastWorks)
   })
 
   socket.on("disconnect", () =>{
@@ -129,7 +159,6 @@ io.on('connection', (socket) => {
             }
             else{
               tab.tab[i].type="EasyBot"
-              tab.tab[i].pseudo="TmpBot"
               io.to(k).emit("player left ingame", tab, i)
             }
             if (tab.tab.filter((p) => p.type=="User").length == 0){
@@ -145,6 +174,7 @@ io.on('connection', (socket) => {
 
 
   socket.on("player quit", () => {
+    lastSocketJoined=""
     for (const k of map.keys()){
       const tab = map.get(k)
         for (let i = 0; i<tab.tab.length; i++){
@@ -159,7 +189,6 @@ io.on('connection', (socket) => {
             }
             else{
               tab.tab[i].type="EasyBot"
-              tab.tab[i].pseudo="TmpBot"
               io.to(k).emit("player left ingame", tab, i)
             }
             if (tab.tab.filter((p) => p.type=="User").length == 0){
@@ -175,6 +204,7 @@ io.on('connection', (socket) => {
 
   socket.on("node checked", (id, works, color, room, playerIndex) =>{
     map.get(room).actualPlayer=playerIndex
+    map.get(room).lastWorks=works
     io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
   })
   
