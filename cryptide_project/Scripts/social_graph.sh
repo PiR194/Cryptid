@@ -1,6 +1,8 @@
 #!/bin/sh 
 
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null; then
   # Tuer le processus associé au port
   pid=$(lsof -Pi :3000 -sTCP:LISTEN -t)
@@ -23,8 +25,8 @@ fi
 
 npm start &
 
-node server/server.js &
+node $SCRIPT_DIR/../server/server.js &
 
-node src/server/server.js 
+node $SCRIPT_DIR/../src/server/server.js 
 
 

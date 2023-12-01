@@ -94,6 +94,11 @@ const InGame = ({locale, changeLocale}) => {
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
   const [askedWrong, setAskedWrong] = useState(false)
+  const [importToPdf, setImportToPdf] = useState(false)
+
+  const setImportToPdfData = (imp: boolean) => {
+    setImportToPdf(imp)
+  }
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
@@ -295,7 +300,9 @@ const InGame = ({locale, changeLocale}) => {
                           showLast={showLast}
                           setPlayerIndex={setPlayerIndexData}
                           askedWrong={askedWrong}
-                          setAskedWrong={setAskedWrongData}/>
+                          setAskedWrong={setAskedWrongData}
+                          importToPdf={importToPdf}
+                          setImportToPdf={setImportToPdfData}/>
         </div>
 
 
@@ -400,6 +407,16 @@ const InGame = ({locale, changeLocale}) => {
           {IsSolo && 
             
             <button className='button' onClick={generateTEX}
+              style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+              }}>
+              <img src={Download} alt="indice" height="40"/>
+            </button>
+          }
+
+          {IsSolo &&   
+            <button className='button' onClick={ () => setImportToPdfData(true)}
               style={{ 
                 backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary

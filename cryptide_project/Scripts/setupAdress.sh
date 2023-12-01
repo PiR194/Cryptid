@@ -9,7 +9,9 @@ fi
 # Stocker l'adresse IP fournie en tant que variable
 adresse_ip="$1"
 
-# Utiliser l'adresse IP dans la commande find avec Perl
-find . -type f -exec perl -pi -e 's|http://[0-9.]+:([0-9]+)|http://localhost:$1|g' {} +
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-find . -type f -exec perl -pi -e "s|http://localhost:([0-9]+)|http://$adresse_ip:\$1|g" {} +
+# Utiliser l'adresse IP dans la commande find avec Perl
+find $SCRIPT_DIR/../ -type f -exec perl -pi -e 's|http://[0-9.]+:([0-9]+)|http://localhost:$1|g' {} +
+
+find $SCRIPT_DIR/../ -type f -exec perl -pi -e "s|http://localhost:([0-9]+)|http://$adresse_ip:\$1|g" {} +
