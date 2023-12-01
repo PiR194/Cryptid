@@ -10,6 +10,7 @@ import User from '../model/User';
 import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 import Person from '../model/Person';
+import { useNavigationType } from 'react-router-dom';
 
 
 class LobbyDataProps {
@@ -25,6 +26,8 @@ class LobbyDataProps {
         this.started=started
     }
 }
+
+let cptNavigation = 0
 
 function Lobbies() {
     const theme=useTheme();
@@ -44,6 +47,14 @@ function Lobbies() {
 
     const setFirstData = (first: boolean) => {
         setFirst(first)
+    }
+
+    const navigationType = useNavigationType()
+    cptNavigation++
+    if (cptNavigation % 2 == 0){
+        if (navigationType.toString() == "POP"){
+            socket.emit("player quit")
+        }
     }
 
     if (first){
