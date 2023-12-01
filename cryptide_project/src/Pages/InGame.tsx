@@ -371,7 +371,7 @@ const InGame = ({locale, changeLocale}) => {
           </button> */}
 
           {!IsSolo &&
-          <Link to='/info' target='_blank'>
+          <Link to='/deduc' target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,

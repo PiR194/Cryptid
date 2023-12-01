@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ProfilePDP from '../Components/ProfilePDP';
 
 import SessionService from '../services/SessionService';
+import AuthService from '../services/AuthService';
 import { PlayerProps } from '../types/Player';
 import { delay, update } from 'lodash';
 import { socket } from '../SocketConfig';
-import AuthService from '../services/AuthService';
 
 
 /* Style */
@@ -13,6 +13,9 @@ import './Profile.css'
 import Edit from "../res/icon/edit-pen.png"
 import Coche from '../res/icon/coche.png'
 import Cancel from '../res/icon/cancel.png'
+
+/* Nav */
+import { useNavigate } from 'react-router-dom';
 
 /* Model */
 import User from '../model/User';
@@ -25,11 +28,18 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
+
 
 //@ts-ignore
 const Profile = () => {
   
+  useEffect(() => {
+    // Déclenchez l'erreur à l'intérieur de useEffect pour éviter des problèmes à la compilation
+    //@ts-ignore
+    console.log(undefinedVariable);
+  }, []); // Déclenchez cette fonction une seule fois après le rendu initial
+
+
   const navigate = useNavigate();
   //let player;
   const {user, logout} = useAuth()
