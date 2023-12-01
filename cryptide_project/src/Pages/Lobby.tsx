@@ -254,15 +254,26 @@ function Lobby() {
         <div className='lobby-container'>
             <div className='left-part'>
                 <div className='player-board'>
-                    <div className='codeDiv' onClick={() => setCodeShowed(!codeShowed)}>
-                        {
-                            codeShowed ? (
-                                <p>Room : {room}</p>
-                            ) : (
-                                <p>Room : ******</p>
-                            )
-                        }
+                    <div>
+                        <div className='codeDiv' onClick={() => setCodeShowed(!codeShowed)}>
+                            {
+                                codeShowed ? (
+                                    <p>Room : {room}</p>
+                                ) : (
+                                    <p>Room : ******</p>
+                                )
+                            }
+                        </div>
+                        <div className='NumbDiv'>
+                            {players.length == 6 ? (
+                                    <p style={{color:'darkred'}}>6/6 Players</p>
+                                ) : (
+                                    <p>{players.length}/6 Players</p>
+                                )
+                            }
+                        </div>
                     </div>
+
                     {/* //! voir pour la gestion avec un liste, utilisateur avec le "+ (vous)" et les pdp avec les lettres grecs (?)*/}
                     {players.map((player, index) => (
                         // <PlayerItemList key={player.id} pdp={PersonImg} name={player.name} id={player.id}/>
@@ -283,28 +294,6 @@ function Lobby() {
             <div className="lobby-vertical-divider" style={{backgroundColor: theme.colors.secondary}}></div>
 
             <div className='right-part'>
-                {/* <div className='title-param-div'>
-                    <img src={param} alt="param"/>
-                    <h2>Paramètre de la partie</h2>
-                </div>
-                <ul>
-                    <li><h4> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim</h4></li>
-                    <li><h4>paramètre super important pour la partie</h4></li>
-                    <li><h4>paramètre super important pour la partie</h4></li>
-                    <li><h4>paramètre super important pour la partie</h4></li>
-                    <li><h4>Niveau des bots : Facile </h4></li>
-                    <li><h4>Thèmes : basique </h4></li> */}
-                    {
-                        //? mettre un timer pour chaques personne ?
-                        //? indice avancé ? ==> négation, voisin du 2e degré etc.
-                    }
-                {/* </ul> */}
-                {/* <center >
-                    <button className='buttonNabImg' onClick={StartGame}>
-                        <img src={cible} alt="Button Image" height="50" width="50" />
-                        <p>{"la chasse !"}</p>
-                    </button>
-                </center> */}
                 <div className='lobbyR' 
                     style={{flexDirection:'column',
                             alignItems:'space-around'}}>
@@ -368,29 +357,6 @@ function Lobby() {
                         Démarrer la partie !
                     </button>
                 </div>
-                {/* <div className='centerDivH'>
-                <div>
-                    <label htmlFor="numberInput">Séléctionner le nombre de noeud (entre 20 et 60) :</label>
-                    <input
-                        type="number"
-                        id="numberInput"
-                        value={enteredNumber}
-                        onChange={handleNumberChange}
-                        min={20}
-                        max={60}/>
-                    <p>La valeur saisie : {enteredNumber}</p>
-                </div>
-
-
-                <div className='centerDivH'>
-                    <button className='button' onClick={StartGame}
-                        style={{ 
-                            backgroundColor: theme.colors.tertiary,
-                            borderColor: theme.colors.secondary
-                        }}>
-                        <img src={cible} alt="cible" height="40"/>
-                    </button>
-                </div> */}
             </div>
         </div>
     );
