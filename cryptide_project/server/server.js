@@ -37,58 +37,69 @@ io.on('connection', (socket) => {
     io.to(playerId).emit("join during game", networkPerson, person, indices, start, map.get(room).tab, nodes)
   })
 
-  socket.on("lobby joined", (room, player) =>{
-    if (lastSocketJoined != player.id){
-      lastSocketJoined=player.id
-      const game = map.get(room)
-      if (game !== undefined){
-        if (game.tab.length == 6 && !game.started){
-          io.to(socket.id).emit("room full")
-          return
-        }
-        if (game.started){
-          for(const u of game.tab){
-            if(u.type !== "User" && u.pseudo===player.pseudo){
-              u.type = "User"
-              u.id=socket.id
-              io.to(game.tab[game.actualPlayer].id).emit("give network", socket.id)
-              io.to(room).emit("player joined ingame", game.tab)
-              socket.join(room)
-              return
+  socket.on("join back game", (player) => {
+    for (const k of map.keys()){
+      const tab = map.get(k)
+        for (let i = 0; i<tab.tab.length; i++){
+          if (tab.tab[i].pseudo === player.pseudo && tab.tab[i].type !== "User"){
+            if (tab.started){
+              io.to(socket.id).emit("join back game", k)
             }
           }
-          io.to(socket.id).emit("game already started")
-          return
         }
+    }
+  })
+
+  socket.on("lobby joined", (room, player) =>{
+
+    const game = map.get(room)
+    if (game !== undefined){
+      if (game.tab.length == 6 && !game.started){
+        io.to(socket.id).emit("room full")
+        return
       }
-  
-  
-      if (game == undefined){
-        map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false, actualPlayer: 0, lastWorks: false})
-        socket.join(room)
-      }
-      else{
-        const tab = game.tab
-        for(let i = 0; i<tab.length; i++){
-          if (tab[i].id === socket.id && player.type==="User"){
-            tab.splice(i, 1)
+      if (game.started){
+        for(const u of game.tab){
+          if(u.type !== "User" && u.pseudo===player.pseudo){
+            u.type = "User"
+            u.id=socket.id
+            io.to(game.tab[game.actualPlayer].id).emit("give network", socket.id)
+            io.to(room).emit("player joined ingame", game.tab)
+            socket.join(room)
+            return
           }
         }
-  
-        if (player.type!=="User"){
-          tab.push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
-        }
-        else{
-          tab.push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
-          socket.join(room)
+        io.to(socket.id).emit("game already started")
+        return
+      }
+    }
+
+
+    if (game == undefined){
+      map.set(room, {tab: [{type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture}], started: false, actualPlayer: 0, lastWorks: false})
+      socket.join(room)
+    }
+    else{
+      const tab = game.tab
+      for(let i = 0; i<tab.length; i++){
+        if (tab[i].id === socket.id && player.type==="User"){
+          tab.splice(i, 1)
         }
       }
-      
-      io.to(room).emit("new player", map.get(room))
-      const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
-      const playerJson = JSON.stringify(playerArray);
-      io.emit("request lobbies", playerJson)
+
+      if (player.type!=="User"){
+        tab.push({type: player.type, id: player.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+      }
+      else{
+        tab.push({type: player.type, id: socket.id, pseudo: player.pseudo, profilePicture: player.profilePicture})
+        socket.join(room)
+      }
     }
+    
+    io.to(room).emit("new player", map.get(room))
+    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+    const playerJson = JSON.stringify(playerArray);
+    io.emit("request lobbies", playerJson)
     
   })
 
@@ -134,15 +145,17 @@ io.on('connection', (socket) => {
   })
 
   socket.on("who plays", (room) => {
-    let player = map.get(room).actualPlayer
-    if (map.get(room).tab[player].type != "User"){
-      player = player + 1
-      if (player == map.get(room).tab.length){
-        player=0
+    if (map.get(room) !== undefined){
+      let player = map.get(room).actualPlayer
+      if (map.get(room).tab[player].type != "User"){
+        player = player + 1
+        if (player == map.get(room).tab.length){
+          player=0
+        }
       }
+      console.log(player)
+      io.to(room).emit("who plays", player, map.get(room).lastWorks)
     }
-    console.log(player)
-    io.to(room).emit("who plays", player, map.get(room).lastWorks)
   })
 
   socket.on("disconnect", () =>{

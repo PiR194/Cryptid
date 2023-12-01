@@ -108,6 +108,7 @@ function Play() {
                     if (loggedIn){
                         login()
                         setUserData(user)
+                        socket.emit("join back game", user)
                     }
                     else{
                         loadImageAsync(defaultImg).then((blob) => {
@@ -118,7 +119,18 @@ function Play() {
                 }
             })
         }
+        else{
+            socket.emit("join back game", user)
+        }
     }, [isLoggedIn]);
+
+    const [goBackRoom, setGoBackRoom] = useState(-1)
+
+    useEffect(() => {
+        socket.on("join back game", (room) => {
+            setGoBackRoom(room)
+        })
+    }, [])
 
 
     const [room, setRoom] = useState(null);
@@ -168,6 +180,10 @@ function Play() {
             navigate(nouvelleURL);
         }
     }, [room, navigate]);
+
+    const goBack = () => {
+        navigate("/lobby?room=" + goBackRoom)
+    }
 
 
 
@@ -259,7 +275,7 @@ function Play() {
 
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
-                    
+                    {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>}
                 </div>
             </div>
             <div className='rightContainer'>

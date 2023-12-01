@@ -51,6 +51,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
     function onTouch(){
         if (IsActualPlayer && !askedWrong){
             setPlayerTouched(index)
+            setTouchedPlayer(index)
         }
     }
     
