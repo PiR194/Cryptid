@@ -5,7 +5,7 @@ FROM node:14-alpine as builder
 WORKDIR /app
 
 # Copier le package.json et le package-lock.json pour installer les dépendances
-COPY package*.json ./
+COPY package.json ./
 
 RUN cat package.json
 
