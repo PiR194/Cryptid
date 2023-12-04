@@ -1,23 +1,30 @@
-# Utilise une image de node.js en tant que base
-FROM node:14-alpine
+# Étape 1 : Construire l'application React
+FROM node:14 AS build
 
-# Définis le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copie les fichiers package.json et package-lock.json pour installer les dépendances
-COPY package*.json ./
+# Copier le fichier package.json et package-lock.json
+COPY package.json package-lock.json ./
 
-# Installe les dépendances
+# Installer les dépendances
 RUN npm install
 
-# Copie le reste des fichiers de l'application dans le conteneur
+# Copier le reste des fichiers de l'application
 COPY . .
 
-# Construit l'application React
+# Construire l'application
 RUN npm run build
 
-# Expose le port 80 du conteneur
-EXPOSE 80
+RUN ls
 
-# Commande à exécuter lorsque le conteneur démarre
-CMD ["npm", "start", "--", "-p", "80"]
+COPY .htacess /app/build/
+
+# Étape 2 : Configurer Apache et copier les fichiers construits
+FROM httpd:2.4-alpine
+
+# Copier les fichiers construits depuis l'étape précédente
+COPY --from=build /app/build/ /usr/local/apache2/htdocs/
+
+RUN ls /usr/local/apache2/htdocs/
+# Exposer le port 80 (par défaut pour Apache)
+EXPOSE 80
