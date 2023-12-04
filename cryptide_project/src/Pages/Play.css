@@ -20,12 +20,6 @@
     display: flex;
     justify-content: center;
 }
-/* 
-.MidContainer div {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-} */
 
 .leftContainer{
     width: 30%;
@@ -75,7 +69,7 @@
 
 
 .ButtonNav{
-    margin: 15px 0;
+    margin: 15px 10px;
     width:200px;
     height: 8vh;
 
@@ -90,6 +84,20 @@
     font-size:larger;
 }
 
+
+.ButtonNavRejoin{
+    margin: 15px 10px;
+    width:200px;
+    height: 8vh;
+
+    color: white;
+    background-color: aquamarine;
+
+    border: solid 2px rgb(40, 225, 163);
+    border-radius: 15px;
+
+    font-size:larger;
+}
 .returnDiv{
     display: flex;
     flex-direction: column;

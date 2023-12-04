@@ -229,12 +229,26 @@ function NewPlay() {
     };
 
 
+
+    // if (goBackRoom != -1){
+    //     var returnVisibility = "visible"
+    // }
+    // else{
+    //     var returnVisibility = "hidden"
+    // }
+
+    // const returnVisibility: Visibility = goBackRoom !== -1 ? "visible" : "hidden";
+
+    const returnVisibility: any= goBackRoom !== -1 ?  "visible" : "hidden" ;
+
+
     return (
 
         <div className="MainContainer">
             <div className="NewleftContainer">
 
                 {/* Menu de boutons */}
+                
                 <div className='NewbuttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     
@@ -259,10 +273,11 @@ function NewPlay() {
                         )}
                     </Overlay>
 
-
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
-                    {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>}
+                    {/* {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>} */}
+                    <button onClick={goBack} className="ButtonNavRejoin" style={{ visibility:returnVisibility}}>Retourner à la partie</button>
+
                 </div>
             
                 {/* Lobbies */}
@@ -271,9 +286,6 @@ function NewPlay() {
                 </div>
             
             </div>
-            
-            {/* <div className="MidContainer">
-            </div> */}
             <div className='NewrightContainer'>
                 {user && (<ScoreBoard Player={user}/>)}
             </div>

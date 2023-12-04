@@ -56,7 +56,7 @@ function Lobbies() {
     );
 
     const filteredLobbiesToShow = showAvailable
-    ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6)
+    ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6) //* retire les lobbies pleins ou commencés
     : filteredLobbies;
 
 
