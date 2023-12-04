@@ -29,7 +29,7 @@ import { loadImageAsync } from '../ImageHelper';
 import { Overlay, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
+import Info from '../res/icon/infoGreen.png';
 
 let cptNavigation = 0
 
@@ -232,10 +232,22 @@ function Play() {
 
         <div className="MainContainer">
             <div className="leftContainer">
-                {/* <button className='ButtonNav'>
-                    Param
-                </button> */}
-                {/* <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/> */}
+                {goBackRoom != -1 && 
+                    <div className='returnDiv'>
+                        <div style={{
+                            display:'flex',
+                            alignItems:'center'
+                        }}>
+                            <img src={Info} alt='info' height='50px' width='50px'/>
+                            <h1>Information</h1>
+                        </div>
+                        <p> Il semblerait que vous avez quitté une partie en cours... <br/> <i>Et si nous y retournions ?</i></p>
+                        <button onClick={goBack} className="ButtonNav" 
+                            style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>
+                            Retourner à la partie
+                        </button>
+                    </div>
+                }
             </div>
             <div className="MidContainer">
                 <div>
@@ -275,7 +287,6 @@ function Play() {
 
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
                     <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
-                    {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>}
                 </div>
             </div>
             <div className='rightContainer'>
