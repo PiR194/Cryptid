@@ -48,7 +48,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne d'essai :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.avgNbTry : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.avgNbTry.toFixed(2) : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en Enigme facile :</Row>
@@ -62,7 +62,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Ratio V/D :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.ratio : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.ratio.toFixed(2) + "%" : "0"}</Col>
                         </Row>
                         <Row>
                             <Col sm={10}>Meilleur temps :</Col>
@@ -70,7 +70,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne de temps :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.avgTime : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.avgTime.toFixed(2) : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en Enigme moyenne :</Row>
@@ -84,7 +84,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne d'essai :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.mediumEnigmaStats.avgNbTry : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mediumEnigmaStats.avgNbTry.toFixed(2) : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en Enigme difficile :</Row>
@@ -98,7 +98,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne de temps :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.avgTime : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.avgTime.toFixed(2) : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en ligne :</Row>
@@ -111,8 +111,8 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <Col className='leftRow'>{Player !== null ? Player.onlineStats.nbWins : "0"}</Col>
                         </Row>
                         <Row>
-                            <Col sm={10}>Ratio P/V :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.onlineStats.ratio : "0"}</Col>
+                            <Col sm={10}>Ratio V/D :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.onlineStats.ratio.toFixed(2) + "%" : "0"}</Col>
                         </Row>
                     </Container>
                 </Tab>
