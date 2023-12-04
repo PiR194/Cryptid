@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Exposez le port 8080
-EXPOSE 8080
+EXPOSE 80
 
 # Commande pour exécuter l'application lorsque le conteneur démarre
 CMD ["npm", "start"]
