@@ -15,6 +15,8 @@ COPY . .
 # Construire l'application
 RUN npm run build
 
+RUN ls
+
 COPY .htacess /app/build/
 
 # Étape 2 : Configurer Apache et copier les fichiers construits
