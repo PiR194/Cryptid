@@ -18,6 +18,8 @@ import Player from "../model/Player";
 import JSONParser from "../JSONParser";
 import User from "../model/User";
 import { json } from "body-parser";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -36,6 +38,8 @@ interface MyGraphComponentProps {
   askedWrong: boolean
   setAskedWrong: (askedWrong: boolean) => void
   setPlayerIndex: (playerIndex: number) => void
+  importToPdf: boolean
+  setImportToPdf: (imp: boolean) => void
 }
 
 let lastAskingPlayer = 0
@@ -64,7 +68,7 @@ let cptUseEffect = 0
 let testPlayers: Player[] = []
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -294,6 +298,25 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     }
   }
+
+  useEffect(() => {
+    if (importToPdf){
+      setImportToPdf(false)
+      const graphContainer = document.getElementById("graph-container");
+      if (graphContainer == null){
+        return
+      }
+      html2canvas(graphContainer).then((canvas) => {
+        const pdf = new jsPDF({
+          orientation: 'landscape', // Spécifie l'orientation du PDF en mode paysage
+          unit: 'mm', // Unité de mesure (par exemple, millimètres)
+          format: 'a4', // Format du papier (par exemple, a4)
+        });
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+        pdf.save('graph.pdf');
+      });
+    }
+  }, [importToPdf])
 
   useEffect(() => {
     if (personNetwork == null){
