@@ -41,7 +41,7 @@ steps:
       dockerfile: ./cryptide_project/Dockerfile
       context: .
       registry: hub.codefirst.iut.uca.fr
-      repo: hub.codefirst.iut.uca.fr/crypteam/cryptide
+      repo: hub.codefirst.iut.uca.fr/crypteam/cryptide/web
       username:
         from_secret: SECRET_REGISTRY_USERNAME
       password:
@@ -54,7 +54,7 @@ steps:
   - name: deploy-server-containers
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
-        IMAGENAME: hub.codefirst.iut.uca.fr/crypteam/cryptide:latest
+        IMAGENAME: hub.codefirst.iut.uca.fr/crypteam/cryptide/web:latest
         CONTAINERNAME: website-crypteam
         COMMAND: create
         OVERWRITE: true
