@@ -39,7 +39,7 @@ steps:
     image: plugins/docker
     settings:
       dockerfile: ./cryptide_project/Dockerfile
-      context: .
+      context: ./cryptide_project
       registry: hub.codefirst.iut.uca.fr
       repo: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/web
       username:
