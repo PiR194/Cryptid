@@ -4,14 +4,14 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 80;
 
-// Définir le type MIME pour les fichiers JavaScript
-app.use('*.js', (req, res, next) => {
-  res.type('application/javascript');
-  next();
-});
-
 // Servir les fichiers statiques depuis le dossier 'build'
 app.use(express.static(path.join(__dirname, 'build')));
+
+// Définir le type MIME pour les fichiers JavaScript
+app.use('*.js', (req, res, next) => {
+  res.type('application/javascript; charset=utf-8');
+  next();
+});
 
 // Route par défaut pour servir l'application React
 app.get('*', (req, res) => {
