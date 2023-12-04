@@ -67,7 +67,95 @@ const Profile = () => {
     // Désactiver le mode d'édition
     setEditingUsername(false);
   };
+  
 
+    //* Gestion de la modification du mot de passe :
+
+    // Modal de modification du mot de passe
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [showWrongPassword, setShowWrongPassword] = useState(false);
+    const [showCorrectPassword, setShowCorrectPassword] = useState(false);
+    
+    // Etat du mot de passe
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    
+    // Etat de l'étape
+    const [step, setStep] = useState(1);
+    const [DisableNextStep, setDisableNextStep] = useState(true);
+    
+    // Etat du nouveau mot de passe
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
+
+    const handleShowPasswordModal = () => {
+      setShowPasswordModal(true);
+    };
+    const handleClosePasswordModal = () => {
+      setShowPasswordModal(false);
+    };
+
+    //* Vérification de l'ancien mot de passe :
+    const handleConfirmedAuth = () => {
+
+      // Vérification de l'ancien mot de passe
+      // if (oldPassword === user?.password) {
+      if (oldPassword === 'coucou') { //! pour l'instant c'est 'coucou', mais il faudra mettre le vrai mdp.
+        console.log('Ancien mot de passe correct.');
+        setShowWrongPassword(false);
+        setShowCorrectPassword(true);
+        setDisableNextStep(false);
+      }
+      else{
+        console.log('Ancien mot de passe incorrect.');
+        setShowWrongPassword(true);
+        setShowCorrectPassword(false);
+        setDisableNextStep(true);
+      }
+    }
+
+    const handleChangeStep = () => {
+      setShowWrongPassword(false);
+      setShowCorrectPassword(false);
+      setStep(2)
+    }
+
+    //* Modification du mot de passe :
+    const handlePasswordChange = () => {
+      //Effectuer la modification du mot de passe
+      // sinon, affichez une erreur
+      if (newPassword === confirmNewPassword) {
+      //   SessionService.UpdatePassword(user?.pseudo, newPassword);
+      //   user.password = newPassword;
+        console.log('Changement de mot de passe');
+        setShowPasswordModal(false);
+        setTimeout(async () => {
+          setShowPasswordModal(false);
+        }, 3000);
+      } else {
+        //les mots de passe ne correspondent pas
+        console.error("Les mots de passe ne correspondent pas.");
+        setShowWrongPassword(true);
+        setTimeout(async () => {
+          setShowWrongPassword(false);
+        }, 3000);
+      }
+    };
+  
+
+    //@ts-ignore
+    const handleConfirmNewPasswordChange = (e) => {
+      setConfirmNewPassword(e.target.value);
+    };
+
+    //@ts-ignore
+    const handleOldPasswordChange = (e) => {
+      setOldPassword(e.target.value);
+    };
+  
+    //@ts-ignore
+    const handleNewPasswordChange = (e) => {
+      setNewPassword(e.target.value);
+    };
 
   //* Gestion Modal de suppression :
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -116,7 +204,6 @@ const Profile = () => {
       }, 3000);
     }
   };
-
   
   return (
     <>
@@ -143,7 +230,7 @@ const Profile = () => {
             </div>
           ) : (
             <div className='username-display'>
-              <h1>{user?.pseudo}</h1>
+              <h1 className='pseudoDisplay'>{user?.pseudo}</h1>
               <button className='editbutton' onClick={() => setEditingUsername(true)}>
                 <img src={Edit} alt='edit' width='25' height='25'/>
               </button>
@@ -152,16 +239,93 @@ const Profile = () => {
         }
         <hr/>
         {!editingUsername ? (
-        <Button variant="secondary">Modifier le mot de passe</Button>
+        <Button variant="secondary" onClick={() => setShowPasswordModal(true)}>Modifier le mot de passe</Button>
         ) : (
           <Alert key='info' variant='info' style={{width:'100%'}}>
             Vous êtes en mode "édition".
           </Alert>
         )}
+
+        {/* Modal de modification de mdp */}
+        <Modal show={showPasswordModal} onHide={handleClosePasswordModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{`Étape ${step}`}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {step === 1 && (
+            <>
+              <p>Entrez votre ancien mot de passe :</p>
+              <Form.Control
+                type="password"
+                placeholder="Ancien mot de passe"
+                value={oldPassword}
+                onChange={handleOldPasswordChange}
+              />
+              <Button variant="primary" style={{margin:'15px'}} onClick={handleConfirmedAuth}>
+                Confirmer
+              </Button>
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <p>Entrez votre nouveau mot de passe :</p>
+              <Form.Control
+                type="password"
+                placeholder="Nouveau mot de passe"
+                value={newPassword}
+                onChange={handleNewPasswordChange}
+              />
+              <br/>
+
+              <p>Confirmez votre nouveau mot de passe :</p>
+              <Form.Control
+                type="password"
+                placeholder="Confirmez le nouveau mot de passe"
+                value={confirmNewPassword}
+                onChange={handleConfirmNewPasswordChange}
+              />
+            </>
+          )}
+
+          {showWrongPassword && (
+            <Alert variant="danger" style={{ width: '100%' }}>
+              Ancien mot de passe incorrect.
+            </Alert>
+          )}
+          {showCorrectPassword && (
+            <Alert variant="success" style={{ width: '100%' }}>
+              Ancien mot de passe correct.
+            </Alert>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {step === 1 && (
+            <Button variant="secondary" onClick={handleClosePasswordModal}>
+              Annuler
+            </Button>
+          )}
+
+          {step === 2 ? (
+            <Button variant="primary" onClick={handlePasswordChange}>
+              Modifier le mot de passe
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleChangeStep} disabled={DisableNextStep}>
+              Étape suivante
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+
+
         <div className='bottom'>
           <>
+          {!editingUsername && (
             <Button variant="danger" onClick={handleShowDeleteModal}>Supprimer</Button>
+          ) }
 
+          {/* Modal de suppression */}
             <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Confirmation de suppression</Modal.Title>
