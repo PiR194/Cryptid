@@ -23,6 +23,15 @@ COPY --from=build /app/build/ /usr/local/apache2/htdocs/
 
 COPY htaccess /usr/local/apache2/htdocs/.htaccess
 
+RUN ls /usr/local/apache2/htdocs/static
+
+RUN ls /usr/local/apache2/htdocs/static/css
+
+RUN ls /usr/local/apache2/htdocs/static/js
+
+RUN ls /usr/local/apache2/htdocs/static/media
+
+
 RUN cat /usr/local/apache2/htdocs/.htaccess
 
 
