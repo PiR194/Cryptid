@@ -287,6 +287,16 @@ function NewPlay() {
             
             </div>
             <div className='NewrightContainer'>
+                <div style={{ border:'solid 2px lightgray', borderRadius:'15px', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column', padding:'20px', margin:'20px 0px'}}>
+                    <h2>
+                        {user && user.pseudo}
+                    </h2>
+                    <img src={user?.profilePicture}
+                            height='150'
+                            width='150'
+                            alt="Person"
+                            />
+                </div>
                 {user && (<ScoreBoard Player={user}/>)}
             </div>
         </div>
