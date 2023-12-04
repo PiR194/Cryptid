@@ -33,21 +33,9 @@ import Form from 'react-bootstrap/Form';
 //@ts-ignore
 const Profile = () => {
   
-  // useEffect(() => {
-  //   // Déclenchez l'erreur à l'intérieur de useEffect pour éviter des problèmes à la compilation
-  //   //@ts-ignore
-  //   console.log(undefinedVariable);
-  // }, []); // Déclenchez cette fonction une seule fois après le rendu initial
-
-
   const navigate = useNavigate();
   //let player;
   const {user, logout} = useAuth()
-  
-  // let pseudoNotNull;
-  // if(user?.pseudo != null){
-  //   pseudoNotNull = user.pseudo;
-  // }
 
   const [editingUsername, setEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(user?.pseudo);
@@ -70,7 +58,6 @@ const Profile = () => {
   
 
     //* Gestion de la modification du mot de passe :
-
     // Modal de modification du mot de passe
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showWrongPassword, setShowWrongPassword] = useState(false);

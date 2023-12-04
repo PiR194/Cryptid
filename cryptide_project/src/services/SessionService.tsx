@@ -111,6 +111,7 @@ class SessionService {
             throw error;
         }
     }
+
 }
 
 export default SessionService;
