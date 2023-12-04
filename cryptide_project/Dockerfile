@@ -17,7 +17,7 @@ RUN npm run build
 
 RUN ls
 
-COPY htacess /app/build/.htacess
+COPY htaccess /app/build/.htaccess
 
 # Étape 2 : Configurer Apache et copier les fichiers construits
 FROM httpd:2.4-alpine
