@@ -17,13 +17,16 @@ RUN npm run build
 
 RUN ls
 
-COPY htaccess /app/build/.htaccess
+
 
 # Étape 2 : Configurer Apache et copier les fichiers construits
 FROM httpd:2.4-alpine
 
 # Copier les fichiers construits depuis l'étape précédente
 COPY --from=build /app/build/ /usr/local/apache2/htdocs/
+
+COPY htaccess /usr/local/apache2/htdocs/.htaccess
+
 
 RUN ls /usr/local/apache2/htdocs/
 # Exposer le port 80 (par défaut pour Apache)
