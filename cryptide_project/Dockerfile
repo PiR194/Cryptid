@@ -26,6 +26,6 @@ RUN touch /usr/local/apache2/conf/httpd.conf
 RUN echo "AddType text/css .css" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "AddType application/javascript .js" >> /usr/local/apache2/conf/httpd.conf
 
-RUN ls /usr/local/apache2/htdocs/
+RUN ls /usr/local/apache2/conf/httpd.conf
 # Exposer le port 80 (par défaut pour Apache)
 EXPOSE 80
