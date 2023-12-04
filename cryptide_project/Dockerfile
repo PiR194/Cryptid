@@ -21,5 +21,6 @@ FROM httpd:2.4-alpine
 # Copier les fichiers construits depuis l'étape précédente
 COPY --from=build /app/build/ /usr/local/apache2/htdocs/
 
+RUN ls /usr/local/apache2/htdocs/
 # Exposer le port 80 (par défaut pour Apache)
 EXPOSE 80
