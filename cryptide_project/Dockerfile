@@ -23,6 +23,8 @@ COPY --from=build /app/build/ /usr/local/apache2/htdocs/
 
 COPY htaccess /usr/local/apache2/htdocs/.htaccess
 
+RUN cat /usr/local/apache2/htdocs/.htaccess
+
 
 RUN ls -a /usr/local/apache2/htdocs/
 # Exposer le port 80 (par défaut pour Apache)
