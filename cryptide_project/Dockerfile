@@ -34,4 +34,4 @@ EXPOSE 8080
 RUN ls
 
 # La commande CMD est utilisée pour démarrer serve lorsque le conteneur démarre
-CMD ["serve", "-s", ".", "-p", "8080"]
+CMD ["serve", "-s", "-n", ".", "-p", "8080"]
