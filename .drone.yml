@@ -55,7 +55,7 @@ steps:
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/web:latest
-        CONTAINERNAME: website-crypteam
+        CONTAINERNAME: website
         COMMAND: create
         OVERWRITE: true
         #PRIVATE: true
