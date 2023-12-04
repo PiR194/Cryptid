@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 80
 #
 # Installez express
 RUN npm install express
