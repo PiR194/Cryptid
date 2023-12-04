@@ -4,16 +4,16 @@ FROM node:14 AS build
 WORKDIR /app
 
 # Copier le fichier package.json et yarn.lock (ou package-lock.json si vous utilisez npm)
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 # Installer les dépendances
-RUN yarn install
+RUN npm install --force
 
 # Copier le reste des fichiers de l'application
 COPY . .
 
 # Construire l'application
-RUN yarn build
+RUN npm run build
 
 # Étape 2 : Configurer Nginx et copier les fichiers construits
 FROM nginx:alpine
