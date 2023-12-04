@@ -34,7 +34,7 @@ steps:
         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
 
 
-
+#
   - name: container-web
     image: plugins/docker
     settings:
