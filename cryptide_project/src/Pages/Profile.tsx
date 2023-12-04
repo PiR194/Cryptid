@@ -4,7 +4,7 @@ import ProfilePDP from '../Components/ProfilePDP';
 import SessionService from '../services/SessionService';
 import AuthService from '../services/AuthService';
 import { PlayerProps } from '../types/Player';
-import { delay, update } from 'lodash';
+import { delay, set, update } from 'lodash';
 import { socket } from '../SocketConfig';
 
 
@@ -28,6 +28,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 
 //@ts-ignore
@@ -74,6 +75,8 @@ const Profile = () => {
     // Etat du nouveau mot de passe
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
+
+    const [ percent, setpercent] = useState(0);
     const handleShowPasswordModal = () => {
       setShowPasswordModal(true);
     };
@@ -91,6 +94,7 @@ const Profile = () => {
         setShowWrongPassword(false);
         setShowCorrectPassword(true);
         setDisableNextStep(false);
+        setpercent(25);
       }
       else{
         console.log('Ancien mot de passe incorrect.');
@@ -103,6 +107,7 @@ const Profile = () => {
     const handleChangeStep = () => {
       setShowWrongPassword(false);
       setShowCorrectPassword(false);
+      setpercent(50);
       setStep(2)
     }
 
@@ -114,7 +119,7 @@ const Profile = () => {
       //   SessionService.UpdatePassword(user?.pseudo, newPassword);
       //   user.password = newPassword;
         console.log('Changement de mot de passe');
-        setShowPasswordModal(false);
+        setpercent(100);
         setTimeout(async () => {
           setShowPasswordModal(false);
         }, 3000);
@@ -124,24 +129,27 @@ const Profile = () => {
         setShowWrongPassword(true);
         setTimeout(async () => {
           setShowWrongPassword(false);
-        }, 3000);
+        }, 1500);
       }
     };
   
 
-    //@ts-ignore
-    const handleConfirmNewPasswordChange = (e) => {
-      setConfirmNewPassword(e.target.value);
-    };
-
+    
     //@ts-ignore
     const handleOldPasswordChange = (e) => {
       setOldPassword(e.target.value);
+      setpercent(13);
     };
-  
+    
     //@ts-ignore
     const handleNewPasswordChange = (e) => {
+      setpercent(63);
       setNewPassword(e.target.value);
+    };
+    //@ts-ignore
+    const handleConfirmNewPasswordChange = (e) => {
+      setConfirmNewPassword(e.target.value);
+      setpercent(75);
     };
 
   //* Gestion Modal de suppression :
@@ -237,8 +245,10 @@ const Profile = () => {
         <Modal show={showPasswordModal} onHide={handleClosePasswordModal}>
         <Modal.Header closeButton>
           <Modal.Title>{`Étape ${step}`}</Modal.Title>
+          {/* <ProgressBar animated now={50*step} /> */}
         </Modal.Header>
         <Modal.Body>
+          <ProgressBar animated now={percent} />
           {step === 1 && (
             <>
               <p>Entrez votre ancien mot de passe :</p>
