@@ -20,7 +20,7 @@ RUN npm run build
 FROM node:14-alpine
 
 # Installer serve globalement
-RUN npm install -g serve
+RUN npm install serve --force
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
