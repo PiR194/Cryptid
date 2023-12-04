@@ -19,11 +19,11 @@ RUN npm run build
 # Utiliser une image légère basée sur Node.js pour servir l'application avec serve
 FROM node:14-alpine
 
+# Installer serve globalement
+RUN npm install -g serve
+
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
-
-# Installer serve globalement
-RUN npm install serve --force
 
 # Copier les fichiers construits à partir du builder vers le répertoire de travail du serveur serve
 COPY --from=builder /app/build /app
