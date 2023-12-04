@@ -17,10 +17,10 @@ COPY . .
 RUN npm run build
 
 # Exposer le port sur lequel le serveur va écouter
-EXPOSE 3000
+EXPOSE 8080
 
 # Installer le serveur "serve" de manière globale
 RUN npm install -g serve
 
 # Commande pour démarrer le serveur lorsque le conteneur est lancé
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "build", "-l", "8080"]
