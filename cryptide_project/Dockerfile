@@ -16,6 +16,8 @@ COPY . .
 # Construire l'application React
 RUN npm run build
 
+COPY serve.json build/
+
 # Exposer le port sur lequel le serveur va écouter
 EXPOSE 8080
 
@@ -23,4 +25,4 @@ EXPOSE 8080
 RUN npm install -g serve
 
 # Commande pour démarrer le serveur lorsque le conteneur est lancé
-CMD ["serve", "-s", "build", "-l", "8080"]
+CMD ["serve", "-s", "build", "-l", "8080", "--config", "serve.json"]
