@@ -35,7 +35,18 @@
     width: 30%;
 }
 
+.NewleftContainer{    
+    margin: 20px 30px;
+    width: 70%;
+}
 
+.NewrightContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
 
 /* .textBoard div{
     display: flex;
@@ -55,6 +66,13 @@
     align-items:center;
     flex-direction: column;
 }
+
+.NewbuttonGroupVertical{
+    display: flex;
+    justify-content:space-around;
+    align-items:start;
+}
+
 
 .ButtonNav{
     margin: 15px 0;

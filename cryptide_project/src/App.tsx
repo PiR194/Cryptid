@@ -44,6 +44,7 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
+import NewPlay from './Pages/NewPlay';
 
 const messages = {
   fr: messagesFr,
@@ -79,7 +80,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
-                  <Route path="/play" element={<Play/>} />
+                  <Route path="/play" element={<NewPlay/>} />
                   <Route path="/lobby" element={<Lobby/>} />
                   <Route path="/endgame" element={<EndGame/>} />
                   <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>

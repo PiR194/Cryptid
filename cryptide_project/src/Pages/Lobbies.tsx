@@ -56,7 +56,7 @@ function Lobbies() {
     );
 
     const filteredLobbiesToShow = showAvailable
-    ? filteredLobbies.filter((lobby) => lobby.started == false)
+    ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6)
     : filteredLobbies;
 
 
@@ -94,49 +94,44 @@ function Lobbies() {
 
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <h1>Bienvenue dans le lobby des lobbies</h1>
             <input
                 type="text"
                 className='searchLobby'
                 placeholder="Rechercher un lobby..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                style={{width:'80%', margin:'10px'}}
             />
-
-            {/* <div>
-                <button style={{borderColor:'whitesmoke', borderRadius:'15px 0px 0px 15px', padding:'5px'}}
-                        onClick={() => setShowAvailable(false)}>Tous</button>
-                <button style={{borderColor:'whitesmoke', borderRadius:'0px 15px 15px 0px', padding:'5px'}}
-                        onClick={() => setShowAvailable(true)}>Dispo</button>
-            </div> */}
-
-        <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
-            <button
-                style={{
-                    border:'solid',
-                    borderStyle:'none',
-                    borderRadius: '15px 0px 0px 15px',
-                    borderWidth: '2px',
-                    padding: '10px 15px',
-                    backgroundColor: !showAvailable ? 'white' : 'lightgray',
-                }}
-                onClick={handleShowAllClick}
-            >
-                Tous
-            </button>
-            <button
-                style={{
-                    border:'solid',
-                    borderStyle:'none',
-                    borderRadius: '0px 15px 15px 0px',
-                    padding: '10px 15px',
-                    backgroundColor: showAvailable ? 'white' : 'lightgray',
-                }}
-                onClick={handleShowAvailableClick}
-            >
-                Disponible
-            </button>
-        </div>
+            
+            <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '15px 0px 0px 15px',
+                        borderWidth: '2px',
+                        padding: '10px 15px',
+                        backgroundColor: !showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAllClick}
+                >
+                    Tous
+                </button>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '0px 15px 15px 0px',
+                        padding: '10px 15px',
+                        backgroundColor: showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAvailableClick}
+                >
+                    Disponible
+                </button>
+            </div>
 
 
             <div className="lobbyList">

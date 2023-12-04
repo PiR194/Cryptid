@@ -29,6 +29,7 @@ import { loadImageAsync } from '../ImageHelper';
 import { Overlay, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Lobbies from './Lobbies';
 
 
 let cptNavigation = 0
@@ -231,24 +232,10 @@ function NewPlay() {
     return (
 
         <div className="MainContainer">
-            <div className="leftContainer">
-                {/* <button className='ButtonNav'>
-                    Param
-                </button> */}
-                {/* <ButtonImgNav dest='/signup' img={defaultImg} text="Gestion du compte"/> */}
-            </div>
-            <div className="MidContainer">
-                <div>
-                    <h2>
-                        {user && user.pseudo}
-                    </h2>
-                    <img src={user?.profilePicture}
-                            height='300'
-                            width='300'
-                            alt="Person"
-                            />
-                </div>
-                <div className='buttonGroupVertical'>
+            <div className="NewleftContainer">
+
+                {/* Menu de boutons */}
+                <div className='NewbuttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     
                     
@@ -277,8 +264,17 @@ function NewPlay() {
                     <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                     {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>}
                 </div>
+            
+                {/* Lobbies */}
+                <div style={{border:'solid 1px lightgray', borderRadius:'15px', marginTop:'20px'}}>
+                    <Lobbies/>
+                </div>
+            
             </div>
-            <div className='rightContainer'>
+            
+            {/* <div className="MidContainer">
+            </div> */}
+            <div className='NewrightContainer'>
                 {user && (<ScoreBoard Player={user}/>)}
             </div>
         </div>
