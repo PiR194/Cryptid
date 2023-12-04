@@ -14,12 +14,12 @@ function Lobbies() {
 
 
     const lobbyData = [
-        { roomNum: '63194', headPlayer: new User('1', 'Emma', '', null, null), nbPlayer: 6 },
-        { roomNum: '81194', headPlayer: new User('2', 'Ray', '', null, null), nbPlayer: 1 },
-        { roomNum: '22194', headPlayer: new User('3', 'Norman', '', null, null), nbPlayer: 4 },
-        { roomNum: 'null', headPlayer: new User('null', 'tnull', '', null, null), nbPlayer: 1 },
-        { roomNum: '111111', headPlayer: new User('11', '1111111', '', null, null), nbPlayer: 1 },
-        { roomNum: '741852963', headPlayer: new User('3', 'Guest_741852963', '', null, null), nbPlayer: 6 },
+        { roomNum: '63194', headPlayer: new User('1', 'Emma', '', null, null, null, null, null), nbPlayer: 6 },
+        { roomNum: '81194', headPlayer: new User('2', 'Ray', '', null, null, null, null, null), nbPlayer: 1 },
+        { roomNum: '22194', headPlayer: new User('3', 'Norman', '', null, null, null, null, null), nbPlayer: 4 },
+        { roomNum: 'null', headPlayer: new User('null', 'tnull', '', null, null, null, null, null), nbPlayer: 1 },
+        { roomNum: '111111', headPlayer: new User('11', '1111111', '', null, null, null, null, null), nbPlayer: 1 },
+        { roomNum: '741852963', headPlayer: new User('3', 'Guest_741852963', '', null, null, null, null, null), nbPlayer: 6 },
     ];
 
 

@@ -21,7 +21,6 @@ import ScoreBoard from '../Components/ScoreBoard';
 import defaultImg from "../res/img/Person.png"
 
 /* Types */
-import User from '../model/User';
 import EnigmeDuJourCreator from '../model/EnigmeDuJourCreator';
 import Stub from '../model/Stub';
 
@@ -37,61 +36,14 @@ function Play() {
 
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
-    const {setDailyEnigmeData} = useGame()
-
+    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData } = useGame()
     const target = useRef(null);
 
     useEffect(() => {
-        const fetchUserInformation = async () => {
-            try {
-                const sessionData = await SessionService.getSession();
-                
-                // Vérifie si il y a une session
-                if (sessionData.user) {
-                    // Il y a une session on récupère les infos du joueur
-                    const updatedPlayer: User = new User(socket.id, sessionData.user.pseudo, sessionData.user.profilePicture, {
-                        nbGames: sessionData.user.soloStats.nbGames,
-                        bestScore: sessionData.user.soloStats.bestScore,
-                        avgNbTry: sessionData.user.soloStats.avgNbTry,
-                    },
-                    {
-                        nbGames: sessionData.user.onlineStats.nbGames,
-                        nbWins: sessionData.user.onlineStats.nbWins,
-                        ratio: sessionData.user.onlineStats.ratio,
-                    })
-                    login();
-                    setUserData(updatedPlayer);
-                } else {
-                    // Pas de session on génère un guest random
-                    const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
-                    {
-                        nbGames: 0,
-                        bestScore: 0,
-                        avgNbTry: 0,
-                    },
-                    {
-                        nbGames: 0,
-                        nbWins: 0,
-                        ratio: 0,
-                    })
-                    setUserData(guestPlayer);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchUserInformation();
-    }, [isLoggedIn]);
-
-
-    const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
-
-
-    useEffect(() => {
-
         if (user == null){
             manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                console.log(user);
+                
                 if (user!=null){
                     if (loggedIn){
                         login()

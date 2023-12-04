@@ -86,7 +86,7 @@ class JSONParser{
     static JSONToPlayer(json: any): Player{
         switch (json.type){
             case "User":
-                return new User(json.id, json.pseudo, json.profilePicture, json.soloStats, json.onlineStats)
+                return new User(json.id, json.pseudo, json.profilePicture, json.mastermindStats, json.easyEnigmaStats, json.mediumEnigmaStats ,json.hardEnigmaStatsS, json.onlineStats)
             case "EasyBot":
                 return new EasyBot(json.id, json.pseudo, json.profilePicture)
             default:

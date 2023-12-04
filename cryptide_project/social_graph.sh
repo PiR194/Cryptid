@@ -23,8 +23,8 @@ fi
 
 npm start &
 
-node server/server.js &
+node ./server/socket_io/server.js &
 
-node src/server/server.js 
+node ./server/api/server.js 
 
 

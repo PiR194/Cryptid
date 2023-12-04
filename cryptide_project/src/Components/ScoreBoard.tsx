@@ -37,18 +37,68 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                 className="mb-3">
                 <Tab eventKey="perso" title="Vos Stats" disabled = { !Player.pseudo.startsWith("Guest_") ? false : true}>
                 <Container fluid>
-                        <Row>Stats en solo :</Row>
+                        <Row>Stats en MasterMind :</Row>
                         <Row>
                             <Col sm={10}>Partie Jouées :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.soloStats.nbGames : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.nbGames : "0"}</Col>
                         </Row>
                         <Row>
                             <Col sm={10}>Best-Score :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.soloStats.bestScore : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.bestScore : "0"}</Col>
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne d'essai :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.soloStats.avgNbTry : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.avgNbTry : "0"}</Col>
+                        </Row>
+                        <hr/>
+                        <Row>Stats en Enigme facile :</Row>
+                        <Row>
+                            <Col sm={10}>Partie jouée :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.nbGames : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Nombre de victoire :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.nbWins : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Ratio V/D :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.ratio : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Meilleur temps :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.bestTime : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Moyenne de temps :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.avgTime : "0"}</Col>
+                        </Row>
+                        <hr/>
+                        <Row>Stats en Enigme moyenne :</Row>
+                        <Row>
+                            <Col sm={10}>Partie jouée :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mediumEnigmaStats.nbGames : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Best-Score :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mediumEnigmaStats.bestScore : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Moyenne d'essai :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mediumEnigmaStats.avgNbTry : "0"}</Col>
+                        </Row>
+                        <hr/>
+                        <Row>Stats en Enigme difficile :</Row>
+                        <Row>
+                            <Col sm={10}>Partie jouée :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.nbGames : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Meilleur temps :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.bestTime : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Moyenne de temps :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.avgTime : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en ligne :</Row>

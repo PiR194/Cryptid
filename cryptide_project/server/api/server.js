@@ -3,8 +3,9 @@ const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const authRoutes = require('./routes/authRoutes');
-const DatabaseService = require('./services/DatabaseService');
+const path = require('path');
+const authRoutes = require(path.resolve(__dirname, './routes/authRoutes'));
+const DatabaseService = require(path.resolve(__dirname, './services/DatabaseService'));
 
 
 const app = express();

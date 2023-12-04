@@ -1,54 +1,44 @@
-const UserService = require('../services/UserService');
-const DatabaseService = require('../services/DatabaseService');
 const bcrypt = require('bcrypt');
-
-const sqlite3 = require('sqlite3');
+const path = require('path');
+const DatabaseService = require(path.resolve(__dirname, '../services/DatabaseService.js'));
+const UserService = require(path.resolve(__dirname, '../services/UserService.js'));
 
 class AuthController {
     static async signUp(req, res) {
-    const databaseService = new DatabaseService();
-    const pseudo = req.body.pseudo;
-    const date = new Date();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
+        const databaseService = new DatabaseService();
+        const pseudo = req.body.pseudo;
+        const date = new Date();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
 
-    try {
-        await databaseService.connect();
+        try {
+            await databaseService.connect();
 
-        // Vérifier que le pseudo n'existe pas déjà
-        const verif = await databaseService.getUserByPseudo(pseudo);
-        if (verif) {
-            res.status(400).json({ error: 'Le pseudo est déjà utilisé.' });
-            return;
+            // Vérifier que le pseudo n'existe pas déjà
+            const verif = await databaseService.getUserByPseudo(pseudo);
+            if (verif) {
+                res.status(400).json({ error: 'Le pseudo est déjà utilisé.' });
+                return;
+            }
+
+            // Créer un nouvel utilisateur
+            const currentUser = await UserService.createUser(req.body);
+            const insertedUser = await databaseService.insertUser(currentUser);
+            
+            const user = await databaseService.getUserByPseudo(pseudo);
+            
+            console.log("[" + hour + ":" + minutes + "] " + user.pseudo + " have been registered.");
+            res.status(201).json({ message: 'Inscription réussie', user: insertedUser});
+        } 
+        catch (error) {
+            // Gérer les erreurs
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de l\'inscription.' });
+        } 
+        finally {
+            await databaseService.disconnect();
         }
-
-        // Créer un nouvel utilisateur
-        const currentUser = await UserService.createUser(req.body);
-        const insertedUser = await databaseService.insertUser(currentUser);
-        
-        const user = await databaseService.getUserByPseudo(pseudo);
-
-        // Initialiser les stats de l'utilisateur
-        await databaseService.initSoloStats(user.idUser);
-        await databaseService.initOnlineStats(user.idUser);
-
-        const soloStats = await databaseService.getSoloStatsByUserId(user.idUser);
-        const onlineStats = await databaseService.getOnlineStatsByUserId(user.idUser);
-
-        await databaseService.updateUserIDStats(user.idUser, soloStats.idSoloStats, onlineStats.idOnlineStats);
-        
-        console.log("[" + hour + ":" + minutes + "] " + user.pseudo + " have been registered.");
-        res.status(201).json({ message: 'Inscription réussie', user: insertedUser});
-    } 
-    catch (error) {
-        // Gérer les erreurs
-        console.error(error);
-        res.status(500).json({ error: 'Erreur lors de l\'inscription.' });
-    } 
-    finally {
-        await databaseService.disconnect();
     }
-  }
 
   static async signIn(req, res) {
     const databaseService = new DatabaseService();
@@ -120,8 +110,7 @@ class AuthController {
                 res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
                 return;
             }
-            await db.deleteSoloStat(user.idUser);
-            await db.deleteOnlineStat(user.idUser);
+            
             await db.deleteUser(user.idUser);
         }
         catch(error){

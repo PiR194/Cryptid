@@ -1,6 +1,5 @@
 import VerificationService from './VerificationService';
 import {ADRESSE_DBSERVER} from "../AdressSetup"
-import User from '../model/User';
 
 
 class AuthService{
