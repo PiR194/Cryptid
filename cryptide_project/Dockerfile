@@ -31,7 +31,7 @@ COPY --from=builder /app/build /app
 # Exposer le port 80 pour le trafic HTTP
 EXPOSE 8080
 
-RUN ls
+RUN ls static/
 
 # La commande CMD est utilisée pour démarrer serve lorsque le conteneur démarre
 CMD ["serve", "-s", "-n", ".", "-p", "8080"]
