@@ -16,7 +16,6 @@ import InGame from './Pages/InGame';
 import EndGame from './Pages/EndGame';
 import InfoPage from './Pages/InfoPage';
 
-import SoloGame from './Pages/SoloGame'; //! useless
 import DeducGrid from './Pages/DeducGrid'; 
 import Lobbies from './Pages/Lobbies';
 
