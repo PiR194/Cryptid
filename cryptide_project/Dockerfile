@@ -1,20 +1,31 @@
-# Utilisez une image Node.js comme base
-FROM node:14-alpine
+# Étape 1 : Construire l'application React
+FROM node:14 AS build
 
-# Définissez le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copiez le fichier package.json et le fichier package-lock.json dans le répertoire de travail
-COPY package*.json ./
+# Copier le fichier package.json et yarn.lock (ou package-lock.json si vous utilisez npm)
+COPY package.json yarn.lock ./
 
-# Installez les dépendances
-RUN npm install
+# Installer les dépendances
+RUN yarn install
 
-# Copiez tous les fichiers de l'application dans le répertoire de travail
+# Copier le reste des fichiers de l'application
 COPY . .
 
-# Exposez le port 8080
-EXPOSE 3000
+# Construire l'application
+RUN yarn build
 
-# Commande pour exécuter l'application lorsque le conteneur démarre
-CMD ["npm", "start"]
+# Étape 2 : Configurer Nginx et copier les fichiers construits
+FROM nginx:alpine
+
+# Copier les fichiers construits depuis l'étape précédente
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copier la configuration personnalisée pour Nginx (si nécessaire)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exposer le port 80
+EXPOSE 80
+
+# Commande pour démarrer Nginx lorsqu'un conteneur basé sur cette image est lancé
+CMD ["nginx", "-g", "daemon off;"]
