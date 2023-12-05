@@ -26,4 +26,4 @@ COPY --from=0 /app/build /usr/share/nginx/html
 EXPOSE 80
 
 # Commande pour démarrer Nginx lorsque le conteneur est lancé
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
