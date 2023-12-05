@@ -33,7 +33,7 @@ const SignUp = () => {
                 setShowConfirmation(true);
                 setTimeout(() => {
                     navigate('/login');         // 3 secondes avant de rediriger vers la page de connexion
-                }, 3000);
+                }, 1250);
             }
         } catch (error: any) {
             setError(error.message);
