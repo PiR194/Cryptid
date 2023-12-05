@@ -1019,7 +1019,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     catch(error){
                       console.log(error);
                     }
-                    navigate(`${basePath}/endgame?solo=true+${isDaily}`)
+                    navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
                   }
                   
                 }
