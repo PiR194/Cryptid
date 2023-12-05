@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/AuthController');
 const SessionController = require('../controllers/SessionController');
+const ScoreboardController = require('../controllers/ScoreboardController');
 
 // Routes pour l'authentification
 router.post('/auth/signup', AuthController.signUp);
@@ -19,5 +20,8 @@ router.post('/session/addEasyEnigmaStats', SessionController.addEasyEnigmaStats)
 router.post('/session/addHardEnigmaStats', SessionController.addHardEnigmaStats);
 router.post('/session/addOnlineStats', SessionController.addOnlineStats);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
+
+// Routes pour le scoreboard
+router.get('/scoreboard/getDailyMastermind', ScoreboardController.getDailyMastermind);
 
 module.exports = router;

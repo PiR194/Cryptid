@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 /* Style */
 import '../Pages/Play.css';
@@ -22,13 +22,33 @@ import Col from 'react-bootstrap/Col';
 import ButtonImgNav from './ButtonImgNav';
 import User from '../model/User';
 
-/* Types */
+/* Services */
+import ScoreboardService from '../services/ScoreboardService';
 
 //@ts-ignore
 const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
 
-    console.log(Player);
+    const [dailyMastermindStats, setDailyMastermindStats] = useState<any>(null);
+
+    // Récupérer les records daily et weekly
+    useEffect(() => {
+        async function fetchDailyMastermindStats() {
+            try {
+                const result = await ScoreboardService.getDailyMastermindStats();
+                console.log(result);
+                setDailyMastermindStats(result);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    
+        fetchDailyMastermindStats();
+    }, []);
+    
+    useEffect(() => {
+        console.log("Updated dailyMastermindStats:", dailyMastermindStats);
+    }, [dailyMastermindStats]);
 
     return (
         // <div className='LeaderBoardiv'>
@@ -133,27 +153,17 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             width='100'
                             alt="Person2"/>
                     <Container fluid>
-                        <Row>
-                            <Col sm={8}>Partie Jouées :</Col>
-                            <Col className='leftRow'>10</Col>
+                    {dailyMastermindStats !== null ? (dailyMastermindStats.dailyMastermindStats.map((stats: any, index: number) => (
+                        <Row key={index}>
+                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col className='leftRow'>{stats.score}</Col>
                         </Row>
+                    ))
+                    ) : (
                         <Row>
-                            <Col sm={8}>Partie gagnées :</Col>
-                            <Col className='leftRow'>2</Col>
+                            <Col sm={10}>No data</Col>
                         </Row>
-                        <Row>
-                            <Col sm={8}>Pions posés :</Col>
-                            <Col className='leftRow'>2</Col>
-                        </Row>
-                        <hr/>
-                        <Row>
-                            <Col sm={8}>Partie solo :</Col>
-                            <Col className='leftRow'>21</Col>
-                        </Row>
-                        <Row>
-                            <Col sm={8}>Nombre de coups moyen :</Col>
-                            <Col className='leftRow'>19</Col>
-                        </Row>
+                    )}
                     </Container>
                 </Tab>
                 <Tab eventKey="weekly" title="Weekly">

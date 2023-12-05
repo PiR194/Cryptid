@@ -128,6 +128,33 @@ class DatabaseService {
     }
 
     // -------------------------------------------------------------
+    // ------------------- STATS GENERALES -------------------------
+    // -------------------------------------------------------------
+
+    // Récupérer les 10 meilleurs scores de la journée
+    async getDailyMastermindStats() {
+        return new Promise((resolve, reject) => {
+            // Obtenez la date actuelle au format AAAA-MM-JJ
+            const currentDate = new Date().toISOString().slice(0, 10);
+
+            this.client.all(
+                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score DESC LIMIT 10',
+                "mastermind",
+                currentDate,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
+    
+
+
+    // -------------------------------------------------------------
     // ------------------- STATS MASTERMIND ------------------------
     // -------------------------------------------------------------
     
