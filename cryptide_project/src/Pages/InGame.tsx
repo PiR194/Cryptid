@@ -68,7 +68,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(`${basePath}/play`)
+            navigate(`/${basePath}/play`)
         }
     }
   

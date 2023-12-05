@@ -35,7 +35,7 @@ const SignUp = () => {
 
                 setShowConfirmation(true);
                 setTimeout(() => {
-                    navigate(`${basePath}/login`);         // 3 secondes avant de rediriger vers la page de connexion
+                    navigate(`/${basePath}/login`);         // 3 secondes avant de rediriger vers la page de connexion
                 }, 1250);
             }
         } catch (error: any) {

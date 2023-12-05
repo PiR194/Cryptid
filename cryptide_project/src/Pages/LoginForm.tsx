@@ -37,7 +37,7 @@ const SignIn = () => {
                 setShowConfirmation(true);
                 setTimeout(async () => {
                     await login();
-                    navigate(`${basePath}/`);
+                    navigate(`/${basePath}/`);
                 }, 1250);
             }
         } catch (error: any) {

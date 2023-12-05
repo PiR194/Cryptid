@@ -186,7 +186,7 @@ const Profile = () => {
       }
       handleCloseDeleteModal();
 
-      navigate(`${basePath}/`)
+      navigate(`/${basePath}/`)
 
     } else {
       console.error('Phrase de confirmation incorrecte.');

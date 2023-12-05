@@ -100,7 +100,7 @@ function Play() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-        navigate(`${basePath}/game?solo=true&daily=false`);
+        navigate(`/${basePath}/game?solo=true&daily=false`);
     }
 
     
@@ -131,12 +131,12 @@ function Play() {
     useEffect(() => {
         if (room !== null) {
             const nouvelleURL = `/lobby?room=${room}`;
-            navigate(`${basePath}${nouvelleURL}`);
+            navigate(`/${basePath}${nouvelleURL}`);
         }
     }, [room, navigate]);
 
     const goBack = () => {
-        navigate(`${basePath}/lobby?room=${goBackRoom}`)
+        navigate(`/${basePath}/lobby?room=${goBackRoom}`)
     }
 
 
@@ -159,7 +159,7 @@ function Play() {
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
 
-        navigate(`${basePath}/game?solo=true&daily=true&easy=true`);
+        navigate(`/${basePath}/game?solo=true&daily=true&easy=true`);
         setShowOverlay(false);
     };
 
@@ -177,7 +177,7 @@ function Play() {
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate(`${basePath}/game?solo=true&daily=true&easy=false`);
+        navigate(`/${basePath}/game?solo=true&daily=true&easy=false`);
         setShowOverlay(false);
     };
 
@@ -240,7 +240,7 @@ function Play() {
 
 
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
-                    <button onClick= {() => navigate(`${basePath}/join`)} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
+                    <button onClick= {() => navigate(`/${basePath}/join`)} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button>
                 </div>
             </div>
             <div className='rightContainer'>
