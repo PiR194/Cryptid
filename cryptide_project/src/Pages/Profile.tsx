@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ProfilePDP from '../Components/ProfilePDP';
 
 import SessionService from '../services/SessionService';
 import AuthService from '../services/AuthService';
-import { PlayerProps } from '../types/Player';
-import { delay, set, update } from 'lodash';
-import { socket } from '../SocketConfig';
 
 
 /* Style */
@@ -16,9 +13,6 @@ import Cancel from '../res/icon/cancel.png'
 
 /* Nav */
 import { useNavigate } from 'react-router-dom';
-
-/* Model */
-import User from '../model/User';
 
 /* Context */
 import { useAuth } from '../Contexts/AuthContext';
@@ -180,16 +174,15 @@ const Profile = () => {
 
       if(user!= null){
         const pseudo = user.pseudo;
-        AuthService.delAccount(pseudo);
-        AuthService.logout();
         logout();
+        AuthService.delAccount(pseudo);
       }
       else{
         console.error("l'utilisateur ne peut pas être null")
       }
       handleCloseDeleteModal();
 
-      navigate("/play")
+      navigate("/")
 
     } else {
       console.error('Phrase de confirmation incorrecte.');
