@@ -87,8 +87,8 @@ function App() {
                   <Route path={`${basePath}/endgame`} element={<EndGame/>} />
                   <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                   <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path="/deduc" element={<DeducCheck/>} />
-                  <Route path="/TheRealDeduc" element={<DeducGrid/>} />
+                  <Route path={`${basePath}/deduc`} element={<DeducCheck/>} />
+                  <Route path={`${basePath}/TheRealDeduc`} element={<DeducGrid/>} />
                   <Route path={`${basePath}/profile`} element={<Profile/>} />
                   <Route path={`${basePath}/join`} element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
