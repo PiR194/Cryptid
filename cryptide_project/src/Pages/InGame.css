@@ -72,8 +72,8 @@
 .playerlistDiv{
     position: absolute;
     z-index: 1;
-    left: 10px;
-    top :50px;
+    left: 30px;
+    top : 30px;
 }
 
 .nbLaps{ /*nombre de tour*/

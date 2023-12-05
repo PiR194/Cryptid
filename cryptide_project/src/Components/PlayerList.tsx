@@ -29,23 +29,23 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
 
     return (
         <div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
                 {
                     //@ts-ignore
                     players.map((player, index) => (
                         //player.id!=socket.id && 
                         <PersonStatus img={player.profilePicture} 
-                                                    state={Person} 
-                                                    key={index} 
-                                                    name={player.pseudo 
-                                                    + " " + 
-                                                    positionToEmoji(index, true)} 
-                                                    playerTouched={playerTouched} 
-                                                    setPlayerTouched={setPlayerTouched} 
-                                                    index={index} 
-                                                    showCircle={true}
-                                                    playerIndex={playerIndex}
-                                                    askedWrong={askedWrong}/>
+                                    state={Person} 
+                                    key={index} 
+                                    name={player.pseudo 
+                                    + " " + 
+                                    positionToEmoji(index, true)} 
+                                    playerTouched={playerTouched} 
+                                    setPlayerTouched={setPlayerTouched} 
+                                    index={index} 
+                                    showCircle={true}
+                                    playerIndex={playerIndex}
+                                    askedWrong={askedWrong}/>
                     ))
                 }
             </div>
@@ -56,28 +56,29 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                 alignItems:"center",
                 margin: 10
                 }}>
-                {(playerTouched == players.length) 
-                ?(
-                    <button style={{ 
-                    backgroundColor: "gold",
-                    borderColor: theme.colors.secondary,
-                    borderRadius: "10px",
-                    border: "solid 1px",
-                    textAlign: "center",
-                    padding: "10px"}}
-                    onClick={() => askEveryone()}>Ask everyone</button>
-                ):
-                (
-                    <button style={{ 
-                        backgroundColor: theme.colors.primary,
-                        borderColor: theme.colors.secondary,
-                        borderRadius: "10px",
-                        border: "solid 1px",
-                        textAlign: "center",
-                        padding: "10px"}}
-                    onClick={() => askEveryone()}>Ask everyone</button>
-                )
-            }
+                
+                    {(playerTouched == players.length) 
+                        ?(
+                            <button style={{ 
+                            backgroundColor: "gold",
+                            borderColor: theme.colors.secondary,
+                            borderRadius: "10px",
+                            border: "solid 1px",
+                            textAlign: "center",
+                            padding: "10px"}}
+                            onClick={() => askEveryone()}>Guess !</button>
+                        ):
+                        (
+                            <button style={{ 
+                                backgroundColor: theme.colors.primary,
+                                borderColor: theme.colors.secondary,
+                                borderRadius: "10px",
+                                border: "solid 1px",
+                                textAlign: "center",
+                                padding: "10px"}}
+                            onClick={() => askEveryone()}>Ask everyone</button>
+                        )
+                    }
             </div>
         </div>
         
