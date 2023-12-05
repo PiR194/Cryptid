@@ -28,7 +28,7 @@ import Ceye from "../res/icon/hidden.png";
 import JSZip from 'jszip';
 
 /* nav */
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
 /* Boostrap */
 import Button from 'react-bootstrap/Button';
@@ -50,13 +50,25 @@ import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript'
 import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
 
+let cptNavigation = 0
+
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
   
   const theme = useTheme();
   
+  const navigate = useNavigate()
   
   const params = new URLSearchParams(window.location.search);
+
+  const navigationType = useNavigationType()
+    cptNavigation++
+    if (cptNavigation % 2 == 0){
+        if (navigationType.toString() == "POP"){
+            socket.emit("player quit")
+            navigate("/play")
+        }
+    }
   
   //* Gestion solo
   let IsSolo: boolean = true
@@ -81,6 +93,12 @@ const InGame = ({locale, changeLocale}) => {
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
+  const [askedWrong, setAskedWrong] = useState(false)
+  const [importToPdf, setImportToPdf] = useState(false)
+
+  const setImportToPdfData = (imp: boolean) => {
+    setImportToPdf(imp)
+  }
 
   // Fonction pour ajouter un élément à l'historique
   const addToHistory = (message: string) => {
@@ -90,6 +108,10 @@ const InGame = ({locale, changeLocale}) => {
   const setShowLastData = () =>{
     setLastVisible(!showLast);
     setShowLast(!showLast);
+  }
+
+  const setAskedWrongData = (askedWrong: boolean) => {
+    setAskedWrong(askedWrong)
   }
 
   useEffect(() => {
@@ -276,7 +298,11 @@ const InGame = ({locale, changeLocale}) => {
                           setNetwork={setNetworkData}
                           setNetworkEnigme={setNetworkEnigmeData}
                           showLast={showLast}
-                          setPlayerIndex={setPlayerIndexData}/>
+                          setPlayerIndex={setPlayerIndexData}
+                          askedWrong={askedWrong}
+                          setAskedWrong={setAskedWrongData}
+                          importToPdf={importToPdf}
+                          setImportToPdf={setImportToPdfData}/>
         </div>
 
 
@@ -352,7 +378,7 @@ const InGame = ({locale, changeLocale}) => {
           </button> */}
 
           {!IsSolo &&
-          <Link to='/info' target='_blank'>
+          <Link to='/deduc' target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -388,6 +414,16 @@ const InGame = ({locale, changeLocale}) => {
               <img src={Download} alt="indice" height="40"/>
             </button>
           }
+
+          {IsSolo &&   
+            <button className='button' onClick={ () => setImportToPdfData(true)}
+              style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+              }}>
+              <img src={Download} alt="indice" height="40"/>
+            </button>
+          }
         </div>
 
 {/*
@@ -405,7 +441,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex}/>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
             </div>
           }
 

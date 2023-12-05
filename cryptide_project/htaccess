@@ -1,0 +1,9 @@
+<FilesMatch "\.css$">
+    ForceType text/css
+    Header set Content-Type "text/css"
+</FilesMatch>
+
+<FilesMatch "\.js$">
+    ForceType application/javascript
+    Header set Content-Type "application/javascript"
+</FilesMatch>

@@ -11,6 +11,8 @@ import Person from "./model/Person";
 import PersonNetwork from "./model/PersonsNetwork";
 import Player from "./model/Player";
 import User from "./model/User";
+import NodePerson from "./model/Graph/NodePerson";
+import Font from "./model/Graph/Font";
 
 class JSONParser{
 
@@ -92,6 +94,15 @@ class JSONParser{
             default:
                 throw new Error("PARSER unable to parse player: " + json.type);
         }
+    }
+
+
+    static JSONToNodePersons(json: any): NodePerson[]{
+        const tmpTab: NodePerson[] = []
+        json.forEach((element: any) => {
+            tmpTab.push(new NodePerson(element.id, element.label, element.color, new Font(element.font.color, element.font.size, element.font.align), element.shape))
+        });
+        return tmpTab
     }
 }
 

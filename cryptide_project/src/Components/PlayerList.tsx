@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { colorToEmoji, positionToColor } from '../ColorHelper';
+import { colorToEmoji, positionToColor, positionToEmoji } from '../ColorHelper';
 import Player from '../model/Player';
 import { useTheme } from '../Style/ThemeContext';
 import PersonStatus from './PersonStatus';
@@ -15,10 +15,17 @@ interface PlayerListProps {
     playerTouched: number
     setPlayerTouched: (newPlayerTouch: number) => void;
     playerIndex: number
+    askedWrong: boolean
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex}) => {
+const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex, askedWrong}) => {
     const theme = useTheme();
+
+    function askEveryone(){
+        if (!askedWrong){
+            setPlayerTouched(players.length)    
+        }
+    }
 
     return (
         <div>
@@ -32,12 +39,13 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                                                     key={index} 
                                                     name={player.pseudo 
                                                     + " " + 
-                                                    colorToEmoji(positionToColor(index), true)} 
+                                                    positionToEmoji(index, true)} 
                                                     playerTouched={playerTouched} 
                                                     setPlayerTouched={setPlayerTouched} 
                                                     index={index} 
                                                     showCircle={true}
-                                                    playerIndex={playerIndex}/>
+                                                    playerIndex={playerIndex}
+                                                    askedWrong={askedWrong}/>
                     ))
                 }
             </div>
@@ -57,7 +65,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                     border: "solid 1px",
                     textAlign: "center",
                     padding: "10px"}}
-                    onClick={() => setPlayerTouched(players.length)}>Ask everyone</button>
+                    onClick={() => askEveryone()}>Ask everyone</button>
                 ):
                 (
                     <button style={{ 
@@ -67,7 +75,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                         border: "solid 1px",
                         textAlign: "center",
                         padding: "10px"}}
-                    onClick={() => setPlayerTouched(players.length)}>Ask everyone</button>
+                    onClick={() => askEveryone()}>Ask everyone</button>
                 )
             }
             </div>

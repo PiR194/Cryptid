@@ -7,51 +7,154 @@ import { useTheme } from '../Style/ThemeContext';
 import LobbyContainer from '../Components/LobbyContainer';
 import Player from '../model/Player';
 import User from '../model/User';
+import { socket } from '../SocketConfig';
+import JSONParser from '../JSONParser';
+import Person from '../model/Person';
+import { useNavigationType } from 'react-router-dom';
 
+
+class LobbyDataProps {
+    roomNum : string
+    headPlayer: Player
+    nbPlayer: number
+    started: boolean
+
+    constructor(roomNum: string, player: Player, nbPlayer: number, started: boolean){
+        this.roomNum = roomNum
+        this.headPlayer = player
+        this.nbPlayer = nbPlayer
+        this.started=started
+    }
+}
+
+let cptNavigation = 0
 
 function Lobbies() {
     const theme=useTheme();
 
 
-    const lobbyData = [
-        { roomNum: '63194', headPlayer: new User('1', 'Emma', '', null, null, null, null, null), nbPlayer: 6 },
-        { roomNum: '81194', headPlayer: new User('2', 'Ray', '', null, null, null, null, null), nbPlayer: 1 },
-        { roomNum: '22194', headPlayer: new User('3', 'Norman', '', null, null, null, null, null), nbPlayer: 4 },
-        { roomNum: 'null', headPlayer: new User('null', 'tnull', '', null, null, null, null, null), nbPlayer: 1 },
-        { roomNum: '111111', headPlayer: new User('11', '1111111', '', null, null, null, null, null), nbPlayer: 1 },
-        { roomNum: '741852963', headPlayer: new User('3', 'Guest_741852963', '', null, null, null, null, null), nbPlayer: 6 },
-    ];
+    const [first, setFirst] = useState(true)
 
+    const [lobbyData, setLobbyData] = useState<LobbyDataProps[]>([])
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredLobbies = lobbyData.filter((lobby) =>
-    lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
-);
+    const [showAvailable, setShowAvailable] = useState(true);
 
+    const handleShowAllClick = () => {
+        setShowAvailable(false);
+    };
     
+    const handleShowAvailableClick = () => {
+        setShowAvailable(true);
+    };
+
+
+    const filteredLobbies = lobbyData.filter((lobby) =>
+        lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredLobbiesToShow = showAvailable
+    ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6) //* retire les lobbies pleins ou commencés
+    : filteredLobbies;
+
+
+
+    const setFirstData = (first: boolean) => {
+        setFirst(first)
+    }
+
+    const navigationType = useNavigationType()
+    cptNavigation++
+    if (cptNavigation % 2 == 0){
+        if (navigationType.toString() == "POP"){
+            socket.emit("player quit")
+        }
+    }
+
+    if (first){
+        setFirst(false)
+        socket.emit("request lobbies")
+    }
+
+    useEffect(() => {
+        socket.on("request lobbies", (map) => {
+            console.log("wesh")
+            const jsonMap = JSON.parse(map)
+            const tmpTab: LobbyDataProps[]=[]
+            for(const item of jsonMap){
+                tmpTab.push(new LobbyDataProps(item.key, JSONParser.JSONToPlayer(item.value.tab[0]), item.value.tab.length, item.value.started))
+            }
+            setLobbyData(tmpTab)
+        })
+    }, [])
+
+    function createLobby(){
+        socket.emit("lobby created")
+    }
 
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <h1>Bienvenue dans le lobby des lobbies</h1>
             <input
                 type="text"
                 className='searchLobby'
                 placeholder="Rechercher un lobby..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                style={{width:'80%', margin:'10px'}}
             />
-            <div className="lobbyList">
-                {filteredLobbies.map((lobby, index) => (
-                <LobbyContainer
-                    key={index}
-                    roomNum={lobby.roomNum}
-                    HeadPlayer={lobby.headPlayer}
-                    nbPlayer={lobby.nbPlayer}
-                />
-                ))}
+            
+            <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '15px 0px 0px 15px',
+                        borderWidth: '2px',
+                        padding: '10px 15px',
+                        backgroundColor: !showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAllClick}
+                >
+                    Tous
+                </button>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '0px 15px 15px 0px',
+                        padding: '10px 15px',
+                        backgroundColor: showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAvailableClick}
+                >
+                    Disponible
+                </button>
             </div>
+
+
+                {filteredLobbiesToShow.length === 0 ? (
+                    <div style={{border:'solid 2px blue', borderRadius:'15px', boxShadow:'5px 5px 5px rgb(246, 246, 246)', padding:'20px', margin:'20px'}}>
+                        <h3><b>Il n'y a aucun lobby disponible</b></h3>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créé en un !</button>
+                    </div>
+                ) : (
+                    <div className="lobbyList">
+                        {filteredLobbiesToShow.map((lobby, index) => (
+                            <LobbyContainer
+                                key={index}
+                                roomNum={lobby.roomNum}
+                                HeadPlayer={lobby.headPlayer}
+                                nbPlayer={lobby.nbPlayer}
+                                setFirst={setFirstData}
+                                started={lobby.started}
+                            />
+                        ))}
+                    </div>
+                )}
         </div>
     );
 }

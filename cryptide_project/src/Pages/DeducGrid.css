@@ -1,0 +1,17 @@
+.case{
+    min-width: 50px;
+    min-height: 50px;
+    border: solid 1px whitesmoke;
+}
+
+.deducDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionAccordion{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}

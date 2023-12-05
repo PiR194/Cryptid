@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.lobbyMainContainer:hover{
+    background-color: whitesmoke;
+}
+
 .lobbyList{
     display: flex;
     /* justify-content: space-around; */

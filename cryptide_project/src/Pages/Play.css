@@ -20,12 +20,6 @@
     display: flex;
     justify-content: center;
 }
-/* 
-.MidContainer div {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-} */
 
 .leftContainer{
     width: 30%;
@@ -35,7 +29,18 @@
     width: 30%;
 }
 
+.NewleftContainer{    
+    margin: 20px 30px;
+    width: 70%;
+}
 
+.NewrightContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
 
 /* .textBoard div{
     display: flex;
@@ -56,8 +61,15 @@
     flex-direction: column;
 }
 
+.NewbuttonGroupVertical{
+    display: flex;
+    justify-content:space-around;
+    align-items:start;
+}
+
+
 .ButtonNav{
-    margin: 15px 0;
+    margin: 15px 10px;
     width:200px;
     height: 8vh;
 
@@ -70,4 +82,41 @@
     border-width: 2px;
 
     font-size:larger;
+}
+
+
+.ButtonNavRejoin{
+    margin: 15px 10px;
+    width:200px;
+    height: 8vh;
+
+    color: white;
+    background-color: aquamarine;
+
+    border: solid 2px rgb(40, 225, 163);
+    border-radius: 15px;
+
+    font-size:larger;
+}
+.returnDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin:40px 15px;
+
+    border: solid 2px whitesmoke;
+    border-radius: 15px;
+    
+    background-color: white;
+}
+
+.returnDiv p {
+    margin: 15px;
+    padding: 10px;
+    border: solid 1px whitesmoke;
+    border-radius: 10px;
+
+    font-weight:500;
 }

@@ -41,6 +41,13 @@
     margin: 20px;
 }
 
+
+.NumbDiv{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    margin: auto 20px;
+}
 .codeDiv{
     display: flex;
     align-items: end;
@@ -48,7 +55,7 @@
     margin: auto 20px;
 }
 
-.codeDiv p{
+.codeDiv p, .NumbDiv p{
     font-style: italic;
     font-weight: bold;
     color: gray;
