@@ -37,11 +37,11 @@ function AppNavbar({changeLocale}) {
 
 
     function navigateToProfile(){
-        navigate(`/${basePath}/profile`)
+        navigate(`${basePath}/profile`)
     }
 
     function navigateToHome(){
-        navigate(`/${basePath}/`)
+        navigate(`${basePath}/`)
     }
 
     return (

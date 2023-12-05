@@ -49,7 +49,7 @@ const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbP
             if (nbPlayer < 6 && !started) {
                 socket.off("request lobbies")
                 setFirst(true)
-                navigate(`/${basePath}/${dest}`);
+                navigate(`${basePath}/${dest}`);
             }
             else if(started){
                 handleShowStart()
