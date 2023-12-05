@@ -32,3 +32,32 @@ steps:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
+
+
+#
+  - name: container-web
+    image: plugins/docker
+    settings:
+      dockerfile: ./cryptide_project/Dockerfile
+      context: ./cryptide_project
+      registry: hub.codefirst.iut.uca.fr
+      repo: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/web
+      username:
+        from_secret: SECRET_REGISTRY_USERNAME
+      password:
+        from_secret: SECRET_REGISTRY_PASSWORD
+    #depends_on: [ build ]
+      
+
+
+#container deployment
+  - name: deploy-server-containers
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+        IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/web:latest
+        CONTAINERNAME: website
+        COMMAND: create
+        OVERWRITE: true
+        #PRIVATE: true
+        ADMINS: thomaschazot2,pierreferreira,baptistemarcel
+    depends_on: [ container-web ]
