@@ -17,36 +17,51 @@ import { FormattedMessage } from 'react-intl';
 import Stub from '../model/Stub';
 
 import { useGame } from '../Contexts/GameContext';
+import { positionToEmoji } from '../ColorHelper';
 
 function DeducCheck() {
     const theme = useTheme();
     //const indices = Stub.GenerateIndice();
     
+    const params = new URLSearchParams(window.location.search);
+    
+    const NbPlayer = params.get('NbPlayer');
+    const actualPlayerIndex = params.get('actualId') ?? '0';
+    
+    console.log(parseInt(NbPlayer ?? 'nnnnnnnnnnuuuuuuuuuuuuulllllll'))
+    console.log(parseInt(actualPlayerIndex ?? 'nnnnnnnnnnuuuuuuuuuuuuulllllllooooooooosssssssss'))
+    //const { actualPlayerIndex, players } = useGame();
 
-    // const { players } = useGame();
+    // let playerstmp
+    // if (players.length == 0) playerstmp = ["1", "2", "3", "4", "5", "4"];
+    // else { playerstmp = players}
 
+    //* Gestion players
+    const playerList = Array.from({ length: parseInt(NbPlayer ?? '1') }, (_, index) => (index + 1).toString());
+    const playerColors = playerList.map((_, index) => positionToEmoji(index, true));
+    const players = playerColors.filter((_, index) => index !== parseInt(actualPlayerIndex ?? '0'));
+
+    
+
+    // const players = [
+    //     "🔵",
+    //     "🟢",
+    //     "🟡",
+    //     "🟣",
+    //     "🔴"
+    //]
+    //console.log(players)
+    // console.log(playerColors)
+    // console.log(actualPlayerIndex)
+
+    //* Gestion indices
     const indices = Stub.GenerateIndice();
     
     const halfLength = Math.ceil(indices.length / 2);
     const firstHalfIndices = indices.slice(0, halfLength);
     const secondHalfIndices = indices.slice(halfLength);
-    
-    const players = [
-        "🔵",
-        "🟢",
-        "🟡",
-        "🟣",
-        "🔴"]
 
-    // const players = [
-    //     "bla",
-    //     "bli",
-    //     "blou",
-    //     "blu",
-    //     "ble",
-    // ]
         
-    console.log(players)
     return (
         <div style={{ margin: '20px', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'auto' }}>
@@ -55,7 +70,7 @@ function DeducCheck() {
                     <thead>
                         <tr>
                             <th>Indices</th>
-                            {players.map((player, index) => (
+                            {playerColors.map((player, index) => (
                                 <th key={index}>{player}</th>
                             ))}
                         </tr>
@@ -64,7 +79,7 @@ function DeducCheck() {
                         {firstHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
                                 <td>{indice.ToString("fr")}</td>
-                                {players.map((player, colIndex) => (
+                                {playerColors.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
                                         <Form.Check aria-label="option 1" />
@@ -80,7 +95,7 @@ function DeducCheck() {
                     <thead>
                         <tr>
                             <th>Indices</th>
-                            {players.map((player, index) => (
+                            {playerColors.map((player, index) => (
                                 <th key={index}>{player}</th>
                             ))}
                         </tr>
@@ -89,7 +104,7 @@ function DeducCheck() {
                         {secondHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
                                 <td>{indice.ToString("fr")}</td>
-                                {players.map((player, colIndex) => (
+                                {playerColors.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
                                         <Form.Check aria-label="option 1" />
