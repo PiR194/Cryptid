@@ -10,8 +10,6 @@ COPY . .
 
 RUN npm run build
 
-RUN cp -r build/* .
-
 RUN ls
 
 EXPOSE 80
@@ -20,7 +18,7 @@ EXPOSE 80
 RUN npm install express
 
 # Copiez le script serveur personnalisé
-COPY server.js .
+COPY server.js ./build/
 
 # Commande pour démarrer le serveur personnalisé
-CMD ["node", "server.js"]
+CMD ["node", "build/server.js"]
