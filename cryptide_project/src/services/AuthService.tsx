@@ -12,6 +12,30 @@ class AuthService{
         return VerificationService.validateSignInData(data);
     }
 
+    static async validatePassword(pseudo: any, password: any) {
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/validatePassword', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ pseudo, password }),
+                credentials: 'include',
+            });
+        
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     static async signUp(data: any) {
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/auth/signup', {
@@ -109,34 +133,28 @@ class AuthService{
     }
 
     
-    static async UpdateMDP(pseudo : string, newmdp : string) {
-        console.log("pseudo : " + pseudo + " mdp : " + newmdp)
-        // try {
-        //     const response = await fetch(ADRESSE_DBSERVER + '/session/updateMDP', {
-        //         method: 'PUT',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             pseudo,
-        //             newmdp
-        //         }),
-        //         credentials: 'include',
-        //     });
-    
-        //     if (response.ok) {
-        //         const result = await response.json();
-        //         return result;
-        //     } else {
-        //         const errorResponse = await response.json();
-        //         throw new Error(errorResponse.error);
-        //     }
-        // } catch (error) {
-        //     console.error(error);
-        //     throw error;
-        // }
-
-        console.log("UpdateMDP in authserice")
+    static async updatePassword(pseudo : string, newPassword : string) {
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/auth/updatePassword', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ pseudo, newPassword }),
+                credentials: 'include',
+            });
+        
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
 }

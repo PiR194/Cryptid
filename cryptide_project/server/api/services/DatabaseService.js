@@ -114,6 +114,19 @@ class DatabaseService {
         });
     }
 
+    async updatePassword(userId, newPassword){
+        return new Promise((resolve, reject) => {
+            this.client.run('UPDATE users SET password = ? WHERE idUser = ?', newPassword, userId, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
     // -------------------------------------------------------------
     // ------------------- STATS MASTERMIND ------------------------
     // -------------------------------------------------------------

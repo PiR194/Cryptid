@@ -122,36 +122,59 @@ class AuthController {
         }
     }
 
+    static async validatePassword(req, res){
+        const db = new DatabaseService();
+        try{
+            await db.connect();
 
-    static async UpdateMDP(req, res){
-        console.log("UpdateMDP");
-        // const db = new DatabaseService();
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            if(!user){
+                res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
+                return;
+            }
 
-        // try{
-        //     await db.connect();
+            const password = req.body.password;
+            const validPassword = await bcrypt.compare(password, user.password);
+            if(!validPassword){
+                res.status(400).json({ error: 'Le mot de passe est incorrect.' });
+                return;
+            }
 
-        //     const user = await db.getUserByPseudo(req.body.pseudo);
-        //     console.log("utilisateur" + user.idUser + " pseudo" + user.pseudo)
-        //     if (!user) {
-        //         res.status(200).json({ error: "true", message: 'User not found' });
-        //         return;
-        //     }
+            res.status(200).json({ message: 'Mot de passe correct.' });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la vérification du mot de passe.' });
+        }
+        finally{
+            db.disconnect();
+        }
+    }
 
-        //     await db.updatePseudo(user.idUser, req.body.newPseudo); //* update
+    static async updatePassword(req, res){
+        const db = new DatabaseService();
+        try{
+            await db.connect();
 
-        //     const updatedUser = await db.getUserByPseudo(req.body.newPseudo);
-        //     console.log("updaetdutilisateur" + updatedUser.idUser + " pseudo" + updatedUser.pseudo)
-        //     req.session.user.pseudo = updatedUser.pseudo;
-        //     console.log("req.session.user.pseudo" + req.session.user.pseudo)
-        //     res.status(200).json({ user: req.session.user }); //verif rep
-        // }
-        // catch(error){
-        //     console.error(error);
-        //     res.status(500).json({ error: 'Erreur lors de la modification du pseudo de l\'utilisateur.' });
-        // }
-        // finally{
-        //     await db.disconnect();
-        // }
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            if(!user){
+                res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
+                return;
+            }
+
+            const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+
+            await db.updatePassword(user.idUser, hashedPassword);
+
+            res.status(200).json({ message: 'Mot de passe mis à jour.' });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la mise à jour du mot de passe.' });
+        }
+        finally{
+            db.disconnect();
+        }
     }
 }
 

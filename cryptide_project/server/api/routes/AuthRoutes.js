@@ -8,8 +8,8 @@ router.post('/auth/signup', AuthController.signUp);
 router.post('/auth/signin', AuthController.signIn);
 router.delete('/auth/logout', AuthController.logout)
 router.delete('/auth/delAccount', AuthController.delAccount)
-
-router.put('/session/updateMDP', AuthController.UpdateMDP);
+router.post('/auth/validatePassword', AuthController.validatePassword);
+router.put('/auth/updatePassword', AuthController.updatePassword);
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
