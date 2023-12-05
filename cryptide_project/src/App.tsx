@@ -9,7 +9,7 @@ import { AuthProvider } from './Contexts/AuthContext';
 import Home from './Pages/Home'; 
 import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
-import Play from './Pages/Play';
+import NewPlay from './Pages/NewPlay';
 import Profile from './Pages/Profile';
 import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
@@ -21,9 +21,6 @@ import Lobbies from './Pages/Lobbies';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
-
-/* service */
-import SessionService from './services/SessionService';
 
 /* nav */
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
@@ -44,7 +41,8 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
-import NewPlay from './Pages/NewPlay';
+
+const basePath = process.env.REACT_APP_BASE_PATH || '';
 
 const messages = {
   fr: messagesFr,
@@ -62,9 +60,11 @@ function App() {
     setLocale(newLocale);
   };
 
+  console.log(basePath)
+
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame", "/deduc"]//.includes(window.location.pathname);
+  const hasNavbarVisible = [basePath + "/", basePath + "/login", basePath + "/signup", basePath + "/play", basePath + "/lobby", basePath + "/endgame", basePath + "/deduc"]//.includes(window.location.pathname);
 
 
   return (
@@ -77,17 +77,18 @@ function App() {
               <BrowserRouter>  
                 {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route path="/play" element={<NewPlay/>} />
-                  <Route path="/lobby" element={<Lobby/>} />
-                  <Route path="/endgame" element={<EndGame/>} />
-                  <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                  <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path="/deduc" element={<DeducGrid/>} />
-                  <Route path="/profile" element={<Profile/>} />
-                  <Route path="/join" element={<Lobbies/>}/>
+                
+                  <Route path={`${basePath}/`} element={<NewPlay/>} />
+                  <Route path={`${basePath}/login`} element={<Login />} />
+                  <Route path={`${basePath}/signup`} element={<SignUp />} />
+                  <Route path={`${basePath}/presentation`} element={<Home />} />
+                  <Route path={`${basePath}/lobby`} element={<Lobby/>} />
+                  <Route path={`${basePath}/endgame`} element={<EndGame/>} />
+                  <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+                  <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path={`${basePath}/deduc`} element={<DeducGrid/>} />
+                  <Route path={`${basePath}/profile`} element={<Profile/>} />
+                  <Route path={`${basePath}/join`} element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
 
                   <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}

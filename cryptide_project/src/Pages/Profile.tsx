@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ProfilePDP from '../Components/ProfilePDP';
 
 import SessionService from '../services/SessionService';
 import AuthService from '../services/AuthService';
-import { PlayerProps } from '../types/Player';
-import { delay, set, update } from 'lodash';
-import { socket } from '../SocketConfig';
 
 
 /* Style */
@@ -17,9 +14,6 @@ import Cancel from '../res/icon/cancel.png'
 /* Nav */
 import { useNavigate } from 'react-router-dom';
 
-/* Model */
-import User from '../model/User';
-
 /* Context */
 import { useAuth } from '../Contexts/AuthContext';
 
@@ -30,6 +24,8 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
+
+const basePath = process.env.REACT_APP_BASE_PATH || '';
 
 //@ts-ignore
 const Profile = () => {
@@ -85,22 +81,23 @@ const Profile = () => {
     };
 
     //* Vérification de l'ancien mot de passe :
-    const handleConfirmedAuth = () => {
-
+    const handleConfirmedAuth = async () => {
       // Vérification de l'ancien mot de passe
-      // if (oldPassword === user?.password) {
-      if (oldPassword === 'coucou') { //! pour l'instant c'est 'coucou', mais il faudra mettre le vrai mdp.
-        console.log('Ancien mot de passe correct.');
-        setShowWrongPassword(false);
-        setShowCorrectPassword(true);
-        setDisableNextStep(false);
-        setpercent(25);
-      }
-      else{
-        console.log('Ancien mot de passe incorrect.');
-        setShowWrongPassword(true);
-        setShowCorrectPassword(false);
-        setDisableNextStep(true);
+      if(user){
+        try {
+          if (await AuthService.validatePassword(user?.pseudo, oldPassword)) {
+            console.log('Ancien mot de passe correct.');
+            setShowWrongPassword(false);
+            setShowCorrectPassword(true);
+            setDisableNextStep(false);
+            setpercent(25);
+          }
+        } catch (error) {
+          console.error(error);
+          setShowWrongPassword(true);
+          setShowCorrectPassword(false);
+          setDisableNextStep(true);
+        }
       }
     }
 
@@ -112,24 +109,25 @@ const Profile = () => {
     }
 
     //* Modification du mot de passe :
-    const handlePasswordChange = () => {
+    const handlePasswordChange = async () => {
       //Effectuer la modification du mot de passe
       // sinon, affichez une erreur
-      if (newPassword === confirmNewPassword) {
-      //   SessionService.UpdatePassword(user?.pseudo, newPassword);
-      //   user.password = newPassword;
-        console.log('Changement de mot de passe');
-        setpercent(100);
-        setTimeout(async () => {
-          setShowPasswordModal(false);
-        }, 3000);
-      } else {
-        //les mots de passe ne correspondent pas
-        console.error("Les mots de passe ne correspondent pas.");
-        setShowWrongPassword(true);
-        setTimeout(async () => {
-          setShowWrongPassword(false);
-        }, 1500);
+      if(user){
+        if (newPassword === confirmNewPassword) {
+          await AuthService.updatePassword(user.pseudo, newPassword);
+          console.log('Changement de mot de passe');
+          setpercent(100);
+          setTimeout(async () => {
+            setShowPasswordModal(false);
+          }, 1250);
+        } else {
+          //les mots de passe ne correspondent pas
+          console.error("Les mots de passe ne correspondent pas.");
+          setShowWrongPassword(true);
+          setTimeout(async () => {
+            setShowWrongPassword(false);
+          }, 1250);
+        }
       }
     };
   
@@ -180,16 +178,15 @@ const Profile = () => {
 
       if(user!= null){
         const pseudo = user.pseudo;
-        AuthService.delAccount(pseudo);
-        AuthService.logout();
         logout();
+        AuthService.delAccount(pseudo);
       }
       else{
         console.error("l'utilisateur ne peut pas être null")
       }
       handleCloseDeleteModal();
 
-      navigate("/play")
+      navigate(`${basePath}/`)
 
     } else {
       console.error('Phrase de confirmation incorrecte.');

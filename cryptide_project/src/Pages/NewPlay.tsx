@@ -34,13 +34,16 @@ import Lobbies from './Lobbies';
 
 let cptNavigation = 0
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
+
 
 function NewPlay() {
     let first = true
 
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
-    const {setDailyEnigmeData} = useGame()
+    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData } = useGame()
 
     const target = useRef(null);
 
@@ -52,57 +55,7 @@ function NewPlay() {
         }
     }
 
-
-
     useEffect(() => {
-        const fetchUserInformation = async () => {
-            try {
-                const sessionData = await SessionService.getSession();
-                
-                // Vérifie si il y a une session
-                if (sessionData.user) {
-                    // Il y a une session on récupère les infos du joueur
-                    const updatedPlayer: User = new User(socket.id, sessionData.user.pseudo, sessionData.user.profilePicture, {
-                        nbGames: sessionData.user.soloStats.nbGames,
-                        bestScore: sessionData.user.soloStats.bestScore,
-                        avgNbTry: sessionData.user.soloStats.avgNbTry,
-                    },
-                    {
-                        nbGames: sessionData.user.onlineStats.nbGames,
-                        nbWins: sessionData.user.onlineStats.nbWins,
-                        ratio: sessionData.user.onlineStats.ratio,
-                    })
-                    login();
-                    setUserData(updatedPlayer);
-                } else {
-                    // Pas de session on génère un guest random
-                    const guestPlayer: User = new User(socket.id, 'Guest_' + Math.floor(Math.random() * 1000000), '',
-                    {
-                        nbGames: 0,
-                        bestScore: 0,
-                        avgNbTry: 0,
-                    },
-                    {
-                        nbGames: 0,
-                        nbWins: 0,
-                        ratio: 0,
-                    })
-                    setUserData(guestPlayer);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchUserInformation();
-    }, [isLoggedIn]);
-
-
-    const { setIndicesData, setPersonData, setPersonNetworkData } = useGame();
-
-
-    useEffect(() => {
-
         if (user == null){
             manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
                 if (user!=null){
@@ -147,7 +100,7 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-        navigate('/game?solo=true&daily=false');
+        navigate(`${basePath}/game?solo=true&daily=false`);
     }
 
     
@@ -178,12 +131,12 @@ function NewPlay() {
     useEffect(() => {
         if (room !== null) {
             const nouvelleURL = `/lobby?room=${room}`;
-            navigate(nouvelleURL);
+            navigate(`${basePath}${nouvelleURL}`)
         }
     }, [room, navigate]);
 
     const goBack = () => {
-        navigate("/lobby?room=" + goBackRoom)
+        navigate(`${basePath}/lobby?room=${goBackRoom}`)
     }
 
 
@@ -206,7 +159,7 @@ function NewPlay() {
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
 
-        navigate('/game?solo=true&daily=true&easy=true');
+        navigate(`${basePath}/game?solo=true&daily=true&easy=true`);
         setShowOverlay(false);
     };
 
@@ -224,7 +177,7 @@ function NewPlay() {
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate('/game?solo=true&daily=true&easy=false');
+        navigate(`${basePath}/game?solo=true&daily=true&easy=false`);
         setShowOverlay(false);
     };
 

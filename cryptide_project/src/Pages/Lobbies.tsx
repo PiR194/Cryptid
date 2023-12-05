@@ -80,12 +80,13 @@ function Lobbies() {
 
     useEffect(() => {
         socket.on("request lobbies", (map) => {
-            console.log("wesh")
             const jsonMap = JSON.parse(map)
             const tmpTab: LobbyDataProps[]=[]
+            
             for(const item of jsonMap){
                 tmpTab.push(new LobbyDataProps(item.key, JSONParser.JSONToPlayer(item.value.tab[0]), item.value.tab.length, item.value.started))
             }
+            
             setLobbyData(tmpTab)
         })
     }, [])
