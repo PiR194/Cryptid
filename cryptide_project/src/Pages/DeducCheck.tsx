@@ -25,11 +25,9 @@ function DeducCheck() {
     
     const params = new URLSearchParams(window.location.search);
     
-    const NbPlayer = params.get('NbPlayer');
+    const NbPlayer = params.get('nbPlayer');
     const actualPlayerIndex = params.get('actualId') ?? '0';
     
-    console.log(parseInt(NbPlayer ?? 'nnnnnnnnnnuuuuuuuuuuuuulllllll'))
-    console.log(parseInt(actualPlayerIndex ?? 'nnnnnnnnnnuuuuuuuuuuuuulllllllooooooooosssssssss'))
     //const { actualPlayerIndex, players } = useGame();
 
     // let playerstmp
@@ -70,7 +68,7 @@ function DeducCheck() {
                     <thead>
                         <tr>
                             <th>Indices</th>
-                            {playerColors.map((player, index) => (
+                            {players.map((player, index) => (
                                 <th key={index}>{player}</th>
                             ))}
                         </tr>
@@ -79,7 +77,7 @@ function DeducCheck() {
                         {firstHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
                                 <td>{indice.ToString("fr")}</td>
-                                {playerColors.map((player, colIndex) => (
+                                {players.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
                                         <Form.Check aria-label="option 1" />
@@ -95,7 +93,7 @@ function DeducCheck() {
                     <thead>
                         <tr>
                             <th>Indices</th>
-                            {playerColors.map((player, index) => (
+                            {players.map((player, index) => (
                                 <th key={index}>{player}</th>
                             ))}
                         </tr>
@@ -104,7 +102,7 @@ function DeducCheck() {
                         {secondHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
                                 <td>{indice.ToString("fr")}</td>
-                                {playerColors.map((player, colIndex) => (
+                                {players.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
                                         <Form.Check aria-label="option 1" />
