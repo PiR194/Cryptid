@@ -45,6 +45,7 @@ import messagesEn from './Translations/en.json';
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
 import NewPlay from './Pages/NewPlay';
+import DeducCheck from './Pages/DeducCheck';
 
 const messages = {
   fr: messagesFr,
@@ -85,7 +86,8 @@ function App() {
                   <Route path="/endgame" element={<EndGame/>} />
                   <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                   <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path="/deduc" element={<DeducGrid/>} />
+                  <Route path="/deduc" element={<DeducCheck/>} />
+                  <Route path="/TheRealDeduc" element={<DeducGrid/>} />
                   <Route path="/profile" element={<Profile/>} />
                   <Route path="/join" element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
