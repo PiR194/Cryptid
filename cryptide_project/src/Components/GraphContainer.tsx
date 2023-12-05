@@ -67,7 +67,7 @@ let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {

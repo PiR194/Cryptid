@@ -32,7 +32,7 @@ import Info from '../res/icon/infoGreen.png';
 
 let cptNavigation = 0
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 
 function Play() {

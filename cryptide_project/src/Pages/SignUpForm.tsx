@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 
 const SignUp = () => {

@@ -20,7 +20,7 @@ interface LobbyContainerProps {
     //? mettre un "nbplayermax" si le nombre de joueur max peut etre fixé ?
 }
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbPlayer, setFirst, started}) => {
     const theme=useTheme();

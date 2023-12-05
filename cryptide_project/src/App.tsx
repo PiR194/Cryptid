@@ -42,7 +42,7 @@ import messagesEn from './Translations/en.json';
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 const messages = {
   fr: messagesFr,

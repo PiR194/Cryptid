@@ -6,7 +6,7 @@ import './ErrorStyle.css';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.BASEPATH || '';
 
 
 //@ts-ignore
