@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-RUN cp -r build/ .
+RUN cp -r build/* .
 
 RUN ls
 
