@@ -13,6 +13,9 @@ import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 
 
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+
+
 // @ts-ignore
 function Home() {
     const theme=useTheme();
@@ -100,7 +103,7 @@ function Home() {
             {/* <h3> <u><FormattedMessage id="game.illustratedBy"/></u><br/> Kwanchai Moriya</h3> */}
             {/* <button>Jouer au jeu</button> */}
             <br/>
-            <Link to="/play" className='button' 
+            <Link to={`${basePath}/`} className='button' 
                 style={{ 
                     backgroundColor: theme.colors.primary,
                     borderColor: theme.colors.secondary

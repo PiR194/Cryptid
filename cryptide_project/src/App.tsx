@@ -41,8 +41,9 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
+import DeducCheck from './Pages/DeducCheck';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const messages = {
   fr: messagesFr,
@@ -86,7 +87,8 @@ function App() {
                   <Route path={`${basePath}/endgame`} element={<EndGame/>} />
                   <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                   <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path={`${basePath}/deduc`} element={<DeducGrid/>} />
+                  <Route path="/deduc" element={<DeducCheck/>} />
+                  <Route path="/TheRealDeduc" element={<DeducGrid/>} />
                   <Route path={`${basePath}/profile`} element={<Profile/>} />
                   <Route path={`${basePath}/join`} element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}

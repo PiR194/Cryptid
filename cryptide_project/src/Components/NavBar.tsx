@@ -25,8 +25,7 @@ import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
@@ -53,13 +52,13 @@ function AppNavbar({changeLocale}) {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/" style={{ color: theme.colors.text }}>
+                        <Nav.Link href={`${basePath}/`} style={{ color: theme.colors.text }}>
                             Jouer
                         </Nav.Link>
-                        <Nav.Link href="/presentation" style={{ color: theme.colors.text }}>
+                        <Nav.Link href={`${basePath}/presentation`} style={{ color: theme.colors.text }}>
                             Présentation
                         </Nav.Link>
-                        <Nav.Link href="/info" style={{ color: theme.colors.text }}>
+                        <Nav.Link href={`${basePath}/info`} style={{ color: theme.colors.text }}>
                             Info
                         </Nav.Link>
                     </Nav>

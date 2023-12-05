@@ -52,7 +52,7 @@ import Indice from '../model/Indices/Indice';
 
 let cptNavigation = 0
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -68,7 +68,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(`${basePath}/play`)
+            navigate(`/${basePath}/play`)
         }
     }
   
@@ -280,8 +280,10 @@ const InGame = ({locale, changeLocale}) => {
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const allIndices = Stub.GenerateIndice()
-  const { indice, players } = useGame();
+  const { indice, players, actualPlayerIndex} = useGame();
 
+  const nbPlayer = players.length;
+  const navdeduc = '/deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
 
     return (
       <div id="mainDiv">
@@ -375,12 +377,9 @@ const InGame = ({locale, changeLocale}) => {
               <img src={Info} alt="info" height="40"/>
             </button>
           </Link>
-          {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
-            <img src={Check} alt="check" height="40"/>
-          </button> */}
 
           {!IsSolo &&
-          <Link to='/deduc' target='_blank'>
+          <Link to={navdeduc} target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,

@@ -137,21 +137,43 @@
 
 /** Historique*/
 
-.historique{
+.historique {
     position: absolute;
     z-index: 1;
     bottom: 2%;
     left: 2%;
-
     display: flex;
     flex-direction: column;
-    /* justify-content: end; */
-
     padding: 15px 25px;
-    background-color: #d9d9d9;
-    border-radius: 15px;
-
+    border: solid;
+    border-width: 0.5px 0.5px 5px 0.5px;
+    border-color: whitesmoke lightgray gray whitesmoke;
+    border-radius: 0 5% 15px 0;
     height: 250px;
     width: 20%;
-    overflow-y:auto;
+
+    direction: rtl;
+    overflow-y: auto;
+}
+
+.historique div{
+    direction: ltr;
+}
+
+
+.historique::-webkit-scrollbar {
+    width: 10px;
+}
+
+.historique::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+.historique::-webkit-scrollbar-track {
+    background-color: whitesmoke;
+}
+
+.historique::-webkit-scrollbar-corner {
+    background-color: whitesmoke;
 }
