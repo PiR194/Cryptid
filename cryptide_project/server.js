@@ -8,10 +8,16 @@ const port = process.env.PORT || 80;
 app.use(express.static(path.join(__dirname, 'build')));
 
 // Définir le type MIME pour les fichiers JavaScript
-app.use('/static/js', express.static(path.join(__dirname, 'build/static/js')));
+app.use('/static/js', (req, res, next) => {
+  res.type('application/javascript; charset=utf-8');
+  next();
+}, express.static(path.join(__dirname, 'build/static/js')));
 
 // Définir le type MIME pour les fichiers CSS
-app.use('/static/css', express.static(path.join(__dirname, 'build/static/css')));
+app.use('/static/css', (req, res, next) => {
+  res.type('text/css; charset=utf-8');
+  next();
+}, express.static(path.join(__dirname, 'build/static/css')));
 
 // Route par défaut pour servir l'application React
 app.get('*', (req, res) => {
@@ -22,4 +28,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });
-
