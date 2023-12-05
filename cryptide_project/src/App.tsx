@@ -60,7 +60,7 @@ function App() {
 
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame", "/deduc"]//.includes(window.location.pathname);
+  const hasNavbarVisible = ["/containers/Crypteam-website/", "/containers/Crypteam-website/login", "/containers/Crypteam-website/signup", "/containers/Crypteam-website/play", "/containers/Crypteam-website/lobby", "/containers/Crypteam-website/endgame", "/containers/Crypteam-website/deduc"]//.includes(window.location.pathname);
 
 
   return (
@@ -73,17 +73,17 @@ function App() {
               <BrowserRouter>  
                 {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
                 <Routes>
-                  <Route path="/" element={<NewPlay/>} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route path="/presentation" element={<Home />} />
-                  <Route path="/lobby" element={<Lobby/>} />
-                  <Route path="/endgame" element={<EndGame/>} />
-                  <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                  <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path="/deduc" element={<DeducGrid/>} />
-                  <Route path="/profile" element={<Profile/>} />
-                  <Route path="/join" element={<Lobbies/>}/>
+                  <Route path="/containers/Crypteam-website/" element={<NewPlay/>} />
+                  <Route path="/containers/Crypteam-website/login" element={<Login />} />
+                  <Route path="/containers/Crypteam-website/signup" element={<SignUp />} />
+                  <Route path="/containers/Crypteam-website/presentation" element={<Home />} />
+                  <Route path="/containers/Crypteam-website/lobby" element={<Lobby/>} />
+                  <Route path="/containers/Crypteam-website/endgame" element={<EndGame/>} />
+                  <Route path="/containers/Crypteam-website/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+                  <Route path="/containers/Crypteam-website/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path="/containers/Crypteam-website/deduc" element={<DeducGrid/>} />
+                  <Route path="/containers/Crypteam-website/profile" element={<Profile/>} />
+                  <Route path="/containers/Crypteam-website/join" element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
 
                   <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}
