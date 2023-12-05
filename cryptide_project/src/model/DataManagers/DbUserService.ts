@@ -84,9 +84,9 @@ class DbUserService implements IUserService{
         }
     }
 
-    async updateSoloStats(pseudo: string, nbGames: number, bestScore: number, avgNbTry: number): Promise<void> {
+    async addMastermindStats(pseudo: string, score: number, time: number): Promise<void> {
         try {
-            const result = await SessionService.updateSoloStats(pseudo, nbGames, bestScore, avgNbTry);
+            const result = await SessionService.addMastermindStats(pseudo, score, time);
             if (result) {
                 console.log("Stats solo updated");
             } else {
@@ -97,7 +97,7 @@ class DbUserService implements IUserService{
         }
     }
 
-    async updateOnlineStats(pseudo: string, win: number, time: number): Promise<void> {
+    async addOnlineStats(pseudo: string, win: number, time: number): Promise<void> {
         try {
             const result = await SessionService.addOnlineStats(pseudo, win, time);
             if (result) {

@@ -24,19 +24,18 @@ class SessionService {
         }
     }
 
-    static async updateSoloStats(pseudo: string, nbGames: number, bestScore: number, avgNbTry: number){
+    static async addMastermindStats(pseudo: string, score: number, time: number){
         try {
-            const response = await fetch(ADRESSE_DBSERVER + '/session/updateSoloStats', {
-                method: 'PUT',
+            const response = await fetch(ADRESSE_DBSERVER + '/session/addMastermindStats', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
                 body: JSON.stringify({
                     pseudo,
-                    nbGames,
-                    bestScore,
-                    avgNbTry
+                    score,
+                    time
                 }),
             });
     

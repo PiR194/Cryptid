@@ -133,7 +133,7 @@ class DatabaseService {
 
     async getBestScoreMastermindByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
+            this.client.get('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -157,6 +157,18 @@ class DatabaseService {
         });
     }
 
+    async addMastermindStats(userId, score, time){
+        return new Promise((resolve, reject) => {
+            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "mastermind", 1, score, time, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
     // -------------------------------------------------------------
     // ------------------- STATS EN LIGNE --------------------------
     // -------------------------------------------------------------

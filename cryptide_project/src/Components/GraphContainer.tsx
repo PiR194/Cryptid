@@ -578,10 +578,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
                   // Ajouter une victoire
-                  manager.userService.updateOnlineStats(user.pseudo, 1, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 1, elapsedTime);
                 }
                 else{
-                  manager.userService.updateOnlineStats(user.pseudo, 0, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 0, elapsedTime);
                 }
               }
               else{
@@ -780,7 +780,17 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     endgame = true
 
                     try{
-
+                        if(solo){
+                          if(isDaily){
+                            // TODO: verif difficulté et add les stats
+                          }
+                          else{
+                            // add stats mastermind
+                            if(user && user.mastermindStats){
+                              manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                            }
+                          }
+                        }
                     }
                     catch(error){
                       console.log(error);
