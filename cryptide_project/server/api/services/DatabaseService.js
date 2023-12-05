@@ -187,6 +187,19 @@ class DatabaseService {
         });
     }
 
+    async addOnlineStats(userId, win, time){
+        return new Promise((resolve, reject) => {
+            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "multijoueur", win, 0, time, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
     // -------------------------------------------------------------
     // ------------------- STATS ENIGME ----------------------------
     // -------------------------------------------------------------

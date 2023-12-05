@@ -93,6 +93,14 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.nbGames : "0"}</Col>
                         </Row>
                         <Row>
+                            <Col sm={10}>Nombre de victoire :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.nbWins : "0"}</Col>
+                        </Row>
+                        <Row>
+                            <Col sm={10}>Ratio V/D :</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.ratio.toFixed(2) + "%" : "0"}</Col>
+                        </Row>
+                        <Row>
                             <Col sm={10}>Meilleur temps :</Col>
                             <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.bestTime : "0"}</Col>
                         </Row>

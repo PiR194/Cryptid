@@ -97,9 +97,9 @@ class DbUserService implements IUserService{
         }
     }
 
-    async updateOnlineStats(pseudo: string, nbGames: number, bestScore: number, ratio: number): Promise<void> {
+    async updateOnlineStats(pseudo: string, win: number, time: number): Promise<void> {
         try {
-            const result = await SessionService.updateOnlineStats(pseudo, nbGames, bestScore, ratio);
+            const result = await SessionService.addOnlineStats(pseudo, win, time);
             if (result) {
                 console.log("Stats online updated");
             } else {

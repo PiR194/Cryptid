@@ -53,21 +53,18 @@ class SessionService {
         }
     }
 
-    static async updateOnlineStats(pseudo: string, nbGames: number, nbWins: number, ratio: number){
+    static async addOnlineStats(pseudo: string, win: number, time: number){
         try {
-
-            console.log("updateOnlineStats : ", pseudo, nbGames, nbWins, ratio);
-            const response = await fetch(ADRESSE_DBSERVER + '/session/updateOnlineStats', {
-                method: 'PUT',
+            const response = await fetch(ADRESSE_DBSERVER + '/session/addOnlineStats', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
                 body: JSON.stringify({
                     pseudo,
-                    nbGames,
-                    nbWins,
-                    ratio
+                    win,
+                    time
                 }),
             });
     

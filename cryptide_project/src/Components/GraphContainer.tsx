@@ -14,6 +14,7 @@ import NodePerson from "../model/Graph/NodePerson";
 import { useAuth } from "../Contexts/AuthContext";
 import Indice from "../model/Indices/Indice";
 import Pair from "../model/Pair";
+import { times } from "lodash";
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
@@ -577,13 +578,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
                   // Ajouter une victoire
-                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
-              }
-              // Update les stats
-              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
-              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
-              
-              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+                  manager.userService.updateOnlineStats(user.pseudo, 1, elapsedTime);
+                }
+                else{
+                  manager.userService.updateOnlineStats(user.pseudo, 0, elapsedTime);
+                }
               }
               else{
                 console.error("User not found");
