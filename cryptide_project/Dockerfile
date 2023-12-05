@@ -10,6 +10,14 @@ COPY . .
 
 RUN npm run build
 
+RUN ls build
+
+RUN ls build/static
+
+RUN ls build/static/css
+
+RUN ls build/static/js
+
 EXPOSE 80
 #
 # Installez express
