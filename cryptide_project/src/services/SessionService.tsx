@@ -52,6 +52,64 @@ class SessionService {
         }
     }
 
+    static async addEasyEnigmaStats(pseudo: string, win: number, time: number){
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/session/addEasyEnigmaStats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    pseudo,
+                    win,
+                    time
+                }),
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    // static async addMediumEnigmaStats(pseudo: string, win: number, time: number)
+
+    static async addHardEnigmaStats(pseudo: string, win: number, time: number){
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/session/addHardEnigmaStats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    pseudo,
+                    win,
+                    time
+                }),
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     static async addOnlineStats(pseudo: string, win: number, time: number){
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/session/addOnlineStats', {

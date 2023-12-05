@@ -780,9 +780,17 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     endgame = true
 
                     try{
+                      if(user && isLoggedIn){
                         if(solo){
                           if(isDaily){
                             // TODO: verif difficulté et add les stats
+                            // TODO: verif pour facile et difficile, si réussi en one shot ou non
+                            if(isEasy){
+                              manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
+                            }
+                            else{
+                              manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
+                            }
                           }
                           else{
                             // add stats mastermind
@@ -791,6 +799,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                             }
                           }
                         }
+                      }
                     }
                     catch(error){
                       console.log(error);

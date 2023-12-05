@@ -293,6 +293,34 @@ class DatabaseService {
             });
         });
     }
+
+    async addEasyEnigmaStats(userId, enigmaLevel, win, time){
+        return new Promise((resolve, reject) => {
+            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    // async addMediumEnigmaStats(userId, enigmaLevel, score)
+
+    async addHardEnigmaStats(userId, enigmaLevel, win, time){
+        return new Promise((resolve, reject) => {
+            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
 }
 
 module.exports = DatabaseService;

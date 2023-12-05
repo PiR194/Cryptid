@@ -97,6 +97,45 @@ class DbUserService implements IUserService{
         }
     }
 
+    async addEasyEnigmaStats(pseudo: string, win: number, time: number): Promise<void> {
+        try {
+            const result = await SessionService.addEasyEnigmaStats(pseudo, win, time);
+            if (result) {
+                console.log("Stats easy updated");
+            } else {
+                console.log("Stats easy not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // async addMediumEnigmaStats(pseudo: string, win: number, time: number): Promise<void> {
+    //     try {
+    //         const result = await SessionService.addMediumEnigmaStats(pseudo, win, time);
+    //         if (result) {
+    //             console.log("Stats medium updated");
+    //         } else {
+    //             console.log("Stats medium not updated");
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
+    async addHardEnigmaStats(pseudo: string, win: number, time: number): Promise<void> {
+        try {
+            const result = await SessionService.addHardEnigmaStats(pseudo, win, time);
+            if (result) {
+                console.log("Stats hard updated");
+            } else {
+                console.log("Stats hard not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async addOnlineStats(pseudo: string, win: number, time: number): Promise<void> {
         try {
             const result = await SessionService.addOnlineStats(pseudo, win, time);

@@ -12,6 +12,9 @@ router.delete('/auth/delAccount', AuthController.delAccount)
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
 router.post('/session/addMastermindStats', SessionController.addMastermindStats);
+router.post('/session/addEasyEnigmaStats', SessionController.addEasyEnigmaStats);
+// router.post('/session/addMediumEnigmaStats', SessionController.addMediumEnigmaStats);
+router.post('/session/addHardEnigmaStats', SessionController.addHardEnigmaStats);
 router.post('/session/addOnlineStats', SessionController.addOnlineStats);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
 

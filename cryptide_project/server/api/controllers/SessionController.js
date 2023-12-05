@@ -1,12 +1,12 @@
 const path = require('path');
 const DatabaseService = require(path.resolve(__dirname, '../services/DatabaseService'));
 
+const ENIGME_FACILE = "enigme_facile";
+const ENIGME_MOYEN = "enigme_moyenne";
+const ENIGME_DIFFICILE = "enigme_difficile";
+
 class SessionController {
     static async getUserInformation(req, res) {
-        const ENIGME_FACILE = "enigme_facile";
-        const ENIGME_MOYEN = "enigme_moyenne";
-        const ENIGME_DIFFICILE = "enigme_difficile";
-        
         const db = new DatabaseService();
         const date = new Date();
         const hour = date.getHours();
@@ -133,6 +133,58 @@ class SessionController {
         catch(error){
             console.error(error);
             res.status(500).json({ error: 'Erreur lors de la modification des stats mastermind de l\'utilisateur.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async addEasyEnigmaStats(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            if (!user) {
+                res.status(200).json({ error: "true", message: 'User not found' });
+                return;
+            }
+
+            await db.addEasyEnigmaStats(user.idUser, ENIGME_FACILE, req.body.win, req.body.time);
+
+            res.status(200).json({ user: req.session.user });   //verif rep
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la modification des stats de l\'énigme facile de l\'utilisateur.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    // static async addMediumEnigmaStats(req, res)
+
+    static async addHardEnigmaStats(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            if (!user) {
+                res.status(200).json({ error: "true", message: 'User not found' });
+                return;
+            }
+
+            await db.addHardEnigmaStats(user.idUser, ENIGME_DIFFICILE, req.body.win, req.body.time);
+
+            res.status(200).json({ user: req.session.user });   //verif rep
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la modification des stats de l\'énigme difficile de l\'utilisateur.' });
         }
         finally{
             await db.disconnect();
