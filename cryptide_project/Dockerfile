@@ -21,4 +21,4 @@ RUN npm install express
 COPY server.js .
 
 # Commande pour démarrer le serveur personnalisé
-ENTRYPOINT ["node", "server.js"]
+ENTRYPOINT ["npm", "start"]
