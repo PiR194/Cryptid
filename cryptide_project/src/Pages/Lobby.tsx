@@ -50,6 +50,8 @@ import { DataSet } from 'vis-network';
 
 let gameStarted = false
 let firstLaunch = true
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
 
 function Lobby() {
     const theme=useTheme();
@@ -134,7 +136,7 @@ function Lobby() {
         gameStarted = true
         //socket.off("player left")
         //socket.off("new player")
-        navigate('/game?solo=false&daily=false');
+        navigate(`${basePath}/game?solo=false&daily=false`);
     });
 
 
@@ -170,7 +172,7 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
-        navigate('/game?solo=false&daily=false');
+        navigate(`${basePath}/game?solo=false&daily=false`)
     });
 
     socket.on("new player", (tab) =>{
@@ -185,17 +187,17 @@ function Lobby() {
 
     socket.on("room full", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/play`)
     })
 
     socket.on("game started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/play`)
     })
 
     socket.on("game already started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/play`)
     })
 
     socket.on("player left", (tab, i) => {

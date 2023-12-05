@@ -34,6 +34,9 @@ import Lobbies from './Lobbies';
 
 let cptNavigation = 0
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
+
 
 function NewPlay() {
     let first = true
@@ -97,7 +100,7 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-        navigate('/game?solo=true&daily=false');
+        navigate(`${basePath}/game?solo=true&daily=false`);
     }
 
     
@@ -128,12 +131,12 @@ function NewPlay() {
     useEffect(() => {
         if (room !== null) {
             const nouvelleURL = `/lobby?room=${room}`;
-            navigate(nouvelleURL);
+            navigate(`${basePath}${nouvelleURL}`)
         }
     }, [room, navigate]);
 
     const goBack = () => {
-        navigate("/lobby?room=" + goBackRoom)
+        navigate(`${basePath}/lobby?room=${goBackRoom}`)
     }
 
 
@@ -156,7 +159,7 @@ function NewPlay() {
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
 
-        navigate('/game?solo=true&daily=true&easy=true');
+        navigate(`${basePath}/game?solo=true&daily=true&easy=true`);
         setShowOverlay(false);
     };
 
@@ -174,7 +177,7 @@ function NewPlay() {
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate('/game?solo=true&daily=true&easy=false');
+        navigate(`${basePath}/game?solo=true&daily=true&easy=false`);
         setShowOverlay(false);
     };
 

@@ -25,6 +25,9 @@ import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
+
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
@@ -34,11 +37,11 @@ function AppNavbar({changeLocale}) {
 
 
     function navigateToProfile(){
-        navigate("/profile")
+        navigate(`${basePath}/profile`)
     }
 
     function navigateToHome(){
-        navigate("/")
+        navigate(`${basePath}/`)
     }
 
     return (

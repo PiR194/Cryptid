@@ -25,6 +25,8 @@ import Form from 'react-bootstrap/Form';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
 //@ts-ignore
 const Profile = () => {
   
@@ -184,7 +186,7 @@ const Profile = () => {
       }
       handleCloseDeleteModal();
 
-      navigate("/")
+      navigate(`${basePath}/`)
 
     } else {
       console.error('Phrase de confirmation incorrecte.');
