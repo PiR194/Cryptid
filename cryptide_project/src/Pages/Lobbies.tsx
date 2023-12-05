@@ -56,7 +56,7 @@ function Lobbies() {
     );
 
     const filteredLobbiesToShow = showAvailable
-    ? filteredLobbies.filter((lobby) => lobby.started == false)
+    ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6) //* retire les lobbies pleins ou commencés
     : filteredLobbies;
 
 
@@ -90,67 +90,71 @@ function Lobbies() {
         })
     }, [])
 
-    
+    function createLobby(){
+        socket.emit("lobby created")
+    }
 
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <h1>Bienvenue dans le lobby des lobbies</h1>
             <input
                 type="text"
                 className='searchLobby'
                 placeholder="Rechercher un lobby..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                style={{width:'80%', margin:'10px'}}
             />
-
-            {/* <div>
-                <button style={{borderColor:'whitesmoke', borderRadius:'15px 0px 0px 15px', padding:'5px'}}
-                        onClick={() => setShowAvailable(false)}>Tous</button>
-                <button style={{borderColor:'whitesmoke', borderRadius:'0px 15px 15px 0px', padding:'5px'}}
-                        onClick={() => setShowAvailable(true)}>Dispo</button>
-            </div> */}
-
-        <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
-            <button
-                style={{
-                    border:'solid',
-                    borderStyle:'none',
-                    borderRadius: '15px 0px 0px 15px',
-                    borderWidth: '2px',
-                    padding: '10px 15px',
-                    backgroundColor: !showAvailable ? 'white' : 'lightgray',
-                }}
-                onClick={handleShowAllClick}
-            >
-                Tous
-            </button>
-            <button
-                style={{
-                    border:'solid',
-                    borderStyle:'none',
-                    borderRadius: '0px 15px 15px 0px',
-                    padding: '10px 15px',
-                    backgroundColor: showAvailable ? 'white' : 'lightgray',
-                }}
-                onClick={handleShowAvailableClick}
-            >
-                Disponible
-            </button>
-        </div>
-
-
-            <div className="lobbyList">
-                {filteredLobbiesToShow.map((lobby, index) => (
-                <LobbyContainer
-                    key={index}
-                    roomNum={lobby.roomNum}
-                    HeadPlayer={lobby.headPlayer}
-                    nbPlayer={lobby.nbPlayer}
-                    setFirst={setFirstData}
-                    started={lobby.started}
-                />
-                ))}
+            
+            <div style={{border:'solid 3px', borderColor:'lightgray', borderRadius:'20px', margin:'10px'}}>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '15px 0px 0px 15px',
+                        borderWidth: '2px',
+                        padding: '10px 15px',
+                        backgroundColor: !showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAllClick}
+                >
+                    Tous
+                </button>
+                <button
+                    style={{
+                        width:'120px',
+                        border:'solid',
+                        borderStyle:'none',
+                        borderRadius: '0px 15px 15px 0px',
+                        padding: '10px 15px',
+                        backgroundColor: showAvailable ? 'white' : 'lightgray',
+                    }}
+                    onClick={handleShowAvailableClick}
+                >
+                    Disponible
+                </button>
             </div>
+
+
+                {filteredLobbiesToShow.length === 0 ? (
+                    <div style={{border:'solid 2px blue', borderRadius:'15px', boxShadow:'5px 5px 5px rgb(246, 246, 246)', padding:'20px', margin:'20px'}}>
+                        <h3><b>Il n'y a aucun lobby disponible</b></h3>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créé en un !</button>
+                    </div>
+                ) : (
+                    <div className="lobbyList">
+                        {filteredLobbiesToShow.map((lobby, index) => (
+                            <LobbyContainer
+                                key={index}
+                                roomNum={lobby.roomNum}
+                                HeadPlayer={lobby.headPlayer}
+                                nbPlayer={lobby.nbPlayer}
+                                setFirst={setFirstData}
+                                started={lobby.started}
+                            />
+                        ))}
+                    </div>
+                )}
         </div>
     );
 }

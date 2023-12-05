@@ -153,7 +153,7 @@ io.on('connection', (socket) => {
           player=0
         }
       }
-      console.log(player)
+      // console.log(player)
       io.to(room).emit("who plays", player, map.get(room).lastWorks)
     }
   })

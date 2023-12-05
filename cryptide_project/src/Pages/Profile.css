@@ -46,6 +46,9 @@
     border-radius: 15px;
 }
 
+.pseudoDisplay{
+    margin: 0px !important;
+}
 
 .username-display{
     display: flex;
