@@ -12,7 +12,7 @@ RUN npm run build
 
 RUN ls
 
-EXPOSE 80
+EXPOSE 3000
 #
 # Installez express
 RUN npm install express
