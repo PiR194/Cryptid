@@ -50,8 +50,7 @@ import { DataSet } from 'vis-network';
 
 let gameStarted = false
 let firstLaunch = true
-const basePath = process.env.BASEPATH || '';
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 function Lobby() {
     const theme=useTheme();

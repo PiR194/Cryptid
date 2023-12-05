@@ -52,7 +52,7 @@ import Indice from '../model/Indices/Indice';
 
 let cptNavigation = 0
 
-const basePath = process.env.BASEPATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {

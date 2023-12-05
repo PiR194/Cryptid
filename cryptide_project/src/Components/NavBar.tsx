@@ -25,8 +25,7 @@ import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const basePath = process.env.BASEPATH || '';
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {

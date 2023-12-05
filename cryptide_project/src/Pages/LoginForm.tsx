@@ -5,7 +5,7 @@ import { useAuth } from '../Contexts/AuthContext';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
-const basePath = process.env.BASEPATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const SignIn = () => {
     const navigate = useNavigate();

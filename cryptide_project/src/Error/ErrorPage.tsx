@@ -6,8 +6,7 @@ import './ErrorStyle.css';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
-const basePath = process.env.BASEPATH || '';
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 function ErrorPage({ code = "", msg = "Something is wrong"}) {
