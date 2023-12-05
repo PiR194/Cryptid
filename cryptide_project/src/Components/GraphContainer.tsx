@@ -67,6 +67,8 @@ let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
   let cptTour: number = 0
@@ -779,13 +781,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
                   // Ajouter une victoire
-                  user.onlineStats.nbWins = null ? user.onlineStats.nbWins = 1 : user.onlineStats.nbWins += 1;
-              }
-              // Update les stats
-              user.onlineStats.nbGames = null ? user.onlineStats.nbGames = 1 : user.onlineStats.nbGames += 1;
-              user.onlineStats.ratio = user.onlineStats.nbWins / user.onlineStats.nbGames;
-              
-              manager.userService.updateOnlineStats(user.pseudo, user.onlineStats.nbGames, user.onlineStats.nbWins, user.onlineStats.ratio);
+                  manager.userService.addOnlineStats(user.pseudo, 1, elapsedTime);
+                }
+                else{
+                  manager.userService.addOnlineStats(user.pseudo, 0, elapsedTime);
+                }
               }
               else{
                 console.error("User not found");
@@ -811,7 +811,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("put imossible grey")
           socket.off("who plays")
     
-          navigate("/endgame")
+          navigate(`${basePath}/endgame`)
         }        
       }
     })
@@ -996,21 +996,31 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     endgame = true
 
                     try{
-                      if(user && user.soloStats){
-                        user.soloStats.nbGames = null ? user.soloStats.nbGames = 1 : user.soloStats.nbGames += 1;
-                        if(cptTour < user.soloStats.bestScore || user.soloStats.bestScore == 0 || user.soloStats.bestScore == null){
-                          user.soloStats.bestScore = cptTour;
+                      if(user && isLoggedIn){
+                        if(solo){
+                          if(isDaily){
+                            // TODO: verif difficulté et add les stats
+                            // TODO: verif pour facile et difficile, si réussi en one shot ou non
+                            if(isEasy){
+                              manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
+                            }
+                            else{
+                              manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
+                            }
+                          }
+                          else{
+                            // add stats mastermind
+                            if(user && user.mastermindStats){
+                              manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                            }
+                          }
                         }
-                        user.soloStats.avgNbTry = (user.soloStats.avgNbTry * (user.soloStats.nbGames - 1) + cptTour) / user.soloStats.nbGames;
-        
-                        manager.userService.updateSoloStats(user.pseudo, user.soloStats.nbGames, user.soloStats.bestScore, user.soloStats.avgNbTry);
                       }
                     }
                     catch(error){
                       console.log(error);
                     }
-
-                    navigate("/endgame?solo=true&daily=" + isDaily)
+                    navigate(`${basePath}/endgame?solo=true+${isDaily}`)
                   }
                   
                 }

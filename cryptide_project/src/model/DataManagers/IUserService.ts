@@ -2,8 +2,11 @@ import User from "../User";
 
 interface IUserService{
     fetchUserInformation(): Promise<[User | null, boolean]>
-    updateSoloStats(pseudo: string, nbGames: number, bestScore: number, avgNbTry: number): Promise<void>
-    updateOnlineStats(pseudo: string, nbGames: number, bestScore: number, ratio: number): Promise<void>
+    addMastermindStats(pseudo: string, score: number, time: number): Promise<void>
+    addEasyEnigmaStats(pseudo: string, win: number, time: number): Promise<void>
+    // addMediumEnigmaStats(pseudo: string, win: number, time: number): Promise<void>
+    addHardEnigmaStats(pseudo: string, win: number, time: number): Promise<void>
+    addOnlineStats(pseudo: string, win: number, time: number): Promise<void>
 }
 
 

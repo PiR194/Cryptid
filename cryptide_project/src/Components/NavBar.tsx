@@ -25,6 +25,9 @@ import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
+
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
@@ -32,12 +35,13 @@ function AppNavbar({changeLocale}) {
 
     const navigate = useNavigate();
 
+
     function navigateToProfile(){
-        navigate("/profile")
+        navigate(`${basePath}/profile`)
     }
 
     function navigateToHome(){
-        navigate("/")
+        navigate(`${basePath}/`)
     }
 
     return (
@@ -49,12 +53,15 @@ function AppNavbar({changeLocale}) {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <NavDropdown title={<span style={{ color: theme.colors.text }}><FormattedMessage id="play" /></span>} className="navbar-title" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="play"><FormattedMessage id="play_solo" /> </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="play"><FormattedMessage id="create_room" /> </NavDropdown.Item>
-                        <NavDropdown.Item href="play"><FormattedMessage id="join" /> </NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link href="/" style={{ color: theme.colors.text }}>
+                            Jouer
+                        </Nav.Link>
+                        <Nav.Link href="/presentation" style={{ color: theme.colors.text }}>
+                            Présentation
+                        </Nav.Link>
+                        <Nav.Link href="/info" style={{ color: theme.colors.text }}>
+                            Info
+                        </Nav.Link>
                     </Nav>
                     <div className='leftdiv'>
                         <Nav className="ml-auto navbar-title-dd">

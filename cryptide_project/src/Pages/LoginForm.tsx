@@ -5,6 +5,8 @@ import { useAuth } from '../Contexts/AuthContext';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
 const SignIn = () => {
     const navigate = useNavigate();
     const { login } = useAuth(); 
@@ -18,8 +20,7 @@ const SignIn = () => {
         try {
             const data = {
                 pseudo: (event.target as any).pseudo.value,
-                password: (event.target as any).password.value,
-                remember: (event.target as any).remember.checked
+                password: (event.target as any).password.value
             };
 
             const validation = await AuthService.validateSignIn(data);
@@ -31,13 +32,13 @@ const SignIn = () => {
 
                 const result = await AuthService.signIn(data);
                 
-                // console.log(result);
+                console.log(result);
 
                 setShowConfirmation(true);
                 setTimeout(async () => {
                     await login();
-                    navigate('/play');         // 3 secondes avant de rediriger vers la page de connexion
-                }, 3000);
+                    navigate(`${basePath}/`);
+                }, 1250);
             }
         } catch (error: any) {
             setError(error.message);
@@ -73,19 +74,6 @@ const SignIn = () => {
                         placeholder="Entrez votre mot de passe ici"
                     />
                 </div>
-                <div className="mb-3">
-                    <div className="custom-control custom-checkbox">
-                        <input
-                            type="checkbox"
-                            name='remember'
-                            className="custom-control-input"
-                            id="customCheck1"
-                        />
-                        <label className="custom-control-label" htmlFor="customCheck1">
-                            Se souvenir de moi
-                        </label>
-                    </div>
-                </div>
                 <div className="d-grid">
                     <button type="submit" className="btn btn-primary">
                         Soumettre <AiOutlineSend/>
@@ -104,7 +92,7 @@ const SignIn = () => {
 
             {showConfirmation && (
                 <div className="alert alert-success" role="alert">
-                    Connexion réussie ! Vous serez redirigé vers votre profil dans 3 secondes.
+                    Connexion réussie ! Vous serez redirigé vers votre profil.
                 </div>
             )}
         </div>
