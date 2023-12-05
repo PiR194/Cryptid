@@ -34,7 +34,6 @@ steps:
         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
 
 
-#
   - name: container-web
     image: plugins/docker
     settings:
@@ -49,7 +48,9 @@ steps:
     environment:
        BASEPATH: "/containers/Crypteam-website"
     #depends_on: [ build ]
-      
+    when:
+      branch:
+      - master
 
 
 #container deployment
@@ -63,3 +64,6 @@ steps:
         #PRIVATE: true
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
     depends_on: [ container-web ]
+    when:
+      branch:
+      - master
