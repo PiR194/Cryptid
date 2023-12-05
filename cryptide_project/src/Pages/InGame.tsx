@@ -52,7 +52,7 @@ import Indice from '../model/Indices/Indice';
 
 let cptNavigation = 0
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -68,7 +68,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(`${basePath}/play`)
+            navigate(`/${basePath}/play`)
         }
     }
   

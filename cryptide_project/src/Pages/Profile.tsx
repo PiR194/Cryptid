@@ -25,7 +25,7 @@ import Form from 'react-bootstrap/Form';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 const Profile = () => {

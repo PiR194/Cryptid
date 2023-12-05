@@ -41,9 +41,9 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
-
-const basePath = process.env.REACT_APP_BASE_PATH || '';
 import DeducCheck from './Pages/DeducCheck';
+
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const messages = {
   fr: messagesFr,

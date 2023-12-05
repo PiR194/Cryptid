@@ -67,8 +67,7 @@ let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
 
-const basePath = process.env.REACT_APP_BASE_PATH || '';
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
   let cptTour: number = 0
@@ -1020,7 +1019,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     catch(error){
                       console.log(error);
                     }
-                    navigate(`${basePath}/endgame?solo=true+${isDaily}`)
+                    navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
                   }
                   
                 }
