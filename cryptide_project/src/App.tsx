@@ -42,6 +42,8 @@ import messagesEn from './Translations/en.json';
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
 
+const basePath = process.env.REACT_APP_BASE_PATH || '';
+
 const messages = {
   fr: messagesFr,
   en: messagesEn,
@@ -57,8 +59,6 @@ function App() {
   const changeLocale = async (newLocale) => {
     setLocale(newLocale);
   };
-
-  const basePath = process.env.REACT_APP_BASE_PATH || '';
 
   console.log(basePath)
 
