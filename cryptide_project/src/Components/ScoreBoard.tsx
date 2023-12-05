@@ -28,6 +28,8 @@ import User from '../model/User';
 const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
 
+    console.log(Player);
+
     return (
         // <div className='LeaderBoardiv'>
         <div className='LeaderBoardiv'>
@@ -48,7 +50,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Moyenne d'essai :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.avgNbTry.toFixed(2) : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.mastermindStats.avgNbTry : "0"}</Col>
                         </Row>
                         <hr/>
                         <Row>Stats en Enigme facile :</Row>
@@ -62,7 +64,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Ratio V/D :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.ratio.toFixed(2) + "%" : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.easyEnigmaStats.ratio.toFixed(2) + "%" : "00.0%"}</Col>
                         </Row>
                         <Row>
                             <Col sm={10}>Meilleur temps :</Col>
@@ -98,7 +100,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         </Row>
                         <Row>
                             <Col sm={10}>Ratio V/D :</Col>
-                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.ratio.toFixed(2) + "%" : "0"}</Col>
+                            <Col className='leftRow'>{Player !== null ? Player.hardEnigmaStats.ratio.toFixed(2) + "%" : "00.0%"}</Col>
                         </Row>
                         <Row>
                             <Col sm={10}>Meilleur temps :</Col>

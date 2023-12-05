@@ -101,7 +101,7 @@ const SignUp = () => {
 
             {showConfirmation && (
                 <div className="alert alert-success" role="alert">
-                    Inscription réussie ! Vous serez redirigé vers la page de connexion dans 3 secondes.
+                    Inscription réussie ! Vous serez redirigé vers la page de connexion.
                 </div>
             )}
         </div>

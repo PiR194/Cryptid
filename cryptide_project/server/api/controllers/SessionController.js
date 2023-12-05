@@ -21,54 +21,71 @@ class SessionController {
             }
 
             // Récupérer les stats mastermind de l'utilisateur
-            const nbGamesMM = await db.getNbGamesMastermindByUserId(req.session.user.idUser) || 0;
-            const bestScoreMM = await db.getBestScoreMastermindByUserId(req.session.user.idUser) || 0;
-            const avgNbTryMM = await db.getAvgNbTryMastermindByUserId(req.session.user.idUser) || 0;
-            req.session.user.mastermindStats = {nbGames: nbGamesMM.nbGames, 
-                                                bestScore: bestScoreMM.bestScore, 
-                                                avgNbTry: avgNbTryMM.avgNbTry};
+            let nbGamesMM = await db.getNbGamesMastermindByUserId(req.session.user.idUser);
+            nbGamesMM = nbGamesMM.nbGames || 0;
+            let bestScoreMM = await db.getBestScoreMastermindByUserId(req.session.user.idUser);
+            bestScoreMM = bestScoreMM.bestScore || 0;
+            let avgNbTryMM = await db.getAvgNbTryMastermindByUserId(req.session.user.idUser);
+            avgNbTryMM = avgNbTryMM.avgNbTry || 0;
+
+            req.session.user.mastermindStats = {nbGames: nbGamesMM, 
+                                                bestScore: bestScoreMM, 
+                                                avgNbTry: avgNbTryMM};
 
             // Récupérer les stats enigme facile
-            const nbGamesEF = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE) || 0;
-            const nbWinsEF = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE) || 0;
-            const ratioEF = (nbWinsEF.nbWins / nbGamesEF.nbGames) * 100 || 0;
-            const bestTimeEF = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE) || 0;
-            const avgTimeEF = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE) || 0;
+            let nbGamesEF = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
+            nbGamesEF = nbGamesEF.nbGames || 0;
+            let nbWinsEF = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
+            nbWinsEF = nbWinsEF.nbWins || 0;
+            let ratioEF = (nbWinsEF.nbWins / nbGamesEF.nbGames) * 100 || 0;
+            let bestTimeEF = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
+            bestTimeEF = bestTimeEF.bestTime || 0;
+            let avgTimeEF = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
+            avgTimeEF = avgTimeEF.avgTime || 0;
 
-            req.session.user.easyEnigmaStats = {nbGames: nbGamesEF.nbGames,
-                                                    nbWins: nbWinsEF.nbWins,
+            req.session.user.easyEnigmaStats = {nbGames: nbGamesEF,
+                                                    nbWins: nbWinsEF,
                                                     ratio: ratioEF,
-                                                    bestTime: bestTimeEF.bestTime,
-                                                    avgTime: avgTimeEF.avgTime};
+                                                    bestTime: bestTimeEF,
+                                                    avgTime: avgTimeEF};
 
             // Récupérer les stats enigme moyenne
-            const nbGamesEM = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN) || 0;
-            const bestScoreEM = await db.getBestScoreEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN) || 0;
-            const avgNbTryEM = await db.getAvgScoreEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN) || 0;
+            let nbGamesEM = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
+            nbGamesEM = nbGamesEM.nbGames || 0;
+            let bestScoreEM = await db.getBestScoreEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
+            bestScoreEM = bestScoreEM.bestScore || 0;
+            let avgNbTryEM = await db.getAvgScoreEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
+            avgNbTryEM = avgNbTryEM.avgScore || 0;
 
-            req.session.user.mediumEnigmaStats = {nbGames: nbGamesEM.nbGames,
-                                                    bestScore: bestScoreEM.bestScore,
-                                                    avgNbTry: avgNbTryEM.avgScore};
+            req.session.user.mediumEnigmaStats = {nbGames: nbGamesEM,
+                                                    bestScore: bestScoreEM,
+                                                    avgNbTry: avgNbTryEM};
             
             // Récupérer les stats enigme difficile
-            const nbGamesED = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE) || 0;
-            const nbWinsED = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE) || 0;
-            const ratioED = (nbWinsED.nbWins / nbGamesED.nbGames) * 100 || 0;
-            const bestTimeED = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE) || 0;
-            const avgTimeED = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE) || 0;
+            let nbGamesED = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
+            nbGamesED = nbGamesED.nbGames || 0;
+            let nbWinsED = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
+            nbWinsED = nbWinsED.nbWins || 0;
+            let ratioED = (nbWinsED.nbWins / nbGamesED.nbGames) * 100 || 0;
+            let bestTimeED = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
+            bestTimeED = bestTimeED.bestTime || 0;
+            let avgTimeED = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
+            avgTimeED = avgTimeED.avgTime || 0;
 
-            req.session.user.hardEnigmaStats = {nbGames: nbGamesED.nbGames,
-                                                    nbWins: nbWinsED.nbWins,
+            req.session.user.hardEnigmaStats = {nbGames: nbGamesED,
+                                                    nbWins: nbWinsED,
                                                     ratio: ratioED,
-                                                    bestTime: bestTimeED.bestTime,
-                                                    avgTime: avgTimeED.avgTime};
+                                                    bestTime: bestTimeED,
+                                                    avgTime: avgTimeED};
 
             // Récupérer les stats en ligne de l'utilisateur
-            const nbGamesOL = await db.getNbGamesOnlineByUserId(req.session.user.idUser) || 0;
-            const nbWinsOL = await db.getNbWinsOnlineByUserId(req.session.user.idUser) || 0;
-            const ratioOL = (nbWinsOL.nbWins / nbGamesOL.nbGames) * 100 || 0;
-            req.session.user.onlineStats = {nbGames: nbGamesOL.nbGames, 
-                                            nbWins: nbWinsOL.nbWins, 
+            let nbGamesOL = await db.getNbGamesOnlineByUserId(req.session.user.idUser);
+            nbGamesOL = nbGamesOL.nbGames || 0;
+            let nbWinsOL = await db.getNbWinsOnlineByUserId(req.session.user.idUser);
+            nbWinsOL = nbWinsOL.nbWins || 0;
+            let ratioOL = (nbWinsOL.nbWins / nbGamesOL.nbGames) * 100 || 0;
+            req.session.user.onlineStats = {nbGames: nbGamesOL, 
+                                            nbWins: nbWinsOL, 
                                             ratio: ratioOL};
             
 

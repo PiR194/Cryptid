@@ -178,9 +178,10 @@ function Lobby() {
         for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        console.log(tmpTab)
-        setPlayersData(tmpTab)
-    })
+        console.log(tmpTab);
+        setPlayersData(tmpTab);
+
+    });
 
     socket.on("room full", () => {
         //TODO POP UP pour quand la room est pleine

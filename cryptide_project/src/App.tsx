@@ -9,7 +9,7 @@ import { AuthProvider } from './Contexts/AuthContext';
 import Home from './Pages/Home'; 
 import Login from './Pages/LoginForm';
 import SignUp from './Pages/SignUpForm';
-import Play from './Pages/Play';
+import NewPlay from './Pages/NewPlay';
 import Profile from './Pages/Profile';
 import Lobby from './Pages/Lobby';
 import InGame from './Pages/InGame';
@@ -21,9 +21,6 @@ import Lobbies from './Pages/Lobbies';
 
 /* Component */
 import AppNavbar from './Components/NavBar';
-
-/* service */
-import SessionService from './services/SessionService';
 
 /* nav */
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
@@ -44,7 +41,6 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
-import NewPlay from './Pages/NewPlay';
 
 const messages = {
   fr: messagesFr,
@@ -77,10 +73,10 @@ function App() {
               <BrowserRouter>  
                 {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<NewPlay/>} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
-                  <Route path="/play" element={<NewPlay/>} />
+                  <Route path="/presentation" element={<Home />} />
                   <Route path="/lobby" element={<Lobby/>} />
                   <Route path="/endgame" element={<EndGame/>} />
                   <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
