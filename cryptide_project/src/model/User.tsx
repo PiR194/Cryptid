@@ -2,12 +2,18 @@ import Player from "./Player";
 import defaultImg from "../res/img/Person.png"
 class User extends Player{
 
-    public soloStats: any
+    public mastermindStats: any
+    public easyEnigmaStats: any
+    public mediumEnigmaStats: any
+    public hardEnigmaStats: any
     public onlineStats: any
 
-    constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, onlineStats: any){
+    constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, easyEnigmaStats: any, mediumEnigmaStats: any, hardEnigmaStats: any, onlineStats: any){
         super(id, pseudo, profilePicture || defaultImg)
-        this.soloStats=soloStats
+        this.mastermindStats=soloStats
+        this.easyEnigmaStats=easyEnigmaStats
+        this.mediumEnigmaStats=mediumEnigmaStats
+        this.hardEnigmaStats=hardEnigmaStats
         this.onlineStats=onlineStats
     }
 
@@ -18,7 +24,9 @@ class User extends Player{
             id: this.id,
             profilePicture: this.profilePicture,
             pseudo: this.pseudo,
-            soloStats: this.soloStats,
+            easyEnigmaStats: this.easyEnigmaStats,
+            mediumEnigmaStats: this.mediumEnigmaStats,
+            hardEnigmaStats: this.hardEnigmaStats,
             onlineStats: this.onlineStats
         };
     }

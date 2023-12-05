@@ -8,13 +8,16 @@ router.post('/auth/signup', AuthController.signUp);
 router.post('/auth/signin', AuthController.signIn);
 router.delete('/auth/logout', AuthController.logout)
 router.delete('/auth/delAccount', AuthController.delAccount)
-
-router.put('/session/updateMDP', AuthController.UpdateMDP);
+router.post('/auth/validatePassword', AuthController.validatePassword);
+router.put('/auth/updatePassword', AuthController.updatePassword);
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
+router.post('/session/addMastermindStats', SessionController.addMastermindStats);
+router.post('/session/addEasyEnigmaStats', SessionController.addEasyEnigmaStats);
+// router.post('/session/addMediumEnigmaStats', SessionController.addMediumEnigmaStats);
+router.post('/session/addHardEnigmaStats', SessionController.addHardEnigmaStats);
+router.post('/session/addOnlineStats', SessionController.addOnlineStats);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
-router.put('/session/updateSoloStats', SessionController.updateSoloStats);
-router.put('/session/updateOnlineStats', SessionController.updateOnlineStats);
 
 module.exports = router;
