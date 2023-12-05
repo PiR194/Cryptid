@@ -46,6 +46,8 @@ steps:
         from_secret: SECRET_REGISTRY_USERNAME
       password:
         from_secret: SECRET_REGISTRY_PASSWORD
+    environnement:
+      REACT_APP_BASE_PATH: "/containers/Crypteam-website"
     #depends_on: [ build ]
       
 
