@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["https://codefirst.iut.uca.fr/containers/Crypteam-website:80", "http://172.20.10.4:3000"], // Remplacez par l'URL de votre application React
+    origin: ["https://codefirst.iut.uca.fr:80", "http://172.20.10.4:3000"], // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }
