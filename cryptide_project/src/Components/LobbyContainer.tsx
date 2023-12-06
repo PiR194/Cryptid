@@ -12,7 +12,6 @@ import Tooltip from 'react-bootstrap/esm/Tooltip';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import {basePath} from "../AdressSetup"
 
-
 interface LobbyContainerProps {
         roomNum : string
         HeadPlayer : Player
@@ -27,7 +26,7 @@ const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbP
     const theme=useTheme();
 
     const navigate = useNavigate();
-    const dest = '/lobby?room=' + roomNum;
+    const dest = 'lobby?room=' + roomNum;
 
     //* Modal
     const [showFull, setShowFull] = useState(false);

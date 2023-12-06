@@ -338,9 +338,10 @@ function Lobby() {
                             style={{borderColor:theme.colors.secondary}}> - </button>
                         <input
                             // type="number"
+                            style={{textAlign:'center'}}
                             id="numberInput"
                             disabled
-                            value={ "Nombre de noeuds : " + enteredNumber}
+                            value={enteredNumber}
                             onChange={handleNumberChange}
                             min={20}
                             max={60}/>
