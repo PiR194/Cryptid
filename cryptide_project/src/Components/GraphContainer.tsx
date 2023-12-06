@@ -1027,7 +1027,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               }
               index++
             }
-            addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
+            addToHistory(person.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
 
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
