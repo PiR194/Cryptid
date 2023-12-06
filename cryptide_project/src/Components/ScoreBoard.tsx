@@ -29,26 +29,51 @@ import ScoreboardService from '../services/ScoreboardService';
 const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
 
+    // DAILY STATS
     const [dailyMastermindStats, setDailyMastermindStats] = useState<any>(null);
+    const [dailyEasyEnigmaStats, setDailyEasyEnigmaStats] = useState<any>(null);
+    const [dailyMediumEnigmaStats, setDailyMediumEnigmaStats] = useState<any>(null);
+    const [dailyHardEnigmaStats, setDailyHardEnigmaStats] = useState<any>(null);
+    const [dailyOnlineStats, setDailyOnlineStats] = useState<any>(null);
 
-    // Récupérer les records daily et weekly
+    // WEEKLY STATS
+    const [weeklyMastermindStats, setWeeklyMastermindStats] = useState<any>(null);
+    const [weeklyEasyEnigmaStats, setWeeklyEasyEnigmaStats] = useState<any>(null);
+    const [weeklyMediumEnigmaStats, setWeeklyMediumEnigmaStats] = useState<any>(null);
+    const [weeklyHardEnigmaStats, setWeeklyHardEnigmaStats] = useState<any>(null);
+    const [weeklyOnlineStats, setWeeklyOnlineStats] = useState<any>(null);
+
+    // Récupérer les records daily
     useEffect(() => {
-        async function fetchDailyMastermindStats() {
+        async function fetchDailyStats() {
             try {
-                const result = await ScoreboardService.getDailyMastermindStats();
-                console.log(result);
-                setDailyMastermindStats(result);
+                const resultMM = await ScoreboardService.getDailyMastermindStats();
+                const resultOL = await ScoreboardService.getDailyOnlineStats();
+                console.log(resultMM);
+                console.log(resultOL);
+                setDailyMastermindStats(resultMM);
+                setDailyOnlineStats(resultOL);
             } catch (error) {
                 console.error(error);
             }
         }
-    
-        fetchDailyMastermindStats();
+
+        async function fetchWeeklyStats() {
+            try{
+                const resultWMM = await ScoreboardService.getWeeklyMastermindStats();
+                const resultOL = await ScoreboardService.getWeeklyOnlineStats();
+                console.log(resultWMM);
+                console.log(resultOL);
+                setWeeklyMastermindStats(resultWMM);
+                setWeeklyOnlineStats(resultOL);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchDailyStats();
+        fetchWeeklyStats();
     }, []);
-    
-    useEffect(() => {
-        console.log("Updated dailyMastermindStats:", dailyMastermindStats);
-    }, [dailyMastermindStats]);
 
     return (
         // <div className='LeaderBoardiv'>
@@ -153,13 +178,33 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             width='100'
                             alt="Person2"/>
                     <Container fluid>
-                    {dailyMastermindStats !== null ? (dailyMastermindStats.dailyMastermindStats.map((stats: any, index: number) => (
+                    <Row>MasterMind :</Row>
+                    {dailyMastermindStats !== null ? (dailyMastermindStats.tab.length !== 0 ? dailyMastermindStats.tab.map((stats: any, index: number) => (
                         <Row key={index}>
                             <Col sm={10}>{stats.pseudo}</Col>
                             <Col className='leftRow'>{stats.score}</Col>
                         </Row>
-                    ))
-                    ) : (
+                    )) : (
+                        <Row>
+                            <Col sm={10}>No data</Col>
+                        </Row>
+                    )) : (
+                        <Row>
+                            <Col sm={10}>No data</Col>
+                        </Row>
+                    )}
+                    <hr/>
+                    <Row>Multijoueur :</Row>
+                    {dailyOnlineStats !== null ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
+                        <Row key={index}>
+                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col className='leftRow'>{stats.wins}</Col>
+                        </Row>
+                    )) : (
+                        <Row>
+                            <Col sm={10}>No data</Col>
+                        </Row>
+                    )) : (
                         <Row>
                             <Col sm={10}>No data</Col>
                         </Row>
@@ -171,6 +216,39 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                 height='100'
                                 width='100'
                                 alt="Person2"/>
+                    <Container fluid>
+                        <Row>MasterMind :</Row>
+                        {weeklyMastermindStats !== null ? (weeklyMastermindStats.tab.length !== 0 ? weeklyMastermindStats.tab.map((stats: any, index: number) => (
+                            <Row key={index}>
+                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col className='leftRow'>{stats.score}</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )}
+                        <hr/>
+                        <Row>Multijoueur :</Row>
+                        {weeklyOnlineStats !== null ? (weeklyOnlineStats.tab.length !== 0 ? weeklyOnlineStats.tab.map((stats: any, index: number) => (
+                            <Row key={index}>
+                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col className='leftRow'>{stats.wins}</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )}
+                    </Container>
                 </Tab>
             </Tabs>
             

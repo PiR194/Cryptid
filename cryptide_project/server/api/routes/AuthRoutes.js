@@ -21,7 +21,12 @@ router.post('/session/addHardEnigmaStats', SessionController.addHardEnigmaStats)
 router.post('/session/addOnlineStats', SessionController.addOnlineStats);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
 
-// Routes pour le scoreboard
+// Routes pour le daily scoreboard
 router.get('/scoreboard/getDailyMastermind', ScoreboardController.getDailyMastermind);
+router.get('/scoreboard/getDailyOnline', ScoreboardController.getDailyOnline);
+// Routes pour le weekly scoreboard
+router.get('/scoreboard/getWeeklyMastermind', ScoreboardController.getWeeklyMastermind);
+router.get('/scoreboard/getWeeklyOnline', ScoreboardController.getWeeklyOnline);
+
 
 module.exports = router;

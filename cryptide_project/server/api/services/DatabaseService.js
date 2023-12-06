@@ -127,16 +127,16 @@ class DatabaseService {
         });
     }
 
-    // -------------------------------------------------------------
-    // ------------------- STATS GENERALES -------------------------
-    // -------------------------------------------------------------
+    // ---------------------------------------------------------------
+    // ------------------- STATS JOURNALIERE -------------------------
+    // ---------------------------------------------------------------
 
-    // Récupérer les 10 meilleurs scores de la journée
     async getDailyMastermindStats() {
         return new Promise((resolve, reject) => {
             // Obtenez la date actuelle au format AAAA-MM-JJ
             const currentDate = new Date().toISOString().slice(0, 10);
 
+            // Récupérer les 5 meilleurs scores de la journée
             this.client.all(
                 'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score DESC LIMIT 10',
                 "mastermind",
@@ -151,8 +151,74 @@ class DatabaseService {
             );
         });
     }
-    
 
+    async getDailyOnlineStats() {
+        return new Promise((resolve, reject) => {
+            const currentDate = new Date().toISOString().slice(0, 10);
+    
+            this.client.all(
+                'SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins DESC LIMIT 10',
+                "multijoueur", currentDate, 1,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
+    
+    
+    // ---------------------------------------------------------------
+    // ------------------- STATS HEBDOMADAIRE ------------------------
+    // ---------------------------------------------------------------
+
+    async getWeeklyMastermindStats() {
+        return new Promise((resolve, reject) => {
+            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDay = new Date().getDay();
+            const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
+
+            this.client.all(
+                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score DESC LIMIT 10',
+                "mastermind",
+                firstDayOfWeek,
+                currentDate,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
+
+    async getWeeklyOnlineStats() {
+        return new Promise((resolve, reject) => {
+            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDay = new Date().getDay();
+            const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
+
+            this.client.all(
+                'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins DESC LIMIT 10',
+                "multijoueur",
+                firstDayOfWeek,
+                currentDate,
+                1,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
 
     // -------------------------------------------------------------
     // ------------------- STATS MASTERMIND ------------------------
