@@ -14,7 +14,7 @@ RUN npm install
 COPY ./server/socket_io/server.js .
 
 # Expose the port that the application will run on
-EXPOSE 443
+EXPOSE 80
 
 # Command to run the application
 ENTRYPOINT ["node", "server.js"]
