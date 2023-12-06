@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["https://codefirst.iut.uca.fr:80"], // Remplacez par l'URL de votre application React
+    origin: "*", // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"], //test
     credentials: true
   }
