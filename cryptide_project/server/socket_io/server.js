@@ -17,8 +17,8 @@ const io = socketIO(server, {
 let lastSocketJoined = ""
 const map = new Map()
 
-server.listen(443, () => {
-  console.log('Serveur Socket.IO écoutant sur le port 443');
+server.listen(80, () => {
+  console.log('Serveur Socket.IO écoutant sur le port 80');
 });
 
 io.on('connection', (socket) => {
