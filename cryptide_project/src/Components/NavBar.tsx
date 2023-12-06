@@ -95,7 +95,7 @@ function AppNavbar({changeLocale}) {
                                 <BsFillPersonPlusFill />
                                 <FormattedMessage id="sign_up" />
                             </Nav.Link>
-                            <LangDropDown changeLocale={changeLocale}/>
+                            {/* <LangDropDown changeLocale={changeLocale}/> */}
                             </>
                         )}
                         </Nav>

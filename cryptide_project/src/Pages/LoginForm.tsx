@@ -79,9 +79,9 @@ const SignIn = () => {
                         Soumettre <AiOutlineSend/>
                     </button>
                 </div>
-                <p className="forgot-password text-right">
+                {/* <p className="forgot-password text-right">
                     <a href="#">Mot de passe</a> oublié ?
-                </p>
+                </p> */}
             </form>
 
             {error && (

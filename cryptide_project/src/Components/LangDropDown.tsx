@@ -18,7 +18,6 @@ const LangDropdown = ({ changeLocale }) => {
         languageKey="languageSelector.english"
         onClick={() => changeLocale('en')}
       />
-      {/* Ajoutez d'autres langues selon vos besoins */}
     </NavDropdown>
   );
 };
