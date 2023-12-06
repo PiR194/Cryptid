@@ -68,9 +68,7 @@ steps:
       branch:
       - CI/CD
 
-
-
-- name: container-server
+  - name: container-server
     image: plugins/docker
     settings:
       dockerfile: ./cryptide_project/server/socket_io/Dockerfile
