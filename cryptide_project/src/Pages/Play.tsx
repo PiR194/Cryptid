@@ -30,9 +30,10 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Info from '../res/icon/infoGreen.png';
 
+import {basePath} from "../AdressSetup"
+
 let cptNavigation = 0
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 function Play() {
     let first = true

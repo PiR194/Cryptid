@@ -25,8 +25,8 @@ fi
 
 npm start &
 
-node $SCRIPT_DIR/../server/server.js &
+node $SCRIPT_DIR/../server/socket_io/server.js &
 
-node $SCRIPT_DIR/../src/server/server.js 
+node $SCRIPT_DIR/../server/api/server.js 
 
 

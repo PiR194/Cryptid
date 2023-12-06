@@ -30,11 +30,11 @@ import { Overlay, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Lobbies from './Lobbies';
+import {basePath} from "../AdressSetup"
+
 
 
 let cptNavigation = 0
-
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 
 function NewPlay() {

@@ -34,6 +34,8 @@ import { useGame } from '../Contexts/GameContext';
 /* Boostrap */
 import { Button } from 'react-bootstrap';
 import Bot from '../model/Bot';
+import {basePath} from "../AdressSetup"
+
 
 
 function EndGame() {
@@ -194,7 +196,7 @@ function EndGame() {
             <div id="vis-graph"/>
 
             <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                <Button href='/'>Retour à l'accueil</Button>
+                <Button href={`${basePath}/`}>Retour à l'accueil</Button>
             </div>
 
         </div>

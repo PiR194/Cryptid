@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext'; 
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
+import {basePath} from "../AdressSetup"
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const SignIn = () => {
     const navigate = useNavigate();

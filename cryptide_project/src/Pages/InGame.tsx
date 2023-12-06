@@ -49,10 +49,10 @@ import { Network } from 'vis-network';
 import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
 import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
+import {basePath} from "../AdressSetup"
+
 
 let cptNavigation = 0
-
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 const InGame = ({locale, changeLocale}) => {
@@ -68,7 +68,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(`/${basePath}/play`)
+            navigate(`${basePath}/`)
         }
     }
   
@@ -283,7 +283,7 @@ const InGame = ({locale, changeLocale}) => {
   const { indice, players, actualPlayerIndex} = useGame();
 
   const nbPlayer = players.length;
-  const navdeduc = '/deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
+  const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
 
     return (
       <div id="mainDiv">
@@ -368,7 +368,7 @@ const InGame = ({locale, changeLocale}) => {
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
-          <Link to='/info' target='_blank'>
+          <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -379,7 +379,7 @@ const InGame = ({locale, changeLocale}) => {
           </Link>
 
           {!IsSolo &&
-          <Link to={navdeduc} target='_blank'>
+          <Link to={`${basePath}/${navdeduc}`} target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,

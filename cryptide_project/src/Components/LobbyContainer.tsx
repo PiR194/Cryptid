@@ -10,6 +10,8 @@ import Button from 'react-bootstrap/Button';
 import { socket } from '../SocketConfig';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import {basePath} from "../AdressSetup"
+
 
 interface LobbyContainerProps {
         roomNum : string
@@ -20,7 +22,6 @@ interface LobbyContainerProps {
     //? mettre un "nbplayermax" si le nombre de joueur max peut etre fixé ?
 }
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbPlayer, setFirst, started}) => {
     const theme=useTheme();

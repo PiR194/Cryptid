@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+import {basePath} from "../AdressSetup"
 
 
 const SignUp = () => {
@@ -92,7 +92,7 @@ const SignUp = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    Vous avez déjà un <a href="/login">compte</a> ?
+                    Vous avez déjà un <a href={`${basePath}/login`}>compte</a> ?
                 </p>
             </form>
 

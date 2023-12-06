@@ -20,6 +20,7 @@ import User from "../model/User";
 import { json } from "body-parser";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import {basePath} from "../AdressSetup"
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -67,7 +68,7 @@ let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
   let cptTour: number = 0

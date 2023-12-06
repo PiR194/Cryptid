@@ -42,8 +42,9 @@ import messagesEn from './Translations/en.json';
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
 import DeducCheck from './Pages/DeducCheck';
+import {basePath} from "./AdressSetup"
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+
 
 const messages = {
   fr: messagesFr,
@@ -65,7 +66,7 @@ function App() {
 
 
   //const location = useLocation();
-  const hasNavbarVisible = [basePath + "/", basePath + "/login", basePath + "/signup", basePath + "/play", basePath + "/lobby", basePath + "/endgame", basePath + "/deduc"]//.includes(window.location.pathname);
+  const hasNavbarVisible = [basePath + "/", basePath + "/login", basePath + "/signup", basePath + "/lobby", basePath + "/endgame", basePath + "/deduc"]//.includes(window.location.pathname);
 
 
   return (

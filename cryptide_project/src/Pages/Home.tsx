@@ -12,8 +12,7 @@ import {loadImageAsync} from "../ImageHelper"
 import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 
-
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+import {basePath} from "../AdressSetup"
 
 
 // @ts-ignore
@@ -68,7 +67,7 @@ function Home() {
                     Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en plaçant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient ainsi une arme redoutable pour détourner l'accusation et semer la confusion. Pour en savoir plus, plongez-vous dans les détails de ce passionnant récit sur une autre page.
                 </p>
                 <br/>
-                <p>Pour des informations plus détaillées, consulter les <Link to="/info">règles</Link>.</p>
+                <p>Pour des informations plus détaillées, consulter les <Link to={`${basePath}/info`}>règles</Link>.</p>
                 <br/>
             </div>
             <div>

@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { useTheme } from '../Style/ThemeContext';
 import COLORS from '../Style/Color';
+import {basePath} from "../AdressSetup"
+
 //@ts-ignore
 function BigButtonNav({ dest, img}) {
     
@@ -15,7 +17,7 @@ function BigButtonNav({ dest, img}) {
     // };
 
     return (
-    <Link to={dest} className="link-without-underline">
+    <Link to={`${basePath}/${dest}`} className="link-without-underline">
         <button className='bigbuttonNabImg' style={{ backgroundColor: theme.colors.primary }}>
             <img src={img} alt="Button Image" height="100" width="100"/>
         </button>

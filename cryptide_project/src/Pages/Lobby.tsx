@@ -46,11 +46,12 @@ import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Overlay from 'react-bootstrap/Overlay';
 import { DataSet } from 'vis-network';
+import {basePath} from "../AdressSetup"
+
 
 
 let gameStarted = false
 let firstLaunch = true
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 function Lobby() {
     const theme=useTheme();
@@ -186,17 +187,17 @@ function Lobby() {
 
     socket.on("room full", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate(`${basePath}/play`)
+        navigate(`${basePath}/`)
     })
 
     socket.on("game started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate(`${basePath}/play`)
+        navigate(`${basePath}/`)
     })
 
     socket.on("game already started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate(`${basePath}/play`)
+        navigate(`${basePath}/`)
     })
 
     socket.on("player left", (tab, i) => {
@@ -228,7 +229,7 @@ function Lobby() {
     const copyGameLink = () => {
         setShow(!show)
         
-        const gameLink = "http://localhost:3000/lobby?room="+ room;
+        const gameLink = "http://172.20.10.4:3000/lobby?room="+ room;
         navigator.clipboard.writeText(gameLink)
             .then(() => {
                 console.log('Lien copié avec succès !');
@@ -239,7 +240,7 @@ function Lobby() {
     };
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const linkToCopy = "http://localhost:3000/lobby?room="+ room
+    const linkToCopy = "http://172.20.10.4:3000/lobby?room="+ room
     const handleCopyClick = () => {
         setShow(!show)
         if(textAreaRef.current != null){

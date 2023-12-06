@@ -25,7 +25,7 @@ import { useTheme } from '../Style/ThemeContext';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
+import {basePath} from "../AdressSetup"
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
@@ -87,11 +87,11 @@ function AppNavbar({changeLocale}) {
                             </NavDropdown>
                         ) : (
                             <>
-                            <Nav.Link href="/login" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
+                            <Nav.Link href={`${basePath}/login`} className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
                                 <BiLogInCircle />
                                 <FormattedMessage id="log_in" />
                             </Nav.Link>
-                            <Nav.Link href="/signup" className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
+                            <Nav.Link href={`${basePath}/signup`} className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
                                 <BsFillPersonPlusFill />
                                 <FormattedMessage id="sign_up" />
                             </Nav.Link>
