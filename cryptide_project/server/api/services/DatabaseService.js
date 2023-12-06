@@ -152,6 +152,25 @@ class DatabaseService {
         });
     }
 
+    async getDailyEnigmaStats(enigmaLevel) {
+        return new Promise((resolve, reject) => {
+            const currentDate = new Date().toISOString().slice(0, 10);
+
+            this.client.all(
+                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time DESC LIMIT 10',
+                enigmaLevel,
+                currentDate,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
+
     async getDailyOnlineStats() {
         return new Promise((resolve, reject) => {
             const currentDate = new Date().toISOString().slice(0, 10);
@@ -184,6 +203,28 @@ class DatabaseService {
             this.client.all(
                 'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score DESC LIMIT 10',
                 "mastermind",
+                firstDayOfWeek,
+                currentDate,
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+        });
+    }
+
+    async getWeeklyEnigmaStats(enigmaLevel) {
+        return new Promise((resolve, reject) => {
+            const currentDate = new Date().toISOString().slice(0, 10);
+            const currentDay = new Date().getDay();
+            const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
+
+            this.client.all(
+                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time DESC LIMIT 10',
+                enigmaLevel,
                 firstDayOfWeek,
                 currentDate,
                 (err, result) => {

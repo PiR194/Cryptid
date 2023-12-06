@@ -23,9 +23,12 @@ router.put('/session/updatePseudo', SessionController.UpdatePseudo);
 
 // Routes pour le daily scoreboard
 router.get('/scoreboard/getDailyMastermind', ScoreboardController.getDailyMastermind);
+router.get('/scoreboard/getDailyEasyEnigma', ScoreboardController.getDailyEasyEnigma);
 router.get('/scoreboard/getDailyOnline', ScoreboardController.getDailyOnline);
+
 // Routes pour le weekly scoreboard
 router.get('/scoreboard/getWeeklyMastermind', ScoreboardController.getWeeklyMastermind);
+router.get('/scoreboard/getWeeklyEasyEnigma', ScoreboardController.getWeeklyEasyEnigma);
 router.get('/scoreboard/getWeeklyOnline', ScoreboardController.getWeeklyOnline);
 
 

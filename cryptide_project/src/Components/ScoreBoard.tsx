@@ -49,10 +49,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
             try {
                 const resultMM = await ScoreboardService.getDailyMastermindStats();
                 const resultOL = await ScoreboardService.getDailyOnlineStats();
-                console.log(resultMM);
-                console.log(resultOL);
+                const resultEF = await ScoreboardService.getDailyEasyEnigmaStats();
+                
+                console.log(resultEF);
+
                 setDailyMastermindStats(resultMM);
                 setDailyOnlineStats(resultOL);
+                setDailyEasyEnigmaStats(resultEF);
             } catch (error) {
                 console.error(error);
             }
@@ -60,12 +63,15 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
 
         async function fetchWeeklyStats() {
             try{
-                const resultWMM = await ScoreboardService.getWeeklyMastermindStats();
+                const resultMM = await ScoreboardService.getWeeklyMastermindStats();
                 const resultOL = await ScoreboardService.getWeeklyOnlineStats();
-                console.log(resultWMM);
-                console.log(resultOL);
-                setWeeklyMastermindStats(resultWMM);
+                const resultEF = await ScoreboardService.getWeeklyEasyEnigmaStats();
+
+                console.log(resultEF);
+
+                setWeeklyMastermindStats(resultMM);
                 setWeeklyOnlineStats(resultOL);
+                setWeeklyEasyEnigmaStats(resultEF);
             } catch (error) {
                 console.error(error);
             }
@@ -193,7 +199,9 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <Col sm={10}>No data</Col>
                         </Row>
                     )}
+                    
                     <hr/>
+
                     <Row>Multijoueur :</Row>
                     {dailyOnlineStats !== null ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
                         <Row key={index}>
@@ -209,6 +217,27 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <Col sm={10}>No data</Col>
                         </Row>
                     )}
+
+                    <hr/>
+
+                    <Row>Enigme facile :</Row>
+                    {dailyEasyEnigmaStats !== null ? (dailyEasyEnigmaStats.tab.length !== 0 ? dailyEasyEnigmaStats.tab.map((stats: any, index: number) => (
+                        <Row key={index}>
+                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col className='leftRow'>{stats.time}</Col>
+                        </Row>
+                    )) : (
+                        <Row>
+                            <Col sm={10}>No data</Col>
+                        </Row>
+                    )) : (
+                        <Row>
+                            <Col sm={10}>No data</Col>
+                        </Row>
+                    )}
+
+                    <hr/>
+
                     </Container>
                 </Tab>
                 <Tab eventKey="weekly" title="Weekly">
@@ -248,6 +277,26 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                 <Col sm={10}>No data</Col>
                             </Row>
                         )}
+
+                        <hr/>
+
+                        <Row>Enigme facile :</Row>
+                        {weeklyEasyEnigmaStats !== null ? (weeklyEasyEnigmaStats.tab.length !== 0 ? weeklyEasyEnigmaStats.tab.map((stats: any, index: number) => (
+                            <Row key={index}>
+                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col className='leftRow'>{stats.time}</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )) : (
+                            <Row>
+                                <Col sm={10}>No data</Col>
+                            </Row>
+                        )}
+
+                        <hr/>
                     </Container>
                 </Tab>
             </Tabs>

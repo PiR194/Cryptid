@@ -29,6 +29,29 @@ class ScoreboardService {
         }
     }
 
+    static async getDailyEasyEnigmaStats() {
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/scoreboard/getDailyEasyEnigma', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     static async getDailyOnlineStats() {
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/scoreboard/getDailyOnline', {
@@ -59,6 +82,29 @@ class ScoreboardService {
     static async getWeeklyMastermindStats() {
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/scoreboard/getWeeklyMastermind', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async getWeeklyEasyEnigmaStats() {
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/scoreboard/getWeeklyEasyEnigma', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

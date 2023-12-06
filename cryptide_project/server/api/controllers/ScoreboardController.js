@@ -22,7 +22,26 @@ class SessionController {
         }
         catch(error){
             console.error(error);
-            res.status(500).json({ error: 'Erreur lors de la récupération du scoreboard.' });
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyMastermind.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getDailyEasyEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const dailyEasyEnigmaStats = await db.getDailyEnigmaStats(ENIGME_FACILE);
+
+            res.status(200).json({ tab : dailyEasyEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyEasyEnigma.' });
         }
         finally{
             await db.disconnect();
@@ -41,7 +60,7 @@ class SessionController {
         }
         catch(error){
             console.error(error);
-            res.status(500).json({ error: 'Erreur lors de la récupération du scoreboard.' });
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyOnline' });
         }
         finally{
             await db.disconnect();
@@ -64,7 +83,26 @@ class SessionController {
         }
         catch(error){
             console.error(error);
-            res.status(500).json({ error: 'Erreur lors de la récupération du scoreboard.' });
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyMastermind.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getWeeklyEasyEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const weeklyEasyEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_FACILE);
+
+            res.status(200).json({ tab : weeklyEasyEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyEasyEnigma.' });
         }
         finally{
             await db.disconnect();
@@ -83,7 +121,7 @@ class SessionController {
         }
         catch(error){
             console.error(error);
-            res.status(500).json({ error: 'Erreur lors de la récupération du scoreboard.' });
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyOnline' });
         }
         finally{
             await db.disconnect();
