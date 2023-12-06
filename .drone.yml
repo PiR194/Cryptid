@@ -67,7 +67,7 @@ steps:
     when:
       branch:
       - CI/CD
-
+#
   - name: container-server
     image: plugins/docker
     settings:
