@@ -50,11 +50,11 @@ steps:
     #depends_on: [ build ]
     when:
       branch:
-      - master
+      - CI/CD
 
 
 #container deployment
-  - name: deploy-server-containers
+  - name: deploy-container-web
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/web:latest
@@ -66,4 +66,38 @@ steps:
     depends_on: [ container-web ]
     when:
       branch:
-      - master
+      - CI/CD
+
+
+
+- name: container-server
+    image: plugins/docker
+    settings:
+      dockerfile: ./cryptide_project/server/socket_io/Dockerfile
+      context: ./cryptide_project
+      registry: hub.codefirst.iut.uca.fr
+      repo: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/server
+      username:
+        from_secret: SECRET_REGISTRY_USERNAME
+      password:
+        from_secret: SECRET_REGISTRY_PASSWORD
+    #depends_on: [ build ]
+    when:
+      branch:
+      - CI/CD
+
+
+#container deployment
+  - name: deploy-server-containers
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+        IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/server:latest
+        CONTAINERNAME: server
+        COMMAND: create
+        OVERWRITE: true
+        #PRIVATE: true
+        ADMINS: thomaschazot2,pierreferreira,baptistemarcel
+    depends_on: [ container-server ]
+    when:
+      branch:
+      - CI/CD
