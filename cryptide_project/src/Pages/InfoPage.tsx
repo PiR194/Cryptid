@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 /* Style */
 import '../Style/Global.css';
@@ -24,11 +24,26 @@ import Alert from 'react-bootstrap/Alert';
 import MGlass from "../res/icon/magnifying-glass.png";
 import Param from "../res/icon/param.png";
 import Info from "../res/icon/infoGreen.png"; //todo changer la couleur de l'icon
+import { useAuth } from '../Contexts/AuthContext';
+
 
 //@ts-ignore
 function InfoPage({locale, changeLocale}) {
-    
     const theme = useTheme();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
+
+    useEffect(() => {
+        if (user == null){
+            manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                if (user!=null){
+                    if (loggedIn){
+                        login()
+                        setUserData(user)
+                    }
+                }
+            })
+        }
+    }, [isLoggedIn]);
 
     const styles = {
         roux: { backgroundColor: ColorToHexa(Color.REDHEAD), width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' },
