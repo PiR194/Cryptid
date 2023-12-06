@@ -138,7 +138,7 @@ class DatabaseService {
 
             // Récupérer les 5 meilleurs scores de la journée
             this.client.all(
-                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score DESC LIMIT 10',
+                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score ASC LIMIT 10',
                 "mastermind",
                 currentDate,
                 (err, result) => {
@@ -157,7 +157,7 @@ class DatabaseService {
             const currentDate = new Date().toISOString().slice(0, 10);
 
             this.client.all(
-                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time DESC LIMIT 10',
+                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time ASC LIMIT 10',
                 enigmaLevel,
                 currentDate,
                 (err, result) => {
@@ -176,7 +176,7 @@ class DatabaseService {
             const currentDate = new Date().toISOString().slice(0, 10);
     
             this.client.all(
-                'SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins DESC LIMIT 10',
+                'SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins ASC LIMIT 10',
                 "multijoueur", currentDate, 1,
                 (err, result) => {
                     if (err) {
@@ -201,7 +201,7 @@ class DatabaseService {
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
             this.client.all(
-                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score DESC LIMIT 10',
+                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score ASC LIMIT 10',
                 "mastermind",
                 firstDayOfWeek,
                 currentDate,
@@ -223,7 +223,7 @@ class DatabaseService {
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
             this.client.all(
-                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time DESC LIMIT 10',
+                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time ASC LIMIT 10',
                 enigmaLevel,
                 firstDayOfWeek,
                 currentDate,
@@ -245,7 +245,7 @@ class DatabaseService {
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
             this.client.all(
-                'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins DESC LIMIT 10',
+                'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins ASC LIMIT 10',
                 "multijoueur",
                 firstDayOfWeek,
                 currentDate,

@@ -187,7 +187,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                     <Row>MasterMind :</Row>
                     {dailyMastermindStats !== null ? (dailyMastermindStats.tab.length !== 0 ? dailyMastermindStats.tab.map((stats: any, index: number) => (
                         <Row key={index}>
-                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                             <Col className='leftRow'>{stats.score}</Col>
                         </Row>
                     )) : (
@@ -205,7 +205,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                     <Row>Multijoueur :</Row>
                     {dailyOnlineStats !== null ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
                         <Row key={index}>
-                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                             <Col className='leftRow'>{stats.wins}</Col>
                         </Row>
                     )) : (
@@ -223,7 +223,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                     <Row>Enigme facile :</Row>
                     {dailyEasyEnigmaStats !== null ? (dailyEasyEnigmaStats.tab.length !== 0 ? dailyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                         <Row key={index}>
-                            <Col sm={10}>{stats.pseudo}</Col>
+                            <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                             <Col className='leftRow'>{stats.time}</Col>
                         </Row>
                     )) : (
@@ -249,7 +249,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <Row>MasterMind :</Row>
                         {weeklyMastermindStats !== null ? (weeklyMastermindStats.tab.length !== 0 ? weeklyMastermindStats.tab.map((stats: any, index: number) => (
                             <Row key={index}>
-                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                                 <Col className='leftRow'>{stats.score}</Col>
                             </Row>
                         )) : (
@@ -265,7 +265,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <Row>Multijoueur :</Row>
                         {weeklyOnlineStats !== null ? (weeklyOnlineStats.tab.length !== 0 ? weeklyOnlineStats.tab.map((stats: any, index: number) => (
                             <Row key={index}>
-                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                                 <Col className='leftRow'>{stats.wins}</Col>
                             </Row>
                         )) : (
@@ -283,7 +283,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <Row>Enigme facile :</Row>
                         {weeklyEasyEnigmaStats !== null ? (weeklyEasyEnigmaStats.tab.length !== 0 ? weeklyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                             <Row key={index}>
-                                <Col sm={10}>{stats.pseudo}</Col>
+                                <Col sm={10}>{index+1}.{stats.pseudo}</Col>
                                 <Col className='leftRow'>{stats.time}</Col>
                             </Row>
                         )) : (
