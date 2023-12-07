@@ -53,7 +53,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const {setIndiceData, setActualPlayerIndexData} = useGame();
+  const {setIndiceData, setIndicesData, setActualPlayerIndexData, setWinnerData, setPlayersData, setNetworkDataData, setPersonData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -69,22 +69,6 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
 
   useEffect(() =>{
     touchedPlayer=playerTouched
-    /*
-    if (touchedPlayer == -1){
-      if (!askedWrongLocal){
-        socket.emit("put correct background", socket.id)
-      }
-    }
-    else if (touchedPlayer < players.length && touchedPlayer>=0){
-      if(!askedWrongLocal){
-        socket.emit("put correct background", socket.id)
-        socket.emit("put grey background", socket.id, touchedPlayer)
-      }
-    }
-    else if(touchedPlayer == players.length){
-      socket.emit("put imossible grey", socket.id)
-    }
-    */
   }, [playerTouched])
 
   useEffect(() => {
@@ -127,9 +111,6 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     const personNetwork = JSONParser.JSONToNetwork(JSON.stringify(jsonGraph))
     const indices = JSONParser.JSONToIndices(jsonIndice)
 
-    console.log(indices)
-    console.log(personNetwork.getPersons())
-
     setIndiceData(indices[0])
     if (personNetwork == null){
       return
@@ -138,7 +119,8 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
 
     const nodes = new DataSet(graph.nodesPerson);
 
-
+    setIndicesData(indices)
+    setPersonData(personNetwork.getPersons()[4])
 
     let n = graph.nodesPerson;
     let e = graph.edges;
@@ -191,7 +173,6 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
         for (const i of tabGrey){
           nodes.update({id: i, color: "#808080"})
         }
-        console.log("CA MARCHE")
       }
     };
 
@@ -284,6 +265,21 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
             await delay(500)
             const node2 = nodes.get().find((n: NodePerson) => n.id === 4)
             nodes.update({id: node2.id, label: node2.label + positionToEmoji(1, true)})
+            await delay(500)
+
+            for(const person of personNetwork.getPersons()){
+              nodes.update({id: person.getId(), color: ColorToHexa(person.getColor())})
+            }
+            if (user != null){
+              const winner = user;
+              setNetworkDataData(networkData)
+              setActualPlayerIndexData(-1)
+              setLastIndex(-1)
+              setPlayerTouched(-1)
+              setWinnerData(winner)      
+              first = true
+              navigate(`${basePath}/endgame`)
+            }  
           }
         }
       }

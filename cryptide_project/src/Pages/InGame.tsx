@@ -99,6 +99,23 @@ const InGame = ({locale, changeLocale}) => {
   const [importToPdf, setImportToPdf] = useState(false)
   const [importToJSON, setImportToJSON] = useState(false)
 
+  const [putCorrectBackground, setPutCorrectBackground] = useState<() => void>(() => {});
+  const [putGreyBackgroud, setPutGreyBackground] = useState<() => void>(() => {});
+  const [putImposssibleGrey, setPutImposssibleGrey] = useState<() => void>(() => {});
+
+
+  const setPutCorrectBackgroundData = (func: () => void) => {
+    setPutCorrectBackground(func)
+  }
+
+  const setPutGreyBackgroundData = (func: () => void) => {
+    setPutGreyBackground(func)
+  }
+
+  const setPutImposssibleGreyData = (func: () => void) => {
+    setPutImposssibleGrey(func)
+  }
+
   const setImportToJSONData = (imp: boolean) => {
     setImportToJSON(imp)
   }
@@ -313,7 +330,13 @@ const InGame = ({locale, changeLocale}) => {
                           importToPdf={importToPdf}
                           setImportToPdf={setImportToPdfData}
                           importToJSON={importToJSON}
-                          setImportToJSON={setImportToJSONData}/>
+                          setImportToJSON={setImportToJSONData}
+                          setPutCorrectBackground={setPutCorrectBackgroundData}
+                          setPutGreyBackground={setPutGreyBackgroundData}
+                          setPutImposssibleGrey={setPutImposssibleGreyData}
+                          putCorrectBackground={putCorrectBackground}
+                          putGreyBackground={putGreyBackgroud}
+                          putImposssibleGrey={putImposssibleGrey}/>
         </div>
 
 
