@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfilePDP from '../Components/ProfilePDP';
 
 import SessionService from '../services/SessionService';
@@ -27,15 +27,30 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 
 //@ts-ignore
 const Profile = () => {
-  
   const navigate = useNavigate();
-  //let player;
-  const {user, logout} = useAuth()
-
   const [editingUsername, setEditingUsername] = useState(false);
+  const {isLoggedIn, login, logout, user, setUserData, manager } = useAuth();
   const [newUsername, setNewUsername] = useState(user?.pseudo);
 
-  //@ts-ignore
+  useEffect(() => {
+      if (user == null){
+          manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+              if (user!=null){
+                  if (loggedIn){
+                      login()
+                      setUserData(user)
+                  }
+              }
+          })
+      }
+  }, [isLoggedIn]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+  
+  // @ts-ignore
   const onUsernameChange = (newUsername) => {
     if(user?.pseudo != null){
       SessionService.UpdatePseudo(user.pseudo, newUsername)
@@ -349,7 +364,10 @@ const Profile = () => {
             </Modal>
           </>
         </div>
-
+      </div>
+      {/* Bouton de déconnexion */}
+      <div className='logout'>
+        <Button variant="warning" onClick={handleLogout}>Déconnexion</Button>
       </div>
     </div>
     </>
