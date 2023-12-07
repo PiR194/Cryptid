@@ -638,13 +638,13 @@ const Tutorial = ({locale, changeLocale}) => {
                     Vous avez a présent assez d'information pour deviner les indices des autre : 
                     <ul>
                       <li>
-                        Bot1 semble avoir {indices[1].ToString(locale)}
+                        Bot1 semble avoir {indices[1]?.ToString(locale)}
                       </li>
                       <li>
-                        Bot2 semble avoir {indices[2].ToString(locale)}
+                        Bot2 semble avoir {indices[2]?.ToString(locale)}
                       </li>
                       <li>
-                        Et votre indice est {indices[0].ToString(locale)}
+                        Et votre indice est {indices[0]?.ToString(locale)}
                       </li>
                     </ul>
                     <br/>
@@ -654,7 +654,7 @@ const Tutorial = ({locale, changeLocale}) => {
               </Card>
           </Modal.Body>
           <Modal.Footer style={{display:'flex'}}>
-            <Button variant="primary" onClick={handleCloseTuto22}>Compris !</Button>
+            <Button variant="primary" onClick={handleCloseTuto3}>Compris !</Button>
           </Modal.Footer>
         </Modal>
       </div>

@@ -1004,6 +1004,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           //@ts-ignore
           const personTest = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           const node = nodes.get().find((n: any) => params.nodes[0] == n.id)
+          if(node == undefined)return;
           if (personTest != undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
             for (const i of indices){
@@ -1012,6 +1013,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 //@ts-ignore
               if (node!=undefined){
                 const nodeNode = nodes.get().find((n: any) => params.nodes[0] == n.id)
+                if(nodeNode == undefined)return;
                 networkData.nodes.update({id: params.nodes[0], label: nodeNode.label + positionToEmoji(index, test)})
                 await delay(500);
               }
