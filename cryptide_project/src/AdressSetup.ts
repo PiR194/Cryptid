@@ -1,8 +1,6 @@
-// const ADRESSE_WEBSERVER = "http://172.20.10.4:3002"
-// const ADRESSE_DBSERVER = "http://172.20.10.4:3003"
 const ADRESSE_WEBSERVER = "http://localhost:3002"
-const ADRESSE_DBSERVER = "http://localhost:3003"
 
+const ADRESSE_DBSERVER = "http://localhost:3003"
 
 const tmp = ADRESSE_DBSERVER
 const tmp2 = ADRESSE_WEBSERVER

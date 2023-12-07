@@ -37,7 +37,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
         img = BotImg
     }
 
-    const [buffer, setBuffer] = useState("")
+    const [buffer, setBuffer] = useState('50%')
 
     const [touchedPlayer, setTouchedPlayer] = useState(-2)
     useEffect(() =>{
@@ -48,10 +48,10 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
 
     useEffect(() => {
         if (playerIndex===index){
-            setBuffer('solid 3px green')
+            setBuffer('5px')
         }
         else{
-            setBuffer('')
+            setBuffer('50%')
         }
     }, [playerIndex])
     
@@ -71,7 +71,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
     };
     const circleStyle: React.CSSProperties = {
         backgroundColor: touchedPlayer == index && showCircle ? 'gold' : positionToColor(index), // Changement de la couleur en fonction de la condition
-        borderRadius: '50%',
+        borderRadius: buffer,
         width: '80px',
         height: '80px',
         display: 'flex',
@@ -84,7 +84,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
     const circleStyleInt: React.CSSProperties = {
 
         backgroundColor:'white',
-        borderRadius: '50%',
+        borderRadius: buffer,
         width: '70px',
         height: '70px',
         display: 'flex',
@@ -111,8 +111,8 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
                     </div>
             {/* </div> */}
             </div>
-            <div className='playerNameDisplay' style={{border:buffer}}>
-                <h5>{actualPlayerIndex !== index ? (name.substring(0, name.length - 2).length > 7 ? name.substring(0, name.length - 2).substring(0, 7) + '...' : name) : 'vous'}</h5>
+            <div className='playerNameDisplay'>
+                <h5>{actualPlayerIndex !== index ? (name.substring(0, name.length - 2).length > 7 ? name.substring(0, name.length - 2).substring(0, 7) + '...' : name.substring(0, name.length - 2)) : 'vous'}</h5>
             </div>
         </div>
     );
