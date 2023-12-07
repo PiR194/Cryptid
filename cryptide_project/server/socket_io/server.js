@@ -1,10 +1,11 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const socketIO = require('socket.io');
 const cors = require('cors');
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(app);
 const io = socketIO(server, {
   cors: {
     origin: "*", // Remplacez par l'URL de votre application React
