@@ -38,6 +38,10 @@ interface TutorialGraphProps {
 
 let lastNodes: NodePerson[] = []
 let firstIndex = true
+let first = true
+let touchedPlayer = -1
+let stepTuto = -1
+
 
 
 
@@ -48,16 +52,23 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const {setIndiceData} = useGame();
+  const {setIndiceData, setActualPlayerIndexData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
   const [lastIndex, setLastIndex] = useState(-1)
-  /*
+
+  if (first){
+    first = false
+    setActualPlayerIndexData(0)
+    handleTurnBarTextChange("C'est à vous de jouer !")
+    handleShowTurnBar(true)
+  }
+  
 
   useEffect(() =>{
     touchedPlayer=playerTouched
-    console.log(playerTouched)
+    /*
     if (touchedPlayer == -1){
       if (!askedWrongLocal){
         socket.emit("put correct background", socket.id)
@@ -72,9 +83,13 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     else if(touchedPlayer == players.length){
       socket.emit("put imossible grey", socket.id)
     }
+    */
   }, [playerTouched])
 
-  */
+  useEffect(() => {
+    stepTuto = tutoStep
+  }, [tutoStep])
+
 
   useEffect(() => {
     const tab: NodePerson[] = []
@@ -108,13 +123,15 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     const personNetwork = JSONParser.JSONToNetwork(JSON.stringify(jsonGraph))
     const indices = JSONParser.JSONToIndices(jsonIndice)
 
+    console.log(indices)
+
     setIndiceData(indices[0])
     if (personNetwork == null){
       return
     }
     const graph = GraphCreator.CreateGraph(personNetwork)
 
-    const nodes = graph.nodesPerson;
+    const nodes = new DataSet(graph.nodesPerson);
 
 
     let n = graph.nodesPerson;
@@ -162,6 +179,11 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     network.stabilize();
     setNetwork(network)
 
+    network.on("click", async (params) => {
+      
+      if(params.nodes.length > 0){
+      }
+    });
 
     network.on("dragging", (params) => {
       if (params.nodes.length > 0) {
@@ -170,7 +192,24 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
           network.setOptions(initialOptions);
           setNetwork(network)
       }
-  });
+    });
+
+    network.on("click", async (params) => {
+      if(params.nodes.length > 0){
+        if (stepTuto === 0 && touchedPlayer === 1){
+          const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
+          const pers = personNetwork.getPersons().find((p) => p.getId() === node?.id)
+          if (node !== undefined && pers !== undefined && pers.getName() === "Violet"){
+            networkData.nodes.update({id: params.nodes[0], label: node.label + positionToEmoji(1, true)})
+            setTutoStep(1)
+          }
+        }
+      }
+      else{
+        setPlayerTouched(-1)
+      }
+    });
+  
     
   }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
 
