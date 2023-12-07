@@ -213,7 +213,7 @@ function Lobby() {
 
 
     function StartGame(){
-        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, enteredNumber)
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, 10)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)

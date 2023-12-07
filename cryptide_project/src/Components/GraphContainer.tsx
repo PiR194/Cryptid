@@ -41,6 +41,8 @@ interface MyGraphComponentProps {
   setPlayerIndex: (playerIndex: number) => void
   importToPdf: boolean
   setImportToPdf: (imp: boolean) => void
+  importToJSON: boolean
+  setImportToJSON: (imp: boolean) => void
 }
 
 let lastAskingPlayer = 0
@@ -70,7 +72,7 @@ let testPlayers: Player[] = []
 
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -319,6 +321,25 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       });
     }
   }, [importToPdf])
+
+  function downloadToJSON(jsonData: any, filename: string) {
+    const jsonBlob = new Blob([JSON.stringify(jsonData)], {type: 'application/json'});
+    const url = URL.createObjectURL(jsonBlob);
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = url;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+  useEffect(() => {
+    if (importToJSON){
+      setImportToJSON(false)
+      downloadToJSON(personNetwork, "graph.json")
+      downloadToJSON(JSON.stringify(indices), "indices.json")
+    }
+  }, [importToJSON])
 
   useEffect(() => {
     if (personNetwork == null){

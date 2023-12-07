@@ -7,21 +7,14 @@ import "./InGame.css"
 import {useTheme} from '../Style/ThemeContext'
 /* Component */
 import GraphContainer from '../Components/GraphContainer';
-import ChoiceBar from '../Components/ChoiceBar';
-import ButtonImgNav from '../Components/ButtonImgNav';
-import PersonStatus from '../Components/PersonStatus';
 import PlayerList from '../Components/PlayerList';
 import TurnBar from '../Components/TurnBar';
 
 /* Icon */
-import Leave from "../res/icon/leave.png";
 import Param from "../res/icon/param.png";
-import Replay from "../res/icon/replay.png";
 import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
-import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
-import Download from "../res/icon/download.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
@@ -31,7 +24,6 @@ import JSZip from 'jszip';
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
 /* Boostrap */
-import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 /* Model */
@@ -39,23 +31,20 @@ import Stub from '../model/Stub';
 import { HiLanguage } from 'react-icons/hi2';
 import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import Color from '../model/Color';
 import { useGame } from '../Contexts/GameContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
-import { last } from 'lodash';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
 import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
 import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
 import {basePath} from "../AdressSetup"
+import TutorialGraph from '../Components/TutorialGraph';
 
 
 let cptNavigation = 0
 
 //@ts-ignore
-const InGame = ({locale, changeLocale}) => {
+const Tutorial = ({locale, changeLocale}) => {
   
   const theme = useTheme();
   
@@ -254,14 +243,6 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
   
-    const handleChangeP = () => {
-      if (showP){
-        handleCloseP()
-      }
-      else {
-        handleShowP()
-      }
-    };
 
     const handleChangeS = () => {
       if (showS){
@@ -272,9 +253,6 @@ const InGame = ({locale, changeLocale}) => {
       }
     };
 
-    const changeVisibility = () => {
-      setLastVisible(!LastVisible);
-    }
     const eye = LastVisible ? Oeye : Ceye; //icon que l'on affiche pour l'oeil : fermé ou ouvert.
 
     /* Windows open */
@@ -294,7 +272,7 @@ const InGame = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <GraphContainer onNodeClick={handleNodeClick} 
+          <TutorialGraph onNodeClick={handleNodeClick} 
                           handleShowTurnBar={handleShowTurnBar} 
                           handleTurnBarTextChange={handleTurnBarTextChange} 
                           changecptTour={changecptTour} 
@@ -316,15 +294,6 @@ const InGame = ({locale, changeLocale}) => {
                           setImportToJSON={setImportToJSONData}/>
         </div>
 
-
-        {IsSolo && !isDaily &&
-            <div className='nbLaps' style={{ 
-                backgroundColor: theme.colors.primary,
-                borderColor: theme.colors.secondary
-            }}>
-              Tour : {cptTour}
-            </div>
-        }
         
         {(!isDaily || (isDaily && isEasy)) &&
           <div className='historique' id="history-container">
@@ -385,7 +354,6 @@ const InGame = ({locale, changeLocale}) => {
             </button>
           </Link>
 
-          {!IsSolo &&
           <Link to={`${basePath}/${navdeduc}`} target='_blank'>
             <button className='button'
               style={{ 
@@ -394,15 +362,15 @@ const InGame = ({locale, changeLocale}) => {
               }}>
               <img src={Check} alt="check" height="40"/>
             </button>
-          </Link>}
+          </Link>
 
-          {!IsSolo && <button className='button' onClick={handleChange}
+          <button className='button' onClick={handleChange}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={MGlass} alt="indice" height="40"/>
-          </button>}
+          </button>
 
           {!IsSolo && <button className='button' onClick={setShowLastData}
             style={{ 
@@ -411,27 +379,6 @@ const InGame = ({locale, changeLocale}) => {
             }}>
             <img src={ eye } alt="indice" height="40"/>
           </button>}
-
-          {IsSolo && 
-            
-            <button className='button' onClick={generateTEX}
-              style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-              }}>
-              <img src={Download} alt="indice" height="40"/>
-            </button>
-          }
-
-          {IsSolo &&   
-            <button className='button' onClick={ () => setImportToPdfData(true)}
-              style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-              }}>
-              <img src={Download} alt="indice" height="40"/>
-            </button>
-          }
         </div>
 
 {/*
@@ -499,14 +446,9 @@ const InGame = ({locale, changeLocale}) => {
 
           </Offcanvas.Body>
         </Offcanvas>
-        {/*
-        <div id="endgamebutton" > {/*  tmp 
-          <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
-        </div>
-      */}
       </div>
     );
   };
   
 
-export default InGame;
+export default Tutorial;

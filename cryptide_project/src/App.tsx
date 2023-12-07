@@ -43,6 +43,7 @@ import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
 import DeducCheck from './Pages/DeducCheck';
 import {basePath} from "./AdressSetup"
+import Tutorial from './Pages/Tutorial';
 
 
 
@@ -88,6 +89,7 @@ function App() {
                   <Route path={`${basePath}/endgame`} element={<EndGame/>} />
                   <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                   <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path={`${basePath}/tutorial`} element={<Tutorial locale={locale} changeLocale={changeLocale}/>} />
                   <Route path={`${basePath}/deduc`} element={<DeducCheck/>} />
                   <Route path={`${basePath}/TheRealDeduc`} element={<DeducGrid/>} />
                   <Route path={`${basePath}/profile`} element={<Profile/>} />
