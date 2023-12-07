@@ -18,19 +18,19 @@ import MGlass from "../res/icon/magnifying-glass.png";
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
-import JSZip from 'jszip';
+import ava from "../res/img/tuto/tuto-ava.png";
 
 /* nav */
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
 /* Boostrap */
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 /* Model */
 import Stub from '../model/Stub';
-import { HiLanguage } from 'react-icons/hi2';
-import { Nav, NavDropdown, Spinner } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import { useGame } from '../Contexts/GameContext';
 import { socket } from '../SocketConfig';
 import { Network } from 'vis-network';
@@ -39,6 +39,7 @@ import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
 import {basePath} from "../AdressSetup"
 import TutorialGraph from '../Components/TutorialGraph';
+import JSZip from 'jszip';
 
 
 let cptNavigation = 0
@@ -268,6 +269,15 @@ const Tutorial = ({locale, changeLocale}) => {
   const nbPlayer = players.length;
   const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
 
+
+
+    //* gestion demo */
+  const [showM, setShowM] = useState(false);
+
+  const handleCloseM = () => setShowM(false);
+  const handleShowM = () => setShowM(true);
+
+  const [step, setStep] = useState(0);
     return (
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
@@ -303,47 +313,10 @@ const Tutorial = ({locale, changeLocale}) => {
           </div>
         }   
 
-        <div className='paramDiv'>
-          <button className='button'
-            style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-            }}
-            onClick={handleChangeS}>
-            <img src={Param} alt="paramètres" height='40'/>
-          </button>
-        </div>
-
-
-
         <div className='menuGame'>
-          <div className='resetDiv'>
-            <button className='button'
-              style={{ 
-                  backgroundColor: theme.colors.tertiary,
-                  borderColor: theme.colors.secondary
-              }}
-              onClick={resetGraph}>
-              
-              {
-                isLoading ? (
-                  <Spinner animation="grow" />
-                  )
-                  : (
-                  <img src={Reset} alt="paramètres" height='40'/>
-                )
-              }
-              
-              
-            </button>
-          </div>
-
-
-
-
-          {/* <Link to='/info#indice-possible' target='_blank'> 
-            //? redirection impossible apparament (securité des navigateur
-          */}
+          <Button variant="primary" onClick={handleShowM}>
+              Aide
+          </Button>
           <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
               style={{ 
@@ -351,16 +324,6 @@ const Tutorial = ({locale, changeLocale}) => {
                 borderColor: theme.colors.secondary
               }}>
               <img src={Info} alt="info" height="40"/>
-            </button>
-          </Link>
-
-          <Link to={`${basePath}/${navdeduc}`} target='_blank'>
-            <button className='button'
-              style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-              }}>
-              <img src={Check} alt="check" height="40"/>
             </button>
           </Link>
 
@@ -381,19 +344,6 @@ const Tutorial = ({locale, changeLocale}) => {
           </button>}
         </div>
 
-{/*
-        <Offcanvas show={showP} 
-                  onHide={handleCloseP}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Joueurs</Offcanvas.Title>
-            <h3>Il y a {players.length} joueurs</h3>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-
-          </Offcanvas.Body>
-        </Offcanvas>
-          */}
-
           { !IsSolo &&
             <div className='playerlistDiv'>
               <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
@@ -410,42 +360,100 @@ const Tutorial = ({locale, changeLocale}) => {
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {/* Possède les cheveux noir <u>ou</u> joue au basket */}
             {indice?.ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
+      
 
-        {
-          //* canva pour les paramètres
-        }
-        <Offcanvas show={showS} 
-                  onHide={handleCloseS} 
-                  placement='top'
-                  style={{height: '30%', width: '30%', left: '70%' }}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="me-auto">
-                <NavDropdown 
-                title={<span><HiLanguage/> Language </span>}
-                className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item onClick={() => changeLocale('fr')}> 
-                        <FormattedMessage id="languageSelector.french"/> 
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => changeLocale('en')}> 
-                        <FormattedMessage id="languageSelector.english"/> 
-                    </NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
 
-            <label>
-              <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
-              <p>Afficher les noeuds possibles</p>
-            </label>
 
-          </Offcanvas.Body>
-        </Offcanvas>
+
+        <Modal
+          show={showM}
+          onHide={handleCloseM}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Tutoriel 1</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+
+            {step === 0 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Les Personnes</Card.Title>
+                  <Card.Text>
+                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    <br />
+                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 1 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Les Joueurs</Card.Title>
+                  <Card.Text>
+                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    <br />
+                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 2 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>L'historique</Card.Title>
+                  <Card.Text>
+                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    <br />
+                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 3 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={Info} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Les règle du jeu</Card.Title>
+                  <Card.Text>
+                    Ce bouton vous mène a la page d'information du jeu, avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc...
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 4 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={MGlass} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>L'indice</Card.Title>
+                  <Card.Text>
+                    Ce boutons vous permet d'afficher votre indice personnel, gradez le secret ! Il s'agit de votre meilleur atout pour gagner.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            {/* <Button variant="secondary" onClick={handleCloseM}>
+              Fermer
+            </Button> */}
+            { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
+            <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>
+          </Modal.Footer>
+        </Modal>
+
       </div>
     );
   };
