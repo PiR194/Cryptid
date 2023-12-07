@@ -16,13 +16,15 @@ interface PlayerListProps {
     setPlayerTouched: (newPlayerTouch: number) => void;
     playerIndex: number
     askedWrong: boolean
+    greyForEveryone: () => void
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex, askedWrong}) => {
+const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex, askedWrong, greyForEveryone}) => {
     const theme = useTheme();
 
     function askEveryone(){
         if (!askedWrong){
+            greyForEveryone()
             setPlayerTouched(players.length)    
         }
     }

@@ -57,6 +57,11 @@ const Tutorial = ({locale, changeLocale}) => {
   
   const navigate = useNavigate()
   
+  const [greyForEveryone, setGreyForEveryone] = useState<() => void>(() => {});
+
+  const setGreyForEveryoneData = (func: () => void) => {
+    setGreyForEveryone(func)
+  }
 
   const navigationType = useNavigationType()
     cptNavigation++
@@ -238,7 +243,8 @@ const Tutorial = ({locale, changeLocale}) => {
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
                           showLast={showLast}
-                          setPlayerIndex={setPlayerIndexData}/>
+                          setPlayerIndex={setPlayerIndexData}
+                          setGreyForEveryone={setGreyForEveryoneData}/>
         </div>
 
         <div className='historique' id="history-container">
@@ -341,7 +347,7 @@ const Tutorial = ({locale, changeLocale}) => {
 
           
           <div className='playerlistDiv'>
-            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
+            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong} greyForEveryone={greyForEveryone}/>
           </div>
           
 
