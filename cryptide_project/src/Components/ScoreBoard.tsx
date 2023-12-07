@@ -95,8 +95,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
             setCarouselKey((prevKey) => prevKey + 1);
             }}
             id="ScoreBoard"
-            className="tabsStats justify-content-around"
-        >
+            className="tabsStats justify-content-around">
             <Tab eventKey="perso" title="Vos Stats" disabled={!Player.pseudo.startsWith("Guest_") ? false : true}>
                 <Tab.Content className={`tabsStats ${activeTab !== 'perso' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
@@ -105,39 +104,39 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <hr />
                             <p>Parties Jouées: {Player.mastermindStats.nbGames}</p>
                             <p>Best-Score: {Player.mastermindStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mastermindStats.avgNbTry}</p>
+                            <p>Moyenne d'essai: {Player.mastermindStats.avgNbTry.toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme facile</h5>
                             <hr />
                             <p>Parties Jouées: {Player.easyEnigmaStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.easyEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.easyEnigmaStats.ratio}</p>
-                            <p>Meilleur temps: {Player.easyEnigmaStats.bestTime}</p>
-                            <p>Moyenne de temps: {Player.easyEnigmaStats.avgTime}</p>
+                            <p>Ratio V/D: {Player.easyEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p>Meilleur temps: {Player.easyEnigmaStats.bestTime + "s"}</p>
+                            <p>Moyenne de temps: {Player.easyEnigmaStats.avgTime.toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme moyenne</h5>
                             <hr />
                             <p>Parties Jouées: {Player.mediumEnigmaStats.nbGames}</p>
                             <p>Best-Score: {Player.mediumEnigmaStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mediumEnigmaStats.avgNbTry}</p>
+                            <p>Moyenne d'essai: {Player.mediumEnigmaStats.avgNbTry.toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme difficile</h5>
                             <hr />
                             <p>Parties Jouées: {Player.hardEnigmaStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.hardEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.hardEnigmaStats.ratio}</p>
-                            <p>Meilleur temps: {Player.hardEnigmaStats.bestTime}</p>
-                            <p>Moyenne de temps: {Player.hardEnigmaStats.avgTime}</p>
+                            <p>Ratio V/D: {Player.hardEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p>Meilleur temps: {Player.hardEnigmaStats.bestTime + "s"}</p>
+                            <p>Moyenne de temps: {Player.hardEnigmaStats.avgTime.toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>En ligne</h5>
                             <hr />
                             <p>Parties Jouées: {Player.onlineStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.onlineStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.onlineStats.ratio}</p>
+                            <p>Ratio V/D: {Player.onlineStats.ratio.toFixed(2) + "s"}</p>
                         </div>
                     </Carousel>
                 </Tab.Content>
@@ -155,7 +154,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.score}</p>
+                                            <p>{stats.score + " essai(s)"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -175,7 +174,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -195,7 +194,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -215,7 +214,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -235,7 +234,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.wins}</p>
+                                            <p>{stats.wins + " victoires"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -261,7 +260,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.score}</p>
+                                            <p>{stats.score + " essai(s)"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -281,7 +280,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -301,7 +300,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -321,7 +320,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.time}</p>
+                                            <p>{stats.time + "s"}</p>
                                         </Col>
                                     </Row>
                                 </>
@@ -341,7 +340,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                             <p>{index+1}.{stats.pseudo}</p>
                                         </Col>
                                         <Col>
-                                            <p>{stats.wins}</p>
+                                            <p>{stats.wins + " victoires"}</p>
                                         </Col>
                                     </Row>
                                 </>
