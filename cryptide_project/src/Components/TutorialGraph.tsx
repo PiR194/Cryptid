@@ -202,6 +202,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
             nodes.update({id: node.id, label: node.label + positionToEmoji(1, true)})
             handleShowTurnBar(false)
             setPlayerIndex(1)
+            setPlayerTouched(-1)
             await delay(500)
             const node2 = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
             nodes.update({id: node.id, label: node2.label + positionToEmoji(2, false)})
@@ -220,6 +221,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
           const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
           if (node.id === 0){
             nodes.update({id: node.id, label: node.label + positionToEmoji(2, false)})
+            setPlayerTouched(-1)
             handleTurnBarTextChange("Mauvais choix, posez un carré !")
             const tabGrey = [7, 0, 4, 1, 8]
             for (const id of tabGrey){
@@ -262,6 +264,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
           const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
           if (node.id === 4){
             nodes.update({id: node.id, label: node.label + positionToEmoji(0, true)})
+            setPlayerTouched(-1)
             await delay(500)
             const node2 = nodes.get().find((n: NodePerson) => n.id === 4)
             nodes.update({id: node2.id, label: node2.label + positionToEmoji(1, true)})
