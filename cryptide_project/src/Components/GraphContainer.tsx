@@ -1002,71 +1002,66 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         } 
         else{
           //@ts-ignore
-          const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
-          if (person != undefined){
+          const personTest = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
+          const node = nodes.get().find((n: any) => params.nodes[0] == n.id)
+          if (personTest != undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
-            let works = true
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
-              const test = tester.Works(person)
-              //@ts-ignore
-              const node = nodes.get().find((n) => params.nodes[0] == n.id)
+              const test = tester.Works(personTest)
+                //@ts-ignore
               if (node!=undefined){
-                if (!node.label.includes(positionToEmoji(index, test))){
-                  networkData.nodes.update({id: params.nodes[0], label: node.label + positionToEmoji(index, test)})
-                  await delay(500)
-                  if(!test){
-                    works = false
-                  }
-                  if (index == indices.length - 1 && works){
-
-                    if (user!=null){
-                      setWinnerData(user)
-                      setNetworkDataData(networkData)
-                    }
-                    cptTour ++;
-                    setNbCoupData(cptTour)
-                    setElapsedTime(0)
-                    endgame = true
-
-                    try{
-                      if(user && isLoggedIn){
-                        if(solo){
-                          if(isDaily){
-                            // TODO: verif difficulté et add les stats
-                            // TODO: verif pour facile et difficile, si réussi en one shot ou non
-                            if(isEasy){
-                              manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
-                            }
-                            else{
-                              manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
-                            }
-                          }
-                          else{
-                            // add stats mastermind
-                            if(user && user.mastermindStats){
-                              manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
-                            }
-                          }
-                        }
-                      }
-                    }
-                    catch(error){
-                      console.log(error);
-                    }
-                    navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
-                  }
-                  
-                }
+                const nodeNode = nodes.get().find((n: any) => params.nodes[0] == n.id)
+                networkData.nodes.update({id: params.nodes[0], label: nodeNode.label + positionToEmoji(index, test)})
+                await delay(500);
               }
               index++
             }
-            addToHistory(person.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+            if (person !== null && person.getId() === params.nodes[0]){
 
-            cptTour ++; // On Incrémente le nombre de tour du joueur
-            const tour = cptTour+1;
-            addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
-            changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+              if (user!=null){
+                setWinnerData(user)
+                setNetworkDataData(networkData)
+              }
+              cptTour ++;
+              setNbCoupData(cptTour)
+              setElapsedTime(0)
+              endgame = true
+
+              try{
+                if(user && isLoggedIn){
+                  if(solo){
+                    if(isDaily){
+                      // TODO: verif difficulté et add les stats
+                      // TODO: verif pour facile et difficile, si réussi en one shot ou non
+                      if(isEasy){
+                        manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
+                      }
+                      else{
+                        manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
+                      }
+                    }
+                    else{
+                      // add stats mastermind
+                      if(user && user.mastermindStats){
+                        manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                      }
+                    }
+                  }
+                }
+              }
+              catch(error){
+                console.log(error);
+              }
+              navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+            }
+            else{
+              addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+              cptTour ++; // On Incrémente le nombre de tour du joueur
+              const tour = cptTour+1;
+              addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
+              changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+            }
           }
         }
       }
