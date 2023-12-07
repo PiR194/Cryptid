@@ -70,7 +70,7 @@ function Lobby() {
     }
 
     //* nb Node
-    const [enteredNumber, setEnteredNumber] = useState(20);
+    const [enteredNumber, setEnteredNumber] = useState(25);
 
     //@ts-ignore
     const handleNumberChange = (event) => {
@@ -213,7 +213,7 @@ function Lobby() {
 
 
     function StartGame(){
-        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, 10)
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, enteredNumber)
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
