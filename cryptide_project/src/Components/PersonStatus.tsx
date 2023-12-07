@@ -112,7 +112,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
             {/* </div> */}
             </div>
             <div className='playerNameDisplay' style={{border:buffer}}>
-                <h5>{actualPlayerIndex !== index ? (name.substring(0, name.length - 2).length > 7 ? name.substring(0, name.length - 2).substring(0, 7) + '...' : name) : 'vous'}</h5>
+                <h5>{actualPlayerIndex !== index ? (name.substring(0, name.length - 2).length > 7 ? name.substring(0, name.length - 2).substring(0, 7) + '...' : name.substring(0, name.length - 2)) : 'vous'}</h5>
             </div>
         </div>
     );
