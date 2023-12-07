@@ -34,6 +34,7 @@ interface TutorialGraphProps {
   playerTouched: number
   tutoStep: number
   setTutoStep: (step: number) => void
+  setGreyForEveryone: (func: () => void) => void
 }
 
 let lastNodes: NodePerson[] = []
@@ -45,7 +46,7 @@ let stepTuto = -1
 
 
 
-const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setPlayerIndex, handleShowTurnBar, handleTurnBarTextChange, addToHistory, setPlayerTouched, playerTouched, tutoStep, setTutoStep}) => {
+const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setPlayerIndex, handleShowTurnBar, handleTurnBarTextChange, addToHistory, setPlayerTouched, playerTouched, tutoStep, setTutoStep, setGreyForEveryone}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -88,6 +89,9 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
 
   useEffect(() => {
     stepTuto = tutoStep
+    if(stepTuto===1){
+      handleShowTurnBar(true)
+    }
   }, [tutoStep])
 
 
@@ -124,6 +128,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     const indices = JSONParser.JSONToIndices(jsonIndice)
 
     console.log(indices)
+    console.log(personNetwork.getPersons())
 
     setIndiceData(indices[0])
     if (personNetwork == null){
@@ -132,6 +137,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     const graph = GraphCreator.CreateGraph(personNetwork)
 
     const nodes = new DataSet(graph.nodesPerson);
+
 
 
     let n = graph.nodesPerson;
@@ -179,6 +185,19 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
     network.stabilize();
     setNetwork(network)
 
+    const myFunctionInsideEffect = () => {
+      if (stepTuto === 3){
+        const tabGrey = [0, 1, 2, 3, 5, 6, 7, 8, 9]
+        for (const i of tabGrey){
+          nodes.update({id: i, color: "#808080"})
+        }
+        console.log("CA MARCHE")
+      }
+    };
+
+    setGreyForEveryone(() => myFunctionInsideEffect);
+
+
     network.on("click", async (params) => {
       
       if(params.nodes.length > 0){
@@ -198,10 +217,73 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
       if(params.nodes.length > 0){
         if (stepTuto === 0 && touchedPlayer === 1){
           const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
-          const pers = personNetwork.getPersons().find((p) => p.getId() === node?.id)
-          if (node !== undefined && pers !== undefined && pers.getName() === "Violet"){
-            networkData.nodes.update({id: params.nodes[0], label: node.label + positionToEmoji(1, true)})
+          if (node.id === 7){
+            nodes.update({id: node.id, label: node.label + positionToEmoji(1, true)})
+            handleShowTurnBar(false)
+            setPlayerIndex(1)
+            await delay(500)
+            const node2 = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
+            nodes.update({id: node.id, label: node2.label + positionToEmoji(2, false)})
+            await delay(500)
+            const node3 = nodes.get().find((n: NodePerson) => n.id === 8)
+            nodes.update({id: node3.id, label: node3.label + positionToEmoji(1, false)})
+            setPlayerIndex(2)
+            await delay(500)
+            const node4 = nodes.get().find((n: NodePerson) => n.id === 0)
+            nodes.update({id: node4.id, label: node4.label + positionToEmoji(1, true)})
+            setPlayerIndex(0)
             setTutoStep(1)
+          }
+        }
+        else if(stepTuto === 1 && touchedPlayer === 2){
+          const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
+          if (node.id === 0){
+            nodes.update({id: node.id, label: node.label + positionToEmoji(2, false)})
+            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            const tabGrey = [7, 0, 4, 1, 8]
+            for (const id of tabGrey){
+              const node = nodes.get().find((n: NodePerson) => n.id === id)
+              nodes.update({id: node.id, color: "#808080"})
+            }
+            setTutoStep(2)
+          }
+        }
+        else if(stepTuto === 2){
+          const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
+          if (node.id === 9){
+            const tabColor = [7, 0, 4, 1, 8]
+            nodes.update({id: node.id, label: node.label + positionToEmoji(0, false)})
+            for(const id of tabColor){
+              const pers = personNetwork.getPersons().find((p: Person) => p.getId() === id)
+              if (pers !== undefined){
+                nodes.update({id: id, color: ColorToHexa(pers.getColor())})
+              }
+            }
+            handleShowTurnBar(false)
+            setPlayerIndex(1)
+            await delay(500)
+            const node2 = nodes.get().find((n: NodePerson) => n.id === 4)
+            nodes.update({id: node2.id, label: node2.label + positionToEmoji(2, true)})
+            setPlayerIndex(2)
+            await delay(500)
+            const node3 = nodes.get().find((n: NodePerson) => n.id === 3)
+            nodes.update({id: node3.id, label: node3.label + positionToEmoji(0, false)})
+            await delay(500)
+            const node4 = nodes.get().find((n: NodePerson) => n.id === 1)
+            nodes.update({id: node4.id, label: node4.label + positionToEmoji(2, false)})
+            setPlayerIndex(0)
+            handleTurnBarTextChange("A vous de jouer !")
+            handleShowTurnBar(true)
+            setTutoStep(3)
+          }
+        }
+        else if(stepTuto === 3 && touchedPlayer === 3){
+          const node = nodes.get().find((n: NodePerson) => n.id === params.nodes[0])
+          if (node.id === 4){
+            nodes.update({id: node.id, label: node.label + positionToEmoji(0, true)})
+            await delay(500)
+            const node2 = nodes.get().find((n: NodePerson) => n.id === 4)
+            nodes.update({id: node2.id, label: node2.label + positionToEmoji(1, true)})
           }
         }
       }

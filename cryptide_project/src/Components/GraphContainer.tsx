@@ -709,6 +709,30 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
       }
     }
+
+
+    const putCorrectBackground = () => {
+      if (personNetwork != null){
+        for(const person of personNetwork.getPersons()){
+          networkData.nodes.update({id: person.getId(), color: ColorToHexa(person.getColor())})
+        }
+      }
+    };
+
+/*
+    const putGreyBackgroud = () => {
+      if (stepTuto === 3){
+        const tabGrey = [0, 1, 2, 3, 5, 6, 7, 8, 9]
+        for (const i of tabGrey){
+          nodes.update({id: i, color: "#808080"})
+        }
+        console.log("CA MARCHE")
+      }
+    };
+*/
+    
+
+    //setGreyForEveryone(() => myFunctionInsideEffect);
     
 
     socket.on("put correct background", () =>{
