@@ -21,7 +21,10 @@ import Ceye from "../res/icon/hidden.png";
 import ImgBot from "../res/img/bot.png";
 
 import ava from "../res/img/tuto/tuto-ava.png";
+import joueurs from "../res/img/tuto/tuto-joueurs.png";
+import tada from "../res/img/tuto/tuto-tada.png";
 
+import step1 from "../res/img/tuto/tuto2-1.png";
 /* nav */
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
@@ -229,11 +232,20 @@ const Tutorial = ({locale, changeLocale}) => {
 
     //* gestion demo */
   const [showM, setShowM] = useState(false);
+  const [showTuto2, setShowTuto2] = useState(false);
 
-  const handleCloseM = () => setShowM(false);
+  const handleCloseM = () => {
+    setShowM(false);
+    setTuto1disable(false);
+  }
   const handleShowM = () => setShowM(true);
 
+  const handleCloseTuto2 = () => setShowTuto2(false);
+  const handleShowTuto2 = () => setShowTuto2(true);
+
   const [step, setStep] = useState(0);
+
+  const [tuto1disable, setTuto1disable] = useState(true);
     return (
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
@@ -255,24 +267,14 @@ const Tutorial = ({locale, changeLocale}) => {
                 <div key={index}>{item}</div>
             ))}
         </div>
-         
-
-        <div className='paramDiv'>
-          <button className='button'
-            style={{ 
-                backgroundColor: theme.colors.tertiary,
-                borderColor: theme.colors.secondary
-            }}
-            onClick={handleChangeS}>
-            <img src={Param} alt="paramètres" height='40'/>
-          </button>
-        </div>
-
 
 
         <div className='menuGame'>
           <Button variant="primary" onClick={handleShowM}>
-              Aide
+              tuto 1
+          </Button>
+          <Button variant="primary" onClick={handleShowTuto2} disabled={tuto1disable}>
+              tuto 2
           </Button>
           <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
@@ -300,19 +302,6 @@ const Tutorial = ({locale, changeLocale}) => {
             <img src={ eye } alt="indice" height="40"/>
           </button>
         </div>
-
-{/*
-        <Offcanvas show={showP} 
-                  onHide={handleCloseP}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Joueurs</Offcanvas.Title>
-            <h3>Il y a {players.length} joueurs</h3>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-
-          </Offcanvas.Body>
-        </Offcanvas>
-          */}
 
           
           <div className='playerlistDiv'>
@@ -342,10 +331,9 @@ const Tutorial = ({locale, changeLocale}) => {
           show={showM}
           onHide={handleCloseM}
           backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Tutoriel 1</Modal.Title>
+          keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Tutoriel</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
 
@@ -365,13 +353,13 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 1 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+                <Card.Img variant="top" src={joueurs} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
                   <Card.Title>Les Joueurs</Card.Title>
                   <Card.Text>
-                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    Il est possible de voir les joueurs sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le Joueur avec un contour carré est le joueur qui joue actuellement.
                     <br />
-                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                    Il est possible de cliquer sur l'image d'un joueur pour le séléctionné, afin de pouvoir lui demander des informations à propos de quelqu'un sur le graphe.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -393,7 +381,15 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 3 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={Info} style={{width:'300px', height:'300px'}}/>
+                <Card.Header>
+                  <button className='button' 
+                    style={{ 
+                      backgroundColor: theme.colors.tertiary,
+                      borderColor: theme.colors.secondary
+                    }}>
+                    <img src={Info} alt="info" height="40"/>
+                  </button>
+                </Card.Header>
                 <Card.Body>
                   <Card.Title>Les règle du jeu</Card.Title>
                   <Card.Text>
@@ -405,7 +401,15 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 4 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={MGlass} style={{width:'300px', height:'300px'}}/>
+                <Card.Header>
+                  <button className='button' 
+                    style={{ 
+                      backgroundColor: theme.colors.tertiary,
+                      borderColor: theme.colors.secondary
+                    }}>
+                    <img src={MGlass} alt="info" height="40"/>
+                  </button>
+                </Card.Header>
                 <Card.Body>
                   <Card.Title>L'indice</Card.Title>
                   <Card.Text>
@@ -414,13 +418,62 @@ const Tutorial = ({locale, changeLocale}) => {
                 </Card.Body>
               </Card>
             )}
+
+            {step === 5 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={tada} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Étape finale</Card.Title>
+                  <Card.Text>
+                    Bien joué ! vous avez effectué la première étape du tutoriel, maintenant, place à la pratique ! Vous pouvez maintenant fermer cette fenêtre et commencer à jouer !
+                    <br/>
+                    Vous avez maintenant accès au <b>Tuto 2</b>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer style={{display:'flex'}}>
+            <div style={{ width:'100%', display:'flex', justifyContent:'start'}}>
+              <label style={{ color:'gray'}}>Étape {step+1}/6</label>
+            </div>
             {/* <Button variant="secondary" onClick={handleCloseM}>
               Fermer
             </Button> */}
             { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
-            <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>
+            { step === 5 ? (<Button variant="primary" onClick={handleCloseM}>Fermer</Button>) : 
+            <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>}
+            
+          </Modal.Footer>
+        </Modal>
+
+
+        <Modal
+          show={showTuto2}
+          onHide={handleCloseTuto2}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Tutoriel</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step1} style={{width:'100%', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>Premier pas</Card.Title>
+                  <Card.Text>
+                    Bienvenue dans cette seconde partie, ou nous allons apprendre le déroulé d'une partie.
+                    <br/>
+                    Dans un premier temps, Séléctionnez le joueur <b>Bot1</b> et questionnez le à propos de <b>Violet</b> en cliquant sur cette dernière.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+
+          </Modal.Body>
+          <Modal.Footer style={{display:'flex'}}>
+            <Button variant="primary" onClick={handleCloseTuto2}>Compris !</Button>
           </Modal.Footer>
         </Modal>
 
