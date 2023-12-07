@@ -18,6 +18,8 @@ import MGlass from "../res/icon/magnifying-glass.png";
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
+import ImgBot from "../res/img/bot.png";
+
 import ava from "../res/img/tuto/tuto-ava.png";
 
 /* nav */
@@ -39,19 +41,22 @@ import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
 import {basePath} from "../AdressSetup"
 import TutorialGraph from '../Components/TutorialGraph';
-import JSZip from 'jszip';
+import { useAuth } from '../Contexts/AuthContext';
+import EasyBot from '../model/EasyBot';
 
 
 let cptNavigation = 0
 
 //@ts-ignore
 const Tutorial = ({locale, changeLocale}) => {
+  const {personNetwork, person, indices, players, setPlayersData, indice, actualPlayerIndex} = useGame()
+  const {user} = useAuth()
+
   
   const theme = useTheme();
   
   const navigate = useNavigate()
   
-  const params = new URLSearchParams(window.location.search);
 
   const navigationType = useNavigationType()
     cptNavigation++
@@ -62,32 +67,17 @@ const Tutorial = ({locale, changeLocale}) => {
         }
     }
   
-  //* Gestion solo
-  let IsSolo: boolean = true
-  const solotmp = params.get('solo');
-  if (solotmp == "false"){
-    IsSolo=false
-  }
-
-  //* Gestion daily
-  let isDaily: boolean = true
-  const isDailytmp = params.get('daily');
-  if (isDailytmp == "false"){
-    isDaily=false
-  }
-
-
-  let isEasy: boolean = true
-  const isEasytmp = params.get('easy');
-  if (isEasytmp == "false"){
-    isEasy=false
-  }
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
   const [askedWrong, setAskedWrong] = useState(false)
   const [importToPdf, setImportToPdf] = useState(false)
   const [importToJSON, setImportToJSON] = useState(false)
+  const [tutoStep, setTutoStep] = useState(0)
+
+  const setTutoStepData = (step: number) => {
+    setTutoStep(step)
+  }
 
   const setImportToJSONData = (imp: boolean) => {
     setImportToJSON(imp)
@@ -118,8 +108,14 @@ const Tutorial = ({locale, changeLocale}) => {
     }
   }, [history]);
 
+  useEffect(() => {
+    if (user == null){
+      return
+    }
+    setPlayersData([user, new EasyBot("Bot1", "Bot1", ImgBot), new EasyBot("Bot2", "Bot2", ImgBot)])
+  }, [])
 
-  const {personNetwork, person, indices} = useGame()
+
 
   const [showChoiceBar, setShowChoiceBar] = useState(false);
   const [showTurnBar, setShowTurnBar] = useState(false);
@@ -160,46 +156,7 @@ const Tutorial = ({locale, changeLocale}) => {
     setPlayerIndex(playerIndex)
   }
 
-  const generateTEX = async () => {
-    if (network != null && personNetwork != null && person != null){
-
-      const zip = new JSZip();
-      
-      if (isDaily && networkEnigme != null){
-        const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
-        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
-        zip.file('socialGraph.tex', tex);
-      }
-      else{
-        const tex = generateLatexCode(personNetwork, person, indices, network)
-        const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
-        zip.file('socialGraph.tex', tex);
-      }
-
-      const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
-      const imagesFolder = 'Script';
-
-      for (const imageName of imageNames) {
-        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
-        const response = await fetch(imageUrl);
-        
-        if (response.ok) {
-          const imageBlob = await response.blob();
-          zip.file(`${imageName}`, imageBlob);
-        } else {
-          console.error(`Erreur de chargement de l'image ${imageName}`);
-        }
-      }
-
-      const content = await zip.generateAsync({ type: 'blob' });
-
-      // Enregistre l'archive en tant que fichier
-      saveAs(content, 'social_graph.zip');
-      
-      // Utiliser FileSaver pour télécharger le fichier
-    }
-  }
-
+  
   const resetGraph = () => {
     setisLoading(true);
     socket.emit("reset graph", socket.id)
@@ -264,7 +221,6 @@ const Tutorial = ({locale, changeLocale}) => {
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const allIndices = Stub.GenerateIndice()
-  const { indice, players, actualPlayerIndex} = useGame();
 
   const nbPlayer = players.length;
   const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
@@ -282,36 +238,37 @@ const Tutorial = ({locale, changeLocale}) => {
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
         <div id='graphDiv'>
-          <TutorialGraph onNodeClick={handleNodeClick} 
+          <TutorialGraph  tutoStep={tutoStep}
+                          setTutoStep={setTutoStepData}
                           handleShowTurnBar={handleShowTurnBar} 
                           handleTurnBarTextChange={handleTurnBarTextChange} 
-                          changecptTour={changecptTour} 
                           addToHistory={addToHistory}
-                          solo={IsSolo} 
-                          isDaily={isDaily} 
-                          isEasy={isEasy}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
-                          setNetworkEnigme={setNetworkEnigmeData}
                           showLast={showLast}
-                          setPlayerIndex={setPlayerIndexData}
-                          askedWrong={askedWrong}
-                          setAskedWrong={setAskedWrongData}
-                          importToPdf={importToPdf}
-                          setImportToPdf={setImportToPdfData}
-                          importToJSON={importToJSON}
-                          setImportToJSON={setImportToJSONData}/>
+                          setPlayerIndex={setPlayerIndexData}/>
         </div>
 
-        
-        {(!isDaily || (isDaily && isEasy)) &&
-          <div className='historique' id="history-container">
-              {history.map((item, index) => (
-                  <div key={index}>{item}</div>
-              ))}
-          </div>
-        }   
+        <div className='historique' id="history-container">
+            {history.map((item, index) => (
+                <div key={index}>{item}</div>
+            ))}
+        </div>
+         
+
+        <div className='paramDiv'>
+          <button className='button'
+            style={{ 
+                backgroundColor: theme.colors.tertiary,
+                borderColor: theme.colors.secondary
+            }}
+            onClick={handleChangeS}>
+            <img src={Param} alt="paramètres" height='40'/>
+          </button>
+        </div>
+
+
 
         <div className='menuGame'>
           <Button variant="primary" onClick={handleShowM}>
@@ -335,20 +292,33 @@ const Tutorial = ({locale, changeLocale}) => {
             <img src={MGlass} alt="indice" height="40"/>
           </button>
 
-          {!IsSolo && <button className='button' onClick={setShowLastData}
+          <button className='button' onClick={setShowLastData}
             style={{ 
               backgroundColor: theme.colors.tertiary,
               borderColor: theme.colors.secondary
             }}>
             <img src={ eye } alt="indice" height="40"/>
-          </button>}
+          </button>
         </div>
 
-          { !IsSolo &&
-            <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
-            </div>
-          }
+{/*
+        <Offcanvas show={showP} 
+                  onHide={handleCloseP}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Joueurs</Offcanvas.Title>
+            <h3>Il y a {players.length} joueurs</h3>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+
+          </Offcanvas.Body>
+        </Offcanvas>
+          */}
+
+          
+          <div className='playerlistDiv'>
+            <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
+          </div>
+          
 
         <Offcanvas show={show} 
                   onHide={handleClose} 
