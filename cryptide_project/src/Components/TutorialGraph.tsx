@@ -24,26 +24,16 @@ import {basePath} from "../AdressSetup"
 import PersonNetwork from "../model/PersonsNetwork";
 
 interface TutorialGraphProps {
-  onNodeClick: (shouldShowChoiceBar: boolean) => void;
-  handleShowTurnBar: (shouldShowTurnBar: boolean) => void
-  handleTurnBarTextChange: (newTurnBarText: string) => void
-  setPlayerTouched: (newPlayerTouch: number) => void;
-  playerTouched: number
-  changecptTour: (newcptTour : number) => void
-  addToHistory: (message : string) => void
-  solo : boolean
-  isDaily : boolean
-  isEasy: boolean
   setNetwork: (network: Network) => void
   showLast: boolean
-  setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
-  askedWrong: boolean
-  setAskedWrong: (askedWrong: boolean) => void
   setPlayerIndex: (playerIndex: number) => void
-  importToPdf: boolean
-  setImportToPdf: (imp: boolean) => void
-  importToJSON: boolean
-  setImportToJSON: (imp: boolean) => void
+  handleShowTurnBar: (bool: boolean) => void
+  handleTurnBarTextChange: (text: string) => void
+  addToHistory: (text: string) => void
+  setPlayerTouched: (playerIndex: number) => void
+  playerTouched: number
+  tutoStep: number
+  setTutoStep: (step: number) => void
 }
 
 let lastNodes: NodePerson[] = []
@@ -51,7 +41,7 @@ let firstIndex = true
 
 
 
-const TutorialGraph: React.FC<TutorialGraphProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON}) => {
+const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setPlayerIndex, handleShowTurnBar, handleTurnBarTextChange, addToHistory, setPlayerTouched, playerTouched, tutoStep, setTutoStep}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
