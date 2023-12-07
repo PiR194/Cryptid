@@ -1,4 +1,4 @@
-const ADRESSE_WEBSERVER = "https://codefirst.iut.uca.fr/containers/Crypteam-server:80"
+const ADRESSE_WEBSERVER = "https://codefirst.iut.uca.fr:80"
 
 const ADRESSE_DBSERVER = "http://172.20.10.4:3003"
 
