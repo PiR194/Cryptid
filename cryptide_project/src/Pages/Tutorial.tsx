@@ -25,6 +25,12 @@ import joueurs from "../res/img/tuto/tuto-joueurs.png";
 import tada from "../res/img/tuto/tuto-tada.png";
 
 import step1 from "../res/img/tuto/tuto2-1.png";
+import step2 from "../res/img/tuto/tuto2-2.png";
+import step3 from "../res/img/tuto/tuto2-3.png";
+import step4 from "../res/img/tuto/tuto2-4.png";
+import step5 from "../res/img/tuto/tuto2-5.png";
+import step6 from "../res/img/tuto/tuto2-6.png";
+
 /* nav */
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
@@ -46,6 +52,7 @@ import {basePath} from "../AdressSetup"
 import TutorialGraph from '../Components/TutorialGraph';
 import { useAuth } from '../Contexts/AuthContext';
 import EasyBot from '../model/EasyBot';
+import { set } from 'lodash';
 
 
 let cptNavigation = 0
@@ -209,7 +216,6 @@ const Tutorial = ({locale, changeLocale}) => {
       }
     };
   
-
     const handleChangeS = () => {
       if (showS){
         handleCloseS()
@@ -238,6 +244,9 @@ const Tutorial = ({locale, changeLocale}) => {
     //* gestion demo */
   const [showM, setShowM] = useState(false);
   const [showTuto2, setShowTuto2] = useState(false);
+  const [showTuto21, setShowTuto21] = useState(false);
+  const [showTuto22, setShowTuto22] = useState(false);
+  const [showTuto3, setShowTuto3] = useState(false);
 
   const handleCloseM = () => {
     setShowM(false);
@@ -248,9 +257,39 @@ const Tutorial = ({locale, changeLocale}) => {
   const handleCloseTuto2 = () => setShowTuto2(false);
   const handleShowTuto2 = () => setShowTuto2(true);
 
+  const handleCloseTuto21 = () => setShowTuto21(false);
+  const handleShowTuto21 = () => setShowTuto21(true);
+
+  const handleCloseTuto22 = () => setShowTuto22(false);
+  const handleShowTuto22 = () => setShowTuto22(true);
+  
+  const handleCloseTuto3 = () => setShowTuto3(false);
+  const handleShowTuto3 = () => setShowTuto3(true);
+  
+
   const [step, setStep] = useState(0);
 
-  const [tuto1disable, setTuto1disable] = useState(true);
+  const [tuto1disable, setTuto1disable] = useState(true); //?  mauvaise idée ?
+
+
+  //@ts-ignore
+  const displayModalstep = (step: number) => {
+    //* for step 2
+    setStep(0); // remise a 0 de step
+    switch(step) {
+      case 1:
+        setShowTuto21(true);
+        break;
+      case 2:
+        setShowTuto22(true);
+        break;
+      case 3:
+        setShowTuto3(true);
+        break;
+    }
+  
+  }
+
     return (
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
@@ -265,7 +304,8 @@ const Tutorial = ({locale, changeLocale}) => {
                           setNetwork={setNetworkData}
                           showLast={showLast}
                           setPlayerIndex={setPlayerIndexData}
-                          setGreyForEveryone={setGreyForEveryoneData}/>
+                          setGreyForEveryone={setGreyForEveryoneData}
+                          displayModalstep={displayModalstep}/>
         </div>
 
         <div className='historique' id="history-container">
@@ -331,8 +371,6 @@ const Tutorial = ({locale, changeLocale}) => {
       
 
 
-
-
         <Modal
           show={showM}
           onHide={handleCloseM}
@@ -377,6 +415,7 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>L'historique</Card.Title>
                   <Card.Text>
+                    ? parler des carré et des rond a la place de l'historque ?
                     Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
                     <br />
                     Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
@@ -483,6 +522,141 @@ const Tutorial = ({locale, changeLocale}) => {
           </Modal.Footer>
         </Modal>
 
+        <Modal
+          show={showTuto21}
+          onHide={handleCloseTuto21}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Tutoriel</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+            {step === 0 && (
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step2} style={{width:'100%', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>votre premier tour</Card.Title>
+                  <Card.Text>
+                    Super, <u>Violet a été identifié par l'indice de Bot1</u>, c'est une information essentiel ! Cependant, cela ne signigie <i>pas forcément</i> qu'elle est coupable.
+                    <br/>
+                    C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 1 && (
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step3} style={{width:'300px', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>Premier tour des autres joueurs</Card.Title>
+                  <Card.Text>
+                    Il semblerai que Bot1 ait intérrogé Bot2 à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
+                    Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !
+                    <br/>
+                    Bot1 a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il dois lui aussi poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
+                    Nous savons donc maintenant que l'indice de Bot1 ne permet pas d'identifier sebastian.
+                    <br/>
+                    Ensuite, Bot2 a questionné Bot1 à propos de Charlotte, qui est identifié par l'indice de Bot1.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 2 && (
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step4} style={{width:'300px', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>Second tour</Card.Title>
+                  <Card.Text>
+                    Vous remarquez que votre indice identifie lui aussi Charlotte, et si nous demandions à Bot2, si ce dernier pense que Charlotte est le coupable ?
+                    <br/>
+                    Cela nous permettrais donc de mettre fin à la partie !
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+
+          </Modal.Body>
+          <Modal.Footer style={{display:'flex'}}>
+            <div style={{ width:'100%', display:'flex', justifyContent:'start'}}>
+              <label style={{ color:'gray'}}>Étape {step+1}/3</label>
+            </div>
+            { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
+            { step === 2 ? (<Button variant="primary" onClick={handleCloseTuto21}>Fermer</Button>) : 
+            <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>}
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={showTuto22}
+          onHide={handleCloseTuto22}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Tutoriel</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step5} style={{width:'300px', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>La punition</Card.Title>
+                  <Card.Text>
+                    Mince, il semblerai que l'indice de Bot2 innocente Charlotte, et que ce dernier ait donc une erreur, la <b>punition</b> s'applique !
+                    <br/>
+                    Vous devez donc poser un carré sur un autre joueur, révélant ainsi plus d'information sur votre indice.
+                    <br/>
+                    Afin de revéler le moins d'informations, posons notre carré sur <b>Liam</b>, il s'agit de la seul personne qui à moins de 20 ans encore suspecte.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+          </Modal.Body>
+          <Modal.Footer style={{display:'flex'}}>
+            <Button variant="primary" onClick={handleCloseTuto22}>Compris !</Button>
+          </Modal.Footer>
+        </Modal>
+
+
+        <Modal
+          show={showTuto3}
+          onHide={handleCloseTuto3}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>End Game</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+              <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={step6} style={{width:'300px', height:'auto'}}/>
+                <Card.Body>
+                  <Card.Title>La fin du jeu</Card.Title>
+                  <Card.Text>
+                    Ce tour est lui aussi riche en informations !
+                    <br/>
+                    Vous avez a présent assez d'information pour deviner les indices des autre : 
+                    <ul>
+                      <li>
+                        Bot1 semble avoir {indices[1].ToString(locale)}
+                      </li>
+                      <li>
+                        Bot2 semble avoir {indices[2].ToString(locale)}
+                      </li>
+                      <li>
+                        Et votre indice est {indices[0].ToString(locale)}
+                      </li>
+                    </ul>
+                    <br/>
+                    Vous avec à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton <b>Ask Everyone</b> pour deviner, bonne chance !
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+          </Modal.Body>
+          <Modal.Footer style={{display:'flex'}}>
+            <Button variant="primary" onClick={handleCloseTuto22}>Compris !</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   };
