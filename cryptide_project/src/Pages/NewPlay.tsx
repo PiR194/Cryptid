@@ -110,6 +110,10 @@ function NewPlay() {
         else setShowOverlay(true)
 
     }
+
+    function launchTuto(){
+        navigate(`${basePath}/tutorial`);
+    }
     
 
     useEffect(() => {
@@ -221,7 +225,11 @@ function NewPlay() {
                     </Overlay>
 
                     <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
+                    <button onClick={launchTuto} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Tutoriel </button>
+                    {/* <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button> */}
+                    {/* {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>} */}
                     <button onClick={goBack} className="ButtonNavRejoin" style={{ display:returnVisibility}}>Retourner à la partie</button>
+
                 </div>
             
                 {/* Lobbies */}

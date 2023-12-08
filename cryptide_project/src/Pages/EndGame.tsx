@@ -146,15 +146,13 @@ function EndGame() {
                             <BigButtonNav dest="/play" img={Leave}/>
                         </div> */}
                         <div className="losingPlayersContainer">
-                            {losingPlayers.map((player, index) => (
-                                <div className="playerContainer" key={index}>
-                                    {player.id !== winner?.id && (
-                                        <div>
-                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
-                                            {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
-                                        </div>
-                                    )}
-                                </div>
+                            {players.map((player, index) => (
+                                player.id !== winner?.id && (
+                                    <div className="playerContainer" key={index}>
+                                        <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
+                                        {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
+                                    </div>
+                                )
                             ))}
                         </div>
                     </div>
