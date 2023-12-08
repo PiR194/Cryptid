@@ -21,6 +21,7 @@ import Ceye from "../res/icon/hidden.png";
 import ImgBot from "../res/img/bot.png";
 
 import ava from "../res/img/tuto/tuto-ava.png";
+import rep from "../res/img/tuto/tuto-rep.png";
 import joueurs from "../res/img/tuto/tuto-joueurs.png";
 import tada from "../res/img/tuto/tuto-tada.png";
 
@@ -250,9 +251,42 @@ const Tutorial = ({locale, changeLocale}) => {
 
   const handleCloseM = () => {
     setShowM(false);
-    setTuto1disable(false);
   }
   const handleShowM = () => setShowM(true);
+
+  const handleCloseHelp = () => {
+    switch(tutoStep){
+      case 0:
+        setShowTuto2(false);
+        break;
+      case 1:
+        setShowTuto21(false);
+        break;
+      case 2:
+        setShowTuto22(false);
+        break;
+      case 3:
+        setShowTuto3(false);
+        break;
+    }
+  }
+  const handleShowHelp = () => {
+    switch(tutoStep){
+      case 0:
+        setShowTuto2(true);
+        break;
+      case 1:
+        setShowTuto21(true);
+        break;
+      case 2:
+        setShowTuto22(true);
+        break;
+      case 3:
+        setShowTuto3(true);
+        break;
+    }
+  }
+  
 
   const handleCloseTuto2 = () => setShowTuto2(false);
   const handleShowTuto2 = () => setShowTuto2(true);
@@ -268,9 +302,6 @@ const Tutorial = ({locale, changeLocale}) => {
   
 
   const [step, setStep] = useState(0);
-
-  const [tuto1disable, setTuto1disable] = useState(true); //?  mauvaise idée ?
-
 
   //@ts-ignore
   const displayModalstep = (step: number) => {
@@ -289,6 +320,10 @@ const Tutorial = ({locale, changeLocale}) => {
     }
   
   }
+
+  useEffect(() => {
+    handleShowM();
+  }, [])
 
     return (
       <div id="mainDiv">
@@ -316,11 +351,15 @@ const Tutorial = ({locale, changeLocale}) => {
 
 
         <div className='menuGame'>
-          <Button variant="primary" onClick={handleShowM}>
+          {/* <Button variant="primary" onClick={handleShowM}>
               tuto 1
           </Button>
           <Button variant="primary" onClick={handleShowTuto2} disabled={tuto1disable}>
               tuto 2
+          </Button> */}
+
+          <Button variant="primary" onClick={handleShowHelp}>
+            Aide
           </Button>
           <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
@@ -411,14 +450,17 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 2 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+                <Card.Img variant="top" src={rep} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
-                  <Card.Title>L'historique</Card.Title>
+                  <Card.Title>Les réponses</Card.Title>
                   <Card.Text>
-                    ? parler des carré et des rond a la place de l'historque ?
-                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    Ici, les réponses sont représentés par des <b>carrés</b> et des <b>ronds</b> de couleurs différentes.Les couleurs permettent de différencier les joueurs.
                     <br />
-                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                    Un <u>carré</u> signifie un <b>NON</b> et un rond signifie un <b>OUI</b> (son indice permet d'identifier cette personne).
+                    <br />
+                    Par exemple, ici, l'indice du joueur <u>Vert</u> permet d'innocenter Logan.
+                    <br/>Eleanor peut être suspecté par l'indice du joueur <u>Jaune</u>.
+                    <br/> Evelyn est innocenté par l'incide de <u>3 joueurs différents</u>.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -472,7 +514,7 @@ const Tutorial = ({locale, changeLocale}) => {
                   <Card.Text>
                     Bien joué ! vous avez effectué la première étape du tutoriel, maintenant, place à la pratique ! Vous pouvez maintenant fermer cette fenêtre et commencer à jouer !
                     <br/>
-                    Vous avez maintenant accès au <b>Tuto 2</b>
+                    Le bouton <u>aide</u> est la pour vous, il vous permet de suivre le tutoriel si jamais vous êtes perdu, cliquez dessus !
                   </Card.Text>
                 </Card.Body>
               </Card>
