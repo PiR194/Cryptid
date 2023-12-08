@@ -477,7 +477,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 p.indice=indices[index]
                 p.index=index
                 p.initiateMap(personNetwork)
-                console.log(p.indice.ToString("fr"))
               }
             })
           }
@@ -488,7 +487,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             bot.indice=indices[i]
             bot.index=index
             bot.initiateMap(personNetwork)
-            console.log(bot.indice.ToString("fr"))
           }
         }
         if (i==playerIndex){
@@ -520,6 +518,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerIndex(index)
         setLastIndex(index)
         if (actualPlayerIndex==index){
+          handleTurnBarTextChange("À vous de jouer")
           handleShowTurnBar(true)
         }
       })

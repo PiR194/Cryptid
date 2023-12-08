@@ -39,9 +39,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                         <PersonStatus img={player.profilePicture} 
                                     state={Person} 
                                     key={index} 
-                                    name={player.pseudo 
-                                    + " " + 
-                                    positionToEmoji(index, true)} 
+                                    name={player.pseudo}
                                     playerTouched={playerTouched} 
                                     setPlayerTouched={setPlayerTouched} 
                                     index={index} 

@@ -128,7 +128,7 @@ const Tutorial = ({locale, changeLocale}) => {
     if (user == null){
       return
     }
-    setPlayersData([user, new EasyBot("Bot1", "Bot1", ImgBot), new EasyBot("Bot2", "Bot2", ImgBot)])
+    setPlayersData([user, new EasyBot("Scooby-Doo", "Scooby-Doo", ImgBot), new EasyBot("Batman", "Batman", ImgBot)])
   }, [])
 
 
