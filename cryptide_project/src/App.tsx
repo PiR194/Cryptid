@@ -69,6 +69,7 @@ function App() {
   //const location = useLocation();
   const hasNavbarVisible = [basePath + "/", basePath + "/login", basePath + "/signup", basePath + "/lobby", basePath + "/endgame", basePath + "/deduc"]//.includes(window.location.pathname);
 
+  document.title = "Social Graph"; 
 
   return (
     <ErrorBoundary fallback={(error, errorInfo) => <ErrorPage />}>

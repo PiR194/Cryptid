@@ -24,7 +24,7 @@ import ava from "../res/img/tuto/tuto-ava.png";
 import indicetxt from "../res/img/tuto/tuto-indiceTxt.png"
 import rep from "../res/img/tuto/tuto-rep.png";
 import joueurs from "../res/img/tuto/tuto-joueurs.png";
-import tada from "../res/img/tuto/tuto-tada.png";
+import graph from "../res/img/tuto/tuto-graph.png";
 
 import step1 from "../res/img/tuto/tuto2-1.png";
 import step2 from "../res/img/tuto/tuto2-2.png";
@@ -303,7 +303,7 @@ const Tutorial = ({locale, changeLocale}) => {
   const handleShowTuto3 = () => setShowTuto3(true);
   
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1);
 
   //@ts-ignore
   const displayModalstep = (step: number) => {
@@ -424,15 +424,31 @@ const Tutorial = ({locale, changeLocale}) => {
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
 
+          {step === -1 && (
+            <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+              <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+              <Card.Body>
+                <Card.Title> Bienvenue dans SocialGraph</Card.Title>
+                <Card.Text>
+                Vous incarnez un détective assoiffé de gloire, confronté à un crime. <br/>
+                Cependant, d'autres enquêteurs sont également sur le coup, tous cherchant à décrocher le titre de meilleur détective du monde. <br/>
+                Chacun possède un indice crucial pour identifier le coupable, il va falloir déduire l'indice de vos concurrents si vous souhaitez l'emporter ! <br/>
+                Interrogez vos concurrents pour obtenir des réponses par oui ou non, mais méfiez-vous, un refus a des conséquences. <br/>
+                Soyez le premier à déduire les indices des autres et à trouver le coupable pour remporter la reconnaissance tant convoitée. <br />
+                <i>Si vous avez le moindre doute, cliquer sur le bouton "aide" pour afficher l'étape actuel du tuto</i>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          )}
             {step === 0 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
-                  <Card.Title>Les Personnes</Card.Title>
+                  <Card.Title>Les Suspects</Card.Title>
                   <Card.Text>
-                    Voici comment est représentés une personne, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    Voici comment est représenté un suspect, chaque suspect possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
                     <br />
-                    Par exemple, ici, nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>.
+                    Par exemple, ici, nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 amis</b>.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -444,7 +460,7 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Les indices</Card.Title>
                   <Card.Text>
-                    Dans ce jeu, chaque joueur possède un indice, qui permet d'identifier une personne, votre indice est le suivant :
+                    Dans ce jeu, chaque détective possède un indice, qui permet d'identifier une caractéristique du coupable, votre indice est le suivant :
                     <br />
                     "<u>Le suspect a entre 20 et 29 ans</u>".
                   </Card.Text>
@@ -456,35 +472,36 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={joueurs} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
-                  <Card.Title>Les Joueurs</Card.Title>
+                  <Card.Title>Les Détectives</Card.Title>
                   <Card.Text>
-                    Il est possible de voir les joueurs sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le Joueur avec un contour carré est le joueur qui joue actuellement.
+                    Il est possible de voir les détectives sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le contour carré signifie que ce détective est en pleine réflexion.
                     <br />
-                    Il est possible de cliquer sur l'image d'un joueur pour le sélectionner, afin de pouvoir lui demander des informations à propos de quelqu'un sur le graphe.
+                    Pour interroger un détective à propos d'un suspect, il suffit de le sélectionner, puis de cliquer sur le suspect que vous souhaitez. Il vous répondra donc ce qu'il pense de ce suspect selon son indice.
                   </Card.Text>
                 </Card.Body>
               </Card>
             )}
+
             {step === 4 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={rep} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
                   <Card.Title>Les réponses</Card.Title>
                   <Card.Text>
-                    Ici, les réponses sont représentées par des <b>carrés</b> et des <b>ronds</b> de couleurs différentes. Les couleurs permettent de différencier les joueurs.
+                    Les détéctives vous répondrons que par des ronds ou des carrés de leur couleur.
                     <br />
                     <ul>
                       <li>
-                        Un <u>carré</u> signifie un <b>NON</b>.
+                        Un <u>carré</u> signifie que son indice innocente le suspect.
                       </li>
                       <li>
-                        Un rond signifie un <b>OUI</b> 
+                        Un <u>rond</u> signifie que son indice peut incréminer le suspect.
                       </li>
                     </ul>
-                    <br />
-                    Par exemple, ici, l'indice du joueur <u>Vert</u> permet d'innocenter Logan.
-                    <br/>Eleanor peut être suspectée par l'indice du joueur <u>Jaune</u>.
-                    <br/> Evelyn est innocentée par l'indice de <u>3 joueurs différents</u>.
+                    Par exemple, ici :<br />
+                    l'indice du détéctive Scooby-Doo (<u>Vert</u>) permet d'innocenter Logan.
+                    <br/>Eleanor peut être suspectée par l'indice du détective Batman (<u>Jaune</u>).
+                    <br/>Evelyn est innocentée par l'indice de <u>3 détéctive différents</u>.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -502,9 +519,9 @@ const Tutorial = ({locale, changeLocale}) => {
                   </button>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Title>Les règle du jeu</Card.Title>
+                  <Card.Title>Les règles du jeu</Card.Title>
                   <Card.Text>
-                    Ce bouton vous mène à la page d'information du jeu, avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc.
+                    Ce bouton vous mène à la page d'<b>information du jeu</b>, avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -532,13 +549,15 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 6 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={tada} style={{width:'300px', height:'300px'}}/>
+                <Card.Img variant="top" src={graph} style={{width:'auto', height:'300px'}}/>
                 <Card.Body>
-                  <Card.Title>Étape finale</Card.Title>
+                  <Card.Title>Place à la pratique !</Card.Title>
                   <Card.Text>
-                    Bien joué ! Vous avez effectué la première étape du tutoriel, maintenant, place à la pratique ! Vous pouvez maintenant fermer cette fenêtre et commencer à jouer !
+                    Bien joué ! Vous avez maintenanttoutes les bases d'un veritable détéctive.
                     <br/>
-                    Le bouton <u>aide</u> est là pour vous, il vous permet de suivre le tutoriel si jamais vous êtes perdu, cliquez dessus !
+                    Vous allez à présent avoir un exercice pratique pour la résolution d'une enquête, au côté de ces très chère Batman et Scooby-Doo.
+                    <br/>
+                    Cliquer sur "Poursuivre" pour commencer votre première partie.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -561,7 +580,6 @@ const Tutorial = ({locale, changeLocale}) => {
           </Modal.Footer>
         </Modal>
 
-
         <Modal
           show={showTuto2}
           onHide={handleCloseTuto2}
@@ -579,9 +597,9 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Premier pas</Card.Title>
                   <Card.Text>
-                    Bienvenue dans cette seconde partie, ou nous allons apprendre le déroulé d'une partie.
+                    Bienvenue dans cette seconde partie, où nous allons apprendre le déroulé d'une veritable enquête.
                     <br/>
-                    Dans un premier temps, sélectionnez le joueur <b>Bot1</b> et questionnez le à propos de <b>Violet</b> en cliquant sur cette dernière.
+                    Dans un premier temps, sélectionnez le joueur <b>Scooby-Doo</b> et questionnez le à propos du suspect nommé <b>Violet</b> en cliquant sur cette dernière.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -609,7 +627,7 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Votre premier tour</Card.Title>
                   <Card.Text>
-                    Super, <u>Violet a été identifié par l'indice de Bot1</u>, c'est une information essentielle ! Cependant, cela ne signifie <i>pas forcément</i> qu'elle est coupable.
+                    Super, <u>Violet a été identifié par l'indice de Scooby-Doo</u>, c'est une information essentielle ! Cependant, cela ne signifie <i>pas forcément</i> qu'elle est coupable.
                     <br/>
                     C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.
                   </Card.Text>
@@ -623,13 +641,13 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Premier tour des autres joueurs</Card.Title>
                   <Card.Text>
-                    Il semblerait que Bot1 ait interrogé Bot2 à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
+                    Il semblerait que Scooby-Doo ait lui aussi interrogé Batman à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
                     Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !
                     <br/>
-                    Bot1 a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il doit lui aussi poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
-                    Nous savons donc maintenant que l'indice de Bot1 ne permet pas d'identifier Sebastian.
+                    Scooby-Doo a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il doit, lui aussi, poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
+                    Nous savons donc maintenant que l'indice de Scooby-Doo ne permet pas d'identifier Sebastian.
                     <br/>
-                    Ensuite, Bot2 a questionné Bot1 à propos de Charlotte, qui est identifié par l'indice de Bot1.
+                    Ensuite, Batman a questionné Scooby-Doo à propos de Charlotte, qui est identifié par l'indice de Scooby-Doo.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -641,7 +659,7 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Second tour</Card.Title>
                   <Card.Text>
-                    Vous remarquez que votre indice identifie lui aussi Charlotte, et si nous demandions à Bot2, si ce dernier pense que Charlotte est la coupable ?
+                    Vous remarquez que <u>votre indice identifie lui aussi Charlotte</u>, et si nous demandions à Batman, si ce dernier pense que Charlotte est la coupable ?
                     <br/>
                     Cela nous permettrait donc de mettre fin à la partie !
                   </Card.Text>
@@ -678,11 +696,11 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>La punition</Card.Title>
                   <Card.Text>
-                    Mince, il semblerait que l'indice de Bot2 innocente Charlotte, et que ce dernier ait donc une erreur, la <b>punition</b> s'applique !
+                    Mince, il semblerait que l'indice de Batman innocente Charlotte, et que vous avez donc commit une erreur, la <b>punition</b> s'applique !
                     <br/>
-                    Vous devez donc poser un carré sur un autre joueur, révélant ainsi plus d'information sur votre indice.
+                    Vous devez donc poser un <u>carré sur un autre joueur</u>, révélant ainsi plus d'information sur votre indice.
                     <br/>
-                    Afin de révéler le moins d'informations, posons notre carré sur <b>Liam</b>, il s'agit de la seule personne qui a moins de 20 ans encore suspecte.
+                    Mais rien n'est joué ! Posons notre carré sur <b>Liam</b> pour cela, sélectionnez directement le suspect désiré.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -713,17 +731,16 @@ const Tutorial = ({locale, changeLocale}) => {
                     Vous avez à présent assez d'information pour deviner les indices des autres : 
                     <ul>
                       <li>
-                        Bot1 semble avoir : <i>{indices[1]?.ToString(locale)}</i>.
+                        Scooby-Doo semble avoir : <i>{indices[1]?.ToString(locale)}</i>.
                       </li>
                       <li>
-                        Bot2 semble avoir : <i>{indices[2]?.ToString(locale)}</i>.
+                        Batman semble avoir : <i>{indices[2]?.ToString(locale)}</i>.
                       </li>
                       <li>
                         Et votre indice est : <i>{indices[0]?.ToString(locale)}</i>.
                       </li>
                     </ul>
-                    <br/>
-                    Vous avec à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton <b>Ask Everyone</b> pour deviner, bonne chance !
+                    Vous avez à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton <b>Ask Everyone</b>, puis séléctionné un suspect pour émettre une <b>accusation</b> pour deviner, bonne chance !
                   </Card.Text>
                 </Card.Body>
               </Card>
