@@ -53,14 +53,16 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
         async function fetchDailyStats() {
             try {
                 const resultMM = await ScoreboardService.getDailyMastermindStats();
-                const resultOL = await ScoreboardService.getDailyOnlineStats();
                 const resultEF = await ScoreboardService.getDailyEasyEnigmaStats();
+                const resultEM = await ScoreboardService.getDailyMediumEnigmaStats();
+                const resultED = await ScoreboardService.getDailyHardEnigmaStats();
+                const resultOL = await ScoreboardService.getDailyOnlineStats(); 
                 
-                console.log(resultEF);
-
                 setDailyMastermindStats(resultMM);
-                setDailyOnlineStats(resultOL);
                 setDailyEasyEnigmaStats(resultEF);
+                setDailyMediumEnigmaStats(resultEM);
+                setDailyHardEnigmaStats(resultED);
+                setDailyOnlineStats(resultOL);
             } catch (error) {
                 console.error(error);
             }
@@ -69,14 +71,16 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
         async function fetchWeeklyStats() {
             try{
                 const resultMM = await ScoreboardService.getWeeklyMastermindStats();
-                const resultOL = await ScoreboardService.getWeeklyOnlineStats();
                 const resultEF = await ScoreboardService.getWeeklyEasyEnigmaStats();
-
-                console.log(resultEF);
+                const resultEM = await ScoreboardService.getWeeklyMediumEnigmaStats();
+                const resultED = await ScoreboardService.getWeeklyHardEnigmaStats();
+                const resultOL = await ScoreboardService.getWeeklyOnlineStats();
 
                 setWeeklyMastermindStats(resultMM);
-                setWeeklyOnlineStats(resultOL);
                 setWeeklyEasyEnigmaStats(resultEF);
+                setWeeklyMediumEnigmaStats(resultEM);
+                setWeeklyHardEnigmaStats(resultED);
+                setWeeklyOnlineStats(resultOL);
             } catch (error) {
                 console.error(error);
             }

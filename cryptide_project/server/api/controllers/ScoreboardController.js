@@ -48,6 +48,44 @@ class SessionController {
         }
     }
 
+    static async getDailyMediumEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const dailyMediumEnigmaStats = await db.getDailyEnigmaStats(ENIGME_MOYEN);
+
+            res.status(200).json({ tab : dailyMediumEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyMediumEnigma.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getDailyHardEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const dailyHardEnigmaStats = await db.getDailyEnigmaStats(ENIGME_DIFFICILE);
+
+            res.status(200).json({ tab : dailyHardEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyHardEnigma.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
     static async getDailyOnline(req, res){
         const db = new DatabaseService();
 
@@ -103,6 +141,44 @@ class SessionController {
         catch(error){
             console.error(error);
             res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyEasyEnigma.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getWeeklyMediumEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const weeklyMediumEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_MOYEN);
+
+            res.status(200).json({ tab : weeklyMediumEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyMediumEnigma.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getWeeklyHardEnigma(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const weeklyHardEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_DIFFICILE);
+
+            res.status(200).json({ tab : weeklyHardEnigmaStats });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats weeklyHardEnigma.' });
         }
         finally{
             await db.disconnect();
