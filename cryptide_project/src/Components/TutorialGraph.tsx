@@ -147,7 +147,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
                 direction: 'LR', // LR (Left to Right) ou autre selon votre préférence
                 sortMethod: 'hubsize'
             },
-            randomSeed: 2
+            randomSeed: 3
         },
         physics: {
             enabled: true,

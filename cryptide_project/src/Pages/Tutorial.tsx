@@ -416,7 +416,9 @@ const Tutorial = ({locale, changeLocale}) => {
           show={showM}
           onHide={handleCloseM}
           backdrop="static"
-          keyboard={false}>
+          keyboard={false}
+          size="lg"
+          style={{ maxHeight: '100vh'}}>
           <Modal.Header>
             <Modal.Title>Tutoriel</Modal.Title>
           </Modal.Header>
@@ -471,7 +473,14 @@ const Tutorial = ({locale, changeLocale}) => {
                   <Card.Text>
                     Ici, les réponses sont représentées par des <b>carrés</b> et des <b>ronds</b> de couleurs différentes. Les couleurs permettent de différencier les joueurs.
                     <br />
-                    Un <u>carré</u> signifie un <b>NON</b> et un rond signifie un <b>OUI</b> (son indice permet d'identifier cette personne).
+                    <ul>
+                      <li>
+                        Un <u>carré</u> signifie un <b>NON</b>.
+                      </li>
+                      <li>
+                        Un rond signifie un <b>OUI</b> 
+                      </li>
+                    </ul>
                     <br />
                     Par exemple, ici, l'indice du joueur <u>Vert</u> permet d'innocenter Logan.
                     <br/>Eleanor peut être suspectée par l'indice du joueur <u>Jaune</u>.
@@ -557,14 +566,16 @@ const Tutorial = ({locale, changeLocale}) => {
           show={showTuto2}
           onHide={handleCloseTuto2}
           backdrop="static"
-          keyboard={false}>
+          keyboard={false}
+          size="lg"
+          style={{ maxHeight: '100vh'}}>
           <Modal.Header>
             <Modal.Title>Tutoriel</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
 
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={step1} style={{width:'100%', height:'auto'}}/>
+                <Card.Img variant="top" src={step1} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
                   <Card.Title>Premier pas</Card.Title>
                   <Card.Text>
@@ -585,14 +596,16 @@ const Tutorial = ({locale, changeLocale}) => {
           show={showTuto21}
           onHide={handleCloseTuto21}
           backdrop="static"
-          keyboard={false}>
+          keyboard={false}
+          size="lg"
+          style={{ maxHeight: '100vh'}}>
           <Modal.Header>
             <Modal.Title>Tutoriel</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
             {step === 0 && (
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={step2} style={{width:'100%', height:'auto'}}/>
+                <Card.Img variant="top" src={step2} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
                   <Card.Title>Votre premier tour</Card.Title>
                   <Card.Text>
@@ -606,7 +619,7 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 1 && (
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={step3} style={{width:'300px', height:'auto'}}/>
+                <Card.Img variant="top" src={step3} style={{width:'200px', height:'auto'}}/>
                 <Card.Body>
                   <Card.Title>Premier tour des autres joueurs</Card.Title>
                   <Card.Text>
@@ -652,7 +665,9 @@ const Tutorial = ({locale, changeLocale}) => {
           show={showTuto22}
           onHide={handleCloseTuto22}
           backdrop="static"
-          keyboard={false}>
+          keyboard={false}
+          size="lg"
+          style={{ maxHeight: '100vh'}}>
           <Modal.Header>
             <Modal.Title>Tutoriel</Modal.Title>
           </Modal.Header>
@@ -677,18 +692,19 @@ const Tutorial = ({locale, changeLocale}) => {
           </Modal.Footer>
         </Modal>
 
-
         <Modal
           show={showTuto3}
           onHide={handleCloseTuto3}
           backdrop="static"
-          keyboard={false}>
+          keyboard={false}
+          size="lg"
+          style={{ maxHeight: '100vh'}}>
           <Modal.Header>
             <Modal.Title>End Game</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={step6} style={{width:'300px', height:'auto'}}/>
+                <Card.Img variant="top" src={step6} style={{width:'250px', height:'auto'}}/>
                 <Card.Body>
                   <Card.Title>La fin du jeu</Card.Title>
                   <Card.Text>

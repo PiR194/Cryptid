@@ -70,7 +70,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
         onTouch();
     };
     const circleStyle: React.CSSProperties = {
-        backgroundColor: touchedPlayer == index && showCircle ? 'gold' : positionToColor(index), // Changement de la couleur en fonction de la condition
+        backgroundColor: positionToColor(index), // Changement de la couleur en fonction de la condition
         borderRadius: buffer,
         width: '80px',
         height: '80px',
@@ -83,7 +83,7 @@ const PersonStatus: React.FC<PlayerStatusProps> = ({img = Person, state= Person,
 
     const circleStyleInt: React.CSSProperties = {
 
-        backgroundColor:'white',
+        backgroundColor: touchedPlayer == index && showCircle ? 'lightblue' : 'white',
         borderRadius: buffer,
         width: '70px',
         height: '70px',
