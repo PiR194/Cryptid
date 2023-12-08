@@ -21,6 +21,7 @@ import Ceye from "../res/icon/hidden.png";
 import ImgBot from "../res/img/bot.png";
 
 import ava from "../res/img/tuto/tuto-ava.png";
+import indicetxt from "../res/img/tuto/tuto-indiceTxt.png"
 import rep from "../res/img/tuto/tuto-rep.png";
 import joueurs from "../res/img/tuto/tuto-joueurs.png";
 import tada from "../res/img/tuto/tuto-tada.png";
@@ -251,6 +252,7 @@ const Tutorial = ({locale, changeLocale}) => {
 
   const handleCloseM = () => {
     setShowM(false);
+    handleShowHelp()
   }
   const handleShowM = () => setShowM(true);
 
@@ -426,9 +428,9 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Les Personnes</Card.Title>
                   <Card.Text>
-                    Les sommets du graphes représentent les personnes, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
+                    Voici comment est représentés une personne, chaque personne possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
                     <br />
-                    Par exemple, ici, Nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>
+                    Par exemple, ici, nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 voisins</b>.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -436,37 +438,50 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 1 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={joueurs} style={{width:'300px', height:'300px'}}/>
+                <Card.Img variant="top" src={indicetxt} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>Les Joueurs</Card.Title>
+                  <Card.Title>Les indices</Card.Title>
                   <Card.Text>
-                    Il est possible de voir les joueurs sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le Joueur avec un contour carré est le joueur qui joue actuellement.
+                    Dans ce jeu, chaque joueur possède un indice, qui permet d'identifier une personne, votre indice est le suivant :
                     <br />
-                    Il est possible de cliquer sur l'image d'un joueur pour le séléctionné, afin de pouvoir lui demander des informations à propos de quelqu'un sur le graphe.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            )}
-
-            {step === 2 && (
-              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={rep} style={{width:'300px', height:'300px'}}/>
-                <Card.Body>
-                  <Card.Title>Les réponses</Card.Title>
-                  <Card.Text>
-                    Ici, les réponses sont représentés par des <b>carrés</b> et des <b>ronds</b> de couleurs différentes.Les couleurs permettent de différencier les joueurs.
-                    <br />
-                    Un <u>carré</u> signifie un <b>NON</b> et un rond signifie un <b>OUI</b> (son indice permet d'identifier cette personne).
-                    <br />
-                    Par exemple, ici, l'indice du joueur <u>Vert</u> permet d'innocenter Logan.
-                    <br/>Eleanor peut être suspecté par l'indice du joueur <u>Jaune</u>.
-                    <br/> Evelyn est innocenté par l'incide de <u>3 joueurs différents</u>.
+                    "<u>Le suspect a entre 20 et 29 ans</u>".
                   </Card.Text>
                 </Card.Body>
               </Card>
             )}
 
             {step === 3 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={joueurs} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Les Joueurs</Card.Title>
+                  <Card.Text>
+                    Il est possible de voir les joueurs sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le Joueur avec un contour carré est le joueur qui joue actuellement.
+                    <br />
+                    Il est possible de cliquer sur l'image d'un joueur pour le sélectionner, afin de pouvoir lui demander des informations à propos de quelqu'un sur le graphe.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+            {step === 4 && (
+              <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Card.Img variant="top" src={rep} style={{width:'300px', height:'300px'}}/>
+                <Card.Body>
+                  <Card.Title>Les réponses</Card.Title>
+                  <Card.Text>
+                    Ici, les réponses sont représentées par des <b>carrés</b> et des <b>ronds</b> de couleurs différentes. Les couleurs permettent de différencier les joueurs.
+                    <br />
+                    Un <u>carré</u> signifie un <b>NON</b> et un rond signifie un <b>OUI</b> (son indice permet d'identifier cette personne).
+                    <br />
+                    Par exemple, ici, l'indice du joueur <u>Vert</u> permet d'innocenter Logan.
+                    <br/>Eleanor peut être suspectée par l'indice du joueur <u>Jaune</u>.
+                    <br/> Evelyn est innocentée par l'indice de <u>3 joueurs différents</u>.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+
+            {step === 5 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Header>
                   <button className='button' 
@@ -480,13 +495,13 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Les règle du jeu</Card.Title>
                   <Card.Text>
-                    Ce bouton vous mène a la page d'information du jeu, avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc...
+                    Ce bouton vous mène à la page d'information du jeu, avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc.
                   </Card.Text>
                 </Card.Body>
               </Card>
             )}
 
-            {step === 4 && (
+            {step === 2 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Header>
                   <button className='button' 
@@ -500,36 +515,38 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>L'indice</Card.Title>
                   <Card.Text>
-                    Ce boutons vous permet d'afficher votre indice personnel, gradez le secret ! Il s'agit de votre meilleur atout pour gagner.
+                    Ce bouton vous permet d'afficher votre indice personnel, gradez le secret ! Il s'agit de votre meilleur atout pour gagner.
                   </Card.Text>
                 </Card.Body>
               </Card>
             )}
 
-            {step === 5 && (
+            {step === 6 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={tada} style={{width:'300px', height:'300px'}}/>
                 <Card.Body>
                   <Card.Title>Étape finale</Card.Title>
                   <Card.Text>
-                    Bien joué ! vous avez effectué la première étape du tutoriel, maintenant, place à la pratique ! Vous pouvez maintenant fermer cette fenêtre et commencer à jouer !
+                    Bien joué ! Vous avez effectué la première étape du tutoriel, maintenant, place à la pratique ! Vous pouvez maintenant fermer cette fenêtre et commencer à jouer !
                     <br/>
-                    Le bouton <u>aide</u> est la pour vous, il vous permet de suivre le tutoriel si jamais vous êtes perdu, cliquez dessus !
+                    Le bouton <u>aide</u> est là pour vous, il vous permet de suivre le tutoriel si jamais vous êtes perdu, cliquez dessus !
                   </Card.Text>
                 </Card.Body>
               </Card>
             )}
 
+
+
           </Modal.Body>
           <Modal.Footer style={{display:'flex'}}>
             <div style={{ width:'100%', display:'flex', justifyContent:'start'}}>
-              <label style={{ color:'gray'}}>Étape {step+1}/6</label>
+              <label style={{ color:'gray'}}>Étape {step+1}/7</label>
             </div>
             {/* <Button variant="secondary" onClick={handleCloseM}>
               Fermer
             </Button> */}
             { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
-            { step === 5 ? (<Button variant="primary" onClick={handleCloseM}>Fermer</Button>) : 
+            { step === 6 ? (<Button variant="primary" onClick={handleCloseM}>Poursuivre</Button>) : 
             <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>}
             
           </Modal.Footer>
@@ -553,7 +570,7 @@ const Tutorial = ({locale, changeLocale}) => {
                   <Card.Text>
                     Bienvenue dans cette seconde partie, ou nous allons apprendre le déroulé d'une partie.
                     <br/>
-                    Dans un premier temps, Séléctionnez le joueur <b>Bot1</b> et questionnez le à propos de <b>Violet</b> en cliquant sur cette dernière.
+                    Dans un premier temps, sélectionnez le joueur <b>Bot1</b> et questionnez le à propos de <b>Violet</b> en cliquant sur cette dernière.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -577,9 +594,9 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step2} style={{width:'100%', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>votre premier tour</Card.Title>
+                  <Card.Title>Votre premier tour</Card.Title>
                   <Card.Text>
-                    Super, <u>Violet a été identifié par l'indice de Bot1</u>, c'est une information essentiel ! Cependant, cela ne signigie <i>pas forcément</i> qu'elle est coupable.
+                    Super, <u>Violet a été identifié par l'indice de Bot1</u>, c'est une information essentielle ! Cependant, cela ne signifie <i>pas forcément</i> qu'elle est coupable.
                     <br/>
                     C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.
                   </Card.Text>
@@ -593,11 +610,11 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Premier tour des autres joueurs</Card.Title>
                   <Card.Text>
-                    Il semblerai que Bot1 ait intérrogé Bot2 à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
+                    Il semblerait que Bot1 ait interrogé Bot2 à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
                     Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !
                     <br/>
-                    Bot1 a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il dois lui aussi poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
-                    Nous savons donc maintenant que l'indice de Bot1 ne permet pas d'identifier sebastian.
+                    Bot1 a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il doit lui aussi poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
+                    Nous savons donc maintenant que l'indice de Bot1 ne permet pas d'identifier Sebastian.
                     <br/>
                     Ensuite, Bot2 a questionné Bot1 à propos de Charlotte, qui est identifié par l'indice de Bot1.
                   </Card.Text>
@@ -611,9 +628,9 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>Second tour</Card.Title>
                   <Card.Text>
-                    Vous remarquez que votre indice identifie lui aussi Charlotte, et si nous demandions à Bot2, si ce dernier pense que Charlotte est le coupable ?
+                    Vous remarquez que votre indice identifie lui aussi Charlotte, et si nous demandions à Bot2, si ce dernier pense que Charlotte est la coupable ?
                     <br/>
-                    Cela nous permettrais donc de mettre fin à la partie !
+                    Cela nous permettrait donc de mettre fin à la partie !
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -646,11 +663,11 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>La punition</Card.Title>
                   <Card.Text>
-                    Mince, il semblerai que l'indice de Bot2 innocente Charlotte, et que ce dernier ait donc une erreur, la <b>punition</b> s'applique !
+                    Mince, il semblerait que l'indice de Bot2 innocente Charlotte, et que ce dernier ait donc une erreur, la <b>punition</b> s'applique !
                     <br/>
                     Vous devez donc poser un carré sur un autre joueur, révélant ainsi plus d'information sur votre indice.
                     <br/>
-                    Afin de revéler le moins d'informations, posons notre carré sur <b>Liam</b>, il s'agit de la seul personne qui à moins de 20 ans encore suspecte.
+                    Afin de révéler le moins d'informations, posons notre carré sur <b>Liam</b>, il s'agit de la seule personne qui a moins de 20 ans encore suspecte.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -677,16 +694,16 @@ const Tutorial = ({locale, changeLocale}) => {
                   <Card.Text>
                     Ce tour est lui aussi riche en informations !
                     <br/>
-                    Vous avez a présent assez d'information pour deviner les indices des autre : 
+                    Vous avez à présent assez d'information pour deviner les indices des autres : 
                     <ul>
                       <li>
-                        Bot1 semble avoir {indices[1]?.ToString(locale)}
+                        Bot1 semble avoir : <i>{indices[1]?.ToString(locale)}</i>.
                       </li>
                       <li>
-                        Bot2 semble avoir {indices[2]?.ToString(locale)}
+                        Bot2 semble avoir : <i>{indices[2]?.ToString(locale)}</i>.
                       </li>
                       <li>
-                        Et votre indice est {indices[0]?.ToString(locale)}
+                        Et votre indice est : <i>{indices[0]?.ToString(locale)}</i>.
                       </li>
                     </ul>
                     <br/>
