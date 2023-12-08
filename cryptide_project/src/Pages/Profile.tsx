@@ -24,7 +24,6 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-
 import {basePath} from "../AdressSetup"
 
 //@ts-ignore
@@ -49,7 +48,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate(`${basePath}/`);
   };
   
   // @ts-ignore

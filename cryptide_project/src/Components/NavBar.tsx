@@ -12,6 +12,7 @@ import { BsFillPersonPlusFill } from 'react-icons/bs';
 
 /* Images */
 import logo from '../res/img/logo2_preview_rev_1.png';
+import defaultImg from '../res/img/Person.png';
 
 /* Components */
 import LanguageNavItem from './LangNavItem';
@@ -26,12 +27,14 @@ import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 import {basePath} from "../AdressSetup"
+import Player from '../model/Player';
+import { set } from 'lodash';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
     const navigate = useNavigate();
-    const {user, isLoggedIn, logout} = useAuth();
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
 
     function navigateToProfile(){
         navigate(`${basePath}/profile`)
@@ -71,7 +74,7 @@ function AppNavbar({changeLocale}) {
                                     {/* Boutou qui lors du clique nous redirige vers le profile */}
                                     <Nav.Link onClick={navigateToProfile} style={{ color: theme.colors.text }}>
                                         <span>
-                                            <img src={user?.profilePicture} height="50" width="50" alt="profile"/>
+                                            <img src={user? user.profilePicture : defaultImg} height="50" width="50" alt="profile"/>
                                             {user && user.pseudo}
                                         </span>
                                     </Nav.Link>

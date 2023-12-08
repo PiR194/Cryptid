@@ -34,10 +34,15 @@ function InfoPage({locale, changeLocale}) {
 
     useEffect(() => {
         if (user == null){
+            console.log(user)
             manager.userService.fetchUserInformation().then(([user, loggedIn]) =>{
+                console.log(user);
                 if (user!=null){
                     if (loggedIn){
                         login()
+                        setUserData(user)
+                    }
+                    else{
                         setUserData(user)
                     }
                 }
@@ -76,10 +81,8 @@ function InfoPage({locale, changeLocale}) {
 
         <section id="composants-du-jeu">
             <h2><FormattedMessage id="info.pions"/> :</h2>
-                <h4>
-                    <FormattedMessage id="info.sommaire"/> 
-                </h4>
-                <h6><FormattedMessage id="info.composant.text"/></h6>
+            <h4><FormattedMessage id="info.sommaire"/></h4>
+            <h6><FormattedMessage id="info.composant.text"/></h6>
             <ul>
                 <p>
                     <li><h5 className='h5title'><FormattedMessage id="info.composant.carre.title"/> : 🟪🟦🟩🟨🟥🟫</h5></li>
@@ -88,7 +91,6 @@ function InfoPage({locale, changeLocale}) {
                     <li><h5 className='h5title'><FormattedMessage id="info.composant.rond.title"/> : 🟣🔵🟢🟡🔴🟤</h5></li>
                     <FormattedMessage id="info.composant.rond"/>
                 </p>
-            </ul>
                 <hr/>
                 <h4>
                     <FormattedMessage id="info.car_perso"/>
@@ -137,6 +139,7 @@ function InfoPage({locale, changeLocale}) {
                         </ul>
                         <FormattedMessage id="info.composant.sport.bis"/>                    
                 </p>
+            </ul>
         </section>
         <hr/>
         <section id="objectif-du-jeu">
@@ -285,7 +288,6 @@ function InfoPage({locale, changeLocale}) {
                 <FormattedMessage id="info.indice-possible.voisin"/>
             </h4>
             <IndiceList instance={EdgesIndice} lang={locale}/>
-            <IndiceList instance={NbEdgesIndice} lang={locale}/>
             <hr/>
         </section>
     </div>

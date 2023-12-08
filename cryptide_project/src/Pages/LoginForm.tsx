@@ -80,7 +80,7 @@ const SignIn = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    <Link href={`${basePath}/signup`}>Pas encore inscrit ?</Link>
+                    <Link to={`${basePath}/signup`}>Pas encore inscrit ?</Link>
                 </p>
             </form>
 
