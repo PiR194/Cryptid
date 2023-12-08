@@ -25,12 +25,18 @@ io.on('connection', (socket) => {
   console.log(socket.id);  
 
   socket.on('network created', (network, person, indices, room, start) =>{
-    io.to(room).emit("game created", network, person, indices, start)
-    map.get(room).started = true
-    map.get(room).actualPlayer=start
-    const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
-    const playerJson = JSON.stringify(playerArray);
-    io.emit("request lobbies", playerJson)
+    try{
+      io.to(room).emit("game created", network, person, indices, start)
+      map.get(room).started = true
+      map.get(room).actualPlayer=start
+      const playerArray = Array.from(map.entries()).map(([key, value]) => ({ key, value }))
+      const playerJson = JSON.stringify(playerArray);
+      io.emit("request lobbies", playerJson)
+    }
+    catch{
+      console.log("error")
+    }
+    
   });
 
   socket.on("give network", (networkPerson, person, indices, start, room, nodes, playerId) => {
@@ -145,17 +151,23 @@ io.on('connection', (socket) => {
   })
 
   socket.on("who plays", (room) => {
-    if (map.get(room) !== undefined){
-      let player = map.get(room).actualPlayer
-      if (map.get(room).tab[player].type != "User"){
-        player = player + 1
-        if (player == map.get(room).tab.length){
-          player=0
+    try{
+      if (map.get(room) !== undefined){
+        let player = map.get(room).actualPlayer
+        if (map.get(room).tab[player].type != "User"){
+          player = player + 1
+          if (player == map.get(room).tab.length){
+            player=0
+          }
         }
+        // console.log(player)
+        io.to(room).emit("who plays", player, map.get(room).lastWorks)
       }
-      // console.log(player)
-      io.to(room).emit("who plays", player, map.get(room).lastWorks)
     }
+    catch{
+
+    }
+    
   })
 
   socket.on("disconnect", () =>{
@@ -216,9 +228,14 @@ io.on('connection', (socket) => {
   })
 
   socket.on("node checked", (id, works, color, room, playerIndex) =>{
-    map.get(room).actualPlayer=playerIndex
-    map.get(room).lastWorks=works
-    io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
+    try{
+      map.get(room).actualPlayer=playerIndex
+      map.get(room).lastWorks=works
+      io.to(room).emit("node checked", id, works, color, playerIndex, socket.id)
+    }
+    catch{
+      console.log("error")
+    }
   })
   
   socket.on("put correct background", (id) =>{
