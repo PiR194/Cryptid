@@ -5,6 +5,8 @@ import Player from '../model/Player';
 import { useTheme } from '../Style/ThemeContext';
 import PersonStatus from './PersonStatus';
 import Person from '../res/img/Person.png'
+import BotImg from '../res/img/bot.png'
+
 import { socket } from '../SocketConfig';
 
 
@@ -36,7 +38,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                     //@ts-ignore
                     players.map((player, index) => (
                         //player.id!=socket.id && 
-                        <PersonStatus img={player.profilePicture} 
+                        <PersonStatus img={player instanceof Player ? Person : BotImg} 
                                     state={Person} 
                                     key={index} 
                                     name={player.pseudo}
