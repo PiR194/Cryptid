@@ -66,11 +66,17 @@ function Lobby() {
     const room = params.get('room');
 
     function addBot(){
-        socket.emit("lobby joined", room, new EasyBot("botId" + Math.floor(Math.random() * 1000), "Bot" + Math.floor(Math.random() * 100), "").toJson())
+        let json = require("../res/botNames.json")
+        const tabNames = [...json.names]
+        let name = tabNames[Math.floor(Math.random() * tabNames.length)]
+        while (players.find((p) => p.pseudo === name) != undefined){
+            name = tabNames[Math.floor(Math.random() * tabNames.length)]
+        }
+        socket.emit("lobby joined", room, new EasyBot(name, name, "").toJson())
     }
 
     //* nb Node
-    const [enteredNumber, setEnteredNumber] = useState(20);
+    const [enteredNumber, setEnteredNumber] = useState(25);
 
     //@ts-ignore
     const handleNumberChange = (event) => {
@@ -213,23 +219,25 @@ function Lobby() {
 
 
     function StartGame(){
-        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, enteredNumber)
-        setPersonData(choosenPerson)
-        setPersonNetworkData(networkPerson)
-        setIndicesData(choosenIndices)
-        let users = players.filter((p) => p instanceof User)
-        let u = users[Math.floor(Math.random() * users.length)]
-        let start = players.findIndex((p) => p.id == u.id)
-        if (start == -1){
-            start = 0
+        if (players.length > 2){
+            const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(players.length, enteredNumber)
+            setPersonData(choosenPerson)
+            setPersonNetworkData(networkPerson)
+            setIndicesData(choosenIndices)
+            let users = players.filter((p) => p instanceof User)
+            let u = users[Math.floor(Math.random() * users.length)]
+            let start = players.findIndex((p) => p.id == u.id)
+            if (start == -1){
+                start = 0
+            }
+            socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
         }
-        socket.emit('network created', JSON.stringify(networkPerson, null, 2), JSON.stringify(choosenPerson), JSON.stringify(choosenIndices), room, start);
     }
 
     const copyGameLink = () => {
         setShow(!show)
         
-        const gameLink = "http://172.20.10.4:3000/lobby?room="+ room;
+        const gameLink = basePath + "/lobby?room="+ room;
         navigator.clipboard.writeText(gameLink)
             .then(() => {
                 console.log('Lien copié avec succès !');
@@ -240,7 +248,7 @@ function Lobby() {
     };
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const linkToCopy = "http://172.20.10.4:3000/lobby?room="+ room
+    const linkToCopy = basePath + "/lobby?room="+ room
     const handleCopyClick = () => {
         setShow(!show)
         if(textAreaRef.current != null){
@@ -345,7 +353,7 @@ function Lobby() {
                             onChange={handleNumberChange}
                             min={20}
                             max={60}/>
-                        <button className='valuebutton' onClick={() => { if (enteredNumber<60) setEnteredNumber(enteredNumber+1)}}
+                        <button className='valuebutton' onClick={() => { if (enteredNumber<50) setEnteredNumber(enteredNumber+1)}}
                             style={{borderColor:theme.colors.secondary}}> + </button>
                     </div>
                 </div>

@@ -97,6 +97,28 @@ const InGame = ({locale, changeLocale}) => {
   const [showLast, setShowLast] = useState(false)
   const [askedWrong, setAskedWrong] = useState(false)
   const [importToPdf, setImportToPdf] = useState(false)
+  const [importToJSON, setImportToJSON] = useState(false)
+
+  const [putCorrectBackground, setPutCorrectBackground] = useState<() => void>(() => {});
+  const [putGreyBackgroud, setPutGreyBackground] = useState<() => void>(() => {});
+  const [putImposssibleGrey, setPutImposssibleGrey] = useState<() => void>(() => {});
+
+
+  const setPutCorrectBackgroundData = (func: () => void) => {
+    setPutCorrectBackground(func)
+  }
+
+  const setPutGreyBackgroundData = (func: () => void) => {
+    setPutGreyBackground(func)
+  }
+
+  const setPutImposssibleGreyData = (func: () => void) => {
+    setPutImposssibleGrey(func)
+  }
+
+  const setImportToJSONData = (imp: boolean) => {
+    setImportToJSON(imp)
+  }
 
   const setImportToPdfData = (imp: boolean) => {
     setImportToPdf(imp)
@@ -306,7 +328,15 @@ const InGame = ({locale, changeLocale}) => {
                           askedWrong={askedWrong}
                           setAskedWrong={setAskedWrongData}
                           importToPdf={importToPdf}
-                          setImportToPdf={setImportToPdfData}/>
+                          setImportToPdf={setImportToPdfData}
+                          importToJSON={importToJSON}
+                          setImportToJSON={setImportToJSONData}
+                          setPutCorrectBackground={setPutCorrectBackgroundData}
+                          setPutGreyBackground={setPutGreyBackgroundData}
+                          setPutImposssibleGrey={setPutImposssibleGreyData}
+                          putCorrectBackground={putCorrectBackground}
+                          putGreyBackground={putGreyBackgroud}
+                          putImposssibleGrey={putImposssibleGrey}/>
         </div>
 
 
@@ -442,7 +472,7 @@ const InGame = ({locale, changeLocale}) => {
 
           { !IsSolo &&
             <div className='playerlistDiv'>
-              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong}/>
+              <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong} greyForEveryone={() => {}}/>
             </div>
           }
 
