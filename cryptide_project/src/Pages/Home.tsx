@@ -12,6 +12,8 @@ import {loadImageAsync} from "../ImageHelper"
 import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 
+import {basePath} from "../AdressSetup"
+
 
 // @ts-ignore
 function Home() {
@@ -49,7 +51,7 @@ function Home() {
                 <h2>Introduction</h2>
                 <p>
                     {/* <FormattedMessage id="home.histoire" /> */}
-                    Bienvenue dans notre jeu de déduction captivant, où l'intrigue et la malice se rejoignent dans une aventure palpitante ! Plongez-vous dans un monde de mystère et d'intrigue, où chaque interaction compte, et chaque indice vous rapproche de la vérité.Imaginez un graphique complexe où chaque sommet représente une personne, chaque axe une relation, et chaque détail compte. Vous êtes plongé dans un défi stimulant pour découvrir qui parmi ces individus est le mystérieux tueur. Chaque joueur détient un indice crucial, et seul le partage stratégique de ces indices vous mènera à la résolution du mystère. Explorez notre page de règles pour comprendre les subtilités du jeu, découvrez les indices qui peuvent vous guider, et élaborez des stratégies intelligentes pour identifier le coupable. Manipuler vos amis, afin d'être le premier à découvrir qui est le meurtrier ! Êtes-vous prêt à relever le défi et à démasquer le tueur caché dans le graphe ? Que l'enquête commence !
+                    Bienvenue dans notre jeu de déduction captivant, où l'intrigue et la malice se rejoignent dans une aventure palpitante ! Plongez-vous dans un monde de mystère et d'intrigue, où chaque interaction compte, et chaque indice vous rapproche de la vérité.Imaginez un graphique complexe où chaque sommet représente une personne, chaque axe une relation, et chaque détail compte. Vous êtes plongé dans un défi stimulant pour découvrir qui parmi ces individus est le mystérieux coupable. Chaque joueur détient un indice crucial, et seul le partage stratégique de ces indices vous mènera à la résolution du mystère. Explorez notre page de règles pour comprendre les subtilités du jeu, découvrez les indices qui peuvent vous guider, et élaborez des stratégies intelligentes pour identifier le coupable. Manipuler vos amis, afin d'être le premier à découvrir qui est le meurtrier ! Êtes-vous prêt à relever le défi et à démasquer le coupable caché dans le graphe ? Que l'enquête commence !
                 </p>
             </div>
             <div>
@@ -65,7 +67,7 @@ function Home() {
                     Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en plaçant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient ainsi une arme redoutable pour détourner l'accusation et semer la confusion. Pour en savoir plus, plongez-vous dans les détails de ce passionnant récit sur une autre page.
                 </p>
                 <br/>
-                <p>Pour des informations plus détaillées, consulter les <Link to="/info">règles</Link>.</p>
+                <p>Pour des informations plus détaillées, consulter les <Link to={`${basePath}/info`}>règles</Link>.</p>
                 <br/>
             </div>
             <div>
@@ -100,7 +102,7 @@ function Home() {
             {/* <h3> <u><FormattedMessage id="game.illustratedBy"/></u><br/> Kwanchai Moriya</h3> */}
             {/* <button>Jouer au jeu</button> */}
             <br/>
-            <Link to="/play" className='button' 
+            <Link to={`${basePath}/`} className='button' 
                 style={{ 
                     backgroundColor: theme.colors.primary,
                     borderColor: theme.colors.secondary

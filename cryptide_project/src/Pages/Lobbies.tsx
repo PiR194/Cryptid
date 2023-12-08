@@ -140,7 +140,7 @@ function Lobbies() {
                 {filteredLobbiesToShow.length === 0 ? (
                     <div style={{border:'solid 2px blue', borderRadius:'15px', boxShadow:'5px 5px 5px rgb(246, 246, 246)', padding:'20px', margin:'20px'}}>
                         <h3><b>Il n'y a aucun lobby disponible</b></h3>
-                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créé en un !</button>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créez en un !</button>
                     </div>
                 ) : (
                     <div className="lobbyList">

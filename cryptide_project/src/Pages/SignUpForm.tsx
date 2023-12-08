@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 
+import {basePath} from "../AdressSetup"
+
+
 const SignUp = () => {
     const navigate = useNavigate(); 
     const [error, setError] = useState<string | null>(null);
@@ -31,7 +34,7 @@ const SignUp = () => {
 
                 setShowConfirmation(true);
                 setTimeout(() => {
-                    navigate('/login');         // 3 secondes avant de rediriger vers la page de connexion
+                    navigate(`${basePath}/login`);         // 3 secondes avant de rediriger vers la page de connexion
                 }, 1250);
             }
         } catch (error: any) {
@@ -88,7 +91,7 @@ const SignUp = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    Vous avez déjà un <a href="/login">compte</a> ?
+                    Vous avez déjà un <a href={`${basePath}/login`}>compte</a> ?
                 </p>
             </form>
 

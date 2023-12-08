@@ -5,6 +5,8 @@ import { useAuth } from '../Contexts/AuthContext';
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
 import { Link } from 'react-router-dom';
+import {basePath} from "../AdressSetup"
+
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -35,7 +37,7 @@ const SignIn = () => {
                 setShowConfirmation(true);
                 setTimeout(async () => {
                     await login();
-                    navigate('/');
+                    navigate(`${basePath}/`);
                 }, 1250);
             }
         } catch (error: any) {
@@ -78,7 +80,7 @@ const SignIn = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    <Link to="/signup">Pas encore inscrit ?</Link>
+                    <Link href={`${basePath}/signup`}>Pas encore inscrit ?</Link>
                 </p>
             </form>
 

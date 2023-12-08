@@ -6,7 +6,7 @@ import './ErrorStyle.css';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
-
+const basePath = process.env.REACT_APP_BASE_PATH || '/containers/Crypteam-website';
 
 //@ts-ignore
 function ErrorPage({ code = "", msg = "Something is wrong"}) {
@@ -28,7 +28,7 @@ function ErrorPage({ code = "", msg = "Something is wrong"}) {
             </div>
 
             <div className='centerDivH' style={{margin: "20px"}}>
-                <Button href='/' variant='danger'>Retour à l'accueil</Button>
+                <Button href={`${basePath}/`} variant='danger'>Retour à l'accueil</Button>
             </div>
         </div>
     );

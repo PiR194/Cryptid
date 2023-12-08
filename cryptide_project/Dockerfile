@@ -30,3 +30,4 @@ EXPOSE 80
 
 # Définissez ENTRYPOINT pour démarrer Nginx lorsque le conteneur est lancé
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
+#

@@ -34,6 +34,8 @@ import { useGame } from '../Contexts/GameContext';
 /* Boostrap */
 import { Button } from 'react-bootstrap';
 import Bot from '../model/Bot';
+import {basePath} from "../AdressSetup"
+
 
 
 function EndGame() {
@@ -131,7 +133,7 @@ function EndGame() {
                     <div className="head">
                         <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                             <h1>{winner?.pseudo} a gagné !</h1>
-                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                            <h3>Le coupable était <u>{person?.getName()}</u></h3>
                         </header>
                     </div>
                     <div className='winner'>
@@ -162,7 +164,7 @@ function EndGame() {
                 <div className="head">
                             <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                                 <h1>Vous avez gagné !</h1>
-                                <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                                <h3>Le coupable était <u>{person?.getName()}</u></h3>
                             </header>
                 </div>
                 <div className='winner'>
@@ -194,7 +196,7 @@ function EndGame() {
             <div id="vis-graph"/>
 
             <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                <Button href='/'>Retour à l'accueil</Button>
+                <Button href={`${basePath}/`}>Retour à l'accueil</Button>
             </div>
 
         </div>

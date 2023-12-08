@@ -41,6 +41,10 @@ import messagesEn from './Translations/en.json';
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorPage from './Error/ErrorPage';
+import DeducCheck from './Pages/DeducCheck';
+import {basePath} from "./AdressSetup"
+
+
 
 const messages = {
   fr: messagesFr,
@@ -58,9 +62,11 @@ function App() {
     setLocale(newLocale);
   };
 
+  console.log(basePath)
+
 
   //const location = useLocation();
-  const hasNavbarVisible = ["/", "/login", "/signup", "/play", "/lobby", "/endgame", "/deduc"]//.includes(window.location.pathname);
+  const hasNavbarVisible = [basePath + "/", basePath + "/login", basePath + "/signup", basePath + "/lobby", basePath + "/endgame", basePath + "/deduc"]//.includes(window.location.pathname);
 
 
   return (
@@ -73,17 +79,19 @@ function App() {
               <BrowserRouter>  
                 {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
                 <Routes>
-                  <Route path="/" element={<NewPlay/>} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route path="/presentation" element={<Home />} />
-                  <Route path="/lobby" element={<Lobby/>} />
-                  <Route path="/endgame" element={<EndGame/>} />
-                  <Route path="/game" element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                  <Route path="/info" element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path="/deduc" element={<DeducGrid/>} />
-                  <Route path="/profile" element={<Profile/>} />
-                  <Route path="/join" element={<Lobbies/>}/>
+                
+                  <Route path={`${basePath}/`} element={<NewPlay/>} />
+                  <Route path={`${basePath}/login`} element={<Login />} />
+                  <Route path={`${basePath}/signup`} element={<SignUp />} />
+                  <Route path={`${basePath}/presentation`} element={<Home />} />
+                  <Route path={`${basePath}/lobby`} element={<Lobby/>} />
+                  <Route path={`${basePath}/endgame`} element={<EndGame/>} />
+                  <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+                  <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path={`${basePath}/deduc`} element={<DeducCheck/>} />
+                  <Route path={`${basePath}/TheRealDeduc`} element={<DeducGrid/>} />
+                  <Route path={`${basePath}/profile`} element={<Profile/>} />
+                  <Route path={`${basePath}/join`} element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
 
                   <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}

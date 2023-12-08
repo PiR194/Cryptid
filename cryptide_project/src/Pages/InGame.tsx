@@ -49,6 +49,8 @@ import { Network } from 'vis-network';
 import {generateLatexCode, generateLatexCodeEnigme} from '../Script/LatexScript';
 import Pair from '../model/Pair';
 import Indice from '../model/Indices/Indice';
+import {basePath} from "../AdressSetup"
+
 
 let cptNavigation = 0
 
@@ -66,7 +68,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate("/play")
+            navigate(`${basePath}/`)
         }
     }
   
@@ -278,8 +280,10 @@ const InGame = ({locale, changeLocale}) => {
   
   const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const allIndices = Stub.GenerateIndice()
-  const { indice, players } = useGame();
+  const { indice, players, actualPlayerIndex} = useGame();
 
+  const nbPlayer = players.length;
+  const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
 
     return (
       <div id="mainDiv">
@@ -364,7 +368,7 @@ const InGame = ({locale, changeLocale}) => {
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
-          <Link to='/info' target='_blank'>
+          <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -373,12 +377,9 @@ const InGame = ({locale, changeLocale}) => {
               <img src={Info} alt="info" height="40"/>
             </button>
           </Link>
-          {/* <button className='button' onClick={() => openInNewTab('http://localhost:3000/play')}> //! avec url =={'>'} dangereux
-            <img src={Check} alt="check" height="40"/>
-          </button> */}
 
           {!IsSolo &&
-          <Link to='/deduc' target='_blank'>
+          <Link to={`${basePath}/${navdeduc}`} target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,

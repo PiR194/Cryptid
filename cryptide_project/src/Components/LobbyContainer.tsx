@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { socket } from '../SocketConfig';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import {basePath} from "../AdressSetup"
 
 interface LobbyContainerProps {
         roomNum : string
@@ -20,11 +21,12 @@ interface LobbyContainerProps {
     //? mettre un "nbplayermax" si le nombre de joueur max peut etre fixé ?
 }
 
+
 const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbPlayer, setFirst, started}) => {
     const theme=useTheme();
 
     const navigate = useNavigate();
-    const dest = '/lobby?room=' + roomNum;
+    const dest = 'lobby?room=' + roomNum;
 
     //* Modal
     const [showFull, setShowFull] = useState(false);
@@ -47,7 +49,7 @@ const LobbyContainer: React.FC<LobbyContainerProps> = ({roomNum, HeadPlayer, nbP
             if (nbPlayer < 6 && !started) {
                 socket.off("request lobbies")
                 setFirst(true)
-                navigate(dest);
+                navigate(`${basePath}/${dest}`);
             }
             else if(started){
                 handleShowStart()

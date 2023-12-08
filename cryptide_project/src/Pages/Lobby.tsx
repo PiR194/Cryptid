@@ -46,6 +46,8 @@ import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Overlay from 'react-bootstrap/Overlay';
 import { DataSet } from 'vis-network';
+import {basePath} from "../AdressSetup"
+
 
 
 let gameStarted = false
@@ -134,7 +136,7 @@ function Lobby() {
         gameStarted = true
         //socket.off("player left")
         //socket.off("new player")
-        navigate('/game?solo=false&daily=false');
+        navigate(`${basePath}/game?solo=false&daily=false`);
     });
 
 
@@ -170,7 +172,7 @@ function Lobby() {
         setIndicesData(choosenIndices)
         first = true
         gameStarted = true
-        navigate('/game?solo=false&daily=false');
+        navigate(`${basePath}/game?solo=false&daily=false`)
     });
 
     socket.on("new player", (tab) =>{
@@ -185,17 +187,17 @@ function Lobby() {
 
     socket.on("room full", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/`)
     })
 
     socket.on("game started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/`)
     })
 
     socket.on("game already started", () => {
         //TODO POP UP pour quand la room est pleine
-        navigate("/play")
+        navigate(`${basePath}/`)
     })
 
     socket.on("player left", (tab, i) => {
@@ -227,7 +229,7 @@ function Lobby() {
     const copyGameLink = () => {
         setShow(!show)
         
-        const gameLink = "http://localhost:3000/lobby?room="+ room;
+        const gameLink = "http://172.20.10.4:3000/lobby?room="+ room;
         navigator.clipboard.writeText(gameLink)
             .then(() => {
                 console.log('Lien copié avec succès !');
@@ -238,7 +240,7 @@ function Lobby() {
     };
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const linkToCopy = "http://localhost:3000/lobby?room="+ room
+    const linkToCopy = "http://172.20.10.4:3000/lobby?room="+ room
     const handleCopyClick = () => {
         setShow(!show)
         if(textAreaRef.current != null){
@@ -336,9 +338,10 @@ function Lobby() {
                             style={{borderColor:theme.colors.secondary}}> - </button>
                         <input
                             // type="number"
+                            style={{textAlign:'center'}}
                             id="numberInput"
                             disabled
-                            value={ "Nombre de noeuds : " + enteredNumber}
+                            value={enteredNumber}
                             onChange={handleNumberChange}
                             min={20}
                             max={60}/>

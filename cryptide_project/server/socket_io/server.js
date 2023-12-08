@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3000"], // Remplacez par l'URL de votre application React
+    origin: "*", // Remplacez par l'URL de votre application React
     methods: ["GET", "POST"],
     credentials: true
   }

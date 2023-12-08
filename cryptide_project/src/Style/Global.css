@@ -59,6 +59,16 @@
     justify-content: center;
 }
 
+.playerNameDisplay{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#fff;
+    border: solid 3px #0064E0;
+    border-radius: 15px;
+    width: 100%;
+}
+
 /**Form**/
 .form-container {
     /* background-color: #D7D4C6; */
@@ -73,6 +83,8 @@ form{
 .listContainer{
     columns: 2 auto;
 }
+
+
 
 /* LeaderBoard */
 .LeaderBoardiv{  

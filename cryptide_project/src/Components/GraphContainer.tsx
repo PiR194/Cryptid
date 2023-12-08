@@ -20,6 +20,7 @@ import User from "../model/User";
 import { json } from "body-parser";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import {basePath} from "../AdressSetup"
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -819,7 +820,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("put imossible grey")
           socket.off("who plays")
     
-          navigate("/endgame")
+          navigate(`${basePath}/endgame`)
         }        
       }
     })
@@ -1030,15 +1031,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     }
                     testFirst = true
                     setElapsedTime(0)
-                    endgame = true
-                    navigate("/endgame?solo=true&daily=" + isDaily)
-                  }
-                  
+                    endgame = true                    
+                    navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+                  }      
                 }
               }
               index++
             }
-            addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
+            addToHistory(person.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
 
             cptTour ++; // On Incrémente le nombre de tour du joueur
             const tour = cptTour+1;
