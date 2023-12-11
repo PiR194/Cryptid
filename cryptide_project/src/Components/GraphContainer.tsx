@@ -96,7 +96,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
-    console.log("ligne 99")
     if (testFirst){
       testTemps = 0
       endgame = false
