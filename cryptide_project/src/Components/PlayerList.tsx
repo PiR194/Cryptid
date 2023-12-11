@@ -67,8 +67,9 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                             borderRadius: "10px",
                             border: "solid 1px",
                             textAlign: "center",
+                            color: "white",
                             padding: "10px"}}
-                            onClick={() => askEveryone()}>Guess !</button>
+                            onClick={() => askEveryone()}>Ask everyone</button>
                         ):
                         (
                             <button style={{ 
@@ -77,6 +78,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                                 borderRadius: "10px",
                                 border: "solid 1px",
                                 textAlign: "center",
+                                color: "white",
                                 padding: "10px"}}
                             onClick={() => askEveryone()}>Ask everyone</button>
                         )

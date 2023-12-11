@@ -20,7 +20,8 @@ import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
 import ImgBot from "../res/img/bot.png";
 
-import ava from "../res/img/tuto/tuto-ava.png";
+import detective from "../res/img/tuto/tuto-detective.jpg";
+import ava from "../res/img/tuto/tuto-ava2.png";
 import indicetxt from "../res/img/tuto/tuto-indiceTxt.png"
 import rep from "../res/img/tuto/tuto-rep.png";
 import joueurs from "../res/img/tuto/tuto-joueurs.png";
@@ -426,7 +427,7 @@ const Tutorial = ({locale, changeLocale}) => {
 
           {step === -1 && (
             <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-              <Card.Img variant="top" src={ava} style={{width:'300px', height:'300px'}}/>
+              <Card.Img variant="top" src={detective} style={{width:'300px', height:'300px'}}/>
               <Card.Body>
                 <Card.Title> Bienvenue dans SocialGraph</Card.Title>
                 <Card.Text>
@@ -448,7 +449,7 @@ const Tutorial = ({locale, changeLocale}) => {
                   <Card.Text>
                     Voici comment est représenté un suspect, chaque suspect possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.
                     <br />
-                    Par exemple, ici, nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 amis</b>.
+                    Par exemple, ici, nous avons <b>Ava</b>, qui a <b>40 ans</b>, qui pratique du <b>Basket</b> et du <b>Tennis</b>, qui a les cheveux <b>Roux</b> et qui possède <b>2 amis</b> : Carter et Liam.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -470,7 +471,7 @@ const Tutorial = ({locale, changeLocale}) => {
 
             {step === 3 && (
               <Card style={{ width: '90%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={joueurs} style={{width:'300px', height:'300px'}}/>
+                <Card.Img variant="top" src={joueurs} style={{width:'auto', height:'300px'}}/>
                 <Card.Body>
                   <Card.Title>Les Détectives</Card.Title>
                   <Card.Text>
@@ -541,7 +542,7 @@ const Tutorial = ({locale, changeLocale}) => {
                 <Card.Body>
                   <Card.Title>L'indice</Card.Title>
                   <Card.Text>
-                    Ce bouton vous permet d'afficher votre indice personnel, gradez le secret ! Il s'agit de votre meilleur atout pour gagner.
+                    Ce bouton vous permet d'afficher votre indice personnel, gardez le secret ! Il s'agit de votre meilleur atout pour gagner.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -570,10 +571,7 @@ const Tutorial = ({locale, changeLocale}) => {
             <div style={{ width:'100%', display:'flex', justifyContent:'start'}}>
               <label style={{ color:'gray'}}>Étape {step+1}/7</label>
             </div>
-            {/* <Button variant="secondary" onClick={handleCloseM}>
-              Fermer
-            </Button> */}
-            { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
+            { step != -1 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
             { step === 6 ? (<Button variant="primary" onClick={handleCloseM}>Poursuivre</Button>) : 
             <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>}
             
@@ -593,7 +591,7 @@ const Tutorial = ({locale, changeLocale}) => {
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
 
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Card.Img variant="top" src={step1} style={{width:'300px', height:'auto'}}/>
+                <Card.Img variant="top" src={step1} style={{width:'auto', height:'300px'}}/>
                 <Card.Body>
                   <Card.Title>Premier pas</Card.Title>
                   <Card.Text>
