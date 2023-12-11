@@ -50,6 +50,8 @@ interface MyGraphComponentProps {
   putGreyBackground : () => void
   putCorrectBackground : () => void
   putImposssibleGrey : () => void
+
+  handleTurn :() => void
 }
 
 let lastAskingPlayer = 0
@@ -80,7 +82,7 @@ let testTemps = 0
 let testFirst = false
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -205,6 +207,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             let i = 0
             socket.emit("node checked", personIndex, true, lastIndex, room, lastIndex)
             while(playerIndex != lastIndex){
+              //! Play sound ?
+              handleTurn();
+              
               i++
               if (playerIndex == players.length){
                 playerIndex = 0

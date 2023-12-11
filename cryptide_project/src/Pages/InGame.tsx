@@ -27,6 +27,11 @@ import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
 import JSZip from 'jszip';
 
+/* Sound */
+import turnSound from "../res/Audio/turn.mp3";
+import winSound from "../res/Audio/win.wav";
+
+
 /* nav */
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
@@ -307,6 +312,20 @@ const InGame = ({locale, changeLocale}) => {
   const nbPlayer = players.length;
   const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
 
+
+  //* Sound
+  const [playTurnSound, setPlayTurnSound] = useState(false);
+
+  const handleTurn = () => {
+    
+    setPlayTurnSound(true);
+
+    setTimeout(() => {
+      setPlayTurnSound(false);
+    }, 2000);
+  };
+
+
     return (
       <div id="mainDiv">
         {showTurnBar && <TurnBar text={turnBarText}/>}
@@ -336,8 +355,10 @@ const InGame = ({locale, changeLocale}) => {
                           setPutImposssibleGrey={setPutImposssibleGreyData}
                           putCorrectBackground={putCorrectBackground}
                           putGreyBackground={putGreyBackgroud}
-                          putImposssibleGrey={putImposssibleGrey}/>
+                          putImposssibleGrey={putImposssibleGrey}
+                          handleTurn={handleTurn}/>
         </div>
+        {playTurnSound && <audio src={turnSound} autoPlay />}
 
 
         {IsSolo && !isDaily &&
