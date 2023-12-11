@@ -96,6 +96,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
+    console.log("ligne 99")
     if (testFirst){
       testTemps = 0
       endgame = false
@@ -123,7 +124,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     // Nettoyez l'intervalle lorsque le composant est démonté
     return () => clearInterval(intervalId);
-  }, [elapsedTime, endgame]);
+  }, []);
 
 
   useEffect(() => {
