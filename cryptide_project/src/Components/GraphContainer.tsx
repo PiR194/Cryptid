@@ -76,7 +76,8 @@ let firstPlayer = 0
 let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
-
+let testTemps = 0
+let testFirst = false
 
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey}) => {
@@ -86,7 +87,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -95,10 +96,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
+    if (testFirst){
+      testTemps = 0
+      endgame = false
+      testFirst = false
+    }
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
       setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
       settempsData(elapsedTime)
+      testTemps += 0.5
 
       cptBug ++
       if (cptBug > 10){
@@ -110,6 +117,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       // Vérifiez si la durée est écoulée, puis arrêtez le timer
       if (endgame) {
         clearInterval(intervalId);
+        testTemps = 0
       }
     }, 500);
 
@@ -800,7 +808,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setLastIndex(-1)
         setPlayerTouched(-1)
         setWinnerData(winner)
-        setElapsedTime(0)
+        
 
         first = true
         cptHistory = 0
@@ -817,10 +825,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
                   // Ajouter une victoire
-                  manager.userService.addOnlineStats(user.pseudo, 1, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 1, testTemps - 0.5);
                 }
                 else{
-                  manager.userService.addOnlineStats(user.pseudo, 0, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 0, testTemps - 0.5);
                 }
               }
               else{
@@ -833,6 +841,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           console.log(e);
         }
         finally{
+          setElapsedTime(0)
           socket.off("end game")
           socket.off("asked all")
           socket.off("opacity activated")
@@ -1006,6 +1015,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           if(node == undefined)return;
           if (personTest != undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
+            let works = true
+            const statsTime = elapsedTime;
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(personTest)
@@ -1019,38 +1030,46 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               index++
             }
             if (person !== null && person.getId() === params.nodes[0]){
-
               if (user!=null){
                 setWinnerData(user)
                 setNetworkDataData(networkData)
               }
               cptTour ++;
               setNbCoupData(cptTour)
-              setElapsedTime(0)
-              endgame = true
 
               try{
+                console.log("time: " + testTemps)
                 if(user && isLoggedIn){
                   if(solo){
                     if(isDaily){
                       // TODO: verif difficulté et add les stats
                       // TODO: verif pour facile et difficile, si réussi en one shot ou non
                       if(isEasy){
-                        manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
+                        manager.userService.addEasyEnigmaStats(user.pseudo, 1, testTemps - 0.5);
                       }
                       else{
-                        manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
+                        manager.userService.addHardEnigmaStats(user.pseudo, 1, testTemps - 0.5);
                       }
                     }
                     else{
                       // add stats mastermind
                       if(user && user.mastermindStats){
-                        manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                        manager.userService.addMastermindStats(user.pseudo, cptTour, testTemps - 0.5);
                       }
                     }
                   }
+                }       
+                else{
+                  // add stats mastermind
+                  if(user && user.mastermindStats){
+                    manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                  }
                 }
-              }
+                testFirst = true
+                setElapsedTime(0)
+                endgame = true                    
+                navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+              }      
               catch(error){
                 console.log(error);
               }

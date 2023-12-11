@@ -14,7 +14,7 @@ const port = 3003;
 // Middleware
 app.use(cors(
   {
-    origin: ["http://localhost:3000", "http://172.20.10.4:3000"],
+    origin: ["http://172.20.10.4:3000", "http://localhost:3000"],
     credentials: true
   }
 ));                            // Autoriser les requêtes cross-origin

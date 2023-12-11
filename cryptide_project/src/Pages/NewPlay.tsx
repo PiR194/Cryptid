@@ -195,20 +195,15 @@ function NewPlay() {
 
     // const returnVisibility: Visibility = goBackRoom !== -1 ? "visible" : "hidden";
 
-    const returnVisibility: any= goBackRoom !== -1 ?  "visible" : "hidden" ;
-
+    const returnVisibility = goBackRoom !== -1 ?  "block" : "none" ;
 
     return (
 
         <div className="MainContainer">
-            <div className="NewleftContainer">
-
-                {/* Menu de boutons */}
-                
+            <div className="leftContainer">
+                {/* Boutons pour jouer */}
                 <div className='NewbuttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
-                    
-                    
                     <button ref={target} onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Résoudre une énigme</button>
                     <Overlay show={showOverlay} target={target.current} placement="bottom" rootClose={true} rootCloseEvent='click'>
                         {({ placement, arrowProps, show: _show, popper, ...props }) => (
@@ -233,7 +228,7 @@ function NewPlay() {
                     <button onClick={launchTuto} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Tutoriel </button>
                     {/* <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button> */}
                     {/* {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>} */}
-                    <button onClick={goBack} className="ButtonNavRejoin" style={{ visibility:returnVisibility}}>Retourner à la partie</button>
+                    <button onClick={goBack} className="ButtonNavRejoin" style={{ display:returnVisibility}}>Retourner à la partie</button>
 
                 </div>
             
@@ -241,21 +236,11 @@ function NewPlay() {
                 <div style={{border:'solid 1px lightgray', borderRadius:'15px', marginTop:'20px'}}>
                     <Lobbies/>
                 </div>
-            
             </div>
-            <div className='NewrightContainer'>
-                <div style={{ border:'solid 2px lightgray', borderRadius:'15px', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column', padding:'20px', margin:'20px 0px'}}>
-                    <h2>
-                        {user && user.pseudo}
-                    </h2>
-                    <img src={user?.profilePicture}
-                            height='150'
-                            width='150'
-                            alt="Person"
-                            />
-                </div>
-                {user && (<ScoreBoard Player={user}/>)}
-            </div>
+
+            <div className='rightContainer'>
+                {user && <ScoreBoard Player={user}/>}
+            </div>        
         </div>
     );
 }
