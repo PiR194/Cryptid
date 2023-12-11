@@ -1,4 +1,4 @@
-import React,  {useEffect} from 'react';
+import React,  {useEffect, useState} from 'react';
 
 
 /* Style */
@@ -10,6 +10,9 @@ import { useTheme } from '../Style/ThemeContext';
 import Person from '../res/img/Person.png';
 import Leave from '../res/icon/leave.png';
 import Replay from '../res/icon/replay.png';
+
+/* sound */
+import WinSound from '../res/Audio/win.wav';
 
 /* Component */
 import PersonStatus from '../Components/PersonStatus';
@@ -63,6 +66,11 @@ function EndGame() {
             }
         }
     };
+
+    useEffect(() => {
+        handleWinSound();
+    }, []);
+
 
     useEffect(() => {
         const container = document.getElementById("vis-graph");
@@ -126,8 +134,21 @@ function EndGame() {
         indicenull = true;
     }
 
+    //* Sound
+    const [playTurnSound, setPlayTurnSound] = useState(false);
+
+    const handleWinSound = () => {
+        setTimeout(() => { // on attend 1s avant de jouer le son
+            setPlayTurnSound(true);
+        }, 300);
+
+        setTimeout(() => { // on attend 2s avant de remettre le son à false
+        setPlayTurnSound(false);
+        }, 2000);
+    };
     return (
         <div>
+            {playTurnSound && <audio src={WinSound} autoPlay />}
             {!IsSolo ? (
                 <div>
                     <div className="head">

@@ -187,6 +187,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }
 
   useEffect(() =>{
+    //* Gestion du sound des tours :
+    if (actualPlayerIndex == lastIndex){
+      handleTurn();
+    }
     cptBug=0
     if (actualPlayerIndex==firstPlayer){
       const bot = testPlayers[lastIndex]
@@ -207,9 +211,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             let i = 0
             socket.emit("node checked", personIndex, true, lastIndex, room, lastIndex)
             while(playerIndex != lastIndex){
-              //! Play sound ?
-              handleTurn();
-              
+              // //! Play sound ?
+              // handleTurn();
               i++
               if (playerIndex == players.length){
                 playerIndex = 0
