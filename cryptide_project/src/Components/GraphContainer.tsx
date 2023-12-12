@@ -22,7 +22,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
 
-import { socketIOClient } from "socket.io-client";
+import { io } from "socket.io-client";
 import { ADRESSE_WEBSERVER } from "../AdressSetup";
 
 interface MyGraphComponentProps {
@@ -132,7 +132,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   useEffect(() => {
         
-    const socket2 = socketIOClient(ADRESSE_WEBSERVER);
+    const socket2 = io(ADRESSE_WEBSERVER);
 
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
