@@ -565,7 +565,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log("coucou")
         cptBug=0
         //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
