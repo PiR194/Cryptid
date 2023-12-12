@@ -51,9 +51,9 @@ function AppNavbar({changeLocale}) {
     return (
         <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
             <Container>
-                <Navbar.Brand onClick={navigateToHome}>
+                <Nav.Link href={`${basePath}/`}>
                     <img src={logo} alt="logo" className="logo" />
-                </Navbar.Brand>
+                </Nav.Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">

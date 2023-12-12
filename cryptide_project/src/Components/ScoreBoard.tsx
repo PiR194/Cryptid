@@ -140,7 +140,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <hr />
                             <p>Parties Jouées: {Player.onlineStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.onlineStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.onlineStats.ratio.toFixed(2) + "s"}</p>
+                            <p>Ratio V/D: {Player.onlineStats.ratio.toFixed(2) + "%"}</p>
                         </div>
                     </Carousel>
                 </Tab.Content>

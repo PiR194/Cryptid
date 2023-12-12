@@ -2,6 +2,7 @@ import {ADRESSE_DBSERVER} from "../AdressSetup"
 
 class SessionService {
     static async getSession() {
+        
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/session', {
                 method: 'GET',
@@ -10,9 +11,10 @@ class SessionService {
                 },
                 credentials: 'include',
             });
-    
+            
             if (response.ok) {
                 const result = await response.json();
+                console.log(result);
                 return result;
             } else {
                 const errorResponse = await response.json();
