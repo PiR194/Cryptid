@@ -305,7 +305,7 @@ const InGame = ({locale, changeLocale}) => {
       window.open(url);
     };
   
-  const [SwitchEnabled, setSwitchEnabled] = useState(false)
+  // const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const allIndices = Stub.GenerateIndice()
   const { indice, players, actualPlayerIndex} = useGame();
 
@@ -315,14 +315,23 @@ const InGame = ({locale, changeLocale}) => {
 
   //* Sound
   const [playTurnSound, setPlayTurnSound] = useState(false);
+  const [soundPreference, setSoundPreference] = useState(true); // utilisateur
+
+  const handleSoundPreferenceChange = () => {
+    setSoundPreference(!soundPreference);
+    console.log("changement des options du son : "+ soundPreference)
+  };
 
   const handleTurn = () => {
     
-    setPlayTurnSound(true);
-
-    setTimeout(() => {
-      setPlayTurnSound(false);
-    }, 2000);
+    console.log("etat normal du sound : " + soundPreference)
+    if (soundPreference) {
+      setPlayTurnSound(true);
+      
+      setTimeout(() => {
+        setPlayTurnSound(false);
+      }, 2000);
+    }
   };
 
 
@@ -478,19 +487,6 @@ const InGame = ({locale, changeLocale}) => {
           }
         </div>
 
-{/*
-        <Offcanvas show={showP} 
-                  onHide={handleCloseP}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Joueurs</Offcanvas.Title>
-            <h3>Il y a {players.length} joueurs</h3>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-
-          </Offcanvas.Body>
-        </Offcanvas>
-          */}
-
           { !IsSolo &&
             <div className='playerlistDiv'>
               <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong} greyForEveryone={() => {}}/>
@@ -507,7 +503,6 @@ const InGame = ({locale, changeLocale}) => {
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {/* Possède les cheveux noir <u>ou</u> joue au basket */}
             {indice?.ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
@@ -523,31 +518,12 @@ const InGame = ({locale, changeLocale}) => {
             <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav className="me-auto">
-                <NavDropdown 
-                title={<span><HiLanguage/> Language </span>}
-                className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item onClick={() => changeLocale('fr')}> 
-                        <FormattedMessage id="languageSelector.french"/> 
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => changeLocale('en')}> 
-                        <FormattedMessage id="languageSelector.english"/> 
-                    </NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
-
-            <label>
-              <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
-              <p>Afficher les noeuds possibles</p>
+            <label style={{ display:'flex'}}>
+              <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
+              <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
             </label>
-
           </Offcanvas.Body>
         </Offcanvas>
-        {/*
-        <div id="endgamebutton" > {/*  tmp 
-          <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
-        </div>
-      */}
       </div>
     );
   };
