@@ -22,7 +22,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
 
-import { io } from "socket.io-client";
+import { socketIOClient } from "socket.io-client";
 import { ADRESSE_WEBSERVER } from "../AdressSetup";
 
 interface MyGraphComponentProps {
@@ -131,12 +131,22 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }, []);
 
   useEffect(() => {
+        
+    const socket2 = socketIOClient(ADRESSE_WEBSERVER);
 
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
-        const socket2 = io(ADRESSE_WEBSERVER);
         console.log(socket2.id)
     }, 500);
+
+    socket2.on('connect', () => {
+      console.log('Connecté au serveur Socket.IO');
+    });
+
+    // Gestion de l'événement de déconnexion
+    socket2.on('disconnect', () => {
+      console.log('Déconnecté du serveur Socket.IO');
+    });
 
     // Nettoyez l'intervalle lorsque le composant est démonté
     return () => clearInterval(intervalId);
