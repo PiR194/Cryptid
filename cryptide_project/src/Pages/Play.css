@@ -1,17 +1,16 @@
-
-.MainContainer{
-    flex: 1 1 0;
+.MainContainer {
     display: flex;
     flex-direction: row;
-    justify-content:space-around
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
-.MidContainer{
+.MidContainer {
     display: flex;
-    /* justify-content:center; */
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-
     margin-top: 15px;
     width: 30%;
 }
@@ -21,20 +20,24 @@
     justify-content: center;
 }
 
-.leftContainer{
-    width: 30%;
-}
-
-.rightContainer{
-    width: 30%;
-}
-
-.NewleftContainer{    
+.leftContainer {
+    height: 100%;
     margin: 20px 30px;
     width: 70%;
 }
 
-.NewrightContainer{
+.rightContainer {
+    height: 100%;
+    margin: 20px 30px;
+    width: 30%;
+}
+
+.NewleftContainer {
+    margin: 20px 30px;
+    width: 70%;
+}
+
+.NewrightContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,81 +45,55 @@
     width: 30%;
 }
 
-/* .textBoard div{
+.buttonGroupVertical {
     display: flex;
-    flex-direction:column-reverse;
-    justify-content:space-between
-} */
-
-/* .textBoard div:nth-child(2){
-    display: flex;
-    justify-content: end;
-} */
-
-/**Button**/
-.buttonGroupVertical{
-    display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
 
-.NewbuttonGroupVertical{
+.NewbuttonGroupVertical {
     display: flex;
-    justify-content:space-around;
-    align-items:start;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
-
-.ButtonNav{
+.ButtonNav {
     margin: 15px 10px;
-    width:200px;
+    width: 200px;
     height: 8vh;
-
-    /* background-color: #85C9C2;
-    color: #2A4541; */
     color: white;
-
-    border: solid;
+    border: 2px solid #0056b3;
     border-radius: 15px;
-    border-width: 2px;
-
-    font-size:larger;
+    font-size: larger;
 }
 
-
-.ButtonNavRejoin{
+.ButtonNavRejoin {
     margin: 15px 10px;
-    width:200px;
+    width: 200px;
     height: 8vh;
-
     color: white;
     background-color: aquamarine;
-
-    border: solid 2px rgb(40, 225, 163);
+    border: 2px solid #0056b3;
     border-radius: 15px;
-
-    font-size:larger;
+    font-size: larger;
 }
-.returnDiv{
+
+.returnDiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    margin:40px 15px;
-
-    border: solid 2px whitesmoke;
+    margin: 40px 15px;
+    border: 2px solid whitesmoke;
     border-radius: 15px;
-    
     background-color: white;
 }
 
 .returnDiv p {
     margin: 15px;
     padding: 10px;
-    border: solid 1px whitesmoke;
+    border: 1px solid whitesmoke;
     border-radius: 10px;
-
-    font-weight:500;
+    font-weight: 500;
 }

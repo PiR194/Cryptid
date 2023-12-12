@@ -24,8 +24,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const login = async () => {
     setIsLoggedIn(true);
-    const [u, bool] = await manager.userService.fetchUserInformation()
-    setUser(u)
   };
 
   const setUserData = (newPlayer: User) => {

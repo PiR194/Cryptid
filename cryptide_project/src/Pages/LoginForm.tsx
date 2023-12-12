@@ -4,16 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext'; 
 import AuthService from '../services/AuthService';
 import '../Style/Global.css';
+import { Link } from 'react-router-dom';
 import {basePath} from "../AdressSetup"
 
 
 const SignIn = () => {
     const navigate = useNavigate();
-    const { login } = useAuth(); 
-
     const [error, setError] = useState<string | null>(null);
+    const {login} = useAuth();
     const [showConfirmation, setShowConfirmation] = useState(false);
-
+    
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
     
@@ -80,7 +80,7 @@ const SignIn = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    <a href="#">Mot de passe</a> oublié ?
+                    <Link to={`${basePath}/signup`}>Pas encore inscrit ?</Link>
                 </p>
             </form>
 

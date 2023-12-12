@@ -19,6 +19,7 @@ const ChoiceBar = () => {
 
   async function askEveryone(){
     if (nodeId !== null){
+      //@ts-ignore
       const person = personNetwork?.getPersons().find((p) => p.getId() == nodeId)
       if (person != undefined){
         const indiceTester = IndiceTesterFactory.Create(indices[actualPlayerIndex])

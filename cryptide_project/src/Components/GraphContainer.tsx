@@ -41,6 +41,17 @@ interface MyGraphComponentProps {
   setPlayerIndex: (playerIndex: number) => void
   importToPdf: boolean
   setImportToPdf: (imp: boolean) => void
+  importToJSON: boolean
+  setImportToJSON: (imp: boolean) => void
+
+  setPutCorrectBackground : (func: () => void) => void
+  setPutGreyBackground : (func: () => void) => void
+  setPutImposssibleGrey : (func: () => void) => void
+  putGreyBackground : () => void
+  putCorrectBackground : () => void
+  putImposssibleGrey : () => void
+
+  handleTurn :() => void
 }
 
 let lastAskingPlayer = 0
@@ -67,17 +78,18 @@ let firstPlayer = 0
 let cptBug = 0
 let cptUseEffect = 0
 let testPlayers: Player[] = []
+let testTemps = 0
+let testFirst = false
 
 
-
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -86,10 +98,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
+    if (testFirst){
+      testTemps = 0
+      endgame = false
+      testFirst = false
+    }
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
       setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
       settempsData(elapsedTime)
+      testTemps += 0.5
 
       cptBug ++
       if (cptBug > 10){
@@ -101,12 +119,13 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       // Vérifiez si la durée est écoulée, puis arrêtez le timer
       if (endgame) {
         clearInterval(intervalId);
+        testTemps = 0
       }
     }, 500);
 
     // Nettoyez l'intervalle lorsque le composant est démonté
     return () => clearInterval(intervalId);
-  }, [elapsedTime, endgame]);
+  }, []);
 
 
   useEffect(() => {
@@ -119,17 +138,17 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     console.log(playerTouched)
     if (touchedPlayer == -1){
       if (!askedWrongLocal){
-        socket.emit("put correct background", socket.id)
+        putCorrectBackground()
       }
     }
     else if (touchedPlayer < players.length && touchedPlayer>=0){
       if(!askedWrongLocal){
-        socket.emit("put correct background", socket.id)
-        socket.emit("put grey background", socket.id, touchedPlayer)
+        putCorrectBackground()
+        putGreyBackground()
       }
     }
     else if(touchedPlayer == players.length){
-      socket.emit("put imossible grey", socket.id)
+      putImposssibleGrey()
     }
   }, [playerTouched])
 
@@ -168,6 +187,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }
 
   useEffect(() =>{
+    //* Gestion du sound des tours :
+    if (actualPlayerIndex == lastIndex){
+      handleTurn();
+    }
     cptBug=0
     if (actualPlayerIndex==firstPlayer){
       const bot = testPlayers[lastIndex]
@@ -188,6 +211,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             let i = 0
             socket.emit("node checked", personIndex, true, lastIndex, room, lastIndex)
             while(playerIndex != lastIndex){
+              // //! Play sound ?
+              // handleTurn();
               i++
               if (playerIndex == players.length){
                 playerIndex = 0
@@ -320,6 +345,25 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }, [importToPdf])
 
+  function downloadToJSON(jsonData: any, filename: string) {
+    const jsonBlob = new Blob([JSON.stringify(jsonData)], {type: 'application/json'});
+    const url = URL.createObjectURL(jsonBlob);
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = url;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+  useEffect(() => {
+    if (importToJSON){
+      setImportToJSON(false)
+      downloadToJSON(personNetwork, "graph.json")
+      downloadToJSON(JSON.stringify(indices), "indices.json")
+    }
+  }, [importToJSON])
+
   useEffect(() => {
     if (personNetwork == null){
       return
@@ -449,7 +493,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 p.indice=indices[index]
                 p.index=index
                 p.initiateMap(personNetwork)
-                console.log(p.indice.ToString("fr"))
               }
             })
           }
@@ -460,7 +503,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             bot.indice=indices[i]
             bot.index=index
             bot.initiateMap(personNetwork)
-            console.log(bot.indice.ToString("fr"))
           }
         }
         if (i==playerIndex){
@@ -492,6 +534,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerIndex(index)
         setLastIndex(index)
         if (actualPlayerIndex==index){
+          handleTurnBarTextChange("À vous de jouer")
           handleShowTurnBar(true)
         }
       })
@@ -522,6 +565,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
+        console.log("coucou")
         cptBug=0
         //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
@@ -551,7 +595,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
             networkData.nodes.update({id: id, label: node.label + positionToEmoji(askedIndex, works)})
             cptHistory++
-            if (cptHistory % 2 == 0){
+            if (cptHistory % 2 >= 0){
               lastNodes.push(node)
               addToHistory(testPlayers[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
@@ -577,7 +621,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
       socket.on("asked wrong", () =>{
         cptSquare++
-        if (cptSquare % 2 == 0){
+        if (cptSquare % 2 >= 0){
           if (indice==null){
             return
           }
@@ -604,7 +648,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             askedWrongBot=true
             handleShowTurnBar(true)
             handleTurnBarTextChange("Mauvais choix, posez un carré !")
-            socket.emit("put grey background", socket.id, actualPlayerIndex)
+            touchedPlayer = actualPlayerIndex
+            putGreyBackgroud()
           }
           else{
             socket.emit("can't put square", actualPlayerIndex, room)
@@ -615,7 +660,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       socket.on("can't put square", (askingPlayer) => {
         cptBug=0
         cptOnAskedWrong ++
-        if (cptOnAskedWrong % 2 == 0){
+        if (cptOnAskedWrong % 2 >= 0){
           addToHistory(testPlayers[askingPlayer].pseudo + " ne peut plus poser de carré")
           playerIndex = askingPlayer + 1
           if(playerIndex == players.length){
@@ -629,7 +674,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
           else{
             handleShowTurnBar(false)
-            socket.emit("put correct background", socket.id)
+            putCorrectBackground()
           }
         }
       })
@@ -688,18 +733,22 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
       }
     }
-    
 
-    socket.on("put correct background", () =>{
+
+    const putCorrectBackground = () => {
       if (personNetwork != null){
         for(const person of personNetwork.getPersons()){
           networkData.nodes.update({id: person.getId(), color: ColorToHexa(person.getColor())})
         }
       }
-    })
+    };
 
-    socket.on("put grey background", (player) =>{
+
+    setPutCorrectBackground(() => putCorrectBackground)
+
+    const putGreyBackgroud = () => {
       if (personNetwork != null){
+        const player = touchedPlayer
         const tab = mapIndexPersons.get(player)
         if (tab != undefined){
           if (player != actualPlayerIndex){
@@ -727,9 +776,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
         }
       }
-    })
+    };
 
-    socket.on("put imossible grey", ()=>{
+    setPutGreyBackground(() => putGreyBackgroud)
+
+    const putGreyImpossible = () => {
       if (personNetwork != null && indice!=null){
         const tabNodes: any = []
         const tester = IndiceTesterFactory.Create(indice)
@@ -750,7 +801,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           networkData.nodes.update({id: n.id, color: "#808080"})
         }
       }
-    })
+    }
+
+    setPutImposssibleGrey(() => putGreyImpossible)
 
     socket.on("end game", (winnerIndex) =>{
       if (cptEndgame % 2 == 0){
@@ -764,7 +817,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setLastIndex(-1)
         setPlayerTouched(-1)
         setWinnerData(winner)
-        setElapsedTime(0)
+        
 
         first = true
         cptHistory = 0
@@ -781,10 +834,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 // console.log("nbGames: " + user.onlineStats.nbGames + " nbWins: " + user.onlineStats.nbWins);
                 if(winner.id === currentPlayer.id){
                   // Ajouter une victoire
-                  manager.userService.addOnlineStats(user.pseudo, 1, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 1, testTemps - 0.5);
                 }
                 else{
-                  manager.userService.addOnlineStats(user.pseudo, 0, elapsedTime);
+                  manager.userService.addOnlineStats(user.pseudo, 0, testTemps - 0.5);
                 }
               }
               else{
@@ -797,6 +850,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           console.log(e);
         }
         finally{
+          setElapsedTime(0)
           socket.off("end game")
           socket.off("asked all")
           socket.off("opacity activated")
@@ -806,9 +860,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("already asked")
           socket.off("asked wrong")
           socket.off("asked")
-          socket.off("put correct background")
-          socket.off("put grey background")
-          socket.off("put imossible grey")
           socket.off("who plays")
     
           navigate(`${basePath}/endgame`)
@@ -870,7 +921,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   playerIndex = 0
                 }
                 socket.emit("node checked", params.nodes[0], false, actualPlayerIndex, room, playerIndex)
-                socket.emit("put correct background", socket.id)
+                putCorrectBackground()
                 touchedPlayer=-1
                 askedPersons.push(person)
                 askedWrongLocal=false
@@ -908,7 +959,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 console.log("CE N'EST PAS UN BOT")
                 //@ts-ignore
                 socket.emit("ask player", params.nodes[0], players[touchedPlayer].id, players.find((p) => p.id === socket.id, actualPlayerIndex))
-                socket.emit("put correct background", socket.id)
+                putCorrectBackground()
                 touchedPlayer=-1
                 setPlayerTouched(-1)
               }
@@ -942,14 +993,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   }
                   if(!works){
                     socket.emit("node checked", params.nodes[0], works, playerIndex, room, actualPlayerIndex)
-                    socket.emit("put correct background", socket.id)
+                    putCorrectBackground()
                     socket.emit("asked wrong", players[actualPlayerIndex])
                     touchedPlayer=-1
                     setPlayerTouched(-1)
                     return
                   }
                   if (i == players.length - 1){
-                    socket.emit("put correct background", socket.id)
+                    putCorrectBackground()
                     await delay(1000)
                     socket.emit("end game", actualPlayerIndex, room)
                     return
@@ -959,7 +1010,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 }
                 touchedPlayer=-1
                 setPlayerTouched(-1)
-                socket.emit("put correct background", socket.id)
+                putCorrectBackground()
                 await delay(1000)
                 socket.emit("end game", actualPlayerIndex, room)
               }
@@ -968,71 +1019,78 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         } 
         else{
           //@ts-ignore
-          const person = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
-          if (person != undefined){
+          const personTest = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
+          const node = nodes.get().find((n: any) => params.nodes[0] == n.id)
+          if(node == undefined)return;
+          if (personTest != undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
             let works = true
+            const statsTime = elapsedTime;
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
-              const test = tester.Works(person)
-              //@ts-ignore
-              const node = nodes.get().find((n) => params.nodes[0] == n.id)
+              const test = tester.Works(personTest)
+                //@ts-ignore
               if (node!=undefined){
-                if (!node.label.includes(positionToEmoji(index, test))){
-                  networkData.nodes.update({id: params.nodes[0], label: node.label + positionToEmoji(index, test)})
-                  await delay(500)
-                  if(!test){
-                    works = false
-                  }
-                  if (index == indices.length - 1 && works){
-
-                    if (user!=null){
-                      setWinnerData(user)
-                      setNetworkDataData(networkData)
-                    }
-                    cptTour ++;
-                    setNbCoupData(cptTour)
-                    setElapsedTime(0)
-                    endgame = true
-
-                    try{
-                      if(user && isLoggedIn){
-                        if(solo){
-                          if(isDaily){
-                            // TODO: verif difficulté et add les stats
-                            // TODO: verif pour facile et difficile, si réussi en one shot ou non
-                            if(isEasy){
-                              manager.userService.addEasyEnigmaStats(user.pseudo, 1, elapsedTime);
-                            }
-                            else{
-                              manager.userService.addHardEnigmaStats(user.pseudo, 1, elapsedTime);
-                            }
-                          }
-                          else{
-                            // add stats mastermind
-                            if(user && user.mastermindStats){
-                              manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
-                            }
-                          }
-                        }
-                      }
-                    }
-                    catch(error){
-                      console.log(error);
-                    }
-                    navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
-                  }
-                  
-                }
+                const nodeNode = nodes.get().find((n: any) => params.nodes[0] == n.id)
+                if(nodeNode == undefined)return;
+                networkData.nodes.update({id: params.nodes[0], label: nodeNode.label + positionToEmoji(index, test)})
+                await delay(500);
               }
               index++
             }
-            addToHistory(person.getName() + " n'est pas le tueur !"); //TODO préciser le nombre d'indice qu'il a de juste
+            if (person !== null && person.getId() === params.nodes[0]){
+              if (user!=null){
+                setWinnerData(user)
+                setNetworkDataData(networkData)
+              }
+              cptTour ++;
+              setNbCoupData(cptTour)
 
-            cptTour ++; // On Incrémente le nombre de tour du joueur
-            const tour = cptTour+1;
-            addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
-            changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+              try{
+                console.log("time: " + testTemps)
+                if(user && isLoggedIn){
+                  if(solo){
+                    if(isDaily){
+                      // TODO: verif difficulté et add les stats
+                      // TODO: verif pour facile et difficile, si réussi en one shot ou non
+                      if(isEasy){
+                        manager.userService.addEasyEnigmaStats(user.pseudo, 1, testTemps - 0.5);
+                      }
+                      else{
+                        manager.userService.addHardEnigmaStats(user.pseudo, 1, testTemps - 0.5);
+                      }
+                    }
+                    else{
+                      // add stats mastermind
+                      if(user && user.mastermindStats){
+                        manager.userService.addMastermindStats(user.pseudo, cptTour, testTemps - 0.5);
+                      }
+                    }
+                  }
+                }       
+                else{
+                  // add stats mastermind
+                  if(user && user.mastermindStats){
+                    manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
+                  }
+                }
+                testFirst = true
+                setElapsedTime(0)
+                endgame = true                    
+                navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+              }      
+              catch(error){
+                console.log(error);
+              }
+              navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+            }
+            else{
+              addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+              cptTour ++; // On Incrémente le nombre de tour du joueur
+              const tour = cptTour+1;
+              addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
+              changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+            }
           }
         }
       }
@@ -1053,12 +1111,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  function putGreyBackgroud(index: number){
-    /*
-    
-    */
   }
 }
 

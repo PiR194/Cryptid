@@ -5,6 +5,8 @@ import Player from '../model/Player';
 import { useTheme } from '../Style/ThemeContext';
 import PersonStatus from './PersonStatus';
 import Person from '../res/img/Person.png'
+import BotImg from '../res/img/bot.png'
+
 import { socket } from '../SocketConfig';
 
 
@@ -16,13 +18,15 @@ interface PlayerListProps {
     setPlayerTouched: (newPlayerTouch: number) => void;
     playerIndex: number
     askedWrong: boolean
+    greyForEveryone: () => void
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex, askedWrong}) => {
+const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlayerTouched, playerIndex, askedWrong, greyForEveryone}) => {
     const theme = useTheme();
 
     function askEveryone(){
         if (!askedWrong){
+            greyForEveryone()
             setPlayerTouched(players.length)    
         }
     }
@@ -34,12 +38,10 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                     //@ts-ignore
                     players.map((player, index) => (
                         //player.id!=socket.id && 
-                        <PersonStatus img={player.profilePicture} 
+                        <PersonStatus img={player instanceof Player ? Person : BotImg} 
                                     state={Person} 
                                     key={index} 
-                                    name={player.pseudo 
-                                    + " " + 
-                                    positionToEmoji(index, true)} 
+                                    name={player.pseudo}
                                     playerTouched={playerTouched} 
                                     setPlayerTouched={setPlayerTouched} 
                                     index={index} 
@@ -65,8 +67,9 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                             borderRadius: "10px",
                             border: "solid 1px",
                             textAlign: "center",
+                            color: "white",
                             padding: "10px"}}
-                            onClick={() => askEveryone()}>Guess !</button>
+                            onClick={() => askEveryone()}>Ask everyone</button>
                         ):
                         (
                             <button style={{ 
@@ -75,6 +78,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                                 borderRadius: "10px",
                                 border: "solid 1px",
                                 textAlign: "center",
+                                color: "white",
                                 padding: "10px"}}
                             onClick={() => askEveryone()}>Ask everyone</button>
                         )

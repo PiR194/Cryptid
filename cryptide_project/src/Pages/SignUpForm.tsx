@@ -9,7 +9,6 @@ import {basePath} from "../AdressSetup"
 
 const SignUp = () => {
     const navigate = useNavigate(); 
-
     const [error, setError] = useState<string | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
 

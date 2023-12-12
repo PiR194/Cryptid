@@ -12,6 +12,7 @@ import { BsFillPersonPlusFill } from 'react-icons/bs';
 
 /* Images */
 import logo from '../res/img/logo2_preview_rev_1.png';
+import defaultImg from '../res/img/Person.png';
 
 /* Components */
 import LanguageNavItem from './LangNavItem';
@@ -26,19 +27,23 @@ import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 import {basePath} from "../AdressSetup"
+import Player from '../model/Player';
+import { set } from 'lodash';
 
 // @ts-ignore
 function AppNavbar({changeLocale}) {
     const theme = useTheme();
-    const {user, isLoggedIn, logout} = useAuth();
-
     const navigate = useNavigate();
-
+    const {isLoggedIn, login, user, setUserData, manager } = useAuth();
 
     function navigateToProfile(){
         navigate(`${basePath}/profile`)
     }
 
+    function navigateToLogin(){
+        navigate(`${basePath}/login`)
+    }
+    
     function navigateToHome(){
         navigate(`${basePath}/`)
     }
@@ -64,40 +69,27 @@ function AppNavbar({changeLocale}) {
                     </Nav>
                     <div className='leftdiv'>
                         <Nav className="ml-auto navbar-title-dd">
-                        {isLoggedIn ? (
-                            <NavDropdown
-                                title={<span style={{ color: theme.colors.text }}>Menu <BiDoorOpen /></span>}
-                                id="basic-nav-dropdown"
-                                align="end"
-                                drop='down-centered'
-                            >
-                            <NavDropdown.Item onClick={navigateToProfile}>Profil</NavDropdown.Item>
-                            <LanguageNavItem
-                                countryCode="FR"
-                                languageKey="languageSelector.french"
-                                onClick={() => changeLocale('fr')}
-                            />
-                            <LanguageNavItem
-                                countryCode="GB"
-                                languageKey="languageSelector.english"
-                                onClick={() => changeLocale('en')}
-                            />
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item onClick={logout}>Déconnexion</NavDropdown.Item>
-                            </NavDropdown>
-                        ) : (
-                            <>
-                            <Nav.Link href={`${basePath}/login`} className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
-                                <BiLogInCircle />
-                                <FormattedMessage id="log_in" />
-                            </Nav.Link>
-                            <Nav.Link href={`${basePath}/signup`} className='navbar-title-dd' style={{ backgroundColor: theme.colors.secondary }}>
-                                <BsFillPersonPlusFill />
-                                <FormattedMessage id="sign_up" />
-                            </Nav.Link>
-                            <LangDropDown changeLocale={changeLocale}/>
-                            </>
-                        )}
+                            {isLoggedIn ? (
+                                <>
+                                    {/* Boutou qui lors du clique nous redirige vers le profile */}
+                                    <Nav.Link onClick={navigateToProfile} style={{ color: theme.colors.text }}>
+                                        <span>
+                                            <img src={user? user.profilePicture : defaultImg} height="50" width="50" alt="profile"/>
+                                            {user && user.pseudo}
+                                        </span>
+                                    </Nav.Link>
+                                </>
+                            ):(
+                                <>
+                                    {/* Bouton qui lors du clique nous redirige vers la connexion */}
+                                    <Nav.Link onClick={navigateToLogin} style={{ color: theme.colors.text }}>
+                                        <span>
+                                            <img src={user?.profilePicture} height="50" width="50" alt="profile"/>
+                                            {user && user.pseudo}
+                                        </span>
+                                    </Nav.Link>
+                                </>
+                            )}
                         </Nav>
                     </div>
                 </Navbar.Collapse>

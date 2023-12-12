@@ -88,8 +88,6 @@ class SessionController {
                                             nbWins: nbWinsOL, 
                                             ratio: ratioOL};
             
-
-            console.log("[" + hour + ":" + minutes + "] " + req.session.user.pseudo + " have a session.");
             res.status(200).json({ user: req.session.user });
         }
         catch(error){

@@ -1,4 +1,4 @@
-import React,  {useEffect} from 'react';
+import React,  {useEffect, useState} from 'react';
 
 
 /* Style */
@@ -10,6 +10,9 @@ import { useTheme } from '../Style/ThemeContext';
 import Person from '../res/img/Person.png';
 import Leave from '../res/icon/leave.png';
 import Replay from '../res/icon/replay.png';
+
+/* sound */
+import WinSound from '../res/Audio/win.wav';
 
 /* Component */
 import PersonStatus from '../Components/PersonStatus';
@@ -63,6 +66,11 @@ function EndGame() {
             }
         }
     };
+
+    useEffect(() => {
+        handleWinSound();
+    }, []);
+
 
     useEffect(() => {
         const container = document.getElementById("vis-graph");
@@ -126,14 +134,27 @@ function EndGame() {
         indicenull = true;
     }
 
+    //* Sound
+    const [playTurnSound, setPlayTurnSound] = useState(false);
+
+    const handleWinSound = () => {
+        setTimeout(() => { // on attend 1s avant de jouer le son
+            setPlayTurnSound(true);
+        }, 300);
+
+        setTimeout(() => { // on attend 2s avant de remettre le son à false
+        setPlayTurnSound(false);
+        }, 2000);
+    };
     return (
         <div>
+            {playTurnSound && <audio src={WinSound} autoPlay />}
             {!IsSolo ? (
                 <div>
                     <div className="head">
                         <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                             <h1>{winner?.pseudo} a gagné !</h1>
-                            <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                            <h3>Le coupable était <u>{person?.getName()}</u></h3>
                         </header>
                     </div>
                     <div className='winner'>
@@ -146,15 +167,13 @@ function EndGame() {
                             <BigButtonNav dest="/play" img={Leave}/>
                         </div> */}
                         <div className="losingPlayersContainer">
-                            {losingPlayers.map((player, index) => (
-                                <div className="playerContainer" key={index}>
-                                    {player.id !== winner?.id && (
-                                        <div>
-                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
-                                            {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
-                                        </div>
-                                    )}
-                                </div>
+                            {players.map((player, index) => (
+                                player.id !== winner?.id && (
+                                    <div className="playerContainer" key={index}>
+                                        <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
+                                        {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
+                                    </div>
+                                )
                             ))}
                         </div>
                     </div>
@@ -164,7 +183,7 @@ function EndGame() {
                 <div className="head">
                             <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                                 <h1>Vous avez gagné !</h1>
-                                <h3>Le tueur était <u>{person?.getName()}</u></h3>
+                                <h3>Le coupable était <u>{person?.getName()}</u></h3>
                             </header>
                 </div>
                 <div className='winner'>
