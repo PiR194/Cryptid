@@ -22,6 +22,10 @@ server.listen(80, () => {
   console.log('Serveur Socket.IO écoutant sur le port 80');
 });
 
+app.get('/', (req, res) => {
+  res.send('Bienvenue sur votre application !'); // Envoyez la réponse souhaitée ici
+});
+
 io.on('connection', (socket) => {
   console.log(socket.id);  
 
