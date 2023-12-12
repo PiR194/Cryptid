@@ -27,6 +27,11 @@ import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
 import JSZip from 'jszip';
 
+/* Sound */
+import turnSound from "../res/Audio/turn.mp3";
+import winSound from "../res/Audio/win.wav";
+
+
 /* nav */
 import { Link, Navigate, useNavigate, useNavigationType } from 'react-router-dom';
 
@@ -300,12 +305,35 @@ const InGame = ({locale, changeLocale}) => {
       window.open(url);
     };
   
-  const [SwitchEnabled, setSwitchEnabled] = useState(false)
+  // const [SwitchEnabled, setSwitchEnabled] = useState(false)
   const allIndices = Stub.GenerateIndice()
   const { indice, players, actualPlayerIndex} = useGame();
 
   const nbPlayer = players.length;
   const navdeduc = 'deduc?actualId=' + actualPlayerIndex + '&nbPlayer=' + nbPlayer;
+
+
+  //* Sound
+  const [playTurnSound, setPlayTurnSound] = useState(false);
+  const [soundPreference, setSoundPreference] = useState(true); // utilisateur
+
+  const handleSoundPreferenceChange = () => {
+    setSoundPreference(!soundPreference);
+    console.log("changement des options du son : "+ soundPreference)
+  };
+
+  const handleTurn = () => {
+    
+    console.log("etat normal du sound : " + soundPreference)
+    if (soundPreference) {
+      setPlayTurnSound(true);
+      
+      setTimeout(() => {
+        setPlayTurnSound(false);
+      }, 2000);
+    }
+  };
+
 
     return (
       <div id="mainDiv">
@@ -336,8 +364,10 @@ const InGame = ({locale, changeLocale}) => {
                           setPutImposssibleGrey={setPutImposssibleGreyData}
                           putCorrectBackground={putCorrectBackground}
                           putGreyBackground={putGreyBackgroud}
-                          putImposssibleGrey={putImposssibleGrey}/>
+                          putImposssibleGrey={putImposssibleGrey}
+                          handleTurn={handleTurn}/>
         </div>
+        {playTurnSound && <audio src={turnSound} autoPlay />}
 
 
         {IsSolo && !isDaily &&
@@ -457,19 +487,6 @@ const InGame = ({locale, changeLocale}) => {
           }
         </div>
 
-{/*
-        <Offcanvas show={showP} 
-                  onHide={handleCloseP}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Joueurs</Offcanvas.Title>
-            <h3>Il y a {players.length} joueurs</h3>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-
-          </Offcanvas.Body>
-        </Offcanvas>
-          */}
-
           { !IsSolo &&
             <div className='playerlistDiv'>
               <PlayerList players={players} setPlayerTouched={handleSetPlayerTouched} playerTouched={playerTouched} playerIndex={playerIndex} askedWrong={askedWrong} greyForEveryone={() => {}}/>
@@ -486,7 +503,6 @@ const InGame = ({locale, changeLocale}) => {
             <Offcanvas.Title>Indice</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            {/* Possède les cheveux noir <u>ou</u> joue au basket */}
             {indice?.ToString(locale)}
           </Offcanvas.Body>
         </Offcanvas>
@@ -502,31 +518,12 @@ const InGame = ({locale, changeLocale}) => {
             <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav className="me-auto">
-                <NavDropdown 
-                title={<span><HiLanguage/> Language </span>}
-                className="navbar-title" id="basic-nav-dropdown">
-                    <NavDropdown.Item onClick={() => changeLocale('fr')}> 
-                        <FormattedMessage id="languageSelector.french"/> 
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => changeLocale('en')}> 
-                        <FormattedMessage id="languageSelector.english"/> 
-                    </NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
-
-            <label>
-              <Switch checked={SwitchEnabled} onChange={setSwitchEnabled}/>
-              <p>Afficher les noeuds possibles</p>
+            <label style={{ display:'flex'}}>
+              <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
+              <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
             </label>
-
           </Offcanvas.Body>
         </Offcanvas>
-        {/*
-        <div id="endgamebutton" > {/*  tmp 
-          <ButtonImgNav dest="/endgame" img={Leave} text='endgame'/>
-        </div>
-      */}
       </div>
     );
   };
