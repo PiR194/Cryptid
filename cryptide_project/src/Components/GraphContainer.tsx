@@ -136,7 +136,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
-        console.log(socket2.id)
+        console.log(socket2.connected)
     }, 500);
 
     socket2.on('connect', () => {
