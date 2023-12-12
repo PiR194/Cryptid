@@ -25,6 +25,9 @@ import MGlass from "../res/icon/magnifying-glass.png";
 import Param from "../res/icon/param.png";
 import Info from "../res/icon/infoGreen.png"; //todo changer la couleur de l'icon
 import { useAuth } from '../Contexts/AuthContext';
+import { Spinner } from 'react-bootstrap';
+import Reset from '../res/icon/reset.png';
+import Ceye from '../res/icon/hidden.png';
 
 
 //@ts-ignore
@@ -75,6 +78,7 @@ function InfoPage({locale, changeLocale}) {
                 <li><Link to="#composants-du-jeu"><span><FormattedMessage id="info.title.composant"/></span></Link></li>
                 <li><Link to="#objectif-du-jeu"><span><FormattedMessage id="info.title.objectif"/></span></Link></li>
                 <li><Link to="#deroulement-du-jeu"><span><FormattedMessage id="info.title.deroulement"/></span></Link></li>
+                <li><Link to="#deroulement-du-jeu"><span>Mode de jeu spéciaux</span></Link></li>
                 <li><Link to="#indice-possible"><span><FormattedMessage id="info.title.indice_possible"/></span></Link></li>
             </ul>
         </div>
@@ -178,12 +182,24 @@ function InfoPage({locale, changeLocale}) {
                             <img src={Param} alt="paramètres" height='40'/>
                         </button>
                         <p>
-                            Le bouton "<b>Paramètre</b>" permet l'affichage et la gestion de différent paramètres de la partie, comme par exemple le language, l'aide ... .
+                            Le bouton "<b>Paramètre</b>" permet l'affichage et la gestion de différent paramètres de la partie, comme par exemple l'option d'activé ou non le effect sonore. Il est aussi possible de choisir le nombre de noeud du mode de jeu "Enigme" à l'aide de ce bouton.
                         </p>
                     </div>
-                    <Alert variant='danger'>
-                        Attention, cette partie ne peut pas être complétée tant que tout les paramètres n'ont pas été choisis !
-                    </Alert>
+                </li>
+                <li>
+                <div className='LiInterfaceDisplay'>
+                    <button className='button'
+                    style={{ 
+                        backgroundColor: theme.colors.tertiary,
+                        borderColor: theme.colors.secondary,
+                        margin:"0 20px"
+                    }}>
+                        <img src={Reset} alt="paramètres" height='40'/>                 
+                    </button>
+                    <p>
+                        Le bouton "<b>Reset</b>" permet de réinitialiser l'état du graphe actuel. Si jamais vous avez trop déplacé ce dernier, ou que vous souhaitre que sont affichage soit plus propre, ce bouton est fait pour vous !
+                    </p>
+                </div>
                 </li>
                 <li>
                     <div className='LiInterfaceDisplay'>
@@ -197,9 +213,6 @@ function InfoPage({locale, changeLocale}) {
                         </button>
                         <p>
                             Le bouton "<b>Information</b>" permet de rediriger vers la page de règle du jeu (celle ci). 
-                            {/*
-                                //! mais est ce que nous devons rediriger sur les indices possibles ?
-                            */} 
                         </p>
                     </div>
                 </li>
@@ -215,12 +228,9 @@ function InfoPage({locale, changeLocale}) {
                         </button>
                     
                         <p>
-                            Le bouton "<b>Fiche de déduction d'indice</b>" permet l'affichage de tableau dynamic permettant, avec le déroulé de la partie, de déduire quels indices sont les plus probables.
+                            Le bouton "<b>Fiche de déduction d'indice</b>" permet l'affichage de tableau permettant, avec le déroulé de la partie, de déduire quels indices sont les plus probables pour chaque joueur.
                         </p>
                     </div>
-                    <Alert variant='danger'>
-                        Attention, cette partie ne peut pas être complétée tant que la page et l'algorithme dédié ne sont pas fait !
-                    </Alert>
                 </li>
                 <li>
                     <div className='LiInterfaceDisplay'>
@@ -235,6 +245,21 @@ function InfoPage({locale, changeLocale}) {
                     
                         <p>
                             Le bouton "<b>Indice personnel</b>" est le plus important, en effet il permet d'afficher quel est votre indice secret. Vous seul le connaissais ! Il va falloir ruser pour tromper vos amis et le garder secret le plus longtemps possible !
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <div className='LiInterfaceDisplay'>
+                        <button className='button'
+                            style={{ 
+                                backgroundColor: theme.colors.tertiary,
+                                borderColor: theme.colors.secondary,
+                                margin:"0 20px"
+                            }}>
+                            <img src={Ceye} alt="check" height="40"/>
+                        </button>
+                        <p>
+                            Le bouton "<b>Vision des derniers mouvements</b>" permet à l'utilisateur de visualiser les 5 derniers coup effectué. Il agit donc vraiment ocmme un outil visuel.
                         </p>
                     </div>
                 </li>
