@@ -22,6 +22,9 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
 
+import { io } from "socket.io-client";
+import { ADRESSE_WEBSERVER } from "../AdressSetup";
+
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
   handleShowTurnBar: (shouldShowTurnBar: boolean) => void
@@ -126,6 +129,20 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     // Nettoyez l'intervalle lorsque le composant est démonté
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+
+    // Démarrez le timer au montage du composant
+    const intervalId = setInterval(() => {
+        const socket2 = io(ADRESSE_WEBSERVER);
+        console.log(socket2.id)
+    }, 500);
+
+    // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, []);
+
+
 
 
   useEffect(() => {
