@@ -125,7 +125,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     // Nettoyez l'intervalle lorsque le composant est démonté
     return () => clearInterval(intervalId);
-  }, [elapsedTime, endgame]);
+  }, []);
 
 
   useEffect(() => {
