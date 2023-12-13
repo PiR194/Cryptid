@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
 
 // Middleware pour la gestion des erreurs 404
 app.use((req, res) => {
-  console.log(req)
+  console.log(req.url)
   res.status(404).send('Page non trouvée');
 });
 
