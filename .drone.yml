@@ -38,8 +38,8 @@ steps:
     build:
       context: .
     environment:
-        IMAGENAME: sqlite3:latest
-        CONTAINERNAME: sqlite3
+        IMAGENAME: mysql:latest
+        CONTAINERNAME: mysql
         COMMAND: create
         OVERWRITE: true
         PRIVATE: true
