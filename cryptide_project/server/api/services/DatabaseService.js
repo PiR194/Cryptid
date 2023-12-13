@@ -18,10 +18,6 @@ class DatabaseService {
         const mysqlPassword = process.env.MYSQL_PASSWORD;
         const mysqlDatabase = process.env.MYSQL_DATABASE;
 
-        console.log(mysqlHost)
-        console.log(mysqlUser)
-        console.log(mysqlDatabase)
-
         const dbConfig = {
             host: mysqlHost,
             user: mysqlUser,
