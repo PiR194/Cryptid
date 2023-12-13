@@ -33,6 +33,7 @@ steps:
       sonar_token:
         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
 
+#
   - name: deploy-container-mysql
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     build:
