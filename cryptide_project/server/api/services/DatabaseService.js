@@ -21,7 +21,7 @@ class DatabaseService {
         console.log(mysqlHost)
         console.log(mysqlUser)
         console.log(mysqlDatabase)
-        
+
         const dbConfig = {
             host: mysqlHost,
             user: mysqlUser,
