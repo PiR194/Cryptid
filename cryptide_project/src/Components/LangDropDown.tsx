@@ -12,6 +12,12 @@ const localToCountryCode = (locale) => {
       return 'FR';
     case 'en':
       return 'GB';
+    case 'es':
+      return 'ES';
+    case 'pt':
+      return 'PT';
+    case 'ru':
+      return 'RU';
     default:
       return 'FR';
   }
@@ -40,7 +46,21 @@ const LangDropdown = ({ changeLocale, locale}) => {
         languageKey="languageSelector.english"
         onClick={() => changeLocale('en')}
       />
-      {/* Ajoutez d'autres langues selon vos besoins */}
+      <LanguageNavItem
+        countryCode="ES"
+        languageKey="languageSelector.espagnol"
+        onClick={() => changeLocale('es')}
+      />
+      <LanguageNavItem
+        countryCode="PT"
+        languageKey="languageSelector.portuguese"
+        onClick={() => changeLocale('pt')}
+      />
+      <LanguageNavItem
+        countryCode="RU"
+        languageKey="languageSelector.russian"
+        onClick={() => changeLocale('ru')}
+      />
     </NavDropdown>
   );
 };

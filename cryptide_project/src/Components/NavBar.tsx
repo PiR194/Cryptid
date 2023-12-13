@@ -48,17 +48,6 @@ function AppNavbar({changeLocale, locale}) {
         navigate(`${basePath}/`)
     }
 
-    // const [selectedLanguage, setSelectedLanguage] = useState('en');
-
-    // const languageOptions = [
-    //     { value: 'fr', label: 'Français' },
-    //     { value: 'en', label: 'English' },
-    //     { value: 'es', label: 'Español' },
-    //     { value: 'pr', label: 'Portugues' },
-    //     { value: 'ru', label: 'Blyat' }
-    // ];
-    
-
     return (
         <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
             <Container>
@@ -104,13 +93,6 @@ function AppNavbar({changeLocale, locale}) {
                         </Nav>
                     </div>
                 </Navbar.Collapse>
-                {/* <NavDropdown title={selectedLanguage} id="language-dropdown">
-                    {languageOptions.map((option) => (
-                        <NavDropdown.Item key={option.value} onSelect={() => setSelectedLanguage(option.value)}>
-                        {option.label}
-                        </NavDropdown.Item>
-                    ))}
-                </NavDropdown> */}
                 <LangDropDown changeLocale={changeLocale} locale={locale}/>
             </Container>
         </Navbar>

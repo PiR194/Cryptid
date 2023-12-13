@@ -78,7 +78,7 @@ function InfoPage({locale, changeLocale}) {
                 <li><Link to="#composants-du-jeu"><span><FormattedMessage id="info.title.composant"/></span></Link></li>
                 <li><Link to="#objectif-du-jeu"><span><FormattedMessage id="info.title.objectif"/></span></Link></li>
                 <li><Link to="#deroulement-du-jeu"><span><FormattedMessage id="info.title.deroulement"/></span></Link></li>
-                <li><Link to="#mode-de-jeu"><span>Modes de jeu spéciaux</span></Link></li>
+                <li><Link to="#mode-de-jeu"><span><FormattedMessage id="info.mdj"/></span></Link></li>
                 <li><Link to="#indice-possible"><span><FormattedMessage id="info.title.indice_possible"/></span></Link></li>
             </ul>
         </div>
