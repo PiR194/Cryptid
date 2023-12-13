@@ -32,11 +32,9 @@ class DatabaseService {
                     console.log(err)
                     reject(err);
                 } else {
-                    if (createTables == "true"){
-                        createTables(this.client)
-                    }
-                    else{
-                        createTables(this.client)
+                    if (createTables === "true"){
+                        this.createTables()
+                        console.log("create table")
                     }
                     resolve();
                 }
@@ -44,7 +42,7 @@ class DatabaseService {
         });
     }
 
-    async createTables(client){
+    async createTables(){
         try {
             // Requête SQL pour créer la table 'users'
             const createTableQuery = `
@@ -58,7 +56,7 @@ class DatabaseService {
             `;
         
             // Exécuter la requête SQL
-            await client.query(createTableQuery);
+            await this.client.query(createTableQuery);
 
             const createTableGameQuery = `
             CREATE TABLE IF NOT EXISTS games (
@@ -73,7 +71,7 @@ class DatabaseService {
             );
             `;
 
-            await client.query(createTableGameQuery);
+            await this.client.query(createTableGameQuery);
 
         }
         catch(error){
