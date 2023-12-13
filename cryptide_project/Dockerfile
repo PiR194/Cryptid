@@ -3,7 +3,7 @@ FROM node:14-alpine
 
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /app
-
+#
 # Copiez le package.json et le package-lock.json dans le conteneur
 COPY package*.json ./
 
