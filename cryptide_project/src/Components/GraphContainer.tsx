@@ -35,7 +35,7 @@ interface MyGraphComponentProps {
   addToHistory: (message : string) => void
   solo : boolean
   isDaily : boolean
-  isEasy: boolean
+  difficulty: string
   setNetwork: (network: Network) => void
   showLast: boolean
   setNetworkEnigme: (networkEnigme: Map<number, Pair<Indice, boolean>[]>) => void
@@ -90,7 +90,7 @@ let testFirst = false
 let testFirst2 = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, nbNodes, setChangeGraph}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, nbNodes, setChangeGraph}) => {
   let cptTour: number = 1
 
   //* Gestion du temps :
@@ -451,7 +451,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     if (isDaily){
       setNetworkEnigme(dailyEnigme)
-      if (!isEasy){
+      console.log(difficulty)
+      if (difficulty === "hard" || difficulty=== "intermediate"){
+        console.log(dailyEnigme)
         dailyEnigme.forEach((pairs, index) => {
           pairs.forEach((pair) => {
             //@ts-ignore
@@ -464,7 +466,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           })
         });
       }
-      else{
+      else if (difficulty === "easy"){
         if (firstHistory){
           firstHistory=false
           indices.forEach((indice, index) => {
@@ -757,7 +759,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     else {
       if (firstLap){
         firstLap=false
-        if (!isDaily){
+        if (solo && (difficulty === "intermediate" || !isDaily)){
           addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
         }
       }
@@ -1082,8 +1084,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                     if(isDaily){
                       // TODO: verif difficulté et add les stats
                       // TODO: verif pour facile et difficile, si réussi en one shot ou non
-                      if(isEasy){
+                      if(difficulty==="easy"){
                         manager.userService.addEasyEnigmaStats(user.pseudo, 1, testTemps - 0.5);
+                      }
+                      else if (difficulty === "intermediate"){
                       }
                       else{
                         manager.userService.addHardEnigmaStats(user.pseudo, 1, testTemps - 0.5);
@@ -1114,10 +1118,29 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
             }
             else{
-              addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
-              cptTour ++; // On Incrémente le nombre de tour du joueur
-              addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
-              changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+              if (isDaily){
+                if (difficulty==="intermediate"){
+                  addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+                  cptTour ++; // On Incrémente le nombre de tour du joueur
+                  addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
+                  changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+                }
+                else if (difficulty==="easy"){
+                  cptTour ++; // On Incrémente le nombre de tour du joueur
+                  changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+                }
+                else{
+                  navigate(`${basePath}/endgame?solo=true&daily=true`)
+                  setNetworkDataData(networkData)
+                  setWinnerData(null)
+                }
+              }
+              else{
+                  addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+                  cptTour ++; // On Incrémente le nombre de tour du joueur
+                  addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
+                  changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
+              }
             }
           }
         }

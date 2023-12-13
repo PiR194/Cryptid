@@ -37,7 +37,7 @@ interface GameContextProps {
   setTurnPlayerIndexData: (newTurnPlayerIndex: number) => void;
   setRoomData: (newRoom: string) => void;
   setOnlyFalseData: (newOnlyFalse: boolean) => void
-  setWinnerData: (winner: Player) => void
+  setWinnerData: (winner: Player | null) => void
   reset: () => void
   setDailyEnigmeData: (map: Map<number, Pair<Indice, boolean>[]>) => void
   setNbCoupData: (newNbCoup : number) => void
@@ -131,7 +131,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setOnlyFalse(newOnlyFalse)
   }
 
-  const setWinnerData = (winner: Player) =>{
+  const setWinnerData = (winner: Player | null) =>{
     setWinner(winner)
   }
 

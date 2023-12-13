@@ -92,11 +92,12 @@ const InGame = ({locale, changeLocale}) => {
   }
 
 
-  let isEasy: boolean = true
-  const isEasytmp = params.get('easy');
-  if (isEasytmp == "false"){
-    isEasy=false
+  let difficulty: string = "";
+  let difficultyTmp = params.get('difficulty')
+  if (difficultyTmp !== null){
+    difficulty=difficultyTmp
   }
+
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -360,7 +361,7 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           isDaily={isDaily} 
-                          isEasy={isEasy}
+                          difficulty={difficulty}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
@@ -386,7 +387,7 @@ const InGame = ({locale, changeLocale}) => {
         {playTurnSound && <audio src={turnSound} autoPlay />}
 
 
-        {IsSolo && !isDaily &&
+        {IsSolo && (!isDaily || difficulty !== "hard") &&
             <div className='nbLaps' style={{ 
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
@@ -395,7 +396,7 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        {(!isDaily || (isDaily && isEasy)) &&
+        {(!isDaily || (isDaily && (difficulty==="easy" || difficulty==="intermediate"))) &&
           <div className='historique' id="history-container">
               {history.map((item, index) => (
                   <div key={index}>{item}</div>
