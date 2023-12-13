@@ -14,6 +14,7 @@ class DatabaseService {
         const mysqlUser = process.env.MYSQL_USER;
         const mysqlPassword = process.env.MYSQL_PASSWORD;
         const mysqlDatabase = process.env.MYSQL_DATABASE;
+        const createTables = process.env.CREATETABLES
 
         const dbConfig = {
             host: mysqlHost,
@@ -27,15 +28,53 @@ class DatabaseService {
 
             this.client.connect((err) => {
                 if (err) {
-                    console.log("ERROR")
                     console.log(err)
                     reject(err);
                 } else {
-                    console.log("pas err")
+                    if (createTables == true){
+                        createTables(this.client)
+                    }
                     resolve();
                 }
             });
         });
+    }
+
+    async createTables(client){
+        try {
+            // Requête SQL pour créer la table 'users'
+            const createTableQuery = `
+              CREATE TABLE IF NOT EXISTS users (
+                idUser INT AUTO_INCREMENT PRIMARY KEY,
+                pseudo VARCHAR(50) NOT NULL,
+                password VARCHAR(60) NOT NULL,
+                profilePicture LONGBLOB,
+                createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              );
+            `;
+        
+            // Exécuter la requête SQL
+            await client.query(createTableQuery);
+
+            const createTableGameQuery = `
+            CREATE TABLE IF NOT EXISTS games (
+                idGame INT AUTO_INCREMENT PRIMARY KEY,
+                idUser INT NOT NULL,
+                gameType VARCHAR(50) CHECK(gameType IN ('mastermind','enigme_facile','enigme_moyenne','enigme_difficile','multijoueur')),
+                win INT CHECK(win IN (0,1)) DEFAULT 0,
+                score INT NOT NULL DEFAULT 0,
+                time REAL NOT NULL DEFAULT 0,
+                playedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (idUser) REFERENCES users(idUser)
+            );
+            `;
+
+            await client.query(createTableGameQuery);
+
+        }
+        catch(error){
+            console.log(error)
+        }
     }
 
     async disconnect(){
