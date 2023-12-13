@@ -80,8 +80,7 @@ steps:
         COMMAND: create
         OVERWRITE: true
         #PRIVATE: true
-        CODEFIRST_CLIENTDRONE_ENV_BASEPATH:
-          from_secret: "/containers/Crypteam-website"
+        CODEFIRST_CLIENTDRONE_ENV_BASEPATH: "/containers/Crypteam-website"
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
     depends_on: [ container-web ]
     when:
@@ -120,6 +119,7 @@ steps:
           from_secret: MYSQL_PASSWORD
         CODEFIRST_CLIENTDRONE_ENV_MYSQL_DATABASE:
           from_secret: MYSQL_DATABASE
+        CODEFIRST_CLIENTDRONE_ENV_CREATETABLES: "true"
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
     depends_on: [ container-api ]
     when:
