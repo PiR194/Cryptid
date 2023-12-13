@@ -3,9 +3,6 @@ const path = require('path');
 const { rejects } = require('assert');
 
 class DatabaseService {
-    constructor(){
-        this.db_name = "socialgraph";
-    }
 
     // ----------------------------------------------------
     // ------------------- UTILITAIRE ---------------------
