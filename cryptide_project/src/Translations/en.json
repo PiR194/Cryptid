@@ -72,6 +72,8 @@
     "navbar.presentation":"Presentation",
     "navbar.info":"Information",
 
+    "round" : "Round",
+
     "play.jouerseul": "Play alone",
     "play.enigme": "Solve an enigma",
     "play.enigme.easy": "Easy",

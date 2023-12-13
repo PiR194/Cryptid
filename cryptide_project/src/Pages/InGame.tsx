@@ -375,7 +375,7 @@ const InGame = ({locale, changeLocale}) => {
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
-              Tour : {cptTour}
+              <FormattedMessage id='round'/> : {cptTour}
             </div>
         }
         

@@ -71,14 +71,13 @@
     "navbar.presentation":"Présentation",
     "navbar.info":"Informations",
 
-
-    "easy" : "Facile",
     "hard" : "Difficile",
     "medium" : "Intermédiaire",
     "strong" : "Fort",
     "weak" : "Faible",
     "none" : "Aucun",
 
+    "round" : "Tour",
 
     "play.jouerseul": "Jouer seul",
     "play.enigme": "Résoudre une énigme",
