@@ -106,7 +106,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
       setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
-      settempsData(elapsedTime)
+      settempsData(testTemps)
       testTemps += 0.5
 
       cptBug ++
