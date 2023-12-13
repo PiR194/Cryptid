@@ -27,6 +27,7 @@ class DatabaseService {
 
             this.client.connect((err) => {
                 if (err) {
+                    console.log("ERROR")
                     console.log(err)
                     reject(err);
                 } else {
