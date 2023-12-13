@@ -21,6 +21,9 @@ import { json } from "body-parser";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
+import GameCreator from "../model/GameCreator";
+import Stub from "../model/Stub";
+import EnigmeDuJourCreator from "../model/EnigmeDuJourCreator";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -50,6 +53,10 @@ interface MyGraphComponentProps {
   putGreyBackground : () => void
   putCorrectBackground : () => void
   putImposssibleGrey : () => void
+  setChangeGraph : (func: (nbNodes: number) => void) => void
+
+  nbNodes: number
+
 
   handleTurn :() => void
 }
@@ -80,16 +87,17 @@ let cptUseEffect = 0
 let testPlayers: Player[] = []
 let testTemps = 0
 let testFirst = false
+let testFirst2 = true
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn}) => {
-  let cptTour: number = 0
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, nbNodes, setChangeGraph}) => {
+  let cptTour: number = 1
 
   //* Gestion du temps :
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setIndicesData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps, setPersonData, setPersonNetworkData, setDailyEnigmeData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -109,10 +117,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       settempsData(testTemps)
       testTemps += 0.5
 
-      cptBug ++
-      if (cptBug > 10){
-        cptBug = 0
-        socket.emit("who plays", room)
+      if (!solo){
+        cptBug ++
+        if (cptBug > 10){
+          cptBug = 0
+          socket.emit("who plays", room)
+        }
       }
 
 
@@ -364,9 +374,28 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }, [importToJSON])
 
+  const changeGraph = (nbNodes: number) => {
+    //todo différencier les deux
+    const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, nbNodes)
+    setPersonData(choosenPerson)
+    setPersonNetworkData(networkPerson)
+    setIndicesData(choosenIndices)
+    const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
+    setDailyEnigmeData(map)
+    addToHistory("<----- [Tour " + 1  +"/"+networkPerson.getPersons().length + "] ----->");
+    changecptTour(1)
+    testTemps=0
+    
+
+  }
+
   useEffect(() => {
     if (personNetwork == null){
       return
+    }
+
+    if (solo){
+      setChangeGraph(() => changeGraph)
     }
     const graph = GraphCreator.CreateGraph(personNetwork)
 
@@ -1087,8 +1116,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             else{
               addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
               cptTour ++; // On Incrémente le nombre de tour du joueur
-              const tour = cptTour+1;
-              addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
+              addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
               changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
             }
           }
@@ -1101,7 +1129,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerTouched(-1)
       }
     });
-  }, []); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
+  }, [personNetwork]); // Le tableau vide signifie que cela ne s'exécutera qu'une fois après le premier rendu
 
   return (
     <>
