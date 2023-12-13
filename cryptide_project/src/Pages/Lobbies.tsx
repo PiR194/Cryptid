@@ -136,25 +136,21 @@ function Lobbies() {
                 </button>
             </div>
 
-
                 {filteredLobbiesToShow.length === 0 ? (
-                    <div style={{border:'solid 2px blue', borderRadius:'15px', boxShadow:'5px 5px 5px rgb(246, 246, 246)', padding:'20px', margin:'20px'}}>
-                        <h3><b>Il n'y a aucun lobby disponible</b></h3>
-                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créez en un !</button>
-                    </div>
-                ) : (
-                    <div className="lobbyList">
-                        {filteredLobbiesToShow.map((lobby, index) => (
-                            <LobbyContainer
-                                key={index}
-                                roomNum={lobby.roomNum}
-                                HeadPlayer={lobby.headPlayer}
-                                nbPlayer={lobby.nbPlayer}
-                                setFirst={setFirstData}
-                                started={lobby.started}
-                            />
-                        ))}
-                    </div>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créer une partie</button>
+                    ) : (
+                        <div className="lobbyList">
+                            {filteredLobbiesToShow.map((lobby, index) => (
+                                <LobbyContainer
+                                    key={index}
+                                    roomNum={lobby.roomNum}
+                                    HeadPlayer={lobby.headPlayer}
+                                    nbPlayer={lobby.nbPlayer}
+                                    setFirst={setFirstData}
+                                    started={lobby.started}
+                                />
+                            ))}
+                        </div>
                 )}
         </div>
     );
