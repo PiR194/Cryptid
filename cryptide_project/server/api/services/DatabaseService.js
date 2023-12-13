@@ -58,7 +58,7 @@ class DatabaseService {
             // Exécuter la requête SQL
             this.client.query(createTableQuery, (err, result) => {
                 if(err){
-                    reject(err)
+                    console.log(err)
                 }
                 else{
                     console.log("Table user créée")
@@ -80,7 +80,7 @@ class DatabaseService {
 
             this.client.query(createTableGameQuery, (err, result) => {
                 if(err){
-                    reject(err)
+                    console.log(err)
                 }
                 else{
                     console.log("Table user créée")
