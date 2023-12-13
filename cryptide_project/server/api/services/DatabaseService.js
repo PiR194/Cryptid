@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3');
+const mysql = require('mysql');
 const path = require('path');
 const { rejects } = require('assert');
 
@@ -11,17 +11,33 @@ class DatabaseService {
     // ------------------- UTILITAIRE ---------------------
     // ----------------------------------------------------
 
-    async connect(client){
-        const dbPath = path.resolve(__dirname, `../DB/${this.db_name}.db`)
+    async connect() {
+
+        const mysqlHost = process.env.MYSQL_HOST;
+        const mysqlUser = process.env.MYSQL_USER;
+        const mysqlPassword = process.env.MYSQL_PASSWORD;
+        const mysqlDatabase = process.env.MYSQL_DATABASE;
+
+        console.log(mysqlHost)
+        console.log(mysqlUser)
+        console.log(mysqlDatabase)
         
+        const dbConfig = {
+            host: mysqlHost,
+            user: mysqlUser,
+            password: mysqlPassword,
+            database: mysqlDatabase
+        };
+
         return new Promise((resolve, reject) => {
-            this.client = new sqlite3.Database(dbPath, 
-            sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
-            (err) => {
-                if(err){
+            this.client = mysql.createConnection(dbConfig);
+
+            this.client.connect((err) => {
+                if (err) {
+                    console.log(err)
                     reject(err);
-                }
-                else{
+                } else {
+                    console.log("pas err")
                     resolve();
                 }
             });
@@ -30,7 +46,7 @@ class DatabaseService {
 
     async disconnect(){
         return new Promise((resolve, reject) => {
-            this.client.close((err) => {
+            this.client.end((err) => {
                 if(err){
                     reject(err);
                 }
@@ -49,7 +65,7 @@ class DatabaseService {
     // Récupère l'utilisateur par son id
     async getUserByID(id){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT * FROM users WHERE idUser = ?', id, (err, result) => {
+            this.client.query('SELECT * FROM users WHERE idUser = ?', id, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -63,7 +79,7 @@ class DatabaseService {
     // Récupère l'utilisateur par son pseudo
     async getUserByPseudo(pseudo){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT * FROM users WHERE pseudo = ?', pseudo, (err, result) => {
+            this.client.query('SELECT * FROM users WHERE pseudo = ?', pseudo, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -78,7 +94,7 @@ class DatabaseService {
     async insertUser(user) {
         return new Promise((resolve, reject) => {
             const { pseudo, password } = user;
-            this.client.run('INSERT INTO users (pseudo, password) VALUES (?, ?)', [pseudo, password], (err, result) => {
+            this.client.query('INSERT INTO users (pseudo, password) VALUES (?, ?)', [pseudo, password], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -90,7 +106,7 @@ class DatabaseService {
 
     async deleteUser(userId){
         return new Promise((resolve, reject) => {
-            this.client.run('DELETE FROM users WHERE idUser=?', userId, (err, result) => {
+            this.client.query('DELETE FROM users WHERE idUser=?', userId, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -103,7 +119,7 @@ class DatabaseService {
 
     async updatePseudo(userId, newPseudo){
         return new Promise((resolve, reject) => {
-            this.client.run('UPDATE users SET pseudo = ? WHERE idUser = ?', newPseudo, userId, (err, result) => {
+            this.client.query('UPDATE users SET pseudo = ? WHERE idUser = ?', newPseudo, userId, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -116,7 +132,7 @@ class DatabaseService {
 
     async updatePassword(userId, newPassword){
         return new Promise((resolve, reject) => {
-            this.client.run('UPDATE users SET password = ? WHERE idUser = ?', newPassword, userId, (err, result) => {
+            this.client.query('UPDATE users SET password = ? WHERE idUser = ?', newPassword, userId, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -137,7 +153,7 @@ class DatabaseService {
             const currentDate = new Date().toISOString().slice(0, 10);
 
             // Récupérer les 5 meilleurs scores de la journée
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score ASC LIMIT 10',
                 "mastermind",
                 currentDate,
@@ -156,7 +172,7 @@ class DatabaseService {
         return new Promise((resolve, reject) => {
             const currentDate = new Date().toISOString().slice(0, 10);
 
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time ASC LIMIT 10',
                 enigmaLevel,
                 currentDate,
@@ -175,7 +191,7 @@ class DatabaseService {
         return new Promise((resolve, reject) => {
             const currentDate = new Date().toISOString().slice(0, 10);
     
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins ASC LIMIT 10',
                 "multijoueur", currentDate, 1,
                 (err, result) => {
@@ -222,7 +238,7 @@ class DatabaseService {
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time ASC LIMIT 10',
                 enigmaLevel,
                 firstDayOfWeek,
@@ -244,7 +260,7 @@ class DatabaseService {
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins ASC LIMIT 10',
                 "multijoueur",
                 firstDayOfWeek,
@@ -267,7 +283,7 @@ class DatabaseService {
     
     async getNbGamesMastermindByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
+            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -280,7 +296,7 @@ class DatabaseService {
 
     async getBestScoreMastermindByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
+            this.client.query('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -293,7 +309,7 @@ class DatabaseService {
 
     async getAvgNbTryMastermindByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT AVG(score) AS avgNbTry FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
+            this.client.query('SELECT AVG(score) AS avgNbTry FROM games WHERE idUser = ? AND gameType = ?', userId, "mastermind", (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -306,7 +322,7 @@ class DatabaseService {
 
     async addMastermindStats(userId, score, time){
         return new Promise((resolve, reject) => {
-            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "mastermind", 1, score, time, (err, result) => {
+            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "mastermind", 1, score, time, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -322,7 +338,7 @@ class DatabaseService {
 
     async getNbGamesOnlineByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, "multijoueur", (err, result) => {
+            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, "multijoueur", (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -335,7 +351,7 @@ class DatabaseService {
 
     async getNbWinsOnlineByUserId(userId){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', userId, "multijoueur", 1, (err, result) => {
+            this.client.query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', userId, "multijoueur", 1, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -348,7 +364,7 @@ class DatabaseService {
 
     async addOnlineStats(userId, win, time){
         return new Promise((resolve, reject) => {
-            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "multijoueur", win, 0, time, (err, result) => {
+            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, "multijoueur", win, 0, time, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -365,7 +381,7 @@ class DatabaseService {
 
     async getNbGamesEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
+            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -378,7 +394,7 @@ class DatabaseService {
 
     async getNbWinsEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', userId, enigmaLevel, 1, (err, result) => {
+            this.client.query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', userId, enigmaLevel, 1, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -391,7 +407,7 @@ class DatabaseService {
 
     async getBestScoreEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
+            this.client.query('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -404,7 +420,7 @@ class DatabaseService {
 
     async getAvgScoreEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT AVG(score) AS avgScore FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
+            this.client.query('SELECT AVG(score) AS avgScore FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -417,7 +433,7 @@ class DatabaseService {
 
     async getBestTimeEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT MIN(time) AS bestTime FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
+            this.client.query('SELECT MIN(time) AS bestTime FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -430,7 +446,7 @@ class DatabaseService {
 
     async getAvgTimeEnigmeByUserId(userId, enigmaLevel){
         return new Promise((resolve, reject) => {
-            this.client.get('SELECT AVG(time) AS avgTime FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
+            this.client.query('SELECT AVG(time) AS avgTime FROM games WHERE idUser = ? AND gameType = ?', userId, enigmaLevel, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -443,7 +459,7 @@ class DatabaseService {
 
     async addEasyEnigmaStats(userId, enigmaLevel, win, time){
         return new Promise((resolve, reject) => {
-            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
+            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
                 if(err){
                     reject(err);
                 }
@@ -458,7 +474,7 @@ class DatabaseService {
 
     async addHardEnigmaStats(userId, enigmaLevel, win, time){
         return new Promise((resolve, reject) => {
-            this.client.run('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
+            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', userId, enigmaLevel, win, 0, time, (err, result) => {
                 if(err){
                     reject(err);
                 }
