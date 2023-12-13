@@ -11,10 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY ./server/socket_io/server.js .
+COPY ./server.js .
 
 # Expose the port that the application will run on
-EXPOSE 443
+EXPOSE 3002
 
 # Command to run the application
-ENTRYPOINT ["node", "server.js"]
+CMD ["node", "server.js"]
