@@ -33,6 +33,25 @@ steps:
       sonar_token:
         from_secret: SECRET_SONAR_LOGIN_CRYPTIDE
 
+  - name: deploy-container-mysql
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    build:
+      context: .
+    environment:
+        IMAGENAME: mysql:latest
+        CONTAINERNAME: mysql
+        COMMAND: create
+        OVERWRITE: true
+        PRIVATE: false
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_ROOT_PASSWORD:    
+          from_secret: MYSQL_ROOT_PASSWORD
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_DATABASE:
+          from_secret: MYSQL_DATABASE
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_USER:
+          from_secret: MYSQL_USER
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_PASSWORD:
+          from_secret: MYSQL_PASSWORD
+        ADMINS: thomaschazot2,pierreferreira,baptistemarcel
 
   - name: container-web
     image: plugins/docker
@@ -45,8 +64,6 @@ steps:
         from_secret: SECRET_REGISTRY_USERNAME
       password:
         from_secret: SECRET_REGISTRY_PASSWORD
-    environment:
-       BASEPATH: "/containers/Crypteam-website"
     #depends_on: [ build ]
     when:
       branch:
@@ -62,11 +79,52 @@ steps:
         COMMAND: create
         OVERWRITE: true
         #PRIVATE: true
+        CODEFIRST_CLIENTDRONE_ENV_BASEPATH:
+          from_secret: "/containers/Crypteam-website"
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
     depends_on: [ container-web ]
     when:
       branch:
       - CI/CD
+
+  - name: container-api
+    image: plugins/docker
+    settings:
+      dockerfile: ./cryptide_project/server/api/Dockerfile
+      context: ./cryptide_project/server/api
+      registry: hub.codefirst.iut.uca.fr
+      repo: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/api
+      username:
+        from_secret: SECRET_REGISTRY_USERNAME
+      password:
+        from_secret: SECRET_REGISTRY_PASSWORD
+    #depends_on: [ build ]
+    when:
+      branch:
+      - CI/CD
+  
+  - name: deploy-api-containers
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+        IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/api:latest
+        CONTAINERNAME: server
+        COMMAND: create
+        OVERWRITE: true
+        #PRIVATE: true
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_HOST:
+          from_secret: MYSQL_HOST
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_USER:
+          from_secret: MYSQL_USER
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_PASSWORD:
+          from_secret: MYSQL_PASSWORD
+        CODEFIRST_CLIENTDRONE_ENV_MYSQL_DATABASE:
+          from_secret: MYSQL_DATABASE
+        ADMINS: thomaschazot2,pierreferreira,baptistemarcel
+    depends_on: [ container-api ]
+    when:
+      branch:
+      - CI/CD
+  
 #
   - name: container-server
     image: plugins/docker
