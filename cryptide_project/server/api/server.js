@@ -7,6 +7,7 @@ const path = require('path');
 const authRoutes = require(path.resolve(__dirname, './routes/AuthRoutes'));
 const DatabaseService = require(path.resolve(__dirname, './services/DatabaseService'));
 
+console.log(path.resolve(__dirname, './routes/AuthRoutes'))
 
 const app = express();
 const port = 3003;
