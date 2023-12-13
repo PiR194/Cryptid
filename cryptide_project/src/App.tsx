@@ -79,7 +79,7 @@ function App() {
           <IntlProvider locale={locale} messages={messages[locale]}>
             <ThemeProvider>
               <BrowserRouter>  
-                {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+                {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} locale={locale} />}
                 <Routes>
                 
                   <Route path={`${basePath}/`} element={<NewPlay/>} />

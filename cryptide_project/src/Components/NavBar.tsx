@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 /* Naviagtion */
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown  } from 'react-bootstrap';
 
 /* Lang */
 import { FormattedMessage } from 'react-intl';
@@ -31,7 +31,7 @@ import Player from '../model/Player';
 import { set } from 'lodash';
 
 // @ts-ignore
-function AppNavbar({changeLocale}) {
+function AppNavbar({changeLocale, locale}) {
     const theme = useTheme();
     const navigate = useNavigate();
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
@@ -47,6 +47,17 @@ function AppNavbar({changeLocale}) {
     function navigateToHome(){
         navigate(`${basePath}/`)
     }
+
+    // const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+    // const languageOptions = [
+    //     { value: 'fr', label: 'Français' },
+    //     { value: 'en', label: 'English' },
+    //     { value: 'es', label: 'Español' },
+    //     { value: 'pr', label: 'Portugues' },
+    //     { value: 'ru', label: 'Blyat' }
+    // ];
+    
 
     return (
         <Navbar expand="lg" className="custom-navbar" style={{ backgroundColor: theme.colors.primary }}>
@@ -93,6 +104,14 @@ function AppNavbar({changeLocale}) {
                         </Nav>
                     </div>
                 </Navbar.Collapse>
+                {/* <NavDropdown title={selectedLanguage} id="language-dropdown">
+                    {languageOptions.map((option) => (
+                        <NavDropdown.Item key={option.value} onSelect={() => setSelectedLanguage(option.value)}>
+                        {option.label}
+                        </NavDropdown.Item>
+                    ))}
+                </NavDropdown> */}
+                <LangDropDown changeLocale={changeLocale} locale={locale}/>
             </Container>
         </Navbar>
     );
