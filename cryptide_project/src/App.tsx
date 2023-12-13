@@ -37,6 +37,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* Internationnalisation */
 import messagesFr from './Translations/fr.json';
 import messagesEn from './Translations/en.json';
+import messagesEs from './Translations/es.json';
+import messagesPt from './Translations/pt.json';
+import messagesRu from './Translations/ru.json';
+
 
 /* Gestion d' erreur */
 import ErrorBoundary from './Error/ErrorBoundary';
@@ -50,6 +54,9 @@ import Tutorial from './Pages/Tutorial';
 const messages = {
   fr: messagesFr,
   en: messagesEn,
+  es: messagesEs,
+  pt: messagesPt,
+  ru: messagesRu,
 };
 
 function App() {
@@ -79,7 +86,7 @@ function App() {
           <IntlProvider locale={locale} messages={messages[locale]}>
             <ThemeProvider>
               <BrowserRouter>  
-                {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} />}
+                {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} locale={locale} />}
                 <Routes>
                 
                   <Route path={`${basePath}/`} element={<NewPlay/>} />

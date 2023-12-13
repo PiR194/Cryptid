@@ -1,6 +1,9 @@
 {
     "languageSelector.french": "Français",
     "languageSelector.english": "Anglais",
+    "languageSelector.espagnol": "Espagnol",
+    "languageSelector.portuguese": "Portugais",
+    "languageSelector.russian": "Russe",
 
     "home.histoire.title": "L'HISTOIRE",
     "home.histoire": "La cryptozoologie étudie les traces des monstres de légende : les cryptides. Yétis, Chupacabra, bête du gévaudan, Dahut, etc., sont des sujets très sérieux pour vous… Croisez les indices et soyez le premier à les découvrir!",
@@ -128,6 +131,15 @@
     "info.objectif.t3":"Contre-manipulation",
     "info.objectif.t3.text":"Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en posant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient une arme redoutable pour détourner l'accusation et semer la confusion.",
 
+    "info.interface":"Interface du jeu",
+    "info.interface.text":"Pour chacune des parties, vous aurez certains éléments d'interface à disposition :",
+    "info.interface.param":"Le bouton 'Paramètre' permet l'affichage et la gestion de différents paramètres de la partie, comme par exemple l'option d'activé ou non l' effect sonore. Il est aussi possible de choisir le nombre de nœud du mode de jeu 'Enigme' à l'aide de ce bouton.",
+    "info.interface.reset":"Le bouton 'Reset' permet de réinitialiser l'état du graphe actuel. Si jamais vous avez trop déplacé ce dernier, ou que vous souhaite que son affichage soit plus propre, ce bouton est fait pour vous !",
+    "info.interface.info":"Le bouton 'Information' permet de rediriger vers la page de règle du jeu (celle-ci).",
+    "info.interface.fiche":"Le bouton 'Fiche de déduction d'indice' permet l'affichage de tableau permettant, avec le déroulé de la partie, de déduire quels indices sont les plus probables pour chaque joueur.",
+    "info.interface.indice":"Le bouton 'Indice personnel' est le plus important, en effet, il permet d'afficher quel est votre indice secret. Vous seul le connaissez ! Il va falloir ruser pour tromper vos amis et le garder secret le plus longtemps possible !",
+    "info.interface.vision":"Le bouton 'Vision des derniers mouvements' permet à l'utilisateur de visualiser les 5 derniers coup effectué. Il agit donc vraiment comme un outil visuel.",
+    
     "etape":"Étape",
 
     "info.deroulement.e1":"Poser des Questions Stratégiques",
@@ -140,5 +152,18 @@
     "info.indice-possible.age":"Âge d'une personne",
     "info.indice-possible.hair":"Couleur de cheveux d'une personne",
     "info.indice-possible.sport":"Sport(s) d'une personne",
-    "info.indice-possible.voisin":"Caractèristique des voisins"
+    "info.indice-possible.voisin":"Caractèristique des voisins",
+
+    "info.mdj":"Modes de jeu",
+    "info.mdj.text":"Il existe différents autres modes de jeu, qui permettent de varier les plaisirs et de rendre le jeu plus ou moins complexe.",
+    "info.mdj.mastermind":"Mastermind",
+    "info.mdj.mastermind.text":"Le mode de jeu 'Mastermind' est un mode de jeu solo. Où vous devez être capable de deviner qui est le coupable en utilisant le minimum de coup. Pour cela, vous n'aurez aucun indice, mais vous allez devoir être capable de les deviner au cours de la partie. Sélectionner un suspect révéle l'état de tous les indices pour ce dernier. Il devient donc possible de deviner les indices, pour ensuite deviner le coupable !",
+    "info.mdj.enigme":"Énigme",
+    "info.mdj.enigme.text":"Il s'agit d'un mode solo, pour lequel on retrouve 3 modes de difficultés :",
+    "info.mdj.enigme.easy":"L'énigme facile",
+    "info.mdj.enigme.easy.txt":"Dans ce mode de jeu, vous avez accès à tous les indices, et vous devez deviner le coupable qui répond à tous ces indices. Vous pouvez donc vous entraîner à deviner le coupable dans ce mode.",
+    "info.mdj.enigme.medium":"L'énigme intermédiaire",
+    "info.mdj.enigme.medium.txt":"Dans ce mode de jeu, vous n'avez pas accès au indice, mais vous avez juste assez d'informations sur certains suspects pour pouvoir deviner le coupable. Ces informations vont vous permettre de deviner les indices, et le coupable est le suspect pour lequel tous les indices correspondent. Si jamais vous sélectionnez le mauvais suspect, pas de panique ! Vous aurez les informations relatives à ce dernier, ce qui vous facilitera le travail pour trouver le coupable. L'objectif est donc de trouver le coupable en un minimum de coup.",
+    "info.mdj.enigme.hard":"L'énigme difficile",
+    "info.mdj.enigme.hard.txt":"Cette dernière variante est similaire à l'énigme intermédiaire, cependant, il faudra trouver du premier coup sinon, vous aurez perdu ! À vous de jouer ! L'objectif est donc de trouver le coupable en un minimum de temps."
 }
