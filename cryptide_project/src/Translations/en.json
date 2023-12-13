@@ -103,6 +103,15 @@
 
     "score.tab.stat" : "Your Stats",
 
+    "lobby.players" : "Players",
+    "lobby.bienvenue": "Welcome to your lobby!",
+    "lobby.wait": "Wait for all your friends to join before starting the game.",
+    "lobby.invite": "Invite friends",
+    "lobby.copyLink": "Link copied",
+    "lobby.nbNode": "Select the number of nodes (between 20 and 60)",
+    "lobby.start": "Start the game!",
+
+
 
     "informations" : "Information",
     "info.intro.title":"Introduction to the game :",

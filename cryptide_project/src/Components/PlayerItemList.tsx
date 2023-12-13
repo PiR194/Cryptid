@@ -20,6 +20,7 @@ import Bot from '../model/Bot';
 
 /* server */
 import { socket } from '../SocketConfig';
+import { Form } from 'react-router-dom';
 
 interface MyPlayerItemListProps {
     player : Player,
@@ -58,13 +59,13 @@ const PlayerItemList:React.FC<MyPlayerItemListProps> =({ player, room }) => {
             {isBot && (
                 <ToggleButtonGroup type='radio' name={`options-${player.id}`} defaultValue={1}>
                     <ToggleButton id={`tbg-radio-1-${player.id}`} value={1}>
-                        Facile
+                        <FormattedMessage id='easy' />
                     </ToggleButton>
                     <ToggleButton id={`tbg-radio-2-${player.id}`} value={2}>
-                        Intermédiaire
+                        <FormattedMessage id='medium' />
                     </ToggleButton>
                     <ToggleButton id={`tbg-radio-3-${player.id}`} value={3}>
-                        Fort
+                        <FormattedMessage id='strong' />
                     </ToggleButton>
                 </ToggleButtonGroup>
             )}

@@ -71,6 +71,15 @@
     "navbar.presentation":"Présentation",
     "navbar.info":"Informations",
 
+
+    "easy" : "Facile",
+    "hard" : "Difficile",
+    "medium" : "Intermédiaire",
+    "strong" : "Fort",
+    "weak" : "Faible",
+    "none" : "Aucun",
+
+
     "play.jouerseul": "Jouer seul",
     "play.enigme": "Résoudre une énigme",
     "play.enigme.easy": "Facile",
@@ -101,6 +110,16 @@
     "score.online" : "En ligne",
 
     "score.tab.stat" : "Vos Stats",
+
+    "lobby.players" : "Joueurs",
+    "lobby.bienvenue" : "Bienvenue dans votre lobby !",
+    "lobby.wait" : "Attendez que tous vos amis rejoignent avant de lancer la partie.",
+    "lobby.invite" : "Inviter des amis",
+    "lobby.copyLink" : "Lien copié",
+    "lobby.nbNode" : "Sélectionner le nombre de noeud (entre 20 et 60) ",
+    "lobby.start" : "Démarrer la partie !",
+
+
 
     "informations" : "Informations",
     "info.intro.title":"Introduction au jeu :",

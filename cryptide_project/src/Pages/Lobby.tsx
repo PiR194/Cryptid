@@ -48,6 +48,7 @@ import Overlay from 'react-bootstrap/Overlay';
 import { DataSet } from 'vis-network';
 import {basePath} from "../AdressSetup"
 
+import { FormattedMessage } from 'react-intl';
 
 
 let gameStarted = false
@@ -192,17 +193,14 @@ function Lobby() {
     });
 
     socket.on("room full", () => {
-        //TODO POP UP pour quand la room est pleine
         navigate(`${basePath}/`)
     })
 
     socket.on("game started", () => {
-        //TODO POP UP pour quand la room est pleine
         navigate(`${basePath}/`)
     })
 
     socket.on("game already started", () => {
-        //TODO POP UP pour quand la room est pleine
         navigate(`${basePath}/`)
     })
 
@@ -277,9 +275,9 @@ function Lobby() {
                         </div>
                         <div className='NumbDiv'>
                             {players.length == 6 ? (
-                                    <p style={{color:'darkred'}}>6/6 Players</p>
+                                    <p style={{color:'darkred'}}>6/6 <FormattedMessage id='lobby.players'/></p>
                                 ) : (
-                                    <p>{players.length}/6 Players</p>
+                                    <p>{players.length}/6 <FormattedMessage id='lobby.players'/></p>
                                 )
                             }
                         </div>
@@ -308,11 +306,11 @@ function Lobby() {
                 <div className='lobbyR' 
                     style={{flexDirection:'column',
                             alignItems:'space-around'}}>
-                        <h3>Bienvenue dans votre lobby !</h3>
-                        <p>Attendez que tous vos amis rejoignent avant de lancer la partie.</p>
+                        <h3><FormattedMessage id='lobby.bienvenue'/></h3>
+                        <p><FormattedMessage id='lobby.wait'/></p>
                         {/* Bouton pour copier le lien */}
                         <Button variant="primary" ref={target} onClick={copyGameLink}>
-                            Inviter des amis
+                            <FormattedMessage id='lobby.invite'/>
                         </Button>
                         <Overlay target={target.current} show={show} placement="top">
                             {({
@@ -334,13 +332,13 @@ function Lobby() {
                                 ...props.style,
                                 }}
                             >
-                            Lien copié
+                            <FormattedMessage id='lobby.copyLink'/>
                         </div>
                         )}
                     </Overlay>
 
                 <div className='nbNodeDiv'>
-                    <label htmlFor="numberInput">Sélectionner le nombre de noeud (entre 20 et 60) :</label>
+                    <label htmlFor="numberInput"> <FormattedMessage id='lobby.nbNode'/> :</label>
                     <div>
                         <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
                             style={{borderColor:theme.colors.secondary}}> - </button>
@@ -366,7 +364,7 @@ function Lobby() {
                             width: 'auto',
                             height: 'auto'
                         }}>
-                        Démarrer la partie !
+                        <FormattedMessage id='lobby.start'/>
                     </button>
                 </div>
             </div>
