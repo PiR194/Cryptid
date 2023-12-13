@@ -7,8 +7,6 @@ const path = require('path');
 const authRoutes = require(path.resolve(__dirname, './routes/AuthRoutes'));
 const DatabaseService = require(path.resolve(__dirname, './services/DatabaseService'));
 
-console.log(authRoutes)
-
 const app = express();
 const port = 3003;
 
@@ -44,6 +42,7 @@ app.use((err, req, res, next) => {
 
 // Middleware pour la gestion des erreurs 404
 app.use((req, res) => {
+  console.log(req)
   res.status(404).send('Page non trouvée');
 });
 
