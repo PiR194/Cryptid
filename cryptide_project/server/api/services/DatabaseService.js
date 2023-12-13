@@ -149,8 +149,8 @@ class DatabaseService {
             // Récupérer les 5 meilleurs scores de la journée
             this.client.query(
                 'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score ASC LIMIT 10',
-                "mastermind",
-                [currentDate],
+                ["mastermind",
+                currentDate],
                 (err, result) => {
                     if (err) {
                         reject(err);
@@ -258,8 +258,8 @@ class DatabaseService {
                 'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins ASC LIMIT 10',
                 ["multijoueur",
                 firstDayOfWeek,
-                currentDate],
-                1,
+                currentDate,
+                1],
                 (err, result) => {
                     if (err) {
                         reject(err);

@@ -15,16 +15,9 @@ class SessionController {
 
         try{
 
-            console.log("Avant connect")
-
             await db.connect();
 
-            console.log("Après connect")
-
             const dailyMastermindStats = await db.getDailyMastermindStats();
-
-            console.log("Après stats")
-
 
             res.status(200).json({ tab : dailyMastermindStats });
         }
