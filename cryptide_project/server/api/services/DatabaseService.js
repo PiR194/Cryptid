@@ -12,7 +12,7 @@ class DatabaseService {
     // ----------------------------------------------------
 
     async connect(client){
-        const dbPath = path.resolve(__dirname, `../../../db/${this.db_name}.db`)
+        const dbPath = path.resolve(__dirname, `../DB/${this.db_name}.db`)
         
         return new Promise((resolve, reject) => {
             this.client = new sqlite3.Database(dbPath, 

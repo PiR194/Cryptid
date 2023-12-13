@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const path = require('path');
-const authRoutes = require(path.resolve(__dirname, './routes/authRoutes'));
+const authRoutes = require(path.resolve(__dirname, './routes/AuthRoutes'));
 const DatabaseService = require(path.resolve(__dirname, './services/DatabaseService'));
 
 
@@ -14,7 +14,7 @@ const port = 3003;
 // Middleware
 app.use(cors(
   {
-    origin: ["http://172.20.10.4:3000", "http://localhost:3000"],
+    origin: ["http://172.20.10.4:3000", "http://localhost:8080", "*"],
     credentials: true
   }
 ));                            // Autoriser les requêtes cross-origin
