@@ -25,13 +25,17 @@ class DatabaseService {
 
         return new Promise((resolve, reject) => {
             this.client = mysql.createConnection(dbConfig);
+            console.log(createTables)
 
             this.client.connect((err) => {
                 if (err) {
                     console.log(err)
                     reject(err);
                 } else {
-                    if (createTables == true){
+                    if (createTables == "true"){
+                        createTables(this.client)
+                    }
+                    else{
                         createTables(this.client)
                     }
                     resolve();
