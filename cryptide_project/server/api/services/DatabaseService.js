@@ -61,7 +61,7 @@ class DatabaseService {
                     reject(err)
                 }
                 else{
-                    resolve(result)
+                    console.log("Table user créée")
                 }
             });
 
@@ -83,7 +83,7 @@ class DatabaseService {
                     reject(err)
                 }
                 else{
-                    resolve(result)
+                    console.log("Table user créée")
                 }
             });
 
