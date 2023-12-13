@@ -10,8 +10,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-COPY ./DB/socialgraph.db .
-
 # Copy the rest of the application code
 COPY . .
 
