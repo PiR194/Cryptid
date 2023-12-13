@@ -25,6 +25,9 @@ import MGlass from "../res/icon/magnifying-glass.png";
 import Param from "../res/icon/param.png";
 import Info from "../res/icon/infoGreen.png"; //todo changer la couleur de l'icon
 import { useAuth } from '../Contexts/AuthContext';
+import { Spinner } from 'react-bootstrap';
+import Reset from '../res/icon/reset.png';
+import Ceye from '../res/icon/hidden.png';
 
 
 //@ts-ignore
@@ -75,6 +78,7 @@ function InfoPage({locale, changeLocale}) {
                 <li><Link to="#composants-du-jeu"><span><FormattedMessage id="info.title.composant"/></span></Link></li>
                 <li><Link to="#objectif-du-jeu"><span><FormattedMessage id="info.title.objectif"/></span></Link></li>
                 <li><Link to="#deroulement-du-jeu"><span><FormattedMessage id="info.title.deroulement"/></span></Link></li>
+                <li><Link to="#mode-de-jeu"><span><FormattedMessage id="info.mdj"/></span></Link></li>
                 <li><Link to="#indice-possible"><span><FormattedMessage id="info.title.indice_possible"/></span></Link></li>
             </ul>
         </div>
@@ -163,9 +167,9 @@ function InfoPage({locale, changeLocale}) {
             </p>
 
             <h4>
-                Interface :
+                <FormattedMessage id="info.interface"/>
             </h4>
-            <h6> Pour chacune des parties, vous aurez certains éléments d'interface à disposition :</h6>
+            <h6> <FormattedMessage id="info.interface.text"/> </h6>
             <ul>
                 <li>
                     <div className='LiInterfaceDisplay'>
@@ -178,12 +182,24 @@ function InfoPage({locale, changeLocale}) {
                             <img src={Param} alt="paramètres" height='40'/>
                         </button>
                         <p>
-                            Le bouton "<b>Paramètre</b>" permet l'affichage et la gestion de différent paramètres de la partie, comme par exemple le language, l'aide ... .
+                            <FormattedMessage id="info.interface.param"/>
                         </p>
                     </div>
-                    <Alert variant='danger'>
-                        Attention, cette partie ne peut pas être complétée tant que tout les paramètres n'ont pas été choisis !
-                    </Alert>
+                </li>
+                <li>
+                <div className='LiInterfaceDisplay'>
+                    <button className='button'
+                    style={{ 
+                        backgroundColor: theme.colors.tertiary,
+                        borderColor: theme.colors.secondary,
+                        margin:"0 20px"
+                    }}>
+                        <img src={Reset} alt="paramètres" height='40'/>                 
+                    </button>
+                    <p>
+                        <FormattedMessage id="info.interface.reset"/>
+                    </p>
+                </div>
                 </li>
                 <li>
                     <div className='LiInterfaceDisplay'>
@@ -196,10 +212,7 @@ function InfoPage({locale, changeLocale}) {
                             <img src={Info} alt="info" height="40"/>
                         </button>
                         <p>
-                            Le bouton "<b>Information</b>" permet de rediriger vers la page de règle du jeu (celle ci). 
-                            {/*
-                                //! mais est ce que nous devons rediriger sur les indices possibles ?
-                            */} 
+                            <FormattedMessage id="info.interface.info"/>
                         </p>
                     </div>
                 </li>
@@ -215,12 +228,9 @@ function InfoPage({locale, changeLocale}) {
                         </button>
                     
                         <p>
-                            Le bouton "<b>Fiche de déduction d'indice</b>" permet l'affichage de tableau dynamic permettant, avec le déroulé de la partie, de déduire quels indices sont les plus probables.
+                            <FormattedMessage id="info.interface.fiche"/>
                         </p>
                     </div>
-                    <Alert variant='danger'>
-                        Attention, cette partie ne peut pas être complétée tant que la page et l'algorithme dédié ne sont pas fait !
-                    </Alert>
                 </li>
                 <li>
                     <div className='LiInterfaceDisplay'>
@@ -234,10 +244,26 @@ function InfoPage({locale, changeLocale}) {
                     </button>
                     
                         <p>
-                            Le bouton "<b>Indice personnel</b>" est le plus important, en effet il permet d'afficher quel est votre indice secret. Vous seul le connaissais ! Il va falloir ruser pour tromper vos amis et le garder secret le plus longtemps possible !
+                            <FormattedMessage id="info.interface.indice"/>
                         </p>
                     </div>
                 </li>
+                <li>
+                    <div className='LiInterfaceDisplay'>
+                        <button className='button'
+                            style={{ 
+                                backgroundColor: theme.colors.tertiary,
+                                borderColor: theme.colors.secondary,
+                                margin:"0 20px"
+                            }}>
+                            <img src={Ceye} alt="check" height="40"/>
+                        </button>
+                        <p>
+                            <FormattedMessage id="info.interface.vision"/>
+                        </p>
+                    </div>
+                </li>
+                {/* ajouter les bouton de telechargement de graph ? */}
             </ul>
         </section>
         <hr/>
@@ -261,6 +287,46 @@ function InfoPage({locale, changeLocale}) {
             <p>
                 <FormattedMessage id="info.deroulement.e3.text"/>
             </p>
+        </section>
+        <hr/>
+        <section id="mode-de-jeu">
+        <h2> <FormattedMessage id="info.mdj"/> </h2>
+        <br/>
+        <p>
+            <FormattedMessage id="info.mdj.text"/>
+        </p>
+        <h3>
+            <FormattedMessage id="info.mdj.mastermind"/>
+        </h3>
+        <br/>
+        <p>
+            <FormattedMessage id="info.mdj.mastermind.text"/>
+        </p>
+        
+        <h3>
+            <FormattedMessage id="info.mdj.enigme"/>
+        </h3>
+        <p>
+            <FormattedMessage id="info.mdj.enigme.text"/>
+        </p>
+        <h4>
+            <u><FormattedMessage id="info.mdj.enigme.easy"/></u>
+        </h4>
+        <p>
+            <FormattedMessage id="info.mdj.enigme.easy.txt"/>
+        </p>
+        <h4>
+            <u><FormattedMessage id="info.mdj.enigme.medium"/></u>
+        </h4>
+        <p>
+            <FormattedMessage id="info.mdj.enigme.medium.txt"/>
+        </p>
+        <h4>
+            <u><FormattedMessage id="info.mdj.enigme.hard"/></u>
+        </h4>
+        <p>
+            <FormattedMessage id="info.mdj.enigme.hard.txt"/>
+        </p>
         </section>
         <hr/>
         <section id="indice-possible">

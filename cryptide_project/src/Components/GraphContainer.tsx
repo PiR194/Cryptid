@@ -106,7 +106,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     // Démarrez le timer au montage du composant
     const intervalId = setInterval(() => {
       setElapsedTime((prevElapsedTime) => prevElapsedTime + 0.5);
-      settempsData(elapsedTime)
+      settempsData(testTemps)
       testTemps += 0.5
 
       cptBug ++
@@ -565,6 +565,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
+        console.log("coucou")
         cptBug=0
         //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
@@ -594,7 +595,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           if (!node.label.includes(colorToEmoji(positionToColor(askedIndex), works))){
             networkData.nodes.update({id: id, label: node.label + positionToEmoji(askedIndex, works)})
             cptHistory++
-            if (cptHistory % 2 == 0){
+            if (cptHistory % 2 >= 0){
               lastNodes.push(node)
               addToHistory(testPlayers[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
             }
@@ -620,7 +621,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   
       socket.on("asked wrong", () =>{
         cptSquare++
-        if (cptSquare % 2 == 0){
+        if (cptSquare % 2 >= 0){
           if (indice==null){
             return
           }
@@ -659,7 +660,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       socket.on("can't put square", (askingPlayer) => {
         cptBug=0
         cptOnAskedWrong ++
-        if (cptOnAskedWrong % 2 == 0){
+        if (cptOnAskedWrong % 2 >= 0){
           addToHistory(testPlayers[askingPlayer].pseudo + " ne peut plus poser de carré")
           playerIndex = askingPlayer + 1
           if(playerIndex == players.length){

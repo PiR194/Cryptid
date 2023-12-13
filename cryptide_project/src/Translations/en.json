@@ -1,6 +1,9 @@
 {
     "languageSelector.french": "French",
     "languageSelector.english": "English",
+    "languageSelector.espagnol": "Espagnol",
+    "languageSelector.portuguese": "Portuguese",
+    "languageSelector.russian": "Russian",
 
     "home.histoire.title": "HISTORY",
     "home.histoire": "Cryptozoology studies the traces of legendary monsters: cryptids. Yetis, Chupacabra, beast of the gevaudan, Dahut, etc. , are very serious topics for you… Cross the clues and be the first to discover them!",
@@ -129,6 +132,15 @@
     "info.objectif.t3":"Counter-manipulation",
     "info.objectif.t3.text":"If a player places a square token, the questioner must also play his game by placing a square token of his color on a node of the graph. Countermanipulation becomes a formidable weapon to divert the accusation and sow confusion.",
 
+    "info.interface": "Game Interface",
+    "info.interface.text": "For each game, you will have certain interface elements available:",
+    "info.interface.param": "The 'Settings' button allows the display and management of various game settings, such as enabling or disabling sound effects. It is also possible to choose the number of nodes for the 'Enigma' game mode using this button.",
+    "info.interface.reset": "The 'Reset' button resets the current state of the graph. If you have moved it too much or want its display to be neater, this button is for you!",
+    "info.interface.info": "The 'Information' button redirects to the game rule page (this one).",
+    "info.interface.fiche": "The 'Clue Deduction Sheet' button displays a table that, along with the progress of the game, allows deducing which clues are most likely for each player.",
+    "info.interface.indice": "The 'Personal Clue' button is the most important; it displays your secret clue. Only you know it! You'll have to be clever to deceive your friends and keep it a secret for as long as possible!",
+    "info.interface.vision": "The 'Last Moves Vision' button allows the user to visualize the last 5 moves made. It acts as a visual tool.",
+
     "etape":"Step",
     "info.deroulement.e1":"Ask Strategic Questions",
     "info.deroulement.e1.text":"Each round begins with a player asking another player a question about a person on the graph. Answers are formulated by placing square or round tokens to indicate certainty or doubt as to the involvement of this person.",
@@ -140,5 +152,18 @@
     "info.indice-possible.age":"Person's age",
     "info.indice-possible.hair":"Hair color of a person",
     "info.indice-possible.sport":"Sport(s) of a person",
-    "info.indice-possible.voisin":"Character of neighbours"
+    "info.indice-possible.voisin":"Character of neighbours",
+
+    "info.mdj": "Game Modes",
+    "info.mdj.text": "There are various other game modes that allow you to add variety and make the game more or less complex.",
+    "info.mdj.mastermind": "Mastermind",
+    "info.mdj.mastermind.text": "The 'Mastermind' game mode is a solo mode where you must be able to guess the culprit using the minimum number of guesses. In this mode, you won't have any clues, but you'll need to guess them during the game. Selecting a suspect reveals the state of all clues for that suspect. It becomes possible to guess the clues and then identify the culprit!",
+    "info.mdj.enigme": "Enigma",
+    "info.mdj.enigme.text": "This is a solo mode with three difficulty levels:",
+    "info.mdj.enigme.easy": "Easy Enigma",
+    "info.mdj.enigme.easy.txt": "In this game mode, you have access to all clues, and you must guess the culprit that matches all these clues. You can practice guessing the culprit in this mode.",
+    "info.mdj.enigme.medium": "Intermediate Enigma",
+    "info.mdj.enigme.medium.txt": "In this game mode, you don't have access to clues, but you have just enough information about some suspects to be able to guess the culprit. This information will help you guess the clues, and the culprit is the suspect for whom all the clues match. If you select the wrong suspect, don't worry! You'll have information about that suspect, making it easier for you to find the culprit. The goal is to find the culprit in the minimum number of guesses.",
+    "info.mdj.enigme.hard": "Hard Enigma",
+    "info.mdj.enigme.hard.txt": "This final variant is similar to the intermediate enigma; however, you must find the culprit on the first try, or you lose! It's up to you to play! The goal is to find the culprit in the minimum amount of time."
 }

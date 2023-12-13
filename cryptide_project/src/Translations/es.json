@@ -1,0 +1,157 @@
+{
+    "languageSelector.french": "Francés",
+    "languageSelector.english": "Inglés",
+    "languageSelector.espagnol": "Español",
+    "languageSelector.portuguese": "Portugués",
+    "languageSelector.russian": "Ruso",
+
+    "home.histoire.title": "HISTORIA",
+    "home.histoire": "La criptozoología estudia las huellas de monstruos legendarios: criptidos. Yetis, Chupacabra, bestia de Gévaudan, Dahut, etc. son temas muy serios para ti... Cruza las pistas y sé el primero en descubrirlos.",
+
+    "home.jeu.title": "EL JUEGO",
+    "home.jeu": "Cada jugador tiene una pista en el campo donde se encuentra la criatura. Cruzando tu información, solo puede haber una casilla. Pero el objetivo es ser el primero en encontrarla. Pregunta a tus colegas y, sin embargo, competidores. Solo pueden responderte con un 'no' o un 'quizás', con mucha lógica y un poco de audacia, ¡puedes entrar en la leyenda!",
+
+    "home.plus.title": "FORTALEZAS",
+    "home.plus.1": "Un mecanismo de deducción asombroso.",
+    "home.plus.2": "Una inmensa rejugabilidad.",
+    "home.plus.3": "Un tema sorprendente y fuerte.",
+
+    "game.time": "Tiempo: 45 minutos",
+    "game.players": "Jugadores: de 3 a 5 jugadores",
+    "game.age": "Edad: 10 años en adelante",
+    "game.createdBy": "Creado por:",
+    "game.illustratedBy": "Ilustrado por:",
+
+    "log_in": "Iniciar sesión",
+    "sign_up": "Registrarse",
+    "log_out": "Cerrar sesión",
+
+    "join": "Unirse",
+    "create_room": "Crear sala",
+    "play_solo": "Jugador individual",
+
+    "play": "JUGAR",
+
+    "football": "Fútbol",
+    "basketball": "Baloncesto",
+    "baseball": "Béisbol",
+    "tennis": "Tenis",
+    "bowling": "Bolos",
+
+    "white": "Blanco",
+    "black": "Negro",
+    "blond": "Rubio",
+    "redhead": "Pelirrojo",
+    "brown": "Marrón",
+
+    "and": "y",
+    "or": "o",
+    "or_sport": "o",
+
+    "age_indice_start": "El sospechoso tiene entre",
+    "age_indice_more_start": "El sospechoso tiene al menos",
+    "age_indice_end": "años",
+
+    "color_edges_start": "El sospechoso tiene al menos un amigo con cabello",
+    "color_edges_end": "",
+
+    "color_start": "El sospechoso tiene cabello",
+    "color_end": "",
+
+    "nb_friends_indice_start": "El sospechoso tiene",
+    "nb_friends_indice_end": "amigos",
+
+    "nb_sports_indice_start": "El sospechoso juega",
+    "nb_sports_indice_end": "deporte(s)",
+
+    "sport_start": "El sospechoso juega al menos",
+    "sport_end": "",
+
+    "informations": "Información",
+    "info.intro.title": "Introducción al juego:",
+    "info.intro.text": "¡Bienvenido a nuestro emocionante juego de deducción, donde la intriga y la travesura se combinan en una emocionante aventura! Sumérgete en un mundo de misterio e intriga, donde cada interacción cuenta y cada pista te acerca a la verdad. Imagina un gráfico complejo donde cada vértice representa a una persona, cada eje una relación, y cada detalle cuenta. Te sumerges en un desafiante reto para descubrir quién entre estas personas es el misterioso asesino. Cada jugador tiene una pista crucial y solo el intercambio estratégico de estas pistas te llevará a resolver el misterio. Explora nuestra página de reglas para entender las complejidades del juego, descubre pistas que pueden guiarte y desarrolla estrategias inteligentes para identificar al culpable. ¡Manipula a tus amigos para ser el primero en descubrir quién es el asesino oculto en el gráfico! ¿Estás listo para aceptar el desafío y desenmascarar al asesino oculto en el gráfico? ¡Que comience la investigación!",
+
+    "info.sommaire": "Contenidos",
+
+    "info.title.composant": "Componentes del juego",
+    "info.title.objectif": "Objetivo del juego",
+    "info.title.deroulement": "Desarrollo del juego",
+    "info.title.indice_possible": "Posible pista del juego",
+
+    "info.pions": "Peones",
+    "info.composant.text": "A cada jugador se le asignará un color específico que distinguirá las acciones representadas por los peones de la siguiente manera:",
+
+    "info.composant.carre.title": "Fichas cuadradas",
+    "info.composant.carre": "Estas fichas indican una negación. Cuando un jugador coloca una ficha cuadrada, significa que su pista elimina a la persona designada.",
+
+    "info.composant.rond.title": "Fichas redondas",
+    "info.composant.rond": "Estas fichas representan un 'quizás'. El jugador que deposita esta ficha afirma que la persona es sospechosa, pero esto no garantiza su culpabilidad. ¡Solo hay un sospechoso que lleva una ficha redonda para todos los jugadores en el juego, y ese es el culpable!",
+
+    "info.car_perso": "Características",
+    "info.composant.textcar": "Además de sus nombres, los personajes están representados con otras características:",
+
+    "info.composant.age.title": "Edades",
+    "info.composant.age": "Cada persona tiene una edad para autenticarlos, que varía entre 0 y 60 años. La edad es una característica que se confirmará con pistas en forma de ",
+    "info.composant.age.link": "grupos de edad",
+
+    "info.composant.hair_col.title": "Colores de cabello",
+    "info.composant.hair_col": "Los personajes también tienen un color de cabello, que puede ser de los siguientes colores:",
+
+    "hair.blanc": "Blanco",
+    "hair.blond": "Rubio",
+    "hair.roux": "Pelirrojo",
+    "hair.chatain": "Marrón",
+    "hair.noir": "Negro",
+
+    "info.composant.sport.title": "Deportes",
+    "info.composant.sport": "Los hobbies de los personajes están representados por cinco deportes respectivamente:",
+    "info.composant.baseball": "Béisbol",
+    "info.composant.basketball": "Baloncesto",
+    "info.composant.bowling": "Bowling",
+    "info.composant.football": "Fútbol",
+    "info.composant.tennis": "Tenis",
+    "info.composant.sport.bis": "Entre estos deportes, cada personaje puede tener entre 0 y 3 deportes, lo que facilita su identificación utilizando las pistas que tienes.",
+
+    "info.objectif.intro": "Bienvenido al ingenioso universo de nuestro juego de deducción, donde el engaño y la astucia son las claves del éxito. Tu misión es desentrañar el misterio detrás de cada interacción del complejo gráfico que representa las relaciones entre individuos.",
+    "info.objectif.t1": "Manipulación Sutil",
+    "info.objectif.t1.text": "El objetivo final es descubrir quién entre los individuos es el asesino, pero no a través de una colaboración abierta. Por el contrario, utilizarás una manipulación sutil para difuminar las líneas y distraer a tus oponentes. Haz preguntas estratégicas, responde con malicia y siembra pistas engañosas para acercarte al resultado.",
+    "info.objectif.t2": "Trucos",
+    "info.objectif.t2.text": "Cada ronda ofrece la oportunidad de sembrar dudas entre tus oponentes. Cuando un jugador te hace preguntas, responde colocando inteligentemente un token cuadrado para indicar que 'según tu pista, esa persona no puede ser el culpable' o un token redondo para sugerir que permanezcan en la lista de sospechosos. Ten cuidado, porque cada gesto puede interpretarse, y la verdad a menudo está oculta detrás de una fachada de pistas engañosas.",
+    "info.objectif.t3": "Contramanipulación",
+    "info.objectif.t3.text": "Si un jugador coloca un token cuadrado, el que hace la pregunta también debe jugar su juego colocando un token cuadrado de su color en un nodo del gráfico. La contramanipulación se convierte en un arma formidable para desviar la acusación y sembrar la confusión.",
+
+    "info.interface": "Interfaz de juego",
+    "info.interface.text": "Para cada juego, tendrás disponibles ciertos elementos de interfaz:",
+    "info.interface.param": "El botón 'Configuración' permite mostrar y gestionar varias configuraciones del juego, como activar o desactivar efectos de sonido. También es posible elegir el número de nodos para el modo de juego 'Enigma' con este botón.",
+    "info.interface.reset": "El botón 'Restablecer' restablece el estado actual del gráfico. Si lo has movido demasiado o quieres que su visualización sea más ordenada, ¡este botón es para ti!",
+    "info.interface.info": "El botón 'Información' redirige a la página de reglas del juego (esta).",
+    "info.interface.fiche": "El botón 'Hoja de Deducción de Pistas' muestra una tabla que, junto con el progreso del juego, permite deducir qué pistas son más probables para cada jugador.",
+    "info.interface.indice": "El botón 'Pista Personal' es el más importante; muestra tu pista secreta. ¡Solo tú lo sabes! Tendrás que ser astuto para engañar a tus amigos y mantenerlo en secreto el mayor tiempo posible!",
+    "info.interface.vision": "El botón 'Visión de los Últimos Movimientos' permite al usuario visualizar los últimos 5 movimientos realizados. Actúa como una herramienta visual.",
+
+    "etape": "Paso",
+    "info.deroulement.e1": "Hacer preguntas estratégicas",
+    "info.deroulement.e1.text": "Cada ronda comienza con un jugador haciendo preguntas a otro jugador sobre una persona en el gráfico. Las respuestas se formulan colocando fichas cuadradas o redondas para indicar certeza o duda sobre la participación de esa persona.",
+    "info.deroulement.e2": "Contramanipulación y Contra-pregunta",
+    "info.deroulement.e2.text": "Si un jugador coloca una ficha cuadrada, el que hace la pregunta también debe colocar una ficha cuadrada en un nodo del gráfico. Las contra-preguntas son una forma de confundir a los jugadores y desviar la acusación.",
+    "info.deroulement.e3": "La Adivinanza Final",
+    "info.deroulement.e3.text": "El juego alcanza su clímax cuando un jugador intenta la 'Adivinanza' final, afirmando que tal persona es el asesino. Otros jugadores",
+
+    "info.indice-possible.age": "Edad de la persona",
+    "info.indice-possible.hair": "Color de pelo de una persona",
+    "info.indice-possible.sport": "Deporte(s) de una persona",
+    "info.indice-possible.voisin": "Personaje de los vecinos",
+
+    "info.mdj": "Modos de juego",
+    "info.mdj.text": "Existen varios modos de juego que te permiten agregar variedad y hacer el juego más o menos complejo.",
+    "info.mdj.mastermind": "Mastermind",
+    "info.mdj.mastermind.text": "El modo de juego 'Mastermind' es un modo para un solo jugador donde debes ser capaz de adivinar al culpable utilizando el menor número de suposiciones. En este modo, no tendrás ninguna pista, pero deberás adivinarlas durante el juego. Seleccionar a un sospechoso revela el estado de todas las pistas para ese sospechoso. ¡Se vuelve posible adivinar las pistas y luego identificar al culpable!",
+    "info.mdj.enigme": "Enigma",
+    "info.mdj.enigme.text": "Este es un modo para un solo jugador con tres niveles de dificultad:",
+    "info.mdj.enigme.easy": "Enigma Fácil",
+    "info.mdj.enigme.easy.txt": "En este modo de juego, tienes acceso a todas las pistas y debes adivinar al culpable que coincide con todas estas pistas. Puedes practicar adivinando al culpable en este modo.",
+    "info.mdj.enigme.medium": "Enigma Intermedio",
+    "info.mdj.enigme.medium.txt": "En este modo de juego, no tienes acceso a pistas, pero tienes información suficiente sobre algunos sospechosos para poder adivinar al culpable. Esta información te ayudará a adivinar las pistas, y el culpable es el sospechoso para el cual todas las pistas coinciden. Si seleccionas al sospechoso equivocado, ¡no te preocupes! Tendrás información sobre ese sospechoso, lo que facilitará encontrar al culpable. El objetivo es encontrar al culpable en el menor número de suposiciones.",
+    "info.mdj.enigme.hard": "Enigma Difícil",
+    "info.mdj.enigme.hard.txt": "Esta variante final es similar al enigma intermedio; sin embargo, ¡debes encontrar al culpable en el primer intento, o pierdes! ¡Depende de ti jugar! El objetivo es encontrar al culpable en el menor tiempo posible."
+}
