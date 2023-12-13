@@ -107,7 +107,7 @@ steps:
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
         IMAGENAME: hub.codefirst.iut.uca.fr/thomas.chazot2/cryptide/api:latest
-        CONTAINERNAME: server
+        CONTAINERNAME: api
         COMMAND: create
         OVERWRITE: true
         #PRIVATE: true
