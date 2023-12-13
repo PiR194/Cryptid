@@ -56,7 +56,14 @@ class DatabaseService {
             `;
         
             // Exécuter la requête SQL
-            await this.client.query(createTableQuery);
+            this.client.query(createTableQuery, (err, result) => {
+                if(err){
+                    reject(err)
+                }
+                else{
+                    resolve(result)
+                }
+            });
 
             const createTableGameQuery = `
             CREATE TABLE IF NOT EXISTS games (
@@ -71,7 +78,14 @@ class DatabaseService {
             );
             `;
 
-            await this.client.query(createTableGameQuery);
+            this.client.query(createTableGameQuery, (err, result) => {
+                if(err){
+                    reject(err)
+                }
+                else{
+                    resolve(result)
+                }
+            });
 
         }
         catch(error){
