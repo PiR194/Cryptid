@@ -67,15 +67,40 @@
     "sport_start": "Le suspect pratique au moins du",
     "sport_end": "",
 
+    "navbar.play" : "Jouer",
+    "navbar.presentation":"Présentation",
+    "navbar.info":"Informations",
 
+    "play.jouerseul": "Jouer seul",
+    "play.enigme": "Résoudre une énigme",
+    "play.enigme.easy": "Facile",
+    "play.enigme.medium": "Intermédiaire",
+    "play.enigme.hard": "Difficile",
 
+    "play.create":"Créer une partie",
+    "play.tuto": "Tutoriel",
+    "play.return": "Retourner à la partie",
 
+    "lobbies.all":"Tous",
+    "lobbies.dispo":"Disponibles",
 
+    "placeholder.searchLobby": "Rechercher un lobby...",
 
+    "score.nbPlayed" : "Parties Jouées",
+    "score.best" : "Best-Score",
+    "score.moy" : "Moyenne d'essai",
+    "score.NbWin" : "Nombre de victoire",
+    "score.ratio" : "Ratio V/D",
+    "score.bestTmp" : "Meilleur temps",
+    "score.moyTmp" : "Moyenne de temps",
+    "score.nothing" : "Rien pour le moment",
 
+    "score.titre.easy" : "Énigme facile",
+    "score.titre.int" : "Énigme intermédiaire",
+    "score.titre.hard" : "Énigme difficile",
+    "score.online" : "En ligne",
 
-
-
+    "score.tab.stat" : "Vos Stats",
 
     "informations" : "Informations",
     "info.intro.title":"Introduction au jeu :",

@@ -68,6 +68,11 @@
     "sport_start": "Подозреваемый играет по меньшей мере в",
     "sport_end": "",
 
+    "navbar.play" : "Разыграть",
+    "navbar.presentation":"Презентационный",
+    "navbar.info":"Информация",
+
+
 
     "informations" : "Информация",
     "info.intro.title":"Введение в игру :",

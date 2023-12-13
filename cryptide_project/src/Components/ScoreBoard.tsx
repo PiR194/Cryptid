@@ -27,6 +27,8 @@ import { BiLineChart, BiLineChartDown } from 'react-icons/bi';
 import { CarouselCaption } from 'react-bootstrap';
 import { BsLine } from 'react-icons/bs';
 
+import { FormattedMessage, useIntl } from 'react-intl';
+
 //@ts-ignore
 const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
     const theme=useTheme();
@@ -90,6 +92,8 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
         fetchWeeklyStats();
     }, []);
 
+    const intl = useIntl();
+
     return (
         <Tabs
             activeKey={activeTab}
@@ -100,47 +104,49 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
             }}
             id="ScoreBoard"
             className="tabsStats justify-content-around">
-            <Tab eventKey="perso" title="Vos Stats" disabled={!Player.pseudo.startsWith("Guest_") ? false : true}>
+            <Tab eventKey="perso"
+            title={intl.formatMessage({ id: 'score.tab.stat' })}
+            disabled={!Player.pseudo.startsWith("Guest_") ? false : true}>
                 <Tab.Content className={`tabsStats ${activeTab !== 'perso' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
                         <div className="stats">
-                            <h5>Mastermind</h5>
+                            <h5><FormattedMessage id='info.mdj.mastermind'/></h5>
                             <hr />
-                            <p>Parties Jouées: {Player.mastermindStats.nbGames}</p>
-                            <p>Best-Score: {Player.mastermindStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mastermindStats.avgNbTry.toFixed(2)}</p>
+                            <p><FormattedMessage id='score.nbPlayed'/> : {Player.mastermindStats.nbGames}</p>
+                            <p><FormattedMessage id='score.best'/>: {Player.mastermindStats.bestScore}</p>
+                            <p><FormattedMessage id='score.moy'/>: {Player.mastermindStats.avgNbTry.toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme facile</h5>
                             <hr />
-                            <p>Parties Jouées: {Player.easyEnigmaStats.nbGames}</p>
-                            <p>Nombre de victoires: {Player.easyEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.easyEnigmaStats.ratio.toFixed(2) + "%"}</p>
-                            <p>Meilleur temps: {Player.easyEnigmaStats.bestTime + "s"}</p>
-                            <p>Moyenne de temps: {Player.easyEnigmaStats.avgTime.toFixed(2) + "s"}</p>
+                            <p><FormattedMessage id='score.nbPlayed'/>: {Player.easyEnigmaStats.nbGames}</p>
+                            <p><FormattedMessage id='score.NbWin'/>: {Player.easyEnigmaStats.nbWins}</p>
+                            <p><FormattedMessage id='score.ratio'/>: {Player.easyEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p><FormattedMessage id='score.bestTmp'/>: {Player.easyEnigmaStats.bestTime + "s"}</p>
+                            <p><FormattedMessage id='score.moyTmp'/>: {Player.easyEnigmaStats.avgTime.toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme moyenne</h5>
                             <hr />
-                            <p>Parties Jouées: {Player.mediumEnigmaStats.nbGames}</p>
-                            <p>Best-Score: {Player.mediumEnigmaStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mediumEnigmaStats.avgNbTry.toFixed(2)}</p>
+                            <p><FormattedMessage id='score.nbPlayed'/>: {Player.mediumEnigmaStats.nbGames}</p>
+                            <p><FormattedMessage id='score.best'/>: {Player.mediumEnigmaStats.bestScore}</p>
+                            <p><FormattedMessage id='score.moy'/>: {Player.mediumEnigmaStats.avgNbTry.toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme difficile</h5>
                             <hr />
-                            <p>Parties Jouées: {Player.hardEnigmaStats.nbGames}</p>
-                            <p>Nombre de victoires: {Player.hardEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.hardEnigmaStats.ratio.toFixed(2) + "%"}</p>
-                            <p>Meilleur temps: {Player.hardEnigmaStats.bestTime + "s"}</p>
-                            <p>Moyenne de temps: {Player.hardEnigmaStats.avgTime.toFixed(2) + "s"}</p>
+                            <p><FormattedMessage id='score.nbPlayed'/>: {Player.hardEnigmaStats.nbGames}</p>
+                            <p><FormattedMessage id='score.NbWin'/>: {Player.hardEnigmaStats.nbWins}</p>
+                            <p><FormattedMessage id='score.ratio'/>: {Player.hardEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p><FormattedMessage id='score.bestTmp'/>: {Player.hardEnigmaStats.bestTime + "s"}</p>
+                            <p><FormattedMessage id='score.moyTmp'/>: {Player.hardEnigmaStats.avgTime.toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>En ligne</h5>
                             <hr />
-                            <p>Parties Jouées: {Player.onlineStats.nbGames}</p>
-                            <p>Nombre de victoires: {Player.onlineStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.onlineStats.ratio.toFixed(2) + "s"}</p>
+                            <p><FormattedMessage id='score.nbPlayed'/>: {Player.onlineStats.nbGames}</p>
+                            <p><FormattedMessage id='score.NbWin'/>: {Player.onlineStats.nbWins}</p>
+                            <p><FormattedMessage id='score.ratio'/>: {Player.onlineStats.ratio.toFixed(2) + "s"}</p>
                         </div>
                     </Carousel>
                 </Tab.Content>
@@ -149,7 +155,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                 <Tab.Content className={`tabsStats ${activeTab !== 'daily' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
                         <div className="stats">
-                            <h5>Mastermind</h5>
+                            <h5><FormattedMessage id='info.mdj.mastermind'/></h5>
                             <hr />
                             {dailyMastermindStats !== null ? (dailyMastermindStats.tab.length !== 0 ? dailyMastermindStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -163,13 +169,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme facile</h5>
+                            <h5><FormattedMessage id='score.titre.easy'/></h5>
                             <hr />
                             {dailyEasyEnigmaStats !== null ? (dailyEasyEnigmaStats.tab.length !== 0 ? dailyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -183,13 +189,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme moyenne</h5>
+                            <h5><FormattedMessage id='score.titre.int'/></h5>
                             <hr />
                             {dailyMediumEnigmaStats !== null ? (dailyMediumEnigmaStats.tab.length !== 0 ? dailyMediumEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -203,13 +209,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme difficile</h5>
+                            <h5><FormattedMessage id='score.titre.hard'/></h5>
                             <hr />
                             {dailyHardEnigmaStats !== null ? (dailyHardEnigmaStats.tab.length !== 0 ? dailyHardEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -223,13 +229,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>En ligne</h5>
+                            <h5><FormattedMessage id='score.online'/></h5>
                             <hr />
                             {dailyOnlineStats !== null ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -243,9 +249,9 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                     </Carousel>
@@ -255,7 +261,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                 <Tab.Content className={`tabsStats ${activeTab !== 'weekly' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
                         <div className="stats">
-                            <h5>Mastermind</h5>
+                            <h5><FormattedMessage id='info.mdj.mastermind'/></h5>
                             <hr />
                             {weeklyMastermindStats !== null ? (weeklyMastermindStats.tab.length !== 0 ? weeklyMastermindStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -269,13 +275,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme facile</h5>
+                            <h5><FormattedMessage id='score.titre.easy'/></h5>
                             <hr />
                             {weeklyEasyEnigmaStats !== null ? (weeklyEasyEnigmaStats.tab.length !== 0 ? weeklyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -289,13 +295,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme moyenne</h5>
+                            <h5><FormattedMessage id='score.titre.int'/></h5>
                             <hr />
                             {weeklyMediumEnigmaStats !== null ? (weeklyMediumEnigmaStats.tab.length !== 0 ? weeklyMediumEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -309,13 +315,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>Enigme difficile</h5>
+                            <h5><FormattedMessage id='score.titre.hard'/></h5>
                             <hr />
                             {weeklyHardEnigmaStats !== null ? (weeklyHardEnigmaStats.tab.length !== 0 ? weeklyHardEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -329,13 +335,13 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                         <div className="stats">
-                            <h5>En ligne</h5>
+                            <h5><FormattedMessage id='score.titre.online'/></h5>
                             <hr />
                             {weeklyOnlineStats !== null ? (weeklyOnlineStats.tab.length !== 0 ? weeklyOnlineStats.tab.map((stats: any, index: number) => (
                                 <>
@@ -349,9 +355,9 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                                     </Row>
                                 </>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )) : (
-                                <p className='text-warning'>Nothing for the moment</p>
+                                <p className='text-warning'><FormattedMessage id='score.nothing'/></p>
                             )}
                         </div>
                     </Carousel>

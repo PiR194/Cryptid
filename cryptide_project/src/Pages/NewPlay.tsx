@@ -31,6 +31,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Lobbies from './Lobbies';
 import {basePath} from "../AdressSetup"
+import { FormattedMessage } from 'react-intl';
 
 
 
@@ -203,8 +204,8 @@ function NewPlay() {
             <div className="leftContainer">
                 {/* Boutons pour jouer */}
                 <div className='NewbuttonGroupVertical'>
-                    <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
-                    <button ref={target} onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Résoudre une énigme</button>
+                    <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> <FormattedMessage id="play.jouerseul"/> </button>
+                    <button ref={target} onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> <FormattedMessage id="play.enigme"/> </button>
                     <Overlay show={showOverlay} target={target.current} placement="bottom" rootClose={true} rootCloseEvent='click'>
                         {({ placement, arrowProps, show: _show, popper, ...props }) => (
                             <div
@@ -217,18 +218,17 @@ function NewPlay() {
                                 }}>
 
                                 <ButtonGroup aria-label="difficulty">
-                                    <Button onClick={handleStartEasyGame}>Facile</Button>
-                                    <Button onClick={handleStartHardGame}>Difficile</Button>
+                                    <Button onClick={handleStartEasyGame}><FormattedMessage id='play.enigme.easy'/></Button>
+                                    <Button onClick={handleStartEasyGame}><FormattedMessage id='play.enigme.medium'/></Button>
+                                    <Button onClick={handleStartHardGame}><FormattedMessage id='play.enigme.hard'/></Button>
                                 </ButtonGroup>
                             </div>
                         )}
                     </Overlay>
 
-                    <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Créer une partie </button>
-                    <button onClick={launchTuto} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Tutoriel </button>
-                    {/* <button onClick= {() => navigate("/join")} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Rejoindre </button> */}
-                    {/* {goBackRoom != -1 && <button onClick={goBack} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Retourner à la partie</button>} */}
-                    <button onClick={goBack} className="ButtonNavRejoin" style={{ display:returnVisibility}}>Retourner à la partie</button>
+                    <button onClick={createLobby} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> <FormattedMessage id='play.create'/> </button>
+                    <button onClick={launchTuto} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> <FormattedMessage id='play.tuto'/> </button>
+                    <button onClick={goBack} className="ButtonNavRejoin" style={{ display:returnVisibility}}><FormattedMessage id='play.return'/> </button>
 
                 </div>
             

@@ -68,14 +68,40 @@
     "sport_start": "The suspect plays at least",
     "sport_end": "",
 
+    "navbar.play" : "Play",
+    "navbar.presentation":"Presentation",
+    "navbar.info":"Information",
 
+    "play.jouerseul": "Play alone",
+    "play.enigme": "Solve an enigma",
+    "play.enigme.easy": "Easy",
+    "play.enigme.medium": "Intermediate",
+    "play.enigme.hard": "Hard",
 
+    "play.create": "Create a game",
+    "play.tuto": "Tutorial",
+    "play.return": "Return to game",
 
+    "lobbies.all":"All",
+    "lobbies.dispo":"Disponible",
 
+    "placeholder.searchLobby": "Search for a lobby...",
 
+    "score.nbPlayed": "Games Played",
+    "score.best": "Best Score",
+    "score.moy": "Average Attempts",
+    "score.NbWin": "Number of Wins",
+    "score.ratio": "Win/Loss Ratio",
+    "score.bestTmp": "Best Time",
+    "score.moyTmp": "Average Time",
+    "score.nothing": "Nothing for the moment",
 
+    "score.titre.easy": "Easy Enigma",
+    "score.titre.int": "Intermediate Enigma",
+    "score.titre.hard": "Hard Enigma",
+    "score.online": "Online",
 
-
+    "score.tab.stat" : "Your Stats",
 
 
     "informations" : "Information",
