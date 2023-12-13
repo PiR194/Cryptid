@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const AuthController = require('../controllers/AuthController');
-const SessionController = require('../controllers/SessionController');
-const ScoreboardController = require('../controllers/ScoreboardController');
+const AuthController = require(path.resolve(__dirname, '../controllers/AuthController'));
+const SessionController = require(path.resolve(__dirname, '../controllers/SessionController'));
+const ScoreboardController = require(path.resolve(__dirname, '../controllers/ScoreboardController'));
 
 // Routes pour l'authentification
 router.post('/auth/signup', AuthController.signUp);
