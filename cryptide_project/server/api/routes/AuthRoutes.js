@@ -12,6 +12,8 @@ router.delete('/auth/delAccount', AuthController.delAccount)
 router.post('/auth/validatePassword', AuthController.validatePassword);
 router.put('/auth/updatePassword', AuthController.updatePassword);
 
+router.get('/auth/getAllUsers', AuthController.getUsers)
+
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
 router.post('/session/addMastermindStats', SessionController.addMastermindStats);

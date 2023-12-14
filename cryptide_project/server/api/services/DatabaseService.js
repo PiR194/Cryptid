@@ -139,6 +139,19 @@ class DatabaseService {
         });
     }
 
+    async getUsers(){
+        return new Promise((resolve, reject) => {
+            this.client.query('SELECT * FROM users', (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
     // insère un utilisateur dans la base de données
     async insertUser(user) {
         return new Promise((resolve, reject) => {

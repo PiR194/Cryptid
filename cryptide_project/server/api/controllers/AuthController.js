@@ -177,6 +177,26 @@ class AuthController {
             db.disconnect();
         }
     }
+
+
+    static async getUsers(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const users = await db.getUsers();
+
+            res.status(200).json({ tab : users });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyEasyEnigma.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
 }
 
 module.exports = AuthController;
