@@ -61,7 +61,7 @@ class DatabaseService {
                     console.log(err)
                 }
                 else{
-                    console.log("Table user créée")
+                    console.log("Table users créée")
                 }
             });
 
@@ -83,7 +83,7 @@ class DatabaseService {
                     console.log(err)
                 }
                 else{
-                    console.log("Table user créée")
+                    console.log("Table games créée")
                 }
             });
 
