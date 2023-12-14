@@ -53,14 +53,13 @@ interface MyGraphComponentProps {
   putGreyBackground : () => void
   putCorrectBackground : () => void
   putImposssibleGrey : () => void
-  setChangeGraph : (func: (nbNodes: number) => void) => void
-
-  nbNodes: number
-
+  setChangeGraph : (func: (nbNodes: number, nbIndices: number) => void) => void
 
   handleTurn :() => void
 }
 
+let askedWrongBot = false
+let lastSocketId= ""
 let lastAskingPlayer = 0
 let lastNodeId = -1
 let first = true
@@ -68,14 +67,10 @@ let askedWrongLocal = false
 let mapIndexPersons: Map<number, Person[]> = new Map<number, Person[]>()
 let touchedPlayer = -1
 let botIndex = -1
-let askedWrongBot = false
-let lastSocketId= ""
 let firstLap = true
 let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let cptEndgame = 0
-let firstEnigme = true
-let firstIndex = true
 let endgame= false
 let firstHistory = true
 let cptSquare = 0
@@ -83,21 +78,20 @@ let cptOnAskedWrong = 0
 let cptPlayerLeft = 0
 let firstPlayer = 0
 let cptBug = 0
-let cptUseEffect = 0
 let testPlayers: Player[] = []
 let testTemps = 0
 let testFirst = false
-let testFirst2 = true
+let gameStartTmp = true
+let index = 0
 
-
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, nbNodes, setChangeGraph}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, setChangeGraph}) => {
   let cptTour: number = 1
 
   //* Gestion du temps :
   let initMtn = 0
 
   const {isLoggedIn, user, manager} = useAuth();
-  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setIndicesData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps, setPersonData, setPersonNetworkData, setDailyEnigmeData} = useGame();
+  const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setIndicesData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps, setPersonData, setPersonNetworkData, setDailyEnigmeData, gameStart, setGameStartData} = useGame();
   const params = new URLSearchParams(window.location.search);
 
   const navigate = useNavigate();
@@ -140,12 +134,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   useEffect(() => {
     testPlayers = players
-    console.log(testPlayers)
   }, [players])
 
   useEffect(() =>{
     touchedPlayer=playerTouched
-    console.log(playerTouched)
     if (touchedPlayer == -1){
       if (!askedWrongLocal){
         putCorrectBackground()
@@ -184,17 +176,45 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   let playerIndex: number = turnPlayerIndex
 
-  if (firstIndex){
-    firstIndex=false
-    setPlayerIndex(playerIndex)
-  }
-  let index = 0
-  for (let i=0; i<players.length; i++){
-    if(players[i].id == socket.id){
-        index=i
-        break
+  useEffect(() => {
+    gameStartTmp=gameStart
+    if (gameStartTmp){
+      setGameStartData(false)
+      console.log(gameStart)
+      setLastIndex(turnPlayerIndex)
+      setPlayerIndex(playerIndex)
     }
-  }
+    for (let i=0; i<players.length; i++){
+      if(players[i].id == socket.id){
+          index=i
+          break
+      }
+    }
+    first = false
+    endgame= false
+    if (!solo){
+      for(let i = 0; i<indices.length; i++){
+        mapIndexPersons.set(i, [])
+      }
+      if (actualPlayerIndex==0){
+        players.forEach((p, index) =>{
+          if (p instanceof Bot && personNetwork!=null){
+            p.index=index
+            p.initiateMap(personNetwork)
+          }
+        })
+      }
+      setActualPlayerIndexData(index)
+      if (playerIndex == actualPlayerIndex){
+        handleTurnBarTextChange("À vous de jouer")
+        handleShowTurnBar(true)
+      }
+    }
+  }, [gameStart])
+
+
+  
+
 
   useEffect(() =>{
     //* Gestion du sound des tours :
@@ -311,31 +331,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }, [lastIndex])
 
-
-  
-  if (first){
-    first = false
-    endgame= false
-    if (!solo){
-      for(let i = 0; i<indices.length; i++){
-        mapIndexPersons.set(i, [])
-      }
-      if (actualPlayerIndex==0){
-        players.forEach((p, index) =>{
-          if (p instanceof Bot && personNetwork!=null){
-            p.index=index
-            p.initiateMap(personNetwork)
-          }
-        })
-      }
-      setActualPlayerIndexData(index)
-      if (playerIndex == actualPlayerIndex){
-        handleTurnBarTextChange("À vous de jouer")
-        handleShowTurnBar(true)
-      }
-    }
-  }
-
   useEffect(() => {
     if (importToPdf){
       setImportToPdf(false)
@@ -374,9 +369,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     }
   }, [importToJSON])
 
-  const changeGraph = (nbNodes: number) => {
+  const changeGraph = (nbNodes: number, nbIndices: number) => {
     //todo différencier les deux
-    const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, nbNodes)
+    const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(nbIndices, nbNodes)
     setPersonData(choosenPerson)
     setPersonNetworkData(networkPerson)
     setIndicesData(choosenIndices)
@@ -596,7 +591,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       })
       
       socket.on("node checked",(id, works, askedIndex, newPlayerIndex, socketId) => {
-        console.log("coucou")
         cptBug=0
         //@ts-ignore
         const node = nodes.get().find((n) => id == n.id)
@@ -605,7 +599,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           playerIndex = newPlayerIndex
           setPlayerIndex(playerIndex)
           setLastIndex(newPlayerIndex)
-          console.log(newPlayerIndex)
           //@ts-ignore
           if (mapIndexPersons.get(askedIndex)?.find((p) => p.getId() == id) == undefined){
             //@ts-ignore

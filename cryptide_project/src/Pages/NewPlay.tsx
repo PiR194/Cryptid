@@ -42,7 +42,7 @@ function NewPlay() {
 
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
-    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData } = useGame()
+    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData, setGameStartData } = useGame()
 
     const target = useRef(null);
 
@@ -100,6 +100,7 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+        setGameStartData(true)
         navigate(`${basePath}/game?solo=true&daily=false`);
     }
 
@@ -162,7 +163,7 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
-
+        setGameStartData(true)
         navigate(`${basePath}/game?solo=true&daily=true&difficulty=easy`);
         setShowOverlay(false);
     };
@@ -175,7 +176,8 @@ function NewPlay() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        setIndicesData(choosenIndices)
+        setGameStartData(true)
+
 
         navigate(`${basePath}/game?solo=true&daily=true&difficulty=intermediate`);
         if (first){
@@ -194,7 +196,7 @@ function NewPlay() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        setIndicesData(choosenIndices)
+        setGameStartData(true)
         if (first){
             first = false
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
