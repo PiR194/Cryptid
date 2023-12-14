@@ -151,7 +151,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Mastermind</h5>
                             <hr />
-                            {dailyMastermindStats  ? (dailyMastermindStats.tab.length !== 0 ? dailyMastermindStats.tab.map((stats: any, index: number) => (
+                            {(dailyMastermindStats && dailyMastermindStats.tab) ? (dailyMastermindStats.tab.length !== 0 ? dailyMastermindStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -171,7 +171,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme facile</h5>
                             <hr />
-                            {dailyEasyEnigmaStats  ? (dailyEasyEnigmaStats.tab.length !== 0 ? dailyEasyEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(dailyEasyEnigmaStats && dailyEasyEnigmaStats.tab)  ? (dailyEasyEnigmaStats.tab.length !== 0 ? dailyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -191,7 +191,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme moyenne</h5>
                             <hr />
-                            {dailyMediumEnigmaStats  ? (dailyMediumEnigmaStats.tab.length !== 0 ? dailyMediumEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(dailyMediumEnigmaStats && dailyMediumEnigmaStats.tab) ? (dailyMediumEnigmaStats.tab.length !== 0 ? dailyMediumEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -211,7 +211,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme difficile</h5>
                             <hr />
-                            {dailyHardEnigmaStats  ? (dailyHardEnigmaStats.tab.length !== 0 ? dailyHardEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(dailyHardEnigmaStats && dailyHardEnigmaStats.tab)  ? (dailyHardEnigmaStats.tab.length !== 0 ? dailyHardEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -231,7 +231,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>En ligne</h5>
                             <hr />
-                            {dailyOnlineStats  ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
+                            {(dailyOnlineStats && dailyOnlineStats.tab)  ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -257,7 +257,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Mastermind</h5>
                             <hr />
-                            {weeklyMastermindStats ? (weeklyMastermindStats.tab.length !== 0 ? weeklyMastermindStats.tab.map((stats: any, index: number) => (
+                            {(weeklyMastermindStats && weeklyMastermindStats.tab) ? (weeklyMastermindStats.tab.length !== 0 ? weeklyMastermindStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -277,7 +277,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme facile</h5>
                             <hr />
-                            {weeklyEasyEnigmaStats ? (weeklyEasyEnigmaStats.tab.length !== 0 ? weeklyEasyEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(weeklyEasyEnigmaStats && weeklyEasyEnigmaStats.tab) ? (weeklyEasyEnigmaStats.tab.length !== 0 ? weeklyEasyEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -297,7 +297,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme moyenne</h5>
                             <hr />
-                            {weeklyMediumEnigmaStats  ? (weeklyMediumEnigmaStats.tab.length !== 0 ? weeklyMediumEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(weeklyMediumEnigmaStats && weeklyMediumEnigmaStats.tab) ? (weeklyMediumEnigmaStats.tab.length !== 0 ? weeklyMediumEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -317,7 +317,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>Enigme difficile</h5>
                             <hr />
-                            {weeklyHardEnigmaStats  ? (weeklyHardEnigmaStats.tab.length !== 0 ? weeklyHardEnigmaStats.tab.map((stats: any, index: number) => (
+                            {(weeklyHardEnigmaStats && weeklyHardEnigmaStats.tab)  ? (weeklyHardEnigmaStats.tab.length !== 0 ? weeklyHardEnigmaStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
@@ -337,7 +337,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                         <div className="stats">
                             <h5>En ligne</h5>
                             <hr />
-                            {weeklyOnlineStats  ? (weeklyOnlineStats.tab.length !== 0 ? weeklyOnlineStats.tab.map((stats: any, index: number) => (
+                            {(weeklyOnlineStats && weeklyOnlineStats.tab) ? (weeklyOnlineStats.tab.length !== 0 ? weeklyOnlineStats.tab.map((stats: any, index: number) => (
                                 <>
                                     <Row>
                                         <Col>
