@@ -106,6 +106,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [lastIndex, setLastIndex] = useState(-1)
 
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [netEnigme, setNetEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
+  const [downloaded, setDownloaded] = useState(false)
 
   useEffect(() => {
     if (testFirst){
@@ -353,7 +355,54 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           format: 'a4', // Format du papier (par exemple, a4)
         });
         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+        
+        if (isDaily){
+          pdf.addPage();
+          let text = ""
+
+          if (difficulty === "easy"){
+            indices.forEach((indice, index) => {
+              text += `Indice ${index + 1} : ${indice.ToString('fr')}.\n`
+            })
+          }
+          else{
+            const personIndice = new Map<number, string[]>()
+            indices.forEach((i, index) => {
+                personIndice.set(index, [])
+            })
+        
+            netEnigme?.forEach((pairs, index) => {
+                pairs.forEach((pair) => {
+                  const person = personNetwork?.getPersons().find((n) => index == n.getId())
+                  const indice = indices.findIndex((i) => pair.first.getId() == i.getId())
+                  if (person != undefined && indice != -1){
+                    let string = "L'indice numéro " + (indice + 1) + " répond "
+                    if (pair.second){
+                        string += "vrai "
+                    }
+                    else{
+                        string += "faux "
+                    }
+                    string += "pour " + person.getName()
+                    personIndice.get(indice)?.push(string)
+                  }
+                })
+              });
+        
+            personIndice.forEach((indices, index) => {
+                text += `Indice ${index + 1}:\n`
+                indices.forEach((string) => {
+                    text += `${string}.\n`
+                })
+            })
+          }
+          pdf.text(text, 10, 10);
+        }
+        setDownloaded(true)
         pdf.save('graph.pdf');
+
+        
+
       });
     }
   }, [importToPdf])
@@ -454,6 +503,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
     if (isDaily){
       setNetworkEnigme(dailyEnigme)
+      setNetEnigme(dailyEnigme)
       console.log(difficulty)
       if (difficulty === "hard" || difficulty=== "intermediate"){
         console.log(dailyEnigme)
@@ -1080,7 +1130,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
               try{
                 console.log("time: " + testTemps)
-                if(user && isLoggedIn){
+                if(user && isLoggedIn && !downloaded){
                   if(solo){
                     if(isDaily){
                       // TODO: verif difficulté et add les stats
@@ -1104,7 +1154,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 }       
                 else{
                   // add stats mastermind
-                  if(user && user.mastermindStats){
+                  if(user && user.mastermindStats && !downloaded){
                     manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
                   }
                 }

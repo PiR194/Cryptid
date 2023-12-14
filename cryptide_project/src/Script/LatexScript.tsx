@@ -64,7 +64,6 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
         person.getFriends().forEach((friend) => {
             latexCode += `  \\draw (${person.getId()}) -- (${friend.getId()});\n`;
         });
-        console.log(person.getFriends().length);
     });
     
     latexCode += "\\end{tikzpicture}\n";
@@ -147,7 +146,6 @@ function generateLatexCodeEnigme(personsNet : PersonNetwork, choosenPerson : Per
         person.getFriends().forEach((friend) => {
             latexCode += `  \\draw (${person.getId()}) -- (${friend.getId()});\n`;
         });
-        console.log(person.getFriends().length);
     });
     
     latexCode += "\\end{tikzpicture}\n";
