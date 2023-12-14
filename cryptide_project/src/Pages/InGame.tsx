@@ -365,7 +365,8 @@ const InGame = ({locale, changeLocale}) => {
                           putCorrectBackground={putCorrectBackground}
                           putGreyBackground={putGreyBackgroud}
                           putImposssibleGrey={putImposssibleGrey}
-                          handleTurn={handleTurn}/>
+                          handleTurn={handleTurn}
+                          lang={locale}/>
         </div>
         {playTurnSound && <audio src={turnSound} autoPlay />}
 

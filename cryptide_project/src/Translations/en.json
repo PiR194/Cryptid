@@ -31,6 +31,8 @@
     "sfx":"Activate SFX",
     "aide":"Help",
 
+    "majUn":"A",
+
     "join" : "Join",
     "create_room" : "Create room",
     "play_solo" : "Single player",
@@ -48,6 +50,10 @@
     "blond": "Blond",
     "redhead": "Red",
     "brown": "Brown",
+
+
+    "oui": "yes",
+    "non": "no",
 
     "and": "and",
     "or": "or",
@@ -77,9 +83,28 @@
     "navbar.presentation":"Presentation",
     "navbar.info":"Information",
 
+    
+    "hard": "Hard",
+    "medium": "Medium",
+    "strong": "Strong",
+    "weak": "Weak",
+    "none": "None",
+    
     "turn" : "Round",
     "square":"square",
     "round":"round",
+
+    "step": "Step",
+    "previous": "Previous",
+    "next": "Next",
+    "continue": "Continue",
+    "compris": "Understood!",
+    "close": "Close",
+
+    "color.green":"Green",
+    "color.blue":"Blue",
+    "color.red":"Red",
+    "color.yellow":"Yellow",
 
     "play.jouerseul": "Play alone",
     "play.enigme": "Solve an enigma",
@@ -212,5 +237,110 @@
     "info.mdj.enigme.hard": "Hard Enigma",
     "info.mdj.enigme.hard.txt": "This final variant is similar to the intermediate enigma; however, you must find the culprit on the first try, or you lose! It's up to you to play! The goal is to find the culprit in the minimum amount of time.",
 
-    "tutorial.title": "Tutorial"
+    "tutorial.title": "Tutorial",
+
+    "tuto.title.1": "Welcome to SocialGraph!",
+    "tuto.txt.1.1": "You play as a glory-seeking detective faced with a crime.",
+    "tuto.txt.1.2": "However, other investigators are also on the case, all seeking the title of the world's best detective.",
+    "tuto.txt.1.3": "Each has a crucial clue to identify the culprit; you'll need to deduce your competitors' clues if you want to win!",
+    "tuto.txt.1.4": "Interrogate your competitors to get answers with yes or no, but beware, a refusal has consequences.",
+    "tuto.txt.1.5": "Be the first to deduce the clues of others and find the culprit to win the coveted recognition.",
+    "tuto.txt.1.6": "If you have any doubts, click on the 'help' button to display the current tutorial step.",
+
+    "tuto.title.2": "The Suspects",
+    "tuto.txt.2.1": "Here is how a suspect is represented; each suspect has different characteristics, including their name, age, sport, and hair color.",
+    "tuto.txt.2.2": "For example, here we have ",
+    "tuto.txt.2.2.1": ", who is ",
+    "tuto.txt.2.2.2": ", practicing ",
+    "tuto.txt.2.2.3": " and ",
+    "tuto.txt.2.2.4": ", has ",
+    "tuto.txt.2.2.5": " hair, and possesses ",
+
+    "tuto.title.3": "The Clues",
+    "tuto.txt.3.1": "In this game, each detective has a clue that identifies a characteristic of the culprit. Your clue is:",
+    "tuto.txt.3.2": "The suspect is between 20 and 29 years old.",
+
+    "tuto.title.4": "The Detectives",
+    "tuto.txt.4.1": "It is possible to see the detectives on the left side of the screen, represented by circles of different colors. The square outline means that the detective is in deep thought.",
+    "tuto.txt.4.2": "To interrogate a detective about a suspect, select the detective, then click on the suspect you want. The detective will respond with what he thinks of this suspect based on his clue.",
+
+    "tuto.title.5": "The Responses",
+    "tuto.txt.5.1": "Detectives will respond to you only with circles or squares of their color.",
+    "tuto.txt.5.2": " means that their clue clears the suspect.",
+    "tuto.txt.5.3": " means that their clue may incriminate the suspect.",
+    "tuto.txt.5.4": "For example, here:",
+    "tuto.txt.5.5.1": "Scooby-Doo's clue ",
+    "tuto.txt.5.5.2": "clears Logan.",
+    "tuto.txt.5.6": "Eleanor can be suspected based on Batman's clue.",
+    "tuto.txt.5.7.1": "Evelyn is cleared by the clues of ",
+    "tuto.txt.5.7.2": "3 different detectives.",
+
+    "tuto.title.6": "The Rules of the Game",
+    "tuto.txt.6.1.1": "This button takes you to the game's ",
+    "tuto.txt.6.1.2": "information page",
+    "tuto.txt.6.1.3": ", with all the rules of the game, including objectives, clues, flow, etc.",
+
+    "tuto.title.7": "The Clue",
+    "tuto.txt.7.1": "This button allows you to display your personal clue; keep it a secret! It is your best asset to win.",
+
+    "tuto.title.8": "Time to Practice!",
+    "tuto.txt.8.1": "Well done! You now have all the basics of a real detective.",
+    "tuto.txt.8.2": "You will now have a practical exercise for solving a case, alongside our dear Batman and Scooby-Doo.",
+    "tuto.txt.8.3": "Click 'Continue' to start your first game.",
+
+    "tuto.title.9": "First Steps",
+    "tuto.txt.9.1": "Welcome to this second part, where we will learn the flow of a real investigation.",
+    "tuto.txt.9.2.1": "First, select player ",
+    "tuto.txt.9.2.2": " and question them about the suspect named ",
+    "tuto.txt.9.2.3": " by clicking on the latter.",
+
+    "tuto.title.10": "Your First Turn",
+    "tuto.txt.10.1.1": "Great, ",
+    "tuto.txt.10.1.2": "Violet has been identified by Scooby-Doo's clue",
+    "tuto.txt.10.1.3": ", which is essential information! However, this does not necessarily ",
+    "tuto.txt.10.1.4": "mean",
+    "tuto.txt.10.1.5": " that she is guilty.",
+    "tuto.txt.10.2": "Now, it's the other players' turn to play; let's see what they did.",
+
+    "tuto.title.11": "Other Players' First Turn",
+    "tuto.txt.11.1.1": "It seems that Scooby-Doo also questioned Batman about Violet, and Batman responded with ",
+    "tuto.txt.11.1.2": "a square. This means Violet is not guilty and is innocent!",
+    "tuto.txt.11.2.1": "Scooby-Doo made a mistake by questioning someone who could clear Violet. As a ",
+    "tuto.txt.11.2.2": "punishment",
+    "tuto.txt.11.2.3": ", he must also place a square on another player, revealing more information about his clue. So now we know that Scooby-Doo's clue does not identify Sebastian.",
+    "tuto.txt.11.3": "Next, Batman questioned Scooby-Doo about Charlotte, identified by Scooby-Doo's clue.",
+
+    "tuto.title.12": "Second Turn",
+    "tuto.txt.12.1.1": "You notice that ",
+    "tuto.txt.12.1.2": "your clue also identifies Charlotte",
+    "tuto.txt.12.1.3": ", so what if we ask Batman if he thinks Charlotte is the culprit?",
+    "tuto.txt.12.2": "This would allow us to end the game!",
+
+    "tuto.title.13": "The Punishment",
+    "tuto.txt.13.1.1": "Oh no, it seems that Batman's clue clears Charlotte, and you have made a mistake; the ",
+    "tuto.txt.13.1.2": "punishment",
+    "tuto.txt.13.1.3": " applies!",
+    "tuto.txt.13.2.1": "So, you must place a ",
+    "tuto.txt.13.2.2": "square on another player",
+    "tuto.txt.13.2.3": ", revealing more information about your clue.",
+    "tuto.txt.13.3.1": "But all is not lost! Let's place our square on ",
+    "tuto.txt.13.3.2": "for that, select the desired suspect directly.",
+
+    "tuto.title.14": "The End of the Game",
+    "tuto.txt.14.1": "This turn is also rich in information!",
+    "tuto.txt.14.2": "You now have enough information to guess the clues of others:",
+    "tuto.txt.14.3": "Scooby-Doo seems to have:",
+    "tuto.txt.14.4": "Batman seems to have:",
+    "tuto.txt.14.5": "And your clue is:",
+    "tuto.txt.14.6.1": "You now have all the cards in hand to guess who the culprit is. Click the ",
+    "tuto.txt.14.6.2": "Ask Everyone",
+    "tuto.txt.14.6.3": " button, then select a suspect to make an ",
+    "tuto.txt.14.6.4": "accusation",
+    "tuto.txt.14.6.5": " to guess. Good luck!",
+
+    "history.mis": " placed a ",
+    "à": "to",
+    "history.cantPose": " can no longer place a square",
+    "history.NotCoupable": " is not the culprit!"
+
 }

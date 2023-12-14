@@ -53,6 +53,8 @@ interface MyGraphComponentProps {
   putImposssibleGrey : () => void
 
   handleTurn :() => void
+
+  lang: string
 }
 
 let lastAskingPlayer = 0
@@ -83,7 +85,7 @@ let testTemps = 0
 let testFirst = false
 
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, isEasy, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, lang}) => {
   let cptTour: number = 0
 
   //* Gestion du temps :
@@ -445,7 +447,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (firstHistory){
           firstHistory=false
           indices.forEach((indice, index) => {
-            addToHistory("Indice " + positionToEmoji(index, true) + " : " + indice.ToString("fr"))
+            addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
           })
         }
         
@@ -603,7 +605,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             cptHistory++
             if (cptHistory % 2 >= 0){
               lastNodes.push(node)
-              addToHistory(testPlayers[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(testPlayers[askedIndex].pseudo + intl.formatMessage({ id: 'history.mis' }) + positionToEmoji(askedIndex, works) + intl.formatMessage({ id: 'à' }) + personNetwork.getPersons()[id].getName())
             }
           }
 
@@ -667,7 +669,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         cptBug=0
         cptOnAskedWrong ++
         if (cptOnAskedWrong % 2 >= 0){
-          addToHistory(testPlayers[askingPlayer].pseudo + " ne peut plus poser de carré")
+          addToHistory(testPlayers[askingPlayer].pseudo + intl.formatMessage({ id: 'history.cantPose' }))
           playerIndex = askingPlayer + 1
           if(playerIndex == players.length){
             playerIndex = 0
@@ -735,7 +737,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       if (firstLap){
         firstLap=false
         if (!isDaily){
-          addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+          addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkData.nodes.length + "] ----->");
         }
       }
     }
@@ -1091,10 +1093,10 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
             }
             else{
-              addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+              addToHistory(personTest.getName() + intl.formatMessage({ id: 'history.NotCoupable' }));
               cptTour ++; // On Incrémente le nombre de tour du joueur
               const tour = cptTour+1;
-              addToHistory("<----- [Tour " + tour  +"/"+networkData.nodes.length + "] ----->");
+              addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) + " " + tour  +"/"+networkData.nodes.length + "] ----->");
               changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
             }
           }

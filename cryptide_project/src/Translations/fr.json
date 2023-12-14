@@ -29,7 +29,6 @@
     "indice":"Indice",
     "param":"Paramètres",
     "sfx":"Activer les SFX",
-
     "aide":"Aide",
 
     "majUn":"Un",
@@ -337,6 +336,12 @@
     "tuto.txt.14.6.2":"Ask Everyone",
     "tuto.txt.14.6.3":", puis séléctionné un suspect pour émettre une ",
     "tuto.txt.14.6.4":"accusation",
-    "tuto.txt.14.6.5":" pour deviner, bonne chance !"
+    "tuto.txt.14.6.5":" pour deviner, bonne chance !",
+
+
+    "history.mis":" à mis un ",
+    "à":"à",
+    "history.cantPose":" ne peut plus poser de carré",
+    "history.NotCoupable":" n'est pas le coupable !"
 }
 
