@@ -389,6 +389,7 @@ const InGame = ({locale, changeLocale}) => {
                           putGreyBackground={putGreyBackgroud}
                           putImposssibleGrey={putImposssibleGrey}
                           handleTurn={handleTurn}
+                          lang={locale}
                           setChangeGraph={setChangeGraphData}/>
         </div>
         {playTurnSound && <audio src={turnSound} autoPlay />}
@@ -399,7 +400,7 @@ const InGame = ({locale, changeLocale}) => {
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
-              Tour : {cptTour}
+              <FormattedMessage id='turn'/> : {cptTour}
             </div>
         }
         
@@ -527,7 +528,7 @@ const InGame = ({locale, changeLocale}) => {
                   backdrop={false}
                   style={{ height: '20%', width: '25%', top: '60vh' }}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Indice</Offcanvas.Title>
+            <Offcanvas.Title><FormattedMessage id='indice'/></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             {indice?.ToString(locale)}
@@ -542,18 +543,18 @@ const InGame = ({locale, changeLocale}) => {
                   placement='top'
                   style={{height: '60%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
+            <Offcanvas.Title><img src={Param} alt='param'/> <FormattedMessage id='param'/></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body >
             <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
               <label style={{ display:'flex'}}>
                 <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
-                <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
+                <p style={{ marginLeft:'20px'}}><FormattedMessage id='sfx'/></p>
               </label>
 
               {IsSolo && 
               <div className='nbNodeDiv'>
-                  <label htmlFor="numberInput">Sélectionner le nombre de noeuds (entre 20 et 50) :</label>
+                  <label htmlFor="numberInput"><FormattedMessage id='param.node'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
@@ -573,12 +574,12 @@ const InGame = ({locale, changeLocale}) => {
                                               style={{ 
                                                 backgroundColor: theme.colors.tertiary,
                                                 borderColor: theme.colors.secondary,
-                                              }}>Valider</button>
+                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
 
               {IsSolo && 
               <div className='nbNodeDiv'>
-                  <label htmlFor="numberInput">Sélectionner le nombre d'indices (entre 3 et 6) :</label>
+                  <label htmlFor="numberInput"><FormattedMessage id='param.clue'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3) setEnteredNumberIndices(enteredNumberIndices-1)}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
@@ -598,7 +599,7 @@ const InGame = ({locale, changeLocale}) => {
                                               style={{ 
                                                 backgroundColor: theme.colors.tertiary,
                                                 borderColor: theme.colors.secondary,
-                                              }}>Valider</button>
+                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
             </div>
           </Offcanvas.Body>

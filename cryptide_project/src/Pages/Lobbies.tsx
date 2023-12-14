@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+
 /* Style */
 import './Lobbies.css';
 import "../Style/Global.css"
@@ -11,7 +12,7 @@ import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 import Person from '../model/Person';
 import { useNavigationType } from 'react-router-dom';
-
+import { FormattedMessage, useIntl } from 'react-intl';
 
 class LobbyDataProps {
     roomNum : string
@@ -95,12 +96,16 @@ function Lobbies() {
         socket.emit("lobby created")
     }
 
+
+    const intl = useIntl();
+
+
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
             <input
                 type="text"
                 className='searchLobby'
-                placeholder="Rechercher un lobby..."
+                placeholder={intl.formatMessage({ id: 'placeholder.searchLobby' })}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{width:'80%', margin:'10px'}}
@@ -119,7 +124,7 @@ function Lobbies() {
                     }}
                     onClick={handleShowAllClick}
                 >
-                    Tous
+                    <FormattedMessage id='lobbies.all'/>
                 </button>
                 <button
                     style={{
@@ -132,12 +137,12 @@ function Lobbies() {
                     }}
                     onClick={handleShowAvailableClick}
                 >
-                    Disponible
+                    <FormattedMessage id='lobbies.dispo'/>
                 </button>
             </div>
 
                 {filteredLobbiesToShow.length === 0 ? (
-                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créer une partie</button>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}><FormattedMessage id='play.create' /></button>
                     ) : (
                         <div className="lobbyList">
                             {filteredLobbiesToShow.map((lobby, index) => (

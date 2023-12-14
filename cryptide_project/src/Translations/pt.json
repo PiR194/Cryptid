@@ -68,6 +68,13 @@
     "sport_start": "O suspeito joga pelo menos",
     "sport_end": "",
 
+    "navbar.play" : "Jogar",
+    "navbar.presentation":"Apresentação",
+    "navbar.info":"Informação",
+
+    "round":"ronda",
+
+
     "informations" : "Informação",
     "info.intro.title":"Introdução ao jogo:",
     "info.intro.text":"Bem-vindo ao nosso empolgante jogo de dedução, onde intriga e malícia se unem em uma aventura emocionante! Mergulhe em um mundo de mistério e intriga, onde cada interação conta, e cada pista o aproxima da verdade. Imagine um gráfico complexo onde cada vértice representa uma pessoa, cada eixo uma relação, e cada detalhe conta. Você está imerso em um desafio desafiador para descobrir quem, entre esses indivíduos, é o misterioso assassino. Cada jogador tem uma pista crucial, e apenas o compartilhamento estratégico dessas pistas o levará a resolver o mistério. Explore nossa página de regras para entender as complexidades do jogo, descobrir pistas que podem orientá-lo e desenvolver estratégias inteligentes para identificar o culpado. Manipule seus amigos para ser o primeiro a descobrir quem é o assassino escondido no gráfico. Você está pronto para aceitar o desafio e desmascarar o assassino oculto no gráfico? Que a investigação comece!",

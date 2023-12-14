@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 /* Naviagtion */
-import { Navbar, Container, Nav, NavDropdown  } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 /* Lang */
 import { FormattedMessage } from 'react-intl';
@@ -58,13 +58,13 @@ function AppNavbar({changeLocale, locale}) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href={`${basePath}/`} style={{ color: theme.colors.text }}>
-                            Jouer
+                            <FormattedMessage id="navbar.play" />
                         </Nav.Link>
                         <Nav.Link href={`${basePath}/presentation`} style={{ color: theme.colors.text }}>
-                            Présentation
+                            <FormattedMessage id="navbar.presentation" />
                         </Nav.Link>
                         <Nav.Link href={`${basePath}/info`} style={{ color: theme.colors.text }}>
-                            Info
+                            <FormattedMessage id="navbar.info" />
                         </Nav.Link>
                     </Nav>
                     <div className='leftdiv'>

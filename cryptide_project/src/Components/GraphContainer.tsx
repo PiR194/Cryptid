@@ -24,6 +24,7 @@ import {basePath} from "../AdressSetup"
 import GameCreator from "../model/GameCreator";
 import Stub from "../model/Stub";
 import EnigmeDuJourCreator from "../model/EnigmeDuJourCreator";
+import { useIntl } from "react-intl";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -56,6 +57,8 @@ interface MyGraphComponentProps {
   setChangeGraph : (func: (nbNodes: number, nbIndices: number) => void) => void
 
   handleTurn :() => void
+
+  lang: string
 }
 
 let askedWrongBot = false
@@ -84,11 +87,16 @@ let testFirst = false
 let gameStartTmp = true
 let index = 0
 
-const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, setChangeGraph}) => {
+const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, setChangeGraph, lang}) => {
   let cptTour: number = 1
 
   //* Gestion du temps :
   let initMtn = 0
+
+  
+  //* traduction
+  const intl = useIntl();
+
 
   const {isLoggedIn, user, manager} = useAuth();
   const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setIndicesData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps, setPersonData, setPersonNetworkData, setDailyEnigmeData, gameStart, setGameStartData} = useGame();
@@ -208,7 +216,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
       setActualPlayerIndexData(index)
       if (playerIndex == actualPlayerIndex){
-        handleTurnBarTextChange("À vous de jouer")
+        handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
         handleShowTurnBar(true)
       }
     }
@@ -515,7 +523,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         if (firstHistory){
           firstHistory=false
           indices.forEach((indice, index) => {
-            addToHistory("Indice " + positionToEmoji(index, true) + " : " + indice.ToString("fr"))
+            addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
           })
         }
         
@@ -589,7 +597,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           setPlayerIndex(playerIndex)
           setLastIndex(playerIndex)
           if (playerIndex===actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
         }
@@ -610,7 +618,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerIndex(index)
         setLastIndex(index)
         if (actualPlayerIndex==index){
-          handleTurnBarTextChange("À vous de jouer")
+          handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
           handleShowTurnBar(true)
         }
       })
@@ -671,12 +679,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             cptHistory++
             if (cptHistory % 2 >= 0){
               lastNodes.push(node)
-              addToHistory(testPlayers[askedIndex].pseudo + " à mis un " + positionToEmoji(askedIndex, works) + " à " + personNetwork.getPersons()[id].getName())
+              addToHistory(testPlayers[askedIndex].pseudo + intl.formatMessage({ id: 'history.mis' }) + positionToEmoji(askedIndex, works) + intl.formatMessage({ id: 'à' }) + personNetwork.getPersons()[id].getName())
             }
           }
 
           if (playerIndex === actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
           else{
@@ -721,7 +729,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             setAskedWrong(true)
             askedWrongBot=true
             handleShowTurnBar(true)
-            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.wrong' }))
             touchedPlayer = actualPlayerIndex
             putGreyBackgroud()
           }
@@ -735,7 +743,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         cptBug=0
         cptOnAskedWrong ++
         if (cptOnAskedWrong % 2 >= 0){
-          addToHistory(testPlayers[askingPlayer].pseudo + " ne peut plus poser de carré")
+          addToHistory(testPlayers[askingPlayer].pseudo + intl.formatMessage({ id: 'history.cantPose' }))
           playerIndex = askingPlayer + 1
           if(playerIndex == players.length){
             playerIndex = 0
@@ -743,7 +751,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           setPlayerIndex(playerIndex)
           setLastIndex(playerIndex)
           if (playerIndex === actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
           else{
@@ -803,7 +811,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       if (firstLap){
         firstLap=false
         if (solo && (difficulty === "intermediate" || !isDaily)){
-          addToHistory("<----- [Tour " + 1  +"/"+networkData.nodes.length + "] ----->");
+          addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkData.nodes.length + "] ----->");
         }
       }
     }
@@ -1163,9 +1171,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             else{
               if (isDaily){
                 if (difficulty==="intermediate"){
-                  addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+                  addToHistory(personTest.getName() + intl.formatMessage({ id: 'history.NotCoupable' }));
                   cptTour ++; // On Incrémente le nombre de tour du joueur
-                  addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
+                  addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) + " " + cptTour  +"/"+networkData.nodes.length + "] ----->");
                   changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
                 }
                 else if (difficulty==="easy"){
@@ -1179,7 +1187,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 }
               }
               else{
-                  addToHistory(personTest.getName() + " n'est pas le coupable !"); //TODO préciser le nombre d'indice qu'il a de juste
+                  addToHistory(personTest.getName() + intl.formatMessage({ id: 'history.NotCoupable' })); //TODO préciser le nombre d'indice qu'il a de juste
                   cptTour ++; // On Incrémente le nombre de tour du joueur
                   addToHistory("<----- [Tour " + cptTour  +"/"+networkData.nodes.length + "] ----->");
                   changecptTour(cptTour); // On le transmet a la page précédente avec la fonction

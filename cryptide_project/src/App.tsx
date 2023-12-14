@@ -94,11 +94,11 @@ function App() {
                   <Route path={`${basePath}/signup`} element={<SignUp />} />
                   <Route path={`${basePath}/presentation`} element={<Home />} />
                   <Route path={`${basePath}/lobby`} element={<Lobby/>} />
-                  <Route path={`${basePath}/endgame`} element={<EndGame/>} />
+                  <Route path={`${basePath}/endgame`} element={<EndGame lang={locale}/>} />
                   <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
                   <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
                   <Route path={`${basePath}/tutorial`} element={<Tutorial locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path={`${basePath}/deduc`} element={<DeducCheck/>} />
+                  <Route path={`${basePath}/deduc`} element={<DeducCheck lang={locale}/>} />
                   <Route path={`${basePath}/TheRealDeduc`} element={<DeducGrid/>} />
                   <Route path={`${basePath}/profile`} element={<Profile/>} />
                   <Route path={`${basePath}/join`} element={<Lobbies/>}/>
