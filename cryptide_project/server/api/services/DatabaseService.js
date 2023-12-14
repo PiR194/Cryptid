@@ -33,7 +33,7 @@ class DatabaseService {
                     reject(err);
                 } else {
                     if (createTables === "true"){
-                        this.createTables()
+                        await this.createTables()
                         console.log("create table")
                     }
 
@@ -42,7 +42,7 @@ class DatabaseService {
                         const showTablesQuery = 'SHOW TABLES';
                     
                         // Execute the query
-                        const [rows, fields] = await connection.promise().query(showTablesQuery);
+                        const [rows, fields] = await this.client.promise().query(showTablesQuery);
                     
                         // Extract table names from the result
                         const tableNames = rows.map(row => row[`Tables_in_${dbConfig.database}`]);
