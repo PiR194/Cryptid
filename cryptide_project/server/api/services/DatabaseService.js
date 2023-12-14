@@ -36,23 +36,6 @@ class DatabaseService {
                         await this.createTables()
                         console.log("create table")
                     }
-
-                    try {
-                        // Query to show all tables in the database
-                        const showTablesQuery = 'SHOW TABLES';
-                    
-                        // Execute the query
-                        const [rows, fields] = await this.client.promise().query(showTablesQuery);
-                    
-                        // Extract table names from the result
-                        const tableNames = rows.map(row => row[`Tables_in_${dbConfig.database}`]);
-                    
-                        console.log('Tables in the database:', tableNames);
-                      } catch (error) {
-                        console.error('Error fetching tables:', error);
-                      } finally {
-                        // Close the connection after executing the query
-                      }
                     resolve();
                 }
             });
