@@ -27,7 +27,7 @@ class DatabaseService {
             this.client = mysql.createConnection(dbConfig);
             console.log(createTables)
 
-            this.client.connect((err) => {
+            this.client.connect(async (err) => {
                 if (err) {
                     console.log(err)
                     reject(err);
@@ -36,6 +36,23 @@ class DatabaseService {
                         this.createTables()
                         console.log("create table")
                     }
+
+                    try {
+                        // Query to show all tables in the database
+                        const showTablesQuery = 'SHOW TABLES';
+                    
+                        // Execute the query
+                        const [rows, fields] = await connection.promise().query(showTablesQuery);
+                    
+                        // Extract table names from the result
+                        const tableNames = rows.map(row => row[`Tables_in_${dbConfig.database}`]);
+                    
+                        console.log('Tables in the database:', tableNames);
+                      } catch (error) {
+                        console.error('Error fetching tables:', error);
+                      } finally {
+                        // Close the connection after executing the query
+                      }
                     resolve();
                 }
             });
