@@ -71,6 +71,7 @@ steps:
     when:
       branch:
       - CI/CD
+      - CI/CD
 
 
 #container deployment

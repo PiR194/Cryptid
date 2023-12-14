@@ -29,7 +29,7 @@ class EnigmeDuJourCreator{
                         possibleIndices.forEach((possibleIndice, index) =>{
                             const tester = IndiceTesterFactory.Create(possibleIndice)
                             if (tester.Works(person)){
-                                const t = veryTmpIndice.findIndex((tmpIndice) => tmpIndice.getId() == possibleIndice.getId())
+                                 const t = veryTmpIndice.findIndex((tmpIndice) => tmpIndice.getId() == possibleIndice.getId())
                                 if (t != -1){
                                     veryTmpIndice.splice(t, 1)
                                 }
@@ -58,10 +58,7 @@ class EnigmeDuJourCreator{
                 }
                 possibleIndices = [...tmpPossibleIndices]
                 modifiedPersons.push(choosenPair)
-                console.log(possibleIndices)
             }
-            console.log("choosenIndice => " + choosenIndice.ToString("fr"))
-            console.log("possibleIndices => " + possibleIndices[0].ToString("fr"))
             modifiedPersons.forEach((pair) =>{
                 map.get(pair.first.getId())?.push(new Pair(choosenIndice, pair.second))
             })

@@ -92,11 +92,12 @@ const InGame = ({locale, changeLocale}) => {
   }
 
 
-  let isEasy: boolean = true
-  const isEasytmp = params.get('easy');
-  if (isEasytmp == "false"){
-    isEasy=false
+  let difficulty: string = "";
+  let difficultyTmp = params.get('difficulty')
+  if (difficultyTmp !== null){
+    difficulty=difficultyTmp
   }
+
   //* Historique
   const [history, setHistory] = useState<string[]>([]);
   const [showLast, setShowLast] = useState(false)
@@ -107,6 +108,8 @@ const InGame = ({locale, changeLocale}) => {
   const [putCorrectBackground, setPutCorrectBackground] = useState<() => void>(() => {});
   const [putGreyBackgroud, setPutGreyBackground] = useState<() => void>(() => {});
   const [putImposssibleGrey, setPutImposssibleGrey] = useState<() => void>(() => {});
+  const [changeGraph, setChangeGraph] = useState<(nbNodes: number, nbIndices: number) => void>(() => {});
+
 
 
   const setPutCorrectBackgroundData = (func: () => void) => {
@@ -119,6 +122,10 @@ const InGame = ({locale, changeLocale}) => {
 
   const setPutImposssibleGreyData = (func: () => void) => {
     setPutImposssibleGrey(func)
+  }
+
+  const setChangeGraphData = (func: (nbNodes: number, nbIndices: number) => void) => {
+    setChangeGraph(func)
   }
 
   const setImportToJSONData = (imp: boolean) => {
@@ -255,7 +262,7 @@ const InGame = ({locale, changeLocale}) => {
   const handleCloseS = () => setShowS(false);
   const handleShowS = () => setShowS(true);
 
-  const [cptTour, setcptTour] = useState(0);
+  const [cptTour, setcptTour] = useState(1);
 
   const [LastVisible, setLastVisible] = useState(false);
 
@@ -317,6 +324,22 @@ const InGame = ({locale, changeLocale}) => {
   const [playTurnSound, setPlayTurnSound] = useState(false);
   const [soundPreference, setSoundPreference] = useState(true); // utilisateur
 
+  const [enteredNumber, setEnteredNumber] = useState(25);
+  const [enteredNumberIndices, setEnteredNumberIndices] = useState(3);
+
+
+  //@ts-ignore
+  const handleNumberChange = (event) => {
+      const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
+      setEnteredNumber(newNumber);
+  };
+
+  //@ts-ignore
+  const handleNumberIndicesChange = (event) => {
+    const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
+    setEnteredNumberIndices(newNumber);
+};
+
   const handleSoundPreferenceChange = () => {
     setSoundPreference(!soundPreference);
     console.log("changement des options du son : "+ soundPreference)
@@ -346,7 +369,7 @@ const InGame = ({locale, changeLocale}) => {
                           addToHistory={addToHistory}
                           solo={IsSolo} 
                           isDaily={isDaily} 
-                          isEasy={isEasy}
+                          difficulty={difficulty}
                           setPlayerTouched={handleSetPlayerTouched} 
                           playerTouched={playerTouched}
                           setNetwork={setNetworkData}
@@ -365,12 +388,13 @@ const InGame = ({locale, changeLocale}) => {
                           putCorrectBackground={putCorrectBackground}
                           putGreyBackground={putGreyBackgroud}
                           putImposssibleGrey={putImposssibleGrey}
-                          handleTurn={handleTurn}/>
+                          handleTurn={handleTurn}
+                          setChangeGraph={setChangeGraphData}/>
         </div>
         {playTurnSound && <audio src={turnSound} autoPlay />}
 
 
-        {IsSolo && !isDaily &&
+        {IsSolo && (!isDaily || difficulty !== "hard") &&
             <div className='nbLaps' style={{ 
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
@@ -379,7 +403,7 @@ const InGame = ({locale, changeLocale}) => {
             </div>
         }
         
-        {(!isDaily || (isDaily && isEasy)) &&
+        {(!isDaily || (isDaily && (difficulty==="easy" || difficulty==="intermediate"))) &&
           <div className='historique' id="history-container">
               {history.map((item, index) => (
                   <div key={index}>{item}</div>
@@ -401,6 +425,7 @@ const InGame = ({locale, changeLocale}) => {
 
 
         <div className='menuGame'>
+
           <div className='resetDiv'>
             <button className='button'
               style={{ 
@@ -421,6 +446,8 @@ const InGame = ({locale, changeLocale}) => {
               
             </button>
           </div>
+
+          
 
 
 
@@ -513,15 +540,67 @@ const InGame = ({locale, changeLocale}) => {
         <Offcanvas show={showS} 
                   onHide={handleCloseS} 
                   placement='top'
-                  style={{height: '30%', width: '30%', left: '70%' }}>
+                  style={{height: '60%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
           </Offcanvas.Header>
-          <Offcanvas.Body>
-            <label style={{ display:'flex'}}>
-              <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
-              <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
-            </label>
+          <Offcanvas.Body >
+            <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+              <label style={{ display:'flex'}}>
+                <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
+                <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
+              </label>
+
+              {IsSolo && 
+              <div className='nbNodeDiv'>
+                  <label htmlFor="numberInput">Sélectionner le nombre de noeuds (entre 20 et 50) :</label>
+                  <div>
+                      <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
+                          style={{borderColor:theme.colors.secondary}}> - </button>
+                      <input
+                          // type="number"
+                          style={{textAlign:'center'}}
+                          id="numberInput"
+                          disabled
+                          value={enteredNumber}
+                          onChange={handleNumberChange}
+                          min={20}
+                          max={60}/>
+                      <button className='valuebutton' onClick={() => { if (enteredNumber<50) setEnteredNumber(enteredNumber+1)}}
+                          style={{borderColor:theme.colors.secondary}}> + </button>
+                  </div>
+                  <button onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}
+                                              style={{ 
+                                                backgroundColor: theme.colors.tertiary,
+                                                borderColor: theme.colors.secondary,
+                                              }}>Valider</button>
+              </div>}
+
+              {IsSolo && 
+              <div className='nbNodeDiv'>
+                  <label htmlFor="numberInput">Sélectionner le nombre d'indices (entre 3 et 6) :</label>
+                  <div>
+                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3) setEnteredNumberIndices(enteredNumberIndices-1)}}
+                          style={{borderColor:theme.colors.secondary}}> - </button>
+                      <input
+                          // type="number"
+                          style={{textAlign:'center'}}
+                          id="numberInput"
+                          disabled
+                          value={enteredNumberIndices}
+                          onChange={handleNumberIndicesChange}
+                          min={3}
+                          max={6}/>
+                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices<6) setEnteredNumberIndices(enteredNumberIndices+1)}}
+                          style={{borderColor:theme.colors.secondary}}> + </button>
+                  </div>
+                  <button onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}
+                                              style={{ 
+                                                backgroundColor: theme.colors.tertiary,
+                                                borderColor: theme.colors.secondary,
+                                              }}>Valider</button>
+              </div>}
+            </div>
           </Offcanvas.Body>
         </Offcanvas>
       </div>

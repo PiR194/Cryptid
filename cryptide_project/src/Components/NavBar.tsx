@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 /* Naviagtion */
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown  } from 'react-bootstrap';
 
 /* Lang */
 import { FormattedMessage } from 'react-intl';
@@ -31,7 +31,7 @@ import Player from '../model/Player';
 import { set } from 'lodash';
 
 // @ts-ignore
-function AppNavbar({changeLocale}) {
+function AppNavbar({changeLocale, locale}) {
     const theme = useTheme();
     const navigate = useNavigate();
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
@@ -93,6 +93,7 @@ function AppNavbar({changeLocale}) {
                         </Nav>
                     </div>
                 </Navbar.Collapse>
+                <LangDropDown changeLocale={changeLocale} locale={locale}/>
             </Container>
         </Navbar>
     );

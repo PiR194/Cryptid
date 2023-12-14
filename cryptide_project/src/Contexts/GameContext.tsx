@@ -26,6 +26,8 @@ interface GameContextProps {
   networkData: any
   seed: number | string;
   nodesC: NodePerson[]
+  gameStart: boolean
+  setGameStartData : (newStart: boolean) => void
   setIndicesData: (newIndices: Indice[]) => void;
   setIndiceData: (newIndice: Indice) => void;
   setPersonData: (newPerson: Person) => void;
@@ -37,7 +39,7 @@ interface GameContextProps {
   setTurnPlayerIndexData: (newTurnPlayerIndex: number) => void;
   setRoomData: (newRoom: string) => void;
   setOnlyFalseData: (newOnlyFalse: boolean) => void
-  setWinnerData: (winner: Player) => void
+  setWinnerData: (winner: Player | null) => void
   reset: () => void
   setDailyEnigmeData: (map: Map<number, Pair<Indice, boolean>[]>) => void
   setNbCoupData: (newNbCoup : number) => void
@@ -72,7 +74,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [networkData, setNetworkData] = useState<any>(null);
   const [seed, setSeed] = useState<number | string>(0);
   const [nodesC, setNodes] = useState<NodePerson[]>([]);
+  const [gameStart, setGameStart] = useState<boolean>(true)
 
+
+  const setGameStartData = (newStart: boolean) => {
+    setGameStart(newStart)
+  }
 
   const setNodesData = (nodes: NodePerson[]) => {
     setNodes(nodes)
@@ -131,7 +138,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setOnlyFalse(newOnlyFalse)
   }
 
-  const setWinnerData = (winner: Player) =>{
+  const setWinnerData = (winner: Player | null) =>{
     setWinner(winner)
   }
 
@@ -165,7 +172,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   }
 
   return (
-    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset, dailyEnigme, setDailyEnigmeData, nbCoup, setNbCoupData, temps, settempsData, setNetworkDataData, networkData, seed, setSeedData, nodesC, setNodesData}}>
+    <GameContext.Provider value={{ indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, nodeId, setNodeIdData, askedPersons, setAskedPersonsData, actualPlayerIndex, setActualPlayerIndexData, turnPlayerIndex, setTurnPlayerIndexData, room, setRoomData, onlyFalse, setOnlyFalseData, winner, setWinnerData, reset, dailyEnigme, setDailyEnigmeData, nbCoup, setNbCoupData, temps, settempsData, setNetworkDataData, networkData, seed, setSeedData, nodesC, setNodesData, gameStart, setGameStartData}}>
       {children}
     </GameContext.Provider>
   );

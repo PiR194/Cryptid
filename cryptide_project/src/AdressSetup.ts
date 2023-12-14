@@ -10,8 +10,6 @@ const ADRESSE_WEBSITE = ""
 
 const basePath = process.env.REACT_APP_BASEPATH || '/containers/Crypteam-website';
 
-console.log(basePath)
-
 const tmp3 = basePath
 
 

@@ -42,7 +42,7 @@ function NewPlay() {
 
     const theme=useTheme()
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
-    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData } = useGame()
+    const {setDailyEnigmeData, setIndicesData, setPersonData, setPersonNetworkData, setGameStartData } = useGame()
 
     const target = useRef(null);
 
@@ -50,6 +50,7 @@ function NewPlay() {
     cptNavigation++
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
+            first=true
             socket.emit("player quit")
         }
     }
@@ -99,6 +100,7 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+        setGameStartData(true)
         navigate(`${basePath}/game?solo=true&daily=false`);
     }
 
@@ -161,8 +163,28 @@ function NewPlay() {
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
+        setGameStartData(true)
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=easy`);
+        setShowOverlay(false);
+    };
 
-        navigate(`${basePath}/game?solo=true&daily=true&easy=true`);
+    const handleStartMediumGame = () => {
+
+        //* Mode facile 
+        //todo différencier les deux
+        const [networkPerson, choosenPerson, choosenIndices] = GameCreator.CreateGame(3, 30)
+        setPersonData(choosenPerson)
+        setPersonNetworkData(networkPerson)
+        setIndicesData(choosenIndices)
+        setGameStartData(true)
+
+
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=intermediate`);
+        if (first){
+            first = false
+            const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
+            setDailyEnigmeData(map)
+        }
         setShowOverlay(false);
     };
 
@@ -174,13 +196,13 @@ function NewPlay() {
         setPersonData(choosenPerson)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
-        setIndicesData(choosenIndices)
+        setGameStartData(true)
         if (first){
             first = false
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate(`${basePath}/game?solo=true&daily=true&easy=false`);
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=hard`);
         setShowOverlay(false);
     };
 
@@ -205,7 +227,7 @@ function NewPlay() {
                 <div className='NewbuttonGroupVertical'>
                     <button onClick={launchMastermind} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Jouer seul </button>
                     <button ref={target} onClick={launchEngimeJour} className="ButtonNav" style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}> Résoudre une énigme</button>
-                    <Overlay show={showOverlay} target={target.current} placement="bottom" rootClose={true} rootCloseEvent='click'>
+                    <Overlay show={showOverlay} target={target.current} placement="bottom" rootClose={true} rootCloseEvent='click' onHide={() => setShowOverlay(false)}>
                         {({ placement, arrowProps, show: _show, popper, ...props }) => (
                             <div
                                 {...props}
@@ -218,6 +240,7 @@ function NewPlay() {
 
                                 <ButtonGroup aria-label="difficulty">
                                     <Button onClick={handleStartEasyGame}>Facile</Button>
+                                    <Button onClick={handleStartMediumGame}>Intermédiaire</Button>
                                     <Button onClick={handleStartHardGame}>Difficile</Button>
                                 </ButtonGroup>
                             </div>
