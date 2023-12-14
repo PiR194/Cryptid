@@ -185,7 +185,7 @@ class AuthController {
         try{
             await db.connect();
 
-            const [user, fields] = await db.getUsers();
+            const [users, fields] = await db.getUsers();
 
             res.status(200).json({ tab : users });
         }
