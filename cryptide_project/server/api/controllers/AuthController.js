@@ -13,6 +13,8 @@ class AuthController {
 
         try {
             await databaseService.connect();
+            console.log("Test: ")
+            console.log(req.body)
 
             // Vérifier que le pseudo n'existe pas déjà
             const [verif, fields] = await databaseService.getUserByPseudo(pseudo);
