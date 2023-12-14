@@ -278,7 +278,7 @@ class DatabaseService {
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
-            this.client.all(
+            this.client.query(
                 'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score ASC LIMIT 10',
                 ["mastermind",
                 firstDayOfWeek,
