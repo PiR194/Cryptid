@@ -15,7 +15,7 @@ class AuthController {
             await databaseService.connect();
 
             // Vérifier que le pseudo n'existe pas déjà
-            const verif = await databaseService.getUserByPseudo(pseudo);
+            const [verif, fields] = await databaseService.getUserByPseudo(pseudo);
             console.log(verif)
             if (verif.length===0) {
                 res.status(400).json({ error: 'Le pseudo est déjà utilisé.' });
@@ -53,7 +53,7 @@ class AuthController {
 
         // Vérifier que le pseudo existe
         const pseudo = req.body.pseudo;
-        const user = await databaseService.getUserByPseudo(pseudo);
+        const [user, fields] = await databaseService.getUserByPseudo(pseudo);
         if (!user) {
             res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
             return;
@@ -106,7 +106,7 @@ class AuthController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields] = await db.getUserByPseudo(req.body.pseudo);
             
             if(!user){
                 res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
@@ -129,7 +129,7 @@ class AuthController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields] = await db.getUserByPseudo(req.body.pseudo);
             if(!user){
                 res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
                 return;
@@ -158,7 +158,7 @@ class AuthController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields] = await db.getUserByPseudo(req.body.pseudo);
             if(!user){
                 res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
                 return;
@@ -186,7 +186,7 @@ class AuthController {
         try{
             await db.connect();
 
-            const users = await db.getUsers();
+            const [user, fields] = await db.getUsers();
 
             res.status(200).json({ tab : users });
         }
