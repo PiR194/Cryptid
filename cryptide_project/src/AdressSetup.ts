@@ -8,7 +8,7 @@ const tmp2 = ADRESSE_WEBSERVER
 
 const ADRESSE_WEBSITE = ""
 
-const basePath = process.env.REACT_APP_BASEPATH || 'containers/Crypteam-website';
+const basePath = process.env.REACT_APP_BASEPATH || 'containers/Crypteam-website/';
 
 console.log(basePath)
 
