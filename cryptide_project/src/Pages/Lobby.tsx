@@ -58,7 +58,7 @@ function Lobby() {
     const theme=useTheme();
     const navigate = useNavigate();
     
-    const { indices, setIndicesData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData, setNodesData } = useGame();
+    const { indices, setIndicesData, setGameStartData, indice, setIndiceData, person, setPersonData, personNetwork, setPersonNetworkData, players, setPlayersData, setActualPlayerIndexData, setTurnPlayerIndexData, setRoomData, setNodesData } = useGame();
     
     const {user, setUserData, manager, login} = useAuth()
     let first = true
@@ -139,6 +139,7 @@ function Lobby() {
         setPersonData(choosenOne)
         setPersonNetworkData(network)
         setIndicesData(choosenIndices)
+        setGameStartData(true)
         first = true
         gameStarted = true
         //socket.off("player left")
@@ -177,6 +178,7 @@ function Lobby() {
         setPersonData(choosenOne)
         setPersonNetworkData(networkPerson)
         setIndicesData(choosenIndices)
+        setGameStartData(true)
         first = true
         gameStarted = true
         navigate(`${basePath}/game?solo=false&daily=false`)
@@ -187,7 +189,6 @@ function Lobby() {
         for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        console.log(tmpTab);
         setPlayersData(tmpTab);
 
     });
@@ -209,7 +210,6 @@ function Lobby() {
         for (const p of tab.tab){
             tmpTab.push(JSONParser.JSONToPlayer(p))
         }
-        console.log(tmpTab)
         setPlayersData(tmpTab)
     })
 
