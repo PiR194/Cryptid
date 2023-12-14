@@ -183,6 +183,12 @@
     "hair.chatain":"Châtain",
     "hair.noir":"Noir",
 
+
+    "param.node":"Sélectionner le nombre de noeuds (entre 20 et 50)",
+    "param.clue":"Sélectionner le nombre d'indices (entre 3 et 6)",
+    "param.valid":"Valider",
+
+
     "info.composant.sport.title":"Les Sports",
     "info.composant.sport":"Les loisirs des personnages sont représentés par cinq sports respectivement :",
     

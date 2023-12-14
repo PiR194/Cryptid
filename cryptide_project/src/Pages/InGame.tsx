@@ -554,7 +554,7 @@ const InGame = ({locale, changeLocale}) => {
 
               {IsSolo && 
               <div className='nbNodeDiv'>
-                  <label htmlFor="numberInput">Sélectionner le nombre de noeuds (entre 20 et 50) :</label>
+                  <label htmlFor="numberInput"><FormattedMessage id='param.node'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
@@ -574,12 +574,12 @@ const InGame = ({locale, changeLocale}) => {
                                               style={{ 
                                                 backgroundColor: theme.colors.tertiary,
                                                 borderColor: theme.colors.secondary,
-                                              }}>Valider</button>
+                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
 
               {IsSolo && 
               <div className='nbNodeDiv'>
-                  <label htmlFor="numberInput">Sélectionner le nombre d'indices (entre 3 et 6) :</label>
+                  <label htmlFor="numberInput"><FormattedMessage id='param.clue'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3) setEnteredNumberIndices(enteredNumberIndices-1)}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
@@ -599,7 +599,7 @@ const InGame = ({locale, changeLocale}) => {
                                               style={{ 
                                                 backgroundColor: theme.colors.tertiary,
                                                 borderColor: theme.colors.secondary,
-                                              }}>Valider</button>
+                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
             </div>
           </Offcanvas.Body>

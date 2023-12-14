@@ -184,6 +184,11 @@
     "hair.chatain":"Brown",
     "hair.noir":"Black",
 
+    "param.node": "Select the number of nodes (between 20 and 50)",
+    "param.clue": "Select the number of clues (between 3 and 6)",
+    "param.valid": "Validate",
+
+
     "info.composant.sport.title":"Sports",
     "info.composant.sport":"The characters' hobbies are represented by five sports respectively :",
     "info.composant.baseball":"Baseball",
