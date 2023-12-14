@@ -41,7 +41,7 @@ steps:
         IMAGENAME: mysql:latest
         CONTAINERNAME: mysql
         COMMAND: create
-        OVERWRITE: false
+        #OVERWRITE: false
         PRIVATE: true
         CODEFIRST_CLIENTDRONE_ENV_MYSQL_ROOT_PASSWORD:    
           from_secret: MYSQL_ROOT_PASSWORD
@@ -52,6 +52,9 @@ steps:
         CODEFIRST_CLIENTDRONE_ENV_MYSQL_PASSWORD:
           from_secret: MYSQL_PASSWORD
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
+    when:
+      branch:
+      - CI/CD
 
   - name: container-web
     image: plugins/docker
