@@ -322,8 +322,15 @@ class DatabaseService {
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
 
-            this.client.query(
-                'SELECT pseudo, COUNT(*) as wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ? ORDER BY wins ASC LIMIT 10',
+            this.client.query(`
+                    SELECT users.pseudo, COUNT(*) as wins
+                    FROM users
+                    INNER JOIN games ON users.idUser = games.idUser
+                    WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ?
+                    GROUP BY users.pseudo
+                    ORDER BY wins ASC
+                    LIMIT 10;
+                    `,
                 ["multijoueur",
                 firstDayOfWeek,
                 currentDate,
