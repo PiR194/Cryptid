@@ -41,7 +41,7 @@ import {basePath} from "../AdressSetup"
 
 
 
-function EndGame() {
+function EndGame({lang}: {lang: string}) {
     const {networkData, seed} = useGame();
     const params = new URLSearchParams(window.location.search);
     
@@ -160,7 +160,7 @@ function EndGame() {
                     <div className='winner'>
                         <img src={Person} width='250' height='250'/>
 
-                        {!indicenull && (<h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString("fr")}</h3>)}
+                        {!indicenull && (<h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString(lang)}</h3>)}
                     </div>
                     <div className='bottomEnd'>
                         {/* <div className='centerDivH' onClick={resetAll}>
@@ -171,7 +171,7 @@ function EndGame() {
                                 player.id !== winner?.id && (
                                     <div className="playerContainer" key={index}>
                                         <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
-                                        {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString("fr")}</h6>)}
+                                        {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString(lang)}</h6>)}
                                     </div>
                                 )
                             ))}
@@ -201,7 +201,7 @@ function EndGame() {
                             {indices.map((indice, index) => (
                                         // <div className="playerContainer" key={index}>
                                             <div>
-                                                <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                                <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString(lang)}</h6>
                                             </div>
                                         //</div>
                                     ))
