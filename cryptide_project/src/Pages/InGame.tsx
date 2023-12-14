@@ -375,7 +375,7 @@ const InGame = ({locale, changeLocale}) => {
                 backgroundColor: theme.colors.primary,
                 borderColor: theme.colors.secondary
             }}>
-              <FormattedMessage id='round'/> : {cptTour}
+              <FormattedMessage id='turn'/> : {cptTour}
             </div>
         }
         
@@ -500,7 +500,7 @@ const InGame = ({locale, changeLocale}) => {
                   backdrop={false}
                   style={{ height: '20%', width: '25%', top: '60vh' }}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Indice</Offcanvas.Title>
+            <Offcanvas.Title><FormattedMessage id='indice'/></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             {indice?.ToString(locale)}
@@ -515,12 +515,12 @@ const InGame = ({locale, changeLocale}) => {
                   placement='top'
                   style={{height: '30%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title><img src={Param} alt='param'/> Paramètres</Offcanvas.Title>
+            <Offcanvas.Title><img src={Param} alt='param'/> <FormattedMessage id='param'/></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             <label style={{ display:'flex'}}>
               <Switch checked={soundPreference} onChange={handleSoundPreferenceChange}/>
-              <p style={{ marginLeft:'20px'}}>Activer les SFX</p>
+              <p style={{ marginLeft:'20px'}}><FormattedMessage id='sfx'/></p>
             </label>
           </Offcanvas.Body>
         </Offcanvas>

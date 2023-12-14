@@ -22,6 +22,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
 import PersonNetwork from "../model/PersonsNetwork";
+import { useIntl } from "react-intl";
 
 interface TutorialGraphProps {
   setNetwork: (network: Network) => void
@@ -53,6 +54,9 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
   //* Gestion du temps :
   let initMtn = 0
 
+    //* traduction
+    const intl = useIntl();
+
   const {isLoggedIn, user, manager} = useAuth();
   const {setIndiceData, setIndicesData, setActualPlayerIndexData, setWinnerData, setPlayersData, setNetworkDataData, setPersonData} = useGame();
   const params = new URLSearchParams(window.location.search);
@@ -63,7 +67,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
   if (first){
     first = false
     setActualPlayerIndexData(0)
-    handleTurnBarTextChange("C'est à vous de jouer !")
+    handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
     handleShowTurnBar(true)
   }
   
@@ -234,7 +238,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
             nodes.update({id: node.id, label: node.label + positionToEmoji(2, false)})
             setPlayerTouched(-1)
             displayModalstep(2);
-            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.wrong' }))
             const tabGrey = [7, 0, 4, 1, 8]
             for (const id of tabGrey){
               const node = nodes.get().find((n: NodePerson) => n.id === id)
@@ -272,7 +276,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
             if (node4 === undefined)return;
             nodes.update({id: node4.id, label: node4.label + positionToEmoji(2, false)})
             setPlayerIndex(0)
-            handleTurnBarTextChange("A vous de jouer !")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
             setTutoStep(3)
             displayModalstep(3);

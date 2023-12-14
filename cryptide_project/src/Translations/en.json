@@ -26,6 +26,11 @@
     "sign_up":" Sign up ",
     "log_out":" Log out ",
 
+    "indice":"Hint",
+    "param":"Settings",
+    "sfx":"Activate SFX",
+    "aide":"Help",
+
     "join" : "Join",
     "create_room" : "Create room",
     "play_solo" : "Single player",
@@ -72,7 +77,9 @@
     "navbar.presentation":"Presentation",
     "navbar.info":"Information",
 
-    "round" : "Round",
+    "turn" : "Round",
+    "square":"square",
+    "round":"round",
 
     "play.jouerseul": "Play alone",
     "play.enigme": "Solve an enigma",
@@ -113,7 +120,8 @@
     "lobby.nbNode": "Select the number of nodes (between 20 and 60)",
     "lobby.start": "Start the game!",
 
-
+    "game.yourTurn":"It's your turn !",
+    "game.wrong":"Wrong choice, put a square !",
 
     "informations" : "Information",
     "info.intro.title":"Introduction to the game :",
@@ -202,5 +210,7 @@
     "info.mdj.enigme.medium": "Intermediate Enigma",
     "info.mdj.enigme.medium.txt": "In this game mode, you don't have access to clues, but you have just enough information about some suspects to be able to guess the culprit. This information will help you guess the clues, and the culprit is the suspect for whom all the clues match. If you select the wrong suspect, don't worry! You'll have information about that suspect, making it easier for you to find the culprit. The goal is to find the culprit in the minimum number of guesses.",
     "info.mdj.enigme.hard": "Hard Enigma",
-    "info.mdj.enigme.hard.txt": "This final variant is similar to the intermediate enigma; however, you must find the culprit on the first try, or you lose! It's up to you to play! The goal is to find the culprit in the minimum amount of time."
+    "info.mdj.enigme.hard.txt": "This final variant is similar to the intermediate enigma; however, you must find the culprit on the first try, or you lose! It's up to you to play! The goal is to find the culprit in the minimum amount of time.",
+
+    "tutorial.title": "Tutorial"
 }

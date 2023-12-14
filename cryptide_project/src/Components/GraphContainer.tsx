@@ -21,6 +21,7 @@ import { json } from "body-parser";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {basePath} from "../AdressSetup"
+import { useIntl } from "react-intl";
 
 interface MyGraphComponentProps {
   onNodeClick: (shouldShowChoiceBar: boolean) => void;
@@ -87,6 +88,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
   //* Gestion du temps :
   let initMtn = 0
+
+  
+  //* traduction
+  const intl = useIntl();
+
 
   const {isLoggedIn, user, manager} = useAuth();
   const { indices, indice, person, personNetwork, setNodeIdData, players, setPlayersData, askedPersons, setActualPlayerIndexData, room, actualPlayerIndex, turnPlayerIndex, setTurnPlayerIndexData, setWinnerData, dailyEnigme, setNbCoupData, settempsData, setNetworkDataData, setSeedData, nodesC, temps} = useGame();
@@ -319,8 +325,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         })
       }
       setActualPlayerIndexData(index)
-      if (playerIndex == actualPlayerIndex){
-        handleTurnBarTextChange("À vous de jouer")
+      if (playerIndex == actualPlayerIndex){        
+        handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
         handleShowTurnBar(true)
       }
     }
@@ -513,7 +519,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           setPlayerIndex(playerIndex)
           setLastIndex(playerIndex)
           if (playerIndex===actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
         }
@@ -534,7 +540,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerIndex(index)
         setLastIndex(index)
         if (actualPlayerIndex==index){
-          handleTurnBarTextChange("À vous de jouer")
+          handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
           handleShowTurnBar(true)
         }
       })
@@ -602,7 +608,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           }
 
           if (playerIndex === actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
           else{
@@ -647,7 +653,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             setAskedWrong(true)
             askedWrongBot=true
             handleShowTurnBar(true)
-            handleTurnBarTextChange("Mauvais choix, posez un carré !")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.wrong' }))
             touchedPlayer = actualPlayerIndex
             putGreyBackgroud()
           }
@@ -669,7 +675,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           setPlayerIndex(playerIndex)
           setLastIndex(playerIndex)
           if (playerIndex === actualPlayerIndex){
-            handleTurnBarTextChange("À vous de jouer")
+            handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
             handleShowTurnBar(true)
           }
           else{
