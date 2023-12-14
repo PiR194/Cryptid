@@ -51,6 +51,10 @@
     "redhead": "Roux",
     "brown": "Brun",
 
+
+    "oui": "oui",
+    "non": "non",
+
     "and": "et",
     "or": "ou",
     "or_sport": "ou du",
@@ -269,7 +273,7 @@
     "tuto.txt.5.5.2":" permet d'innocenter Logan",
     "tuto.txt.5.6":"Eleanor peut être suspectée par l'indice du détective Batman ",
     "tuto.txt.5.7.1":"Evelyn est innocentée par l'indice de ",
-    "tuto.txt.5.7.2":"3 détéctive différents",
+    "tuto.txt.5.7.2":"3 détéctives différents",
     
     "tuto.title.6":"Les règles du jeu",
     "tuto.txt.6.1.1":"Ce bouton vous mène à la page d'",
@@ -280,7 +284,7 @@
     "tuto.txt.7.1":"Ce bouton vous permet d'afficher votre indice personnel, gardez le secret ! Il s'agit de votre meilleur atout pour gagner.",
 
     "tuto.title.8":"Place à la pratique !",
-    "tuto.txt.8.1":"Bien joué ! Vous avez maintenanttoutes les bases d'un veritable détéctive.",
+    "tuto.txt.8.1":"Bien joué ! Vous avez maintenant toutes les bases d'un veritable détéctive.",
     "tuto.txt.8.2":"Vous allez à présent avoir un exercice pratique pour la résolution d'une enquête, au côté de ces très chère Batman et Scooby-Doo.",
     "tuto.txt.8.3":"Cliquer sur 'Poursuivre' pour commencer votre première partie.",
 
@@ -291,5 +295,48 @@
     "tuto.txt.9.2.2":" et questionnez le à propos du suspect nommé ",
     "tuto.txt.9.2.3":" en cliquant sur cette dernière.",
 
+    "tuto.title.10":"Votre premier tour",
+    "tuto.txt.10.1.1":"Super, ",
+    "tuto.txt.10.1.2":"Violet a été identifié par l'indice de Scooby-Doo",
+    "tuto.txt.10.1.3":", c'est une information essentielle ! Cependant, cela ne signifie ",
+    "tuto.txt.10.1.4":"pas forcément",
+    "tuto.txt.10.1.5":" qu'elle est coupable.",
+    "tuto.txt.10.2":"C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.",
+
+    "tuto.title.11":"Premier tour des autres joueurs",
+    "tuto.txt.11.1.1":"Il semblerait que Scooby-Doo ait lui aussi interrogé Batman à propos de Violet, et que ce dernier ait répondu ",
+    "tuto.txt.11.1.2":" par un carré. Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !",
+    "tuto.txt.11.2.1":"Scooby-Doo a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de ",
+    "tuto.txt.11.2.2":"punition",
+    "tuto.txt.11.2.3":", il doit, lui aussi, poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.Nous savons donc maintenant que l'indice de Scooby-Doo ne permet pas d'identifier Sebastian.",
+    "tuto.txt.11.3":"Ensuite, Batman a questionné Scooby-Doo à propos de Charlotte, qui est identifié par l'indice de Scooby-Doo.",
+
+    "tuto.title.12":"Second tour",
+    "tuto.txt.12.1.1":"Vous remarquez que ",
+    "tuto.txt.12.1.2":"votre indice identifie lui aussi Charlotte",
+    "tuto.txt.12.1.3":", et si nous demandions à Batman, si ce dernier pense que Charlotte est la coupable ?",
+    "tuto.txt.12.2":"Cela nous permettrait donc de mettre fin à la partie !",
+
+    "tuto.title.13":"La punition",
+    "tuto.txt.13.1.1":"Mince, il semblerait que l'indice de Batman innocente Charlotte, et que vous avez donc commit une erreur, la ",
+    "tuto.txt.13.1.2":"punition",
+    "tuto.txt.13.1.3":" s'applique !",
+    "tuto.txt.13.2.1":"Vous devez donc poser un ",
+    "tuto.txt.13.2.2":"carré sur un autre joueur",
+    "tuto.txt.13.2.3":", révélant ainsi plus d'information sur votre indice.",
+    "tuto.txt.13.3.1": "Mais rien n'est joué ! Posons notre carré sur ",
+    "tuto.txt.13.3.2": "pour cela, sélectionnez directement le suspect désiré.",
+    
+    "tuto.title.14":"La fin du jeu",
+    "tuto.txt.14.1":"Ce tour est lui aussi riche en informations !",
+    "tuto.txt.14.2":"Vous avez à présent assez d'information pour deviner les indices des autres : ",
+    "tuto.txt.14.3":"Scooby-Doo semble avoir : ",
+    "tuto.txt.14.4":"Batman semble avoir : ",
+    "tuto.txt.14.5":"Et votre indice est : ",
+    "tuto.txt.14.6.1":"Vous avez à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton ",
+    "tuto.txt.14.6.2":"Ask Everyone",
+    "tuto.txt.14.6.3":", puis séléctionné un suspect pour émettre une ",
+    "tuto.txt.14.6.4":"accusation",
+    "tuto.txt.14.6.5":" pour deviner, bonne chance !"
 }
 

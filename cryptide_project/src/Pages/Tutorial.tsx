@@ -624,11 +624,11 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step2} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>Votre premier tour</Card.Title>
+                  <Card.Title><FormattedMessage id='tuto.title.10'/></Card.Title>
                   <Card.Text>
-                    Super, <u>Violet a été identifié par l'indice de Scooby-Doo</u>, c'est une information essentielle ! Cependant, cela ne signifie <i>pas forcément</i> qu'elle est coupable.
+                    <FormattedMessage id='tuto.txt.10.1.1'/> <u><FormattedMessage id='tuto.txt.10.1.2'/></u><FormattedMessage id='tuto.txt.10.1.3'/><i><FormattedMessage id='tuto.txt.10.1.4'/></i><FormattedMessage id='tuto.txt.10.1.5'/>
                     <br/>
-                    C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.
+                    <FormattedMessage id='tuto.txt.10.2'/>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -638,15 +638,13 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step3} style={{width:'200px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>Premier tour des autres joueurs</Card.Title>
+                  <Card.Title><FormattedMessage id='tuto.title.11'/></Card.Title>
                   <Card.Text>
-                    Il semblerait que Scooby-Doo ait lui aussi interrogé Batman à propos de Violet, et que ce dernier ait répondu <b>non</b> par un carré.
-                    Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !
+                    <FormattedMessage id='tuto.txt.11.1.1'/><b><FormattedMessage id='non'/></b><FormattedMessage id='tuto.txt.11.1.2'/>
                     <br/>
-                    Scooby-Doo a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de <b>punition</b>, il doit, lui aussi, poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.
-                    Nous savons donc maintenant que l'indice de Scooby-Doo ne permet pas d'identifier Sebastian.
+                    <FormattedMessage id='tuto.txt.11.2.1'/><b><FormattedMessage id='tuto.txt.11.2.2'/></b><FormattedMessage id='tuto.txt.11.2.3'/>
                     <br/>
-                    Ensuite, Batman a questionné Scooby-Doo à propos de Charlotte, qui est identifié par l'indice de Scooby-Doo.
+                    <FormattedMessage id='tuto.txt.11.3'/>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -656,11 +654,11 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step4} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>Second tour</Card.Title>
+                  <Card.Title><FormattedMessage id='tuto.title.12'/></Card.Title>
                   <Card.Text>
-                    Vous remarquez que <u>votre indice identifie lui aussi Charlotte</u>, et si nous demandions à Batman, si ce dernier pense que Charlotte est la coupable ?
+                    <FormattedMessage id='tuto.txt.12.1.1'/><u><FormattedMessage id='tuto.txt.12.1.2'/></u><FormattedMessage id='tuto.txt.12.1.3'/>
                     <br/>
-                    Cela nous permettrait donc de mettre fin à la partie !
+                    <FormattedMessage id='tuto.txt.12.2'/>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -670,11 +668,11 @@ const Tutorial = ({locale, changeLocale}) => {
           </Modal.Body>
           <Modal.Footer style={{display:'flex'}}>
             <div style={{ width:'100%', display:'flex', justifyContent:'start'}}>
-              <label style={{ color:'gray'}}>Étape {step+1}/3</label>
+              <label style={{ color:'gray'}}><FormattedMessage id='step'/> {step+1}/3</label>
             </div>
-            { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}>Précédent</Button>)}
-            { step === 2 ? (<Button variant="primary" onClick={handleCloseTuto21}>Fermer</Button>) : 
-            <Button variant="primary" onClick={() => setStep(step + 1)}>Suivant</Button>}
+            { step != 0 && (<Button variant="primary" onClick={() => setStep(step - 1)}><FormattedMessage id='previous'/></Button>)}
+            { step === 2 ? (<Button variant="primary" onClick={handleCloseTuto21}><FormattedMessage id='close'/></Button>) : 
+            <Button variant="primary" onClick={() => setStep(step + 1)}><FormattedMessage id='next'/></Button>}
           </Modal.Footer>
         </Modal>
 
@@ -693,19 +691,19 @@ const Tutorial = ({locale, changeLocale}) => {
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step5} style={{width:'300px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>La punition</Card.Title>
+                  <Card.Title><FormattedMessage id='tuto.title.13'/></Card.Title>
                   <Card.Text>
-                    Mince, il semblerait que l'indice de Batman innocente Charlotte, et que vous avez donc commit une erreur, la <b>punition</b> s'applique !
+                    <FormattedMessage id='tuto.txt.13.1.1'/><b><FormattedMessage id='tuto.txt.13.1.2'/></b><FormattedMessage id='tuto.txt.13.1.3'/>
                     <br/>
-                    Vous devez donc poser un <u>carré sur un autre joueur</u>, révélant ainsi plus d'information sur votre indice.
+                    <FormattedMessage id='tuto.txt.13.2.1'/><u><FormattedMessage id='tuto.txt.13.2.2'/></u><FormattedMessage id='tuto.txt.13.2.3'/>
                     <br/>
-                    Mais rien n'est joué ! Posons notre carré sur <b>Liam</b> pour cela, sélectionnez directement le suspect désiré.
+                    <FormattedMessage id='tuto.txt.13.3.1'/><b>Liam</b> <FormattedMessage id='tuto.txt.13.3.2'/>
                   </Card.Text>
                 </Card.Body>
               </Card>
           </Modal.Body>
           <Modal.Footer style={{display:'flex'}}>
-            <Button variant="primary" onClick={handleCloseTuto22}>Compris !</Button>
+            <Button variant="primary" onClick={handleCloseTuto22}><FormattedMessage id='compris'/></Button>
           </Modal.Footer>
         </Modal>
 
@@ -717,35 +715,35 @@ const Tutorial = ({locale, changeLocale}) => {
           size="lg"
           style={{ maxHeight: '100vh'}}>
           <Modal.Header>
-            <Modal.Title>End Game</Modal.Title>
+            <Modal.Title>The End Game</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
               <Card style={{ width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                 <Card.Img variant="top" src={step6} style={{width:'250px', height:'auto'}}/>
                 <Card.Body>
-                  <Card.Title>La fin du jeu</Card.Title>
+                  <Card.Title><FormattedMessage id='tuto.title.14'/></Card.Title>
                   <Card.Text>
-                    Ce tour est lui aussi riche en informations !
+                    <FormattedMessage id='tuto.txt.14.1'/>
                     <br/>
-                    Vous avez à présent assez d'information pour deviner les indices des autres : 
+                    <FormattedMessage id='tuto.txt.14.2'/>
                     <ul>
                       <li>
-                        Scooby-Doo semble avoir : <i>{indices[1]?.ToString(locale)}</i>.
+                        <FormattedMessage id='tuto.txt.14.3'/><i>{indices[1]?.ToString(locale)}</i>.
                       </li>
                       <li>
-                        Batman semble avoir : <i>{indices[2]?.ToString(locale)}</i>.
+                        <FormattedMessage id='tuto.txt.14.4'/><i>{indices[2]?.ToString(locale)}</i>.
                       </li>
                       <li>
-                        Et votre indice est : <i>{indices[0]?.ToString(locale)}</i>.
+                        <FormattedMessage id='tuto.txt.14.5'/><i>{indices[0]?.ToString(locale)}</i>.
                       </li>
                     </ul>
-                    Vous avez à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton <b>Ask Everyone</b>, puis séléctionné un suspect pour émettre une <b>accusation</b> pour deviner, bonne chance !
+                    <FormattedMessage id='tuto.txt.14.6.1'/><b><FormattedMessage id='tuto.txt.14.6.2'/></b><FormattedMessage id='tuto.txt.14.6.3'/><b><FormattedMessage id='tuto.txt.14.6.4'/></b><FormattedMessage id='tuto.txt.14.6.5'/>
                   </Card.Text>
                 </Card.Body>
               </Card>
           </Modal.Body>
           <Modal.Footer style={{display:'flex'}}>
-            <Button variant="primary" onClick={handleCloseTuto3}>Compris !</Button>
+            <Button variant="primary" onClick={handleCloseTuto3}><FormattedMessage id='compris'/></Button>
           </Modal.Footer>
         </Modal>
       </div>
