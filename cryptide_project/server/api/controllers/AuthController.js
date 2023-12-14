@@ -16,7 +16,7 @@ class AuthController {
 
             // Vérifier que le pseudo n'existe pas déjà
             const [verif, fields] = await databaseService.getUserByPseudo(pseudo);
-            if (verif.length) {
+            if (verif) {
                 res.status(400).json({ error: 'Le pseudo est déjà utilisé.' });
                 return;
             }
