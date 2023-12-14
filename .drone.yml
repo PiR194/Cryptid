@@ -121,7 +121,7 @@ steps:
           from_secret: MYSQL_PASSWORD
         CODEFIRST_CLIENTDRONE_ENV_MYSQL_DATABASE:
           from_secret: MYSQL_DATABASE
-        CODEFIRST_CLIENTDRONE_ENV_CREATETABLES: "true"
+        CODEFIRST_CLIENTDRONE_ENV_CREATETABLES: "false"
         ADMINS: thomaschazot2,pierreferreira,baptistemarcel
     depends_on: [ container-api ]
     when:
