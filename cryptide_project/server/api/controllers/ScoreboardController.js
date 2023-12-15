@@ -95,6 +95,9 @@ class SessionController {
 
             const [dailyOnlineStats, fields] = await db.getDailyOnlineStats();
 
+
+            console.log(dailyOnlineStats)
+            
             res.status(200).json({ tab : dailyOnlineStats });
         }
         catch(error){
