@@ -1121,18 +1121,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
               setNbCoupData(cptTour)
 
               try{
-                console.log("time: " + testTemps)
-                console.log("avant les stats ligne 1152")
                 if(user && isLoggedIn && !downloaded){
-                  console.log("passe dans les stats ligne 1154")
                   if(solo){
                     if(isDaily){
-                      // TODO: verif difficulté et add les stats
-                      // TODO: verif pour facile et difficile, si réussi en one shot ou non
                       if(difficulty==="easy"){
                         manager.userService.addEasyEnigmaStats(user.pseudo, 1, testTemps - 0.5);
                       }
                       else if (difficulty === "intermediate"){
+                        manager.userService.addMediumEnigmaStats(user.pseudo, 1, testTemps - 0.5);
                       }
                       else{
                         manager.userService.addHardEnigmaStats(user.pseudo, 1, testTemps - 0.5);
@@ -1148,9 +1144,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 }       
                 else{
                   // add stats mastermind
-                  console.log("avant les stats ligne 1178")
                   if(user && user.mastermindStats && !downloaded){
-                    console.log("passe dans les stats ligne 1180")
                     manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
                   }
                 }
@@ -1177,9 +1171,13 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
                 }
                 else{
-                  navigate(`${basePath}/endgame?solo=true&daily=true`)
                   setNetworkDataData(networkData)
                   setWinnerData(null)
+                  if (user) {
+                    manager.userService.addHardEnigmaStats(user.pseudo, 0, testTemps - 0.5);
+                  }
+                  navigate(`${basePath}/endgame?solo=true&daily=true`)
+                  
                 }
               }
               else{

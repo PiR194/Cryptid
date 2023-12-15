@@ -80,7 +80,33 @@ class SessionService {
         }
     }
 
-    // static async addMediumEnigmaStats(pseudo: string, win: number, time: number)
+    static async addMediumEnigmaStats(pseudo: string, score: number, time: number){
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/session/addMediumEnigmaStats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    pseudo,
+                    score,
+                    time
+                }),
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 
     static async addHardEnigmaStats(pseudo: string, win: number, time: number){
         try {

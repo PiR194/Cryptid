@@ -180,7 +180,30 @@ class SessionController {
         }
     }
 
-    // static async addMediumEnigmaStats(req, res)
+    static async addMediumEnigmaStats(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const user = await db.getUserByPseudo(req.body.pseudo);
+            if (!user) {
+                res.status(200).json({ error: "true", message: 'User not found' });
+                return;
+            }
+
+            await db.addMediumEnigmaStats(user.idUser, ENIGME_MOYEN, req.body.score, req.body.time);
+
+            res.status(200).json({ user: req.session.user });   //verif rep
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la modification des stats de l\'énigme moyenne de l\'utilisateur.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
 
     static async addHardEnigmaStats(req, res){
         const db = new DatabaseService();

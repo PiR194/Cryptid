@@ -110,18 +110,18 @@ class DbUserService implements IUserService{
         }
     }
 
-    // async addMediumEnigmaStats(pseudo: string, win: number, time: number): Promise<void> {
-    //     try {
-    //         const result = await SessionService.addMediumEnigmaStats(pseudo, win, time);
-    //         if (result) {
-    //             console.log("Stats medium updated");
-    //         } else {
-    //             console.log("Stats medium not updated");
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+    async addMediumEnigmaStats(pseudo: string, score: number, time: number): Promise<void> {
+        try {
+            const result = await SessionService.addMediumEnigmaStats(pseudo, score, time);
+            if (result) {
+                console.log("Stats medium updated");
+            } else {
+                console.log("Stats medium not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async addHardEnigmaStats(pseudo: string, win: number, time: number): Promise<void> {
         try {

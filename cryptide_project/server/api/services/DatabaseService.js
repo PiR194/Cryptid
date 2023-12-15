@@ -429,7 +429,14 @@ class DatabaseService {
           }
     }
 
-    // async addMediumEnigmaStats(userId, enigmaLevel, score)
+    async addMediumEnigmaStats(userId, enigmaLevel, score, time){
+        try {
+            const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, enigmaLevel, 1, score, time])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
+    }
 
     async addHardEnigmaStats(userId, enigmaLevel, win, time){
         try {
