@@ -90,9 +90,6 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
         fetchWeeklyStats();
     }, []);
 
-    console.log(Player)
-
-    console.log(dailyMastermindStats)
     
 
     return (

@@ -150,6 +150,19 @@ class DatabaseService {
         });
     }
 
+    async getGames(){
+        return new Promise((resolve, reject) => {
+            this.client.query('SELECT * FROM games', (err, result) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+            });
+        });
+    }
+
     // insère un utilisateur dans la base de données
     async insertUser(user) {
         return new Promise((resolve, reject) => {

@@ -13,6 +13,8 @@ router.post('/auth/validatePassword', AuthController.validatePassword);
 router.put('/auth/updatePassword', AuthController.updatePassword);
 
 router.get('/auth/getAllUsers', AuthController.getUsers)
+router.get('/auth/games', AuthController.getGames)
+
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);

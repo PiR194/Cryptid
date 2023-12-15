@@ -193,7 +193,26 @@ class AuthController {
         }
         catch(error){
             console.error(error);
-            res.status(500).json({ error: 'Erreur lors de la récupération des stats dailyEasyEnigma.' });
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats users.' });
+        }
+        finally{
+            await db.disconnect();
+        }
+    }
+
+    static async getGames(req, res){
+        const db = new DatabaseService();
+
+        try{
+            await db.connect();
+
+            const [users, fields] = await db.getGames();
+
+            res.status(200).json({ tab : users });
+        }
+        catch(error){
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des stats games.' });
         }
         finally{
             await db.disconnect();
