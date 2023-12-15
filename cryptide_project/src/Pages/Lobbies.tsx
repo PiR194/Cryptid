@@ -28,7 +28,7 @@ class LobbyDataProps {
     }
 }
 
-let cptNavigation = 0
+// let cptNavigation = 0
 
 function Lobbies() {
     const theme=useTheme();
@@ -41,6 +41,8 @@ function Lobbies() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [showAvailable, setShowAvailable] = useState(true);
+
+    const [cptNavigation, setCptNavigation] = useState(0);
 
     const handleShowAllClick = () => {
         setShowAvailable(false);
@@ -67,7 +69,7 @@ function Lobbies() {
     }
 
     const navigationType = useNavigationType()
-    cptNavigation++
+    setCptNavigation((prevCpt) => prevCpt + 1);
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
