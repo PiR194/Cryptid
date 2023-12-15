@@ -188,6 +188,7 @@ class AuthController {
             await db.connect();
 
             const [users, fields] = await db.getUsers();
+            console.log(users)
 
             res.status(200).json({ tab : users });
         }
@@ -207,6 +208,7 @@ class AuthController {
             await db.connect();
 
             const [users, fields] = await db.getGames();
+            console.log(users)
 
             res.status(200).json({ tab : users });
         }

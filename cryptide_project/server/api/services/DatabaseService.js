@@ -404,6 +404,7 @@ class DatabaseService {
         return new Promise((resolve, reject) => {
             this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "mastermind", 1, score, time], (err, result) => {
                 if(err){
+                    console.log(err)
                     reject(err);
                 }
                 else{
