@@ -52,7 +52,19 @@ function Lobbies() {
         setShowAvailable(true);
     };
 
+    const handleSetFirst = () => {
+        setFirst(false);
+        socket.emit("request lobbies");
+    };
 
+    const handleSetCptNavigation = () => {
+        setCptNavigation((prevCpt) => prevCpt + 1);
+        const navigationType = useNavigationType();
+
+        if (cptNavigation % 2 === 0 && navigationType.toString() === "POP") {
+            socket.emit("player quit");
+        }
+    };
     const filteredLobbies = lobbyData.filter((lobby) =>
         lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,17 +81,16 @@ function Lobbies() {
     }
 
     const navigationType = useNavigationType()
-    setCptNavigation((prevCpt) => prevCpt + 1);
-    if (cptNavigation % 2 == 0){
-        if (navigationType.toString() == "POP"){
-            socket.emit("player quit")
-        }
-    }
+
+
+
+    handleSetCptNavigation();
 
     if (first){
-        setFirst(false)
-        socket.emit("request lobbies")
+        handleSetFirst();
     }
+
+
 
     useEffect(() => {
         socket.on("request lobbies", (map) => {
