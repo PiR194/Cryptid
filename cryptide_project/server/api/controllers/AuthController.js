@@ -43,8 +43,6 @@ class AuthController {
     }
 
   static async signIn(req, res) {
-    console.log(req.url)
-    console.log(req.body)
     const databaseService = new DatabaseService();
     const date = new Date();
     const hour = date.getHours();

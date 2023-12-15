@@ -31,9 +31,7 @@ const SignIn = () => {
                 setError(null);
 
                 const result = await AuthService.signIn(data);
-                
-                console.log(result);
-
+                console.log(result)
                 setShowConfirmation(true);
                 setTimeout(async () => {
                     await login();
