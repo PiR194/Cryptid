@@ -44,6 +44,7 @@ class AuthController {
 
   static async signIn(req, res) {
     console.log(req.url)
+    console.log(req.body)
     const databaseService = new DatabaseService();
     const date = new Date();
     const hour = date.getHours();
@@ -55,6 +56,7 @@ class AuthController {
         // Vérifier que le pseudo existe
         const pseudo = req.body.pseudo;
         const user = await databaseService.getUserByPseudo(pseudo);
+        console.log(user)
         if (!user) {
             res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
             return;
