@@ -136,7 +136,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields] = await db.getUserByPseudo(req.body.pseudo);
             if (!user) {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
@@ -161,7 +161,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields] = await db.getUserByPseudo(req.body.pseudo);
             if (!user) {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
@@ -188,7 +188,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields]  = await db.getUserByPseudo(req.body.pseudo);
             if (!user) {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
@@ -213,7 +213,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const user = await db.getUserByPseudo(req.body.pseudo);
+            const [user, fields]  = await db.getUserByPseudo(req.body.pseudo);
             if (!user) {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
