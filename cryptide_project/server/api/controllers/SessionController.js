@@ -36,11 +36,17 @@ class SessionController {
             let nbGamesEF = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
             nbGamesEF = nbGamesEF.nbGames || 0;
             let nbWinsEF = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
+            console.log("nbWinsEF")
+            console.log(nbWinsEF)
             nbWinsEF = nbWinsEF.nbWins || 0;
+            console.log("nbWinsEF")
+            console.log(nbWinsEF)
             let ratioEF = 0;
             if (nbWinsEF.nbWins > 0){
                 ratioEF = (nbWinsEF.nbWins / nbGamesEF.nbGames) * 100;
             }
+            console.log("ratioEF")
+            console.log(ratioEF)
             let bestTimeEF = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
             bestTimeEF = bestTimeEF.bestTime || 0;
             let avgTimeEF = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
