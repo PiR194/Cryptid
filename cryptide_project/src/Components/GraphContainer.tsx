@@ -1149,7 +1149,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
 
               try{
                 console.log("time: " + testTemps)
+                console.log("avant les stats ligne 1152")
                 if(user && isLoggedIn && !downloaded){
+                  console.log("passe dans les stats ligne 1154")
                   if(solo){
                     if(isDaily){
                       // TODO: verif difficulté et add les stats
@@ -1173,7 +1175,9 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 }       
                 else{
                   // add stats mastermind
+                  console.log("avant les stats ligne 1178")
                   if(user && user.mastermindStats && !downloaded){
+                    console.log("passe dans les stats ligne 1180")
                     manager.userService.addMastermindStats(user.pseudo, cptTour, elapsedTime);
                   }
                 }
