@@ -1128,7 +1128,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                         manager.userService.addEasyEnigmaStats(user.pseudo, 1, testTemps - 0.5);
                       }
                       else if (difficulty === "intermediate"){
-                        manager.userService.addMediumEnigmaStats(user.pseudo, 1, testTemps - 0.5);
+                        manager.userService.addMediumEnigmaStats(user.pseudo, cptTour, testTemps - 0.5);
                       }
                       else{
                         manager.userService.addHardEnigmaStats(user.pseudo, 1, testTemps - 0.5);
