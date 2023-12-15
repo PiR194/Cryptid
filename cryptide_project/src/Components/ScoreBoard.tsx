@@ -92,6 +92,9 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
 
     console.log(Player)
 
+    console.log(dailyMastermindStats)
+    
+
     return (
         <Tabs
             activeKey={activeTab}
