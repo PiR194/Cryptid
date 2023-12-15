@@ -23,6 +23,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [manager] = useState<Manager>(new Manager(new DbUserService()))
 
   const login = async () => {
+    const [u, bool] = await manager.userService.fetchUserInformation()
+    setUser(u)
     setIsLoggedIn(true);
   };
 
