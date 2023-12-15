@@ -137,31 +137,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   }, []);
 
   useEffect(() => {
-        
-    const socket2 = io(ADRESSE_WEBSERVER);
-
-    // Démarrez le timer au montage du composant
-    const intervalId = setInterval(() => {
-        console.log(socket2.connected)
-    }, 500);
-
-    socket2.on('connect', () => {
-      console.log('Connecté au serveur Socket.IO');
-    });
-
-    // Gestion de l'événement de déconnexion
-    socket2.on('disconnect', () => {
-      console.log('Déconnecté du serveur Socket.IO');
-    });
-
-    // Nettoyez l'intervalle lorsque le composant est démonté
-    return () => clearInterval(intervalId);
-  }, []);
-
-
-
-
-  useEffect(() => {
     testPlayers = players
   }, [players])
 
@@ -999,9 +974,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     network.on("click", async (params) => {
       
       if(params.nodes.length > 0){
-        console.log(touchedPlayer)
         setNodeIdData(params.nodes[0])
-        console.log(players)
         // addToHistory("Le joueur a cliqué") //! TEST DEBUG
         if (!solo){
           if (askedWrongLocal){
