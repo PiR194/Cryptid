@@ -113,39 +113,39 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <hr />
                             <p>Parties Jouées: {Player.mastermindStats.nbGames}</p>
                             <p>Best-Score: {Player.mastermindStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mastermindStats.avgNbTry.toFixed(2)}</p>
+                            <p>Moyenne d'essai: {parseFloat(Player.mastermindStats.avgNbTry).toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme facile</h5>
                             <hr />
                             <p>Parties Jouées: {Player.easyEnigmaStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.easyEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.easyEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p>Ratio V/D: {parseFloat(Player.easyEnigmaStats.ratio).toFixed(2) + "%"}</p>
                             <p>Meilleur temps: {Player.easyEnigmaStats.bestTime + "s"}</p>
-                            <p>Moyenne de temps: {Player.easyEnigmaStats.avgTime.toFixed(2) + "s"}</p>
+                            <p>Moyenne de temps: {parseFloat(Player.easyEnigmaStats.avgTime).toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme moyenne</h5>
                             <hr />
                             <p>Parties Jouées: {Player.mediumEnigmaStats.nbGames}</p>
                             <p>Best-Score: {Player.mediumEnigmaStats.bestScore}</p>
-                            <p>Moyenne d'essai: {Player.mediumEnigmaStats.avgNbTry.toFixed(2)}</p>
+                            <p>Moyenne d'essai: {parseFloat(Player.mediumEnigmaStats.avgNbTry).toFixed(2)}</p>
                         </div>
                         <div className="stats">
                             <h5>Enigme difficile</h5>
                             <hr />
                             <p>Parties Jouées: {Player.hardEnigmaStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.hardEnigmaStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.hardEnigmaStats.ratio.toFixed(2) + "%"}</p>
+                            <p>Ratio V/D: {parseFloat(Player.hardEnigmaStats.ratio).toFixed(2) + "%"}</p>
                             <p>Meilleur temps: {Player.hardEnigmaStats.bestTime + "s"}</p>
-                            <p>Moyenne de temps: {Player.hardEnigmaStats.avgTime.toFixed(2) + "s"}</p>
+                            <p>Moyenne de temps: {parseFloat(Player.hardEnigmaStats.avgTime).toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
                             <h5>En ligne</h5>
                             <hr />
                             <p>Parties Jouées: {Player.onlineStats.nbGames}</p>
                             <p>Nombre de victoires: {Player.onlineStats.nbWins}</p>
-                            <p>Ratio V/D: {Player.onlineStats.ratio.toFixed(2) + "s"}</p>
+                            <p>Ratio V/D: {parseFloat(Player.onlineStats.ratio).toFixed(2) + "s"}</p>
                         </div>
                     </Carousel>
                 </Tab.Content>
