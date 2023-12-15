@@ -36,17 +36,8 @@ class SessionController {
             let nbGamesEF = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
             nbGamesEF = nbGamesEF.nbGames || 0;
             let nbWinsEF = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
-            console.log("nbWinsEF")
-            console.log(nbWinsEF)
             nbWinsEF = nbWinsEF.nbWins || 0;
-            console.log("nbWinsEF")
-            console.log(nbWinsEF)
-            let ratioEF = 0;
-            if (nbWinsEF.nbWins > 0){
-                ratioEF = (nbWinsEF.nbWins / nbGamesEF.nbGames) * 100;
-            }
-            console.log("ratioEF")
-            console.log(ratioEF)
+            let ratioEF = ratioEF = (nbWinsEF / nbGamesEF) * 100 || 0;
             let bestTimeEF = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
             bestTimeEF = bestTimeEF.bestTime || 0;
             let avgTimeEF = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_FACILE);
@@ -75,10 +66,7 @@ class SessionController {
             nbGamesED = nbGamesED.nbGames || 0;
             let nbWinsED = await db.getNbWinsEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
             nbWinsED = nbWinsED.nbWins || 0;
-            let ratioED = 0;
-            if (nbWinsED.nbWins > 0){
-                ratioED = (nbWinsED.nbWins / nbGamesED.nbGames) * 100;
-            }
+            let ratioED = ratioED = (nbWinsED / nbGamesED) * 100 || 0
             let bestTimeED = await db.getBestTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
             bestTimeED = bestTimeED.bestTime || 0;
             let avgTimeED  = await db.getAvgTimeEnigmeByUserId(req.session.user.idUser, ENIGME_DIFFICILE);
@@ -95,10 +83,7 @@ class SessionController {
             nbGamesOL = nbGamesOL.nbGames || 0;
             let nbWinsOL = await db.getNbWinsOnlineByUserId(req.session.user.idUser);
             nbWinsOL = nbWinsOL.nbWins || 0;
-            let ratioOL = 0
-            if (nbWinsOL.nbWins > 0){
-                ratioOL = (nbWinsOL.nbWins / nbGamesOL.nbGames) * 100;
-            }
+            let ratioOL = (nbWinsOL / nbGamesOL) * 100 || 0
             req.session.user.onlineStats = {nbGames: nbGamesOL, 
                                             nbWins: nbWinsOL, 
                                             ratio: ratioOL};

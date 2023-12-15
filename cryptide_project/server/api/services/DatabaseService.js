@@ -113,7 +113,7 @@ class DatabaseService {
     async getUserByID(id){
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM users WHERE idUser = ?', [id])
-            console.log('Rows:', rows);
+
             return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -124,7 +124,7 @@ class DatabaseService {
     async getUserByPseudo(pseudo){
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM users WHERE pseudo = ?', [pseudo])
-            console.log('Rows:', rows);
+
             return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -134,7 +134,7 @@ class DatabaseService {
     async getUsers(){
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM users');
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -144,7 +144,7 @@ class DatabaseService {
     async getGames(){
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM games');
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching games: ${err.message}`);
@@ -156,7 +156,7 @@ class DatabaseService {
         try {
             const { pseudo, password } = user;
             const [rows] = await this.client.promise().query('INSERT INTO users (pseudo, password) VALUES (?, ?)', [pseudo, password])
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -166,7 +166,7 @@ class DatabaseService {
     async deleteUser(userId){
         try {
             const [rows] = await this.client.promise().query('DELETE FROM users WHERE idUser=?', [userId])
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -176,7 +176,7 @@ class DatabaseService {
     async updatePseudo(userId, newPseudo){
         try {
             const [rows] = await this.client.promise().query('UPDATE users SET pseudo = ? WHERE idUser = ?', [newPseudo, userId])
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
@@ -186,7 +186,7 @@ class DatabaseService {
     async updatePassword(userId, newPassword){
         try {
             const [rows] = await this.client.promise().query('UPDATE users SET password = ? WHERE idUser = ?', [newPassword, userId])
-            console.log('Rows:', rows);
+
             return rows;
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
