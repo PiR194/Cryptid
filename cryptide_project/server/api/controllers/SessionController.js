@@ -131,6 +131,7 @@ class SessionController {
 
     static async addMastermindStats(req, res){
         const db = new DatabaseService();
+        console.log(req.body)
 
         try{
             await db.connect();
@@ -140,7 +141,7 @@ class SessionController {
                 res.status(200).json({ error: "true", message: 'User not found' });
                 return;
             }
-
+            console.log("utilisateur" + user.idUser + " pseudo" + user.pseudo)
             await db.addMastermindStats(user.idUser, req.body.score, req.body.time);
 
             res.status(200).json({ user: req.session.user });   //verif rep
