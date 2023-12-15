@@ -50,7 +50,7 @@ class SessionController {
                                                     avgTime: avgTimeEF};
 
             // Récupérer les stats enigme moyenne
-            let nbGamesEM, = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
+            let nbGamesEM = await db.getNbGamesEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
             nbGamesEM = nbGamesEM.nbGames || 0;
             let bestScoreEM = await db.getBestScoreEnigmeByUserId(req.session.user.idUser, ENIGME_MOYEN);
             bestScoreEM = bestScoreEM.bestScore || 0;
