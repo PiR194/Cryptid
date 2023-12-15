@@ -56,7 +56,6 @@ class AuthController {
         // Vérifier que le pseudo existe
         const pseudo = req.body.pseudo;
         const user = await databaseService.getUserByPseudo(pseudo);
-        console.log(user)
         if (!user) {
             res.status(400).json({ error: 'Le pseudo n\'existe pas.' });
             return;

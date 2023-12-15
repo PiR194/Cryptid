@@ -114,7 +114,7 @@ class DatabaseService {
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM users WHERE idUser = ?', [id])
             console.log('Rows:', rows);
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -125,7 +125,7 @@ class DatabaseService {
         try {
             const [rows] = await this.client.promise().query('SELECT * FROM users WHERE pseudo = ?', [pseudo])
             console.log('Rows:', rows);
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
