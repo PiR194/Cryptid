@@ -138,29 +138,23 @@ class DatabaseService {
     }
 
     async getUsers(){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT count(*) FROM users', (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT * FROM users');
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getGames(){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT * FROM games', (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT * FROM games');
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching games: ${err.message}`);
+          }
     }
 
     // insère un utilisateur dans la base de données
