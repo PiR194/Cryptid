@@ -299,7 +299,7 @@ class DatabaseService {
     async getNbGamesMastermindByUserId(userId){
         try {
             const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -308,7 +308,7 @@ class DatabaseService {
     async getBestScoreMastermindByUserId(userId){
         try {
             const [rows] = await this.client.promise().query('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -317,7 +317,7 @@ class DatabaseService {
     async getAvgNbTryMastermindByUserId(userId){
         try {
             const [rows] = await this.client.promise().query('SELECT AVG(score) AS avgNbTry FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -326,7 +326,7 @@ class DatabaseService {
     async addMastermindStats(userId, score, time){
         try {
             const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "mastermind", 1, score, time])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -338,7 +338,7 @@ class DatabaseService {
     async getNbGamesOnlineByUserId(userId){
         try {
             const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "multijoueur"])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -347,7 +347,7 @@ class DatabaseService {
     async getNbWinsOnlineByUserId(userId){
         try {
             const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, "multijoueur", 1])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -369,7 +369,7 @@ class DatabaseService {
     async getNbGamesEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -378,7 +378,7 @@ class DatabaseService {
     async getNbWinsEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, enigmaLevel, 1])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -387,7 +387,7 @@ class DatabaseService {
     async getBestScoreEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -396,7 +396,7 @@ class DatabaseService {
     async getAvgScoreEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT AVG(score) AS avgScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -405,7 +405,7 @@ class DatabaseService {
     async getBestTimeEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT MIN(time) AS bestTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
@@ -414,7 +414,7 @@ class DatabaseService {
     async getAvgTimeEnigmeByUserId(userId, enigmaLevel){
         try {
             const [rows] = await this.client.promise().query('SELECT AVG(time) AS avgTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
-            return rows;
+            return rows[0];
           } catch (err) {
             throw new Error(`Error fetching users: ${err.message}`);
           }
