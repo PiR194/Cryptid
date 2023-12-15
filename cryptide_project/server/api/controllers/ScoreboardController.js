@@ -20,7 +20,7 @@ class SessionController {
             const [dailyMastermindStats, fields] = await db.getDailyMastermindStats();
             console.log(dailyMastermindStats)
 
-            res.status(200).json({ tab : dailyMastermindStats });
+            res.status(200).json({ tab : [dailyMastermindStats] });
         }
         catch(error){
             console.error(error);
@@ -122,7 +122,7 @@ class SessionController {
 
             const [weeklyMastermindStats, fields] = await db.getWeeklyMastermindStats();
             console.log(weeklyMastermindStats)
-            res.status(200).json({ tab : weeklyMastermindStats });
+            res.status(200).json({ tab : [weeklyMastermindStats] });
         }
         catch(error){
             console.error(error);
