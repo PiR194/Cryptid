@@ -17,10 +17,10 @@ class SessionController {
 
             await db.connect();
 
-            const [dailyMastermindStats, fields] = await db.getDailyMastermindStats();
+            const dailyMastermindStats = await db.getDailyMastermindStats();
             console.log(dailyMastermindStats)
 
-            res.status(200).json({ tab : [dailyMastermindStats] });
+            res.status(200).json({ tab : dailyMastermindStats});
         }
         catch(error){
             console.error(error);
@@ -37,7 +37,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [dailyEasyEnigmaStats, fields] = await db.getDailyEnigmaStats(ENIGME_FACILE);
+            const dailyEasyEnigmaStats = await db.getDailyEnigmaStats(ENIGME_FACILE);
 
             res.status(200).json({ tab : dailyEasyEnigmaStats });
         }
@@ -56,7 +56,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [dailyMediumEnigmaStats, fields] = await db.getDailyEnigmaStats(ENIGME_MOYEN);
+            const dailyMediumEnigmaStats = await db.getDailyEnigmaStats(ENIGME_MOYEN);
 
             res.status(200).json({ tab : dailyMediumEnigmaStats });
         }
@@ -75,7 +75,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [dailyHardEnigmaStats, fields] = await db.getDailyEnigmaStats(ENIGME_DIFFICILE);
+            const dailyHardEnigmaStats = await db.getDailyEnigmaStats(ENIGME_DIFFICILE);
 
             res.status(200).json({ tab : dailyHardEnigmaStats });
         }
@@ -94,7 +94,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [dailyOnlineStats, fields] = await db.getDailyOnlineStats();
+            const dailyOnlineStats = await db.getDailyOnlineStats();
 
 
             
@@ -120,9 +120,9 @@ class SessionController {
         try{
             await db.connect();
 
-            const [weeklyMastermindStats, fields] = await db.getWeeklyMastermindStats();
+            const weeklyMastermindStats = await db.getWeeklyMastermindStats();
             console.log(weeklyMastermindStats)
-            res.status(200).json({ tab : [weeklyMastermindStats] });
+            res.status(200).json({ tab : weeklyMastermindStats });
         }
         catch(error){
             console.error(error);
@@ -139,7 +139,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [weeklyEasyEnigmaStats, fields] = await db.getWeeklyEnigmaStats(ENIGME_FACILE);
+            const weeklyEasyEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_FACILE);
 
             res.status(200).json({ tab : weeklyEasyEnigmaStats });
         }
@@ -158,7 +158,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [weeklyMediumEnigmaStats, fields] = await db.getWeeklyEnigmaStats(ENIGME_MOYEN);
+            const weeklyMediumEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_MOYEN);
 
             res.status(200).json({ tab : weeklyMediumEnigmaStats });
         }
@@ -177,7 +177,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [weeklyHardEnigmaStats, fields] = await db.getWeeklyEnigmaStats(ENIGME_DIFFICILE);
+            const weeklyHardEnigmaStats = await db.getWeeklyEnigmaStats(ENIGME_DIFFICILE);
 
             res.status(200).json({ tab : weeklyHardEnigmaStats });
         }
@@ -196,7 +196,7 @@ class SessionController {
         try{
             await db.connect();
 
-            const [weeklyOnlineStats, fields] = await db.getWeeklyOnlineStats();
+            const weeklyOnlineStats = await db.getWeeklyOnlineStats();
 
             res.status(200).json({ tab : weeklyOnlineStats });
         }

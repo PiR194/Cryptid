@@ -111,30 +111,24 @@ class DatabaseService {
 
     // Récupère l'utilisateur par son id
     async getUserByID(id){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT * FROM users WHERE idUser = ?', [id], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT * FROM users WHERE idUser = ?', [id])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     // Récupère l'utilisateur par son pseudo
     async getUserByPseudo(pseudo){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT * FROM users WHERE pseudo = ?', [pseudo], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT * FROM users WHERE pseudo = ?', [pseudo])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getUsers(){
@@ -159,55 +153,44 @@ class DatabaseService {
 
     // insère un utilisateur dans la base de données
     async insertUser(user) {
-        return new Promise((resolve, reject) => {
+        try {
             const { pseudo, password } = user;
-            this.client.query('INSERT INTO users (pseudo, password) VALUES (?, ?)', [pseudo, password], (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
+            const [rows] = await this.client.promise().query('INSERT INTO users (pseudo, password) VALUES (?, ?)', [pseudo, password])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async deleteUser(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('DELETE FROM users WHERE idUser=?', [userId], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('DELETE FROM users WHERE idUser=?', [userId])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async updatePseudo(userId, newPseudo){
-        return new Promise((resolve, reject) => {
-            this.client.query('UPDATE users SET pseudo = ? WHERE idUser = ?', [newPseudo, userId], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('UPDATE users SET pseudo = ? WHERE idUser = ?', [newPseudo, userId])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async updatePassword(userId, newPassword){
-        return new Promise((resolve, reject) => {
-            this.client.query('UPDATE users SET password = ? WHERE idUser = ?', [newPassword, userId], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('UPDATE users SET password = ? WHERE idUser = ?', [newPassword, userId])
+            console.log('Rows:', rows);
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     // ---------------------------------------------------------------
@@ -215,61 +198,39 @@ class DatabaseService {
     // ---------------------------------------------------------------
 
     async getDailyMastermindStats() {
-        return new Promise((resolve, reject) => {
-            // Obtenez la date actuelle au format AAAA-MM-JJ
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
-
-            // Récupérer les 5 meilleurs scores de la journée
-            this.client.query(
-                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score ASC LIMIT 10',
-                ["mastermind",
-                currentDate],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query('SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY score ASC LIMIT 10',
+            ["mastermind",
+            currentDate])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getDailyEnigmaStats(enigmaLevel) {
-        return new Promise((resolve, reject) => {
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
-
-            this.client.query(
-                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time ASC LIMIT 10',
-                [enigmaLevel,
-                currentDate],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query('SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? ORDER BY time ASC LIMIT 10',
+            [enigmaLevel,
+            currentDate])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getDailyOnlineStats() {
-        return new Promise((resolve, reject) => {
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
-    
-            this.client.query(
-                'SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins ASC LIMIT 10',
-                ["multijoueur", currentDate, 1],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query('SELECT pseudo, COUNT(*) AS wins FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) = ? AND win = ? GROUP BY users.idUser ORDER BY wins ASC LIMIT 10',
+            ["multijoueur", currentDate, 1])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
+        
     }
     
     
@@ -278,77 +239,57 @@ class DatabaseService {
     // ---------------------------------------------------------------
 
     async getWeeklyMastermindStats() {
-        return new Promise((resolve, reject) => {
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
-
-            this.client.query(
-                'SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score ASC LIMIT 10',
-                ["mastermind",
-                firstDayOfWeek,
-                currentDate],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query('SELECT pseudo, score FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY score ASC LIMIT 10',
+            ["mastermind",
+            firstDayOfWeek,
+            currentDate])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getWeeklyEnigmaStats(enigmaLevel) {
-        return new Promise((resolve, reject) => {
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
-
-            this.client.query(
-                'SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time ASC LIMIT 10',
-                [enigmaLevel,
-                firstDayOfWeek,
-                currentDate],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query('SELECT pseudo, time FROM users INNER JOIN games ON users.idUser = games.idUser WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? ORDER BY time ASC LIMIT 10',
+            [enigmaLevel,
+            firstDayOfWeek,
+            currentDate])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getWeeklyOnlineStats() {
-        return new Promise((resolve, reject) => {
+        try {
             const currentDate = new Date().toISOString().slice(0, 10);
             const currentDay = new Date().getDay();
             const firstDayOfWeek = new Date(new Date().setDate(new Date().getDate() - currentDay)).toISOString().slice(0, 10);
-
-            this.client.query(`
-                    SELECT users.pseudo, COUNT(*) as wins
-                    FROM users
-                    INNER JOIN games ON users.idUser = games.idUser
-                    WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ?
-                    GROUP BY users.pseudo
-                    ORDER BY wins ASC
-                    LIMIT 10;
-                    `,
-                ["multijoueur",
-                firstDayOfWeek,
-                currentDate,
-                1],
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
+            const [rows] = await this.client.promise().query(`
+            SELECT users.pseudo, COUNT(*) as wins
+            FROM users
+            INNER JOIN games ON users.idUser = games.idUser
+            WHERE gameType = ? AND SUBSTR(playedDate, 1, 10) BETWEEN ? AND ? AND win = ?
+            GROUP BY users.pseudo
+            ORDER BY wins ASC
+            LIMIT 10;
+            `,
+        ["multijoueur",
+        firstDayOfWeek,
+        currentDate,
+        1])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     // -------------------------------------------------------------
@@ -356,98 +297,69 @@ class DatabaseService {
     // -------------------------------------------------------------
     
     async getNbGamesMastermindByUserId(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getBestScoreMastermindByUserId(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT MIN(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getAvgNbTryMastermindByUserId(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT AVG(score) AS avgNbTry FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT AVG(score) AS avgNbTry FROM games WHERE idUser = ? AND gameType = ?', [userId, "mastermind"])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async addMastermindStats(userId, score, time){
-        return new Promise((resolve, reject) => {
-            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "mastermind", 1, score, time], (err, result) => {
-                if(err){
-                    console.log(err)
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "mastermind", 1, score, time])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
     // -------------------------------------------------------------
     // ------------------- STATS EN LIGNE --------------------------
     // -------------------------------------------------------------
 
     async getNbGamesOnlineByUserId(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "multijoueur"], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, "multijoueur"])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getNbWinsOnlineByUserId(userId){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, "multijoueur", 1], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, "multijoueur", 1])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async addOnlineStats(userId, win, time){
-        return new Promise((resolve, reject) => {
-            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "multijoueur", win, 0, time], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, "multijoueur", win, 0, time])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     // -------------------------------------------------------------
@@ -455,109 +367,77 @@ class DatabaseService {
     // -------------------------------------------------------------
 
     async getNbGamesEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbGames FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getNbWinsEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, enigmaLevel, 1], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT COUNT(*) AS nbWins FROM games WHERE idUser = ? AND gameType = ? AND win = ?', [userId, enigmaLevel, 1])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getBestScoreEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT MAX(score) AS bestScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getAvgScoreEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT AVG(score) AS avgScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT AVG(score) AS avgScore FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getBestTimeEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT MIN(time) AS bestTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT MIN(time) AS bestTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async getAvgTimeEnigmeByUserId(userId, enigmaLevel){
-        return new Promise((resolve, reject) => {
-            this.client.query('SELECT AVG(time) AS avgTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('SELECT AVG(time) AS avgTime FROM games WHERE idUser = ? AND gameType = ?', [userId, enigmaLevel])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     async addEasyEnigmaStats(userId, enigmaLevel, win, time){
-        return new Promise((resolve, reject) => {
-            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, enigmaLevel, win, 0, time], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, enigmaLevel, win, 0, time])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 
     // async addMediumEnigmaStats(userId, enigmaLevel, score)
 
     async addHardEnigmaStats(userId, enigmaLevel, win, time){
-        return new Promise((resolve, reject) => {
-            this.client.query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, enigmaLevel, win, 0, time], (err, result) => {
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-            });
-        });
+        try {
+            const [rows] = await this.client.promise().query('INSERT INTO games (idUser, gameType, win, score, time) VALUES (?, ?, ?, ?, ?)', [userId, enigmaLevel, win, 0, time])
+            return rows;
+          } catch (err) {
+            throw new Error(`Error fetching users: ${err.message}`);
+          }
     }
 }
 
