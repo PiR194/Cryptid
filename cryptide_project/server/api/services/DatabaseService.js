@@ -25,7 +25,6 @@ class DatabaseService {
 
         return new Promise((resolve, reject) => {
             this.client = mysql.createConnection(dbConfig);
-            console.log(createTables)
 
             this.client.connect(async (err) => {
                 if (err) {
@@ -34,7 +33,6 @@ class DatabaseService {
                 } else {
                     if (createTables === "true"){
                         await this.createTables()
-                        console.log("create table")
                     }
                     resolve();
                 }
