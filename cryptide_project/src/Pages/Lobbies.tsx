@@ -42,7 +42,7 @@ function Lobbies() {
 
     const [showAvailable, setShowAvailable] = useState(true);
 
-    const [cptNavigation, setCptNavigation] = useState(0);
+    const [cptNavigation, setCptNavigation] = useState(0);  
 
     const handleShowAllClick = () => {
         setShowAvailable(false);
@@ -56,10 +56,9 @@ function Lobbies() {
         setFirst(false);
         socket.emit("request lobbies");
     };
-
+    
     const handleSetCptNavigation = () => {
         setCptNavigation((prevCpt) => prevCpt + 1);
-        const navigationType = useNavigationType();
 
         if (cptNavigation % 2 === 0 && navigationType.toString() === "POP") {
             socket.emit("player quit");
@@ -73,25 +72,25 @@ function Lobbies() {
     const filteredLobbiesToShow = showAvailable
     ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6) //* retire les lobbies pleins ou commencés
     : filteredLobbies;
-
-
-
+    
+    
+    
     const setFirstData = (first: boolean) => {
         setFirst(first)
     }
 
-    const navigationType = useNavigationType()
-
-
+    const navigationType = useNavigationType();
+    
+    
 
     handleSetCptNavigation();
-
+    
     if (first){
         handleSetFirst();
     }
-
-
-
+    
+    
+    
     useEffect(() => {
         socket.on("request lobbies", (map) => {
             const jsonMap = JSON.parse(map)
