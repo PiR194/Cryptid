@@ -131,7 +131,7 @@
     "score.titre.easy" : "Énigme facile",
     "score.titre.int" : "Énigme intermédiaire",
     "score.titre.hard" : "Énigme difficile",
-    "score.online" : "En ligne",
+    "score.titre.online" : "En ligne",
 
     "score.tab.stat" : "Vos Stats",
 

@@ -117,7 +117,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <p><FormattedMessage id='score.moy'/>: {parseFloat(Player.mastermindStats.avgNbTry).toFixed(2)}</p>
                         </div>
                         <div className="stats">
-                            <h5>Enigme facile</h5>
+                            <h5><FormattedMessage id='score.titre.easy'/></h5>
                             <hr />
                             <p><FormattedMessage id='score.nbPlayed'/>: {Player.easyEnigmaStats.nbGames}</p>
                             <p><FormattedMessage id='score.NbWin'/>: {Player.easyEnigmaStats.nbWins}</p>
@@ -126,14 +126,14 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <p><FormattedMessage id='score.moyTmp'/>: {parseFloat(Player.easyEnigmaStats.avgTime).toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
-                            <h5>Enigme moyenne</h5>
+                            <h5><FormattedMessage id='score.titre.int'/></h5>
                             <hr />
                             <p><FormattedMessage id='score.nbPlayed'/>: {Player.mediumEnigmaStats.nbGames}</p>
                             <p><FormattedMessage id='score.best'/>: {Player.mediumEnigmaStats.bestScore}</p>
                             <p><FormattedMessage id='score.moy'/>: {parseFloat(Player.mediumEnigmaStats.avgNbTry).toFixed(2)}</p>
                         </div>
                         <div className="stats">
-                            <h5>Enigme difficile</h5>
+                            <h5><FormattedMessage id='score.titre.hard'/></h5>
                             <hr />
                             <p><FormattedMessage id='score.nbPlayed'/>: {Player.hardEnigmaStats.nbGames}</p>
                             <p><FormattedMessage id='score.NbWin'/>: {Player.hardEnigmaStats.nbWins}</p>
@@ -142,7 +142,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             <p><FormattedMessage id='score.moyTmp'/>: {parseFloat(Player.hardEnigmaStats.avgTime).toFixed(2) + "s"}</p>
                         </div>
                         <div className="stats">
-                            <h5>En ligne</h5>
+                            <h5><FormattedMessage id='score.titre.online'/></h5>
                             <hr />
                             <p><FormattedMessage id='score.nbPlayed'/>: {Player.onlineStats.nbGames}</p>
                             <p><FormattedMessage id='score.NbWin'/>: {Player.onlineStats.nbWins}</p>
