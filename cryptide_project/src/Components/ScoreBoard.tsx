@@ -235,7 +235,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                             )}
                         </div>
                         <div className="stats">
-                            <h5><FormattedMessage id='score.online'/></h5>
+                            <h5><FormattedMessage id='score.titre.online'/></h5>
                             <hr />
                             {(dailyOnlineStats && dailyOnlineStats.tab)  ? (dailyOnlineStats.tab.length !== 0 ? dailyOnlineStats.tab.map((stats: any, index: number) => (
                                 <>
