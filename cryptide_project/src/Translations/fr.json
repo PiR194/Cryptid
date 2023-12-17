@@ -26,6 +26,12 @@
     "sign_up":" S'inscrire ",
     "log_out":" Se déconnecter ",
 
+    "indice":"Indice",
+    "param":"Paramètres",
+    "sfx":"Activer les SFX",
+    "aide":"Aide",
+
+    "majUn":"Un",
 
     "join" : "Rejoindre",
     "create_room" : "Créer une partie",
@@ -43,6 +49,10 @@
     "blond": "Blond",
     "redhead": "Roux",
     "brown": "Brun",
+
+
+    "oui": "oui",
+    "non": "non",
 
     "and": "et",
     "or": "ou",
@@ -67,15 +77,75 @@
     "sport_start": "Le suspect pratique au moins du",
     "sport_end": "",
 
+    "navbar.play" : "Jouer",
+    "navbar.presentation":"Présentation",
+    "navbar.info":"Informations",
+
+    "hard" : "Difficile",
+    "medium" : "Intermédiaire",
+    "strong" : "Fort",
+    "weak" : "Faible",
+    "none" : "Aucun",
+
+    "turn" : "Tour",
+    "square":"carré",
+    "round":"rond",
+
+    "step" : "Étape",
+    "previous" : "Précédent",
+    "next" : "Suivant",
+    "continue" : "Poursuivre",
+    "compris":"Compris !",
+    "close" : "Fermer",
 
 
+    "color.green":"Vert",
+    "color.blue":"Bleu",
+    "color.red":"Rouge",
+    "color.yellow":"Jaune",
+
+    "play.jouerseul": "Jouer seul",
+    "play.enigme": "Résoudre une énigme",
+    "play.enigme.easy": "Facile",
+    "play.enigme.medium": "Intermédiaire",
+    "play.enigme.hard": "Difficile",
+
+    "play.create":"Créer une partie",
+    "play.tuto": "Tutoriel",
+    "play.return": "Retourner à la partie",
+
+    "lobbies.all":"Tous",
+    "lobbies.dispo":"Disponibles",
+
+    "placeholder.searchLobby": "Rechercher un lobby...",
+
+    "score.nbPlayed" : "Parties Jouées",
+    "score.best" : "Best-Score",
+    "score.moy" : "Moyenne d'essai",
+    "score.NbWin" : "Nombre de victoire",
+    "score.ratio" : "Ratio V/D",
+    "score.bestTmp" : "Meilleur temps",
+    "score.moyTmp" : "Moyenne de temps",
+    "score.nothing" : "Rien pour le moment",
+
+    "score.titre.easy" : "Énigme facile",
+    "score.titre.int" : "Énigme intermédiaire",
+    "score.titre.hard" : "Énigme difficile",
+    "score.online" : "En ligne",
+
+    "score.tab.stat" : "Vos Stats",
+
+    "lobby.players" : "Joueurs",
+    "lobby.bienvenue" : "Bienvenue dans votre lobby !",
+    "lobby.wait" : "Attendez que tous vos amis rejoignent avant de lancer la partie.",
+    "lobby.invite" : "Inviter des amis",
+    "lobby.copyLink" : "Lien copié",
+    "lobby.nbNode" : "Sélectionner le nombre de noeud (entre 20 et 60) ",
+    "lobby.start" : "Démarrer la partie !",
 
 
-
-
-
-
-
+    "game.yourTurn":"À vous de jouer !",
+    "game.wrong":"Mauvais choix, posez un carré !",
 
     "informations" : "Informations",
     "info.intro.title":"Introduction au jeu :",
@@ -112,6 +182,12 @@
     "hair.roux":"Roux",
     "hair.chatain":"Châtain",
     "hair.noir":"Noir",
+
+
+    "param.node":"Sélectionner le nombre de noeuds (entre 20 et 50)",
+    "param.clue":"Sélectionner le nombre d'indices (entre 3 et 6)",
+    "param.valid":"Valider",
+
 
     "info.composant.sport.title":"Les Sports",
     "info.composant.sport":"Les loisirs des personnages sont représentés par cinq sports respectivement :",
@@ -165,5 +241,113 @@
     "info.mdj.enigme.medium":"L'énigme intermédiaire",
     "info.mdj.enigme.medium.txt":"Dans ce mode de jeu, vous n'avez pas accès au indice, mais vous avez juste assez d'informations sur certains suspects pour pouvoir deviner le coupable. Ces informations vont vous permettre de deviner les indices, et le coupable est le suspect pour lequel tous les indices correspondent. Si jamais vous sélectionnez le mauvais suspect, pas de panique ! Vous aurez les informations relatives à ce dernier, ce qui vous facilitera le travail pour trouver le coupable. L'objectif est donc de trouver le coupable en un minimum de coup.",
     "info.mdj.enigme.hard":"L'énigme difficile",
-    "info.mdj.enigme.hard.txt":"Cette dernière variante est similaire à l'énigme intermédiaire, cependant, il faudra trouver du premier coup sinon, vous aurez perdu ! À vous de jouer ! L'objectif est donc de trouver le coupable en un minimum de temps."
+    "info.mdj.enigme.hard.txt":"Cette dernière variante est similaire à l'énigme intermédiaire, cependant, il faudra trouver du premier coup sinon, vous aurez perdu ! À vous de jouer ! L'objectif est donc de trouver le coupable en un minimum de temps.",
+
+    "tutorial.title":"Tutoriel",
+    "tuto.title.1":"Bienvenue dans SocialGraph !",
+    "tuto.txt.1.1":"Vous incarnez un détective assoiffé de gloire, confronté à un crime.",
+    "tuto.txt.1.2":"Cependant, d'autres enquêteurs sont également sur le coup, tous cherchant à décrocher le titre de meilleur détective du monde.",
+    "tuto.txt.1.3":"Chacun possède un indice crucial pour identifier le coupable, il va falloir déduire l'indice de vos concurrents si vous souhaitez l'emporter !",
+    "tuto.txt.1.4":"Interrogez vos concurrents pour obtenir des réponses par oui ou non, mais méfiez-vous, un refus a des conséquences.",
+    "tuto.txt.1.5":"Soyez le premier à déduire les indices des autres et à trouver le coupable pour remporter la reconnaissance tant convoitée.",
+    "tuto.txt.1.6":"Si vous avez le moindre doute, cliquer sur le bouton 'aide' pour afficher l'étape actuel du tuto",
+
+    "tuto.title.2":"Les Suspects",
+    "tuto.txt.2.1":"Voici comment est représenté un suspect, chaque suspect possède différentes caractéristiques, que ce soit leur nom, âge, sport et leur couleur de cheveux.",
+    "tuto.txt.2.2":"Par exemple, ici, nous avons ",
+    "tuto.txt.2.2.1":", qui a ",
+    "tuto.txt.2.2.2":", qui pratique du ",
+    "tuto.txt.2.2.3":" et du ",
+    "tuto.txt.2.2.4":", qui a les cheveux ",
+    "tuto.txt.2.2.5":" et qui possède ",
+
+    "tuto.title.3":"Les indices",
+    "tuto.txt.3.1":"Dans ce jeu, chaque détective possède un indice, qui permet d'identifier une caractéristique du coupable, votre indice est le suivant :",
+    "tuto.txt.3.2":"Le suspect a entre 20 et 29 ans",
+    
+    "tuto.title.4":"Les Détectives",
+    "tuto.txt.4.1":"Il est possible de voir les détectives sur le côté gauche de l'écran, ils sont représentés par des cercles de couleurs différentes. Le contour carré signifie que ce détective est en pleine réflexion.",
+    "tuto.txt.4.2":"Pour interroger un détective à propos d'un suspect, il suffit de le sélectionner, puis de cliquer sur le suspect que vous souhaitez. Il vous répondra donc ce qu'il pense de ce suspect selon son indice.",
+
+    "tuto.title.5":"Les réponses",
+    "tuto.txt.5.1":"Les détéctives vous répondrons que par des ronds ou des carrés de leur couleur.",
+    "tuto.txt.5.2":" signifie que son indice innocente le suspect",
+    "tuto.txt.5.3":" signifie que son indice peut incréminer le suspect",
+    "tuto.txt.5.4":"Par exemple, ici :",
+    "tuto.txt.5.5.1":"l'indice du détéctive Scooby-Doo ",
+    "tuto.txt.5.5.2":" permet d'innocenter Logan",
+    "tuto.txt.5.6":"Eleanor peut être suspectée par l'indice du détective Batman ",
+    "tuto.txt.5.7.1":"Evelyn est innocentée par l'indice de ",
+    "tuto.txt.5.7.2":"3 détéctives différents",
+    
+    "tuto.title.6":"Les règles du jeu",
+    "tuto.txt.6.1.1":"Ce bouton vous mène à la page d'",
+    "tuto.txt.6.1.2":"information du jeu",
+    "tuto.txt.6.1.3":", avec toutes les règles du jeu, que ce soit les objectifs, les indices, le déroulement, etc.",
+
+    "tuto.title.7":"L'indice",
+    "tuto.txt.7.1":"Ce bouton vous permet d'afficher votre indice personnel, gardez le secret ! Il s'agit de votre meilleur atout pour gagner.",
+
+    "tuto.title.8":"Place à la pratique !",
+    "tuto.txt.8.1":"Bien joué ! Vous avez maintenant toutes les bases d'un veritable détéctive.",
+    "tuto.txt.8.2":"Vous allez à présent avoir un exercice pratique pour la résolution d'une enquête, au côté de ces très chère Batman et Scooby-Doo.",
+    "tuto.txt.8.3":"Cliquer sur 'Poursuivre' pour commencer votre première partie.",
+
+
+    "tuto.title.9":"Premier pas",
+    "tuto.txt.9.1":"Bienvenue dans cette seconde partie, où nous allons apprendre le déroulé d'une veritable enquête.",
+    "tuto.txt.9.2.1":"Dans un premier temps, sélectionnez le joueur ",
+    "tuto.txt.9.2.2":" et questionnez le à propos du suspect nommé ",
+    "tuto.txt.9.2.3":" en cliquant sur cette dernière.",
+
+    "tuto.title.10":"Votre premier tour",
+    "tuto.txt.10.1.1":"Super, ",
+    "tuto.txt.10.1.2":"Violet a été identifié par l'indice de Scooby-Doo",
+    "tuto.txt.10.1.3":", c'est une information essentielle ! Cependant, cela ne signifie ",
+    "tuto.txt.10.1.4":"pas forcément",
+    "tuto.txt.10.1.5":" qu'elle est coupable.",
+    "tuto.txt.10.2":"C'est à présent le tour aux autres joueurs de jouer, regardons ce qu'ils ont fait.",
+
+    "tuto.title.11":"Premier tour des autres joueurs",
+    "tuto.txt.11.1.1":"Il semblerait que Scooby-Doo ait lui aussi interrogé Batman à propos de Violet, et que ce dernier ait répondu ",
+    "tuto.txt.11.1.2":" par un carré. Cela signifie que Violet n'est pas coupable, et qu'elle est donc innocente !",
+    "tuto.txt.11.2.1":"Scooby-Doo a donc fait une erreur, en questionnant quelqu'un pouvant innocenter Violet. En guise de ",
+    "tuto.txt.11.2.2":"punition",
+    "tuto.txt.11.2.3":", il doit, lui aussi, poser un carré sur un autre joueur, révélant aussi plus d'information sur son indice.Nous savons donc maintenant que l'indice de Scooby-Doo ne permet pas d'identifier Sebastian.",
+    "tuto.txt.11.3":"Ensuite, Batman a questionné Scooby-Doo à propos de Charlotte, qui est identifié par l'indice de Scooby-Doo.",
+
+    "tuto.title.12":"Second tour",
+    "tuto.txt.12.1.1":"Vous remarquez que ",
+    "tuto.txt.12.1.2":"votre indice identifie lui aussi Charlotte",
+    "tuto.txt.12.1.3":", et si nous demandions à Batman, si ce dernier pense que Charlotte est la coupable ?",
+    "tuto.txt.12.2":"Cela nous permettrait donc de mettre fin à la partie !",
+
+    "tuto.title.13":"La punition",
+    "tuto.txt.13.1.1":"Mince, il semblerait que l'indice de Batman innocente Charlotte, et que vous avez donc commit une erreur, la ",
+    "tuto.txt.13.1.2":"punition",
+    "tuto.txt.13.1.3":" s'applique !",
+    "tuto.txt.13.2.1":"Vous devez donc poser un ",
+    "tuto.txt.13.2.2":"carré sur un autre joueur",
+    "tuto.txt.13.2.3":", révélant ainsi plus d'information sur votre indice.",
+    "tuto.txt.13.3.1": "Mais rien n'est joué ! Posons notre carré sur ",
+    "tuto.txt.13.3.2": "pour cela, sélectionnez directement le suspect désiré.",
+    
+    "tuto.title.14":"La fin du jeu",
+    "tuto.txt.14.1":"Ce tour est lui aussi riche en informations !",
+    "tuto.txt.14.2":"Vous avez à présent assez d'information pour deviner les indices des autres : ",
+    "tuto.txt.14.3":"Scooby-Doo semble avoir : ",
+    "tuto.txt.14.4":"Batman semble avoir : ",
+    "tuto.txt.14.5":"Et votre indice est : ",
+    "tuto.txt.14.6.1":"Vous avez à présent toutes les cartes en main pour deviner qui est le coupable, cliquer sur le bouton ",
+    "tuto.txt.14.6.2":"Ask Everyone",
+    "tuto.txt.14.6.3":", puis séléctionné un suspect pour émettre une ",
+    "tuto.txt.14.6.4":"accusation",
+    "tuto.txt.14.6.5":" pour deviner, bonne chance !",
+
+
+    "history.mis":" à mis un ",
+    "à":"à",
+    "history.cantPose":" ne peut plus poser de carré",
+    "history.NotCoupable":" n'est pas le coupable !"
 }
+

@@ -12,7 +12,6 @@ const TurnBar: React.FC<TurnBarProps> = ({text})=> {
             style={{ 
                 borderColor: theme.colors.secondary
             }}>
-            {/* texte changeable et a traduire */}
             <p>{text}</p>
         </div>
     );

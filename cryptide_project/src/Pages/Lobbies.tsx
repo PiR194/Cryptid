@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+
 /* Style */
 import './Lobbies.css';
 import "../Style/Global.css"
@@ -11,7 +12,7 @@ import { socket } from '../SocketConfig';
 import JSONParser from '../JSONParser';
 import Person from '../model/Person';
 import { useNavigationType } from 'react-router-dom';
-
+import { FormattedMessage, useIntl } from 'react-intl';
 
 class LobbyDataProps {
     roomNum : string
@@ -27,7 +28,7 @@ class LobbyDataProps {
     }
 }
 
-let cptNavigation = 0
+// let cptNavigation = 0
 
 function Lobbies() {
     const theme=useTheme();
@@ -41,6 +42,8 @@ function Lobbies() {
 
     const [showAvailable, setShowAvailable] = useState(true);
 
+    const [cptNavigation, setCptNavigation] = useState(0);  
+
     const handleShowAllClick = () => {
         setShowAvailable(false);
     };
@@ -49,7 +52,18 @@ function Lobbies() {
         setShowAvailable(true);
     };
 
+    const handleSetFirst = () => {
+        setFirst(false);
+        socket.emit("request lobbies");
+    };
+    
+    const handleSetCptNavigation = () => {
+        setCptNavigation((prevCpt) => prevCpt + 1);
 
+        if (cptNavigation % 2 === 0 && navigationType.toString() === "POP") {
+            socket.emit("player quit");
+        }
+    };
     const filteredLobbies = lobbyData.filter((lobby) =>
         lobby.roomNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lobby.headPlayer.pseudo.toLowerCase().includes(searchTerm.toLowerCase())
@@ -58,26 +72,25 @@ function Lobbies() {
     const filteredLobbiesToShow = showAvailable
     ? filteredLobbies.filter((lobby) => lobby.started == false && lobby.nbPlayer < 6) //* retire les lobbies pleins ou commencés
     : filteredLobbies;
-
-
-
+    
+    
+    
     const setFirstData = (first: boolean) => {
         setFirst(first)
     }
 
-    const navigationType = useNavigationType()
-    cptNavigation++
-    if (cptNavigation % 2 == 0){
-        if (navigationType.toString() == "POP"){
-            socket.emit("player quit")
-        }
-    }
+    const navigationType = useNavigationType();
+    
+    
 
+    handleSetCptNavigation();
+    
     if (first){
-        setFirst(false)
-        socket.emit("request lobbies")
+        handleSetFirst();
     }
-
+    
+    
+    
     useEffect(() => {
         socket.on("request lobbies", (map) => {
             const jsonMap = JSON.parse(map)
@@ -95,12 +108,16 @@ function Lobbies() {
         socket.emit("lobby created")
     }
 
+
+    const intl = useIntl();
+
+
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
             <input
                 type="text"
                 className='searchLobby'
-                placeholder="Rechercher un lobby..."
+                placeholder={intl.formatMessage({ id: 'placeholder.searchLobby' })}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{width:'80%', margin:'10px'}}
@@ -119,7 +136,7 @@ function Lobbies() {
                     }}
                     onClick={handleShowAllClick}
                 >
-                    Tous
+                    <FormattedMessage id='lobbies.all'/>
                 </button>
                 <button
                     style={{
@@ -132,12 +149,12 @@ function Lobbies() {
                     }}
                     onClick={handleShowAvailableClick}
                 >
-                    Disponible
+                    <FormattedMessage id='lobbies.dispo'/>
                 </button>
             </div>
 
                 {filteredLobbiesToShow.length === 0 ? (
-                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}>Créer une partie</button>
+                        <button onClick={createLobby}  className='ButtonNav' style={{backgroundColor: theme.colors.primary, borderColor: theme.colors.secondary}}><FormattedMessage id='play.create' /></button>
                     ) : (
                         <div className="lobbyList">
                             {filteredLobbiesToShow.map((lobby, index) => (

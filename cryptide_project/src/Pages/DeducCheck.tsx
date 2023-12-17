@@ -19,7 +19,7 @@ import Stub from '../model/Stub';
 import { useGame } from '../Contexts/GameContext';
 import { positionToEmoji } from '../ColorHelper';
 
-function DeducCheck() {
+function DeducCheck({lang}: {lang: string}) {
     const theme = useTheme();
     //const indices = Stub.GenerateIndice();
     
@@ -76,7 +76,7 @@ function DeducCheck() {
                     <tbody>
                         {firstHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
-                                <td>{indice.ToString("fr")}</td>
+                                <td>{indice.ToString(lang)}</td>
                                 {players.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
@@ -101,7 +101,7 @@ function DeducCheck() {
                     <tbody>
                         {secondHalfIndices.map((indice, rowIndex) => (
                             <tr key={rowIndex}>
-                                <td>{indice.ToString("fr")}</td>
+                                <td>{indice.ToString(lang)}</td>
                                 {players.map((player, colIndex) => (
                                     <td key={colIndex}>
                                         {/* <input type="checkbox"/> */}
