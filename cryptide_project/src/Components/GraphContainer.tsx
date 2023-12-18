@@ -75,7 +75,6 @@ let cptHistory = 0
 let lastNodes: NodePerson[] = []
 let cptEndgame = 0
 let endgame= false
-let firstHistory = true
 let cptSquare = 0
 let cptOnAskedWrong = 0
 let cptPlayerLeft = 0
@@ -86,6 +85,7 @@ let testTemps = 0
 let testFirst = false
 let gameStartTmp = true
 let index = 0
+let firstHistory = true
 
 const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleShowTurnBar, handleTurnBarTextChange, playerTouched, setPlayerTouched, changecptTour, solo, isDaily, difficulty, addToHistory, showLast, setNetwork, setNetworkEnigme, setPlayerIndex, askedWrong, setAskedWrong, importToPdf, setImportToPdf, importToJSON, setImportToJSON, setPutCorrectBackground, setPutGreyBackground, setPutImposssibleGrey, putCorrectBackground, putGreyBackground, putImposssibleGrey, handleTurn, setChangeGraph, lang}) => {
   let cptTour: number = 1
@@ -108,6 +108,8 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
   const [elapsedTime, setElapsedTime] = useState(0);
   const [netEnigme, setNetEnigme] = useState<Map<number, Pair<Indice, boolean>[]> | null>(null)
   const [downloaded, setDownloaded] = useState(false)
+
+  const [updateHistory, setUpdateHistory] = useState<() => void>(() => {})
 
   useEffect(() => {
     if (testFirst){
@@ -190,7 +192,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     gameStartTmp=gameStart
     if (gameStartTmp){
       setGameStartData(false)
-      console.log(gameStart)
       setLastIndex(turnPlayerIndex)
       setPlayerIndex(playerIndex)
     }
@@ -416,6 +417,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     link.click();
     URL.revokeObjectURL(url);
   }
+  
 
 
   useEffect(() => {
@@ -434,11 +436,16 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     setIndicesData(choosenIndices)
     const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
     setDailyEnigmeData(map)
-    addToHistory("<----- [Tour " + 1  +"/"+networkPerson.getPersons().length + "] ----->");
+    if (solo && (difficulty === "intermediate" || !isDaily)){
+      addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkPerson.getPersons().length + "] ----->");
+    }
+    else{
+      choosenIndices.forEach((indice, index) => {
+        addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
+      })
+    }
     changecptTour(1)
     testTemps=0
-    
-
   }
 
   useEffect(() => {
@@ -494,12 +501,24 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             }
         }
     };
+    
 
     const networkData = { nodes: nodes, edges: graph.edges };
     const network = new Network(container, networkData, initialOptions);
     network.stabilize();
     setNetwork(network)
     setSeedData(network.getSeed())
+
+    if (solo){
+      if (solo && (difficulty === "intermediate" || !isDaily)){
+        addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkData.nodes.length + "] ----->");
+      }
+      else{
+        indices.forEach((indice, index) => {
+          addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
+        })
+      }
+    }
 
     if (isDaily){
       setNetworkEnigme(dailyEnigme)
@@ -518,15 +537,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
             }
           })
         });
-      }
-      else if (difficulty === "easy"){
-        if (firstHistory){
-          firstHistory=false
-          indices.forEach((indice, index) => {
-            addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
-          })
-        }
-        
       }
     }
 
@@ -898,6 +908,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setLastIndex(-1)
         setPlayerTouched(-1)
         setWinnerData(winner)
+        firstHistory=true
         
 
         first = true
@@ -906,7 +917,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setAskedWrong(false)
         askedWrongBot=false
         endgame = true
-        firstHistory=true
         cptBug=0
         try{
           if(isLoggedIn){

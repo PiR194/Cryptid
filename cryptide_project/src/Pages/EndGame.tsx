@@ -178,8 +178,9 @@ function EndGame({lang}: {lang: string}) {
                         </div>
                     </div>
                 </div>
-            ): (
+            ): (                
             <div>
+
                 <div className="head">
                             <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
                                 <h1>Vous avez gagné !</h1>
