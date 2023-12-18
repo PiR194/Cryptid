@@ -358,11 +358,11 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         });
         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
         
-        if (isDaily){
+        if (solo){
           pdf.addPage();
           let text = ""
 
-          if (difficulty === "easy"){
+          if (difficulty === "easy" || !isDaily){
             indices.forEach((indice, index) => {
               text += `Indice ${index + 1} : ${indice.ToString('fr')}.\n`
             })
