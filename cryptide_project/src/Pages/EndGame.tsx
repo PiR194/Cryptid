@@ -216,7 +216,7 @@ function EndGame({lang}: {lang: string}) {
             <div id="vis-graph"/>
 
             <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                <Button href={`${basePath}/`}>Retour à l'accueil</Button>
+                <Button href={`${basePath}/`}><FormattedMessage id='BackHome'/></Button>
             </div>
 
         </div>

@@ -12,4 +12,17 @@
   }
   
   /* Personnalisez davantage selon vos préférences */
-  
+
+  .carousselButton{
+    border:none;
+    background-color:darkgray;
+    color:white;
+    opacity: 60%;
+    width: 50px;
+    height: 70px;
+    font-size: 40px;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+  }

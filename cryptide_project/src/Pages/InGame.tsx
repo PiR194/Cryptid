@@ -600,7 +600,7 @@ const handleBlurIndice = () => {
         <Offcanvas show={showS} 
                   onHide={handleCloseS} 
                   placement='top'
-                  style={{height: '60%', width: '30%', left: '70%' }}>
+                  style={{height: '80%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title><img src={Param} alt='param'/> <FormattedMessage id='param'/></Offcanvas.Title>
           </Offcanvas.Header>
@@ -612,14 +612,14 @@ const handleBlurIndice = () => {
               </label>
 
               {IsSolo && 
-              <div className='nbNodeDiv'>
+              <div className='nbNodeDiv' style={{ padding:'20px'}}>
                   <label htmlFor="numberInput"><FormattedMessage id='param.node'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumber>20 && user !== null){ setEnteredNumber(enteredNumber-1); user.nbNodes = user.nbNodes-1; setHistory([]); }}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
                       <input
                           // type="number"
-                          style={{textAlign:'center'}}
+                          style={{textAlign:'center', border: 'none', width: '100px'}}
                           id="numberInput"
                           value={enteredNumber}
                           onChange={handleNumberChange}
@@ -632,14 +632,14 @@ const handleBlurIndice = () => {
               </div>}
 
               {IsSolo && 
-              <div className='nbNodeDiv'>
+              <div className='nbNodeDiv' style={{ padding:'20px'}}>
                   <label htmlFor="numberInput"><FormattedMessage id='param.clue'/> :</label>
                   <div>
                       <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3 && user!==null){ setEnteredNumberIndices(enteredNumberIndices - 1); user.nbIndices = user.nbIndices-1; setHistory([]); }}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
                       <input
                           // type="number"
-                          style={{textAlign:'center'}}
+                          style={{textAlign:'center', border: 'none', width: '100px'}}
                           id="numberInput"
                           value={enteredNumberIndices}
                           onChange={handleNumberIndicesChange}
@@ -649,6 +649,10 @@ const handleBlurIndice = () => {
                           style={{borderColor:theme.colors.secondary}}> + </button>
                   </div>
               </div>}
+              <div className='centerDivH' style={{margin: "20px"}}>
+                <Button variant="outline-warning" onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}><FormattedMessage id='regenerate'/></Button>
+              </div>
+                <Button variant="outline-danger" href={`${basePath}/`}><FormattedMessage id='BackHome'/></Button>
             </div>
           </Offcanvas.Body>
         </Offcanvas>

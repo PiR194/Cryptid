@@ -28,7 +28,7 @@
 
     "indice":"Hint",
     "param":"Settings",
-    "sfx":"Activate SFX",
+    "sfx":"Activate sounds",
     "aide":"Help",
 
     "majUn":"A",
@@ -101,6 +101,10 @@
     "compris": "Understood!",
     "close": "Close",
 
+    "regenerate":"Regenarte graph",
+    "BackHome" : "Back to home",
+    "askeveryone" : "Ask everyone",
+
     "color.green":"Green",
     "color.blue":"Blue",
     "color.red":"Red",
@@ -136,6 +140,8 @@
     "score.online": "Online",
 
     "score.tab.stat" : "Your Stats",
+    "score.tab.quoti" : "Daily",
+    "score.tab.hebdo" : "Weekly",
 
     "lobby.players" : "Players",
     "lobby.bienvenue": "Welcome to your lobby!",

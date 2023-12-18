@@ -8,6 +8,7 @@ import Person from '../res/img/Person.png'
 import BotImg from '../res/img/bot.png'
 
 import { socket } from '../SocketConfig';
+import { FormattedMessage } from 'react-intl';
 
 
 //@ts-ignore
@@ -69,7 +70,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                             textAlign: "center",
                             color: "white",
                             padding: "10px"}}
-                            onClick={() => askEveryone()}>Ask everyone</button>
+                            onClick={() => askEveryone()}><FormattedMessage id='askeveryone'/></button>
                         ):
                         (
                             <button style={{ 
@@ -80,7 +81,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, playerTouched, setPlay
                                 textAlign: "center",
                                 color: "white",
                                 padding: "10px"}}
-                            onClick={() => askEveryone()}>Ask everyone</button>
+                            onClick={() => askEveryone()}><FormattedMessage id='askeveryone'/></button>
                         )
                     }
             </div>
