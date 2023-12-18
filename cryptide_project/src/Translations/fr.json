@@ -28,7 +28,7 @@
 
     "indice":"Indice",
     "param":"Paramètres",
-    "sfx":"Activer les SFX",
+    "sfx":"Activer les sons",
     "aide":"Aide",
 
     "majUn":"Un",
@@ -98,6 +98,10 @@
     "compris":"Compris !",
     "close" : "Fermer",
 
+    "askeveryone" : "Demandez à tous",
+
+    "regenerate":"Regénérer le graph",
+    "BackHome" : "Retour à l'accueil",
 
     "color.green":"Vert",
     "color.blue":"Bleu",
@@ -345,7 +349,7 @@
     "tuto.txt.14.6.5":" pour deviner, bonne chance !",
 
 
-    "history.mis":" à mis un ",
+    "history.mis":" a mis un ",
     "à":"à",
     "history.cantPose":" ne peut plus poser de carré",
     "history.NotCoupable":" n'est pas le coupable !"

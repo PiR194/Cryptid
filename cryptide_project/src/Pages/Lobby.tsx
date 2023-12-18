@@ -309,9 +309,9 @@ function Lobby() {
                         <h3><FormattedMessage id='lobby.bienvenue'/></h3>
                         <p><FormattedMessage id='lobby.wait'/></p>
                         {/* Bouton pour copier le lien */}
-                        <Button variant="primary" ref={target} onClick={copyGameLink}>
+                        {/* <Button variant="primary" ref={target} onClick={copyGameLink}>
                             <FormattedMessage id='lobby.invite'/>
-                        </Button>
+                        </Button> */}
                         <Overlay target={target.current} show={show} placement="top">
                             {({
                             placement: _placement,

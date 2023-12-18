@@ -330,14 +330,49 @@ const InGame = ({locale, changeLocale}) => {
 
   //@ts-ignore
   const handleNumberChange = (event) => {
-      const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
-      setEnteredNumber(newNumber);
+      //const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
+      setEnteredNumber(event.target.value);
   };
 
   //@ts-ignore
   const handleNumberIndicesChange = (event) => {
-    const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
-    setEnteredNumberIndices(newNumber);
+    //const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
+    setEnteredNumberIndices(event.target.value);
+};
+
+//@ts-ignore
+const handleKeyDown = (event) => {
+// Vérifier si la touche appuyée est "Entrée"
+if (event.key === 'Enter') {
+  const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
+  setEnteredNumber(newNumber);
+  setHistory([]); changeGraph(newNumber, enteredNumberIndices)
+}
+};
+
+const handleBlur = () => {
+const newNumber = Math.max(20, Math.min(50, enteredNumber));
+setEnteredNumber(newNumber);
+setHistory([]); 
+changeGraph(newNumber, enteredNumberIndices)
+};
+
+//@ts-ignore
+const handleKeyDownIndice = (event) => {
+// Vérifier si la touche appuyée est "Entrée"
+if (event.key === 'Enter') {
+const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
+setEnteredNumberIndices(newNumber);
+setHistory([]); 
+changeGraph(enteredNumber, newNumber)
+}
+};
+
+const handleBlurIndice = () => {
+const newNumber = Math.max(3, Math.min(6, enteredNumber));
+setEnteredNumberIndices(newNumber);
+setHistory([]); 
+changeGraph(enteredNumber, newNumber)
 };
 
   const handleSoundPreferenceChange = () => {
@@ -541,7 +576,7 @@ const InGame = ({locale, changeLocale}) => {
         <Offcanvas show={showS} 
                   onHide={handleCloseS} 
                   placement='top'
-                  style={{height: '60%', width: '30%', left: '70%' }}>
+                  style={{height: '80%', width: '30%', left: '70%' }}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title><img src={Param} alt='param'/> <FormattedMessage id='param'/></Offcanvas.Title>
           </Offcanvas.Header>
@@ -553,54 +588,47 @@ const InGame = ({locale, changeLocale}) => {
               </label>
 
               {IsSolo && 
-              <div className='nbNodeDiv'>
+              <div className='nbNodeDiv' style={{ padding:'20px'}}>
                   <label htmlFor="numberInput"><FormattedMessage id='param.node'/> :</label>
                   <div>
-                      <button className='valuebutton' onClick={() => { if (enteredNumber>20) setEnteredNumber(enteredNumber-1)}}
+                      <button className='valuebutton' onClick={() => { if (enteredNumber>20){ setEnteredNumber(enteredNumber-1); setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
                       <input
                           // type="number"
-                          style={{textAlign:'center'}}
+                          style={{textAlign:'center', border: 'none', width: '100px'}}
                           id="numberInput"
-                          disabled
                           value={enteredNumber}
                           onChange={handleNumberChange}
-                          min={20}
-                          max={60}/>
-                      <button className='valuebutton' onClick={() => { if (enteredNumber<50) setEnteredNumber(enteredNumber+1)}}
+                          onKeyDown={handleKeyDown}
+                          onBlur={handleBlur}
+                          />
+                      <button className='valuebutton' onClick={() => { if (enteredNumber<50){ setEnteredNumber(enteredNumber+1); setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}}
                           style={{borderColor:theme.colors.secondary}}> + </button>
                   </div>
-                  <button onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}
-                                              style={{ 
-                                                backgroundColor: theme.colors.tertiary,
-                                                borderColor: theme.colors.secondary,
-                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
 
               {IsSolo && 
-              <div className='nbNodeDiv'>
+              <div className='nbNodeDiv' style={{ padding:'20px'}}>
                   <label htmlFor="numberInput"><FormattedMessage id='param.clue'/> :</label>
                   <div>
-                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3) setEnteredNumberIndices(enteredNumberIndices-1)}}
+                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices>3){ setEnteredNumberIndices(enteredNumberIndices-1); setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}}
                           style={{borderColor:theme.colors.secondary}}> - </button>
                       <input
                           // type="number"
-                          style={{textAlign:'center'}}
+                          style={{textAlign:'center', border: 'none', width: '100px'}}
                           id="numberInput"
-                          disabled
                           value={enteredNumberIndices}
                           onChange={handleNumberIndicesChange}
-                          min={3}
-                          max={6}/>
-                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices<6) setEnteredNumberIndices(enteredNumberIndices+1)}}
+                          onKeyDown={handleKeyDownIndice}
+                          onBlur={handleBlurIndice}/>
+                      <button className='valuebutton' onClick={() => { if (enteredNumberIndices<6){ setEnteredNumberIndices(enteredNumberIndices+1); setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}}
                           style={{borderColor:theme.colors.secondary}}> + </button>
                   </div>
-                  <button onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}
-                                              style={{ 
-                                                backgroundColor: theme.colors.tertiary,
-                                                borderColor: theme.colors.secondary,
-                                              }}><FormattedMessage id='param.valid'/></button>
               </div>}
+              <div className='centerDivH' style={{margin: "20px"}}>
+                <Button variant="outline-warning" onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}><FormattedMessage id='regenerate'/></Button>
+              </div>
+                <Button variant="outline-danger" href={`${basePath}/`}><FormattedMessage id='BackHome'/></Button>
             </div>
           </Offcanvas.Body>
         </Offcanvas>
