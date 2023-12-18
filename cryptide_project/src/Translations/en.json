@@ -140,6 +140,8 @@
     "score.online": "Online",
 
     "score.tab.stat" : "Your Stats",
+    "score.tab.quoti" : "Daily",
+    "score.tab.hebdo" : "Weekly",
 
     "lobby.players" : "Players",
     "lobby.bienvenue": "Welcome to your lobby!",

@@ -138,6 +138,8 @@
     "score.online" : "En ligne",
 
     "score.tab.stat" : "Vos Stats",
+    "score.tab.quoti" : "Quotidien",
+    "score.tab.hebdo" : "Hebdomadaire",
 
     "lobby.players" : "Joueurs",
     "lobby.bienvenue" : "Bienvenue dans votre lobby !",

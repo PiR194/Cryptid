@@ -255,7 +255,7 @@ function NewPlay() {
                 </div>
             
                 {/* Lobbies */}
-                <div style={{border:'solid 1px lightgray', borderRadius:'15px', marginTop:'20px'}}>
+                <div style={{border:'solid 1px lightgray', borderRadius:'15px', marginTop:'20px', minHeight:'400px'}}>
                     <Lobbies/>
                 </div>
             </div>
