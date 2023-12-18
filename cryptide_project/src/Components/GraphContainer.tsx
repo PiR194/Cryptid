@@ -948,24 +948,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     })
 
-
-
-      personNetwork.getPersons().forEach(p => {
-        let a = 0
-        for (let i of indices){
-          let tester = IndiceTesterFactory.Create(i)
-          if (tester.Works(p)){
-            a++
-          }
-        }
-        if (a==indices.length){
-          //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          //console.log(p)
-        }
-        
-      });
-      
-
       // Gérer le changement entre la physique et le déplacement manuel
       network.on("dragging", (params) => {
           if (params.nodes.length > 0) {
@@ -1103,6 +1085,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           const personTest = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           const node = nodes.get().find((n: any) => params.nodes[0] == n.id)
           if(node == undefined)return;
+          if (node.label.includes(colorToEmoji(positionToColor(0), true)) || node.label.includes(colorToEmoji(positionToColor(0), false))) return
           if (personTest != undefined){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
             for (const i of indices){
