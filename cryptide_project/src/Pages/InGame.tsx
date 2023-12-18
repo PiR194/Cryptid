@@ -332,7 +332,7 @@ const InGame = ({locale, changeLocale}) => {
 
   //@ts-ignore
   const handleNumberChange = (event) => {
-      setEnteredNumber(event.target.value);
+      setEnteredNumber(parseInt(event.target.value));
   };
 
   //@ts-ignore
@@ -358,7 +358,7 @@ const InGame = ({locale, changeLocale}) => {
 
   //@ts-ignore
   const handleNumberIndicesChange = (event) => {
-    setEnteredNumberIndices(event.target.value);
+    setEnteredNumberIndices(parseInt(event.target.value));
 };
 
 useEffect(() => {
