@@ -106,6 +106,7 @@ const InGame = ({locale, changeLocale}) => {
   const [askedWrong, setAskedWrong] = useState(false)
   const [importToPdf, setImportToPdf] = useState(false)
   const [importToJSON, setImportToJSON] = useState(false)
+  const [firstHistory, setFirstHistory] = useState(true)
 
   const [putCorrectBackground, setPutCorrectBackground] = useState<() => void>(() => {});
   const [putGreyBackgroud, setPutGreyBackground] = useState<() => void>(() => {});
@@ -344,7 +345,6 @@ const InGame = ({locale, changeLocale}) => {
       const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
       user.nbNodes = newNumber;
       setEnteredNumber(newNumber);
-      setHistory([])
     }
   };
   
@@ -353,7 +353,6 @@ const InGame = ({locale, changeLocale}) => {
       const newNumber = Math.max(20, Math.min(50, enteredNumber));
       user.nbNodes = newNumber;
       setEnteredNumber(newNumber);
-      setHistory([])
     }
   };
   
@@ -366,10 +365,14 @@ const InGame = ({locale, changeLocale}) => {
 };
 
 useEffect(() => {
-  if (changeGraph !== undefined){
+  if (changeGraph){
     if (enteredNumber>=20 && enteredNumber<=50 && enteredNumberIndices>=3 && enteredNumberIndices<=6){
-    manager?.userService.changeNodesIndices(enteredNumber, enteredNumberIndices)
-    changeGraph(enteredNumber, enteredNumberIndices)
+      console.log(enteredNumber)
+      console.log(enteredNumberIndices)
+      manager?.userService.changeNodesIndices(enteredNumber, enteredNumberIndices)
+      setHistory([]);
+      setFirstHistory(true)
+      changeGraph(enteredNumber, enteredNumberIndices)
     }
   }
   else{
@@ -385,7 +388,6 @@ const handleKeyDownIndice = (event) => {
     const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
     user.nbIndices = newNumber;
     setEnteredNumberIndices(newNumber);
-    setHistory([]); 
   }
 };
 
@@ -394,7 +396,6 @@ const handleBlurIndice = () => {
     const newNumber = Math.max(3, Math.min(6, enteredNumberIndices));
     setEnteredNumberIndices(newNumber);
     user.nbIndices = newNumber;
-    setHistory([]); 
   }
 };
 
