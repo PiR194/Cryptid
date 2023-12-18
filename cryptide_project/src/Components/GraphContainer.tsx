@@ -618,7 +618,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         setPlayerIndex(index)
         setLastIndex(index)
         if (actualPlayerIndex==index){
-          handleTurnBarTextChange(intl.formatMessage({ id: 'game.yourTurn' }))
           handleShowTurnBar(true)
         }
       })
@@ -949,24 +948,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
       }
     })
 
-
-
-      personNetwork.getPersons().forEach(p => {
-        let a = 0
-        for (let i of indices){
-          let tester = IndiceTesterFactory.Create(i)
-          if (tester.Works(p)){
-            a++
-          }
-        }
-        if (a==indices.length){
-          //networkData.nodes.update({id: p.getId(), label: p.getName() + "\n🔵"})
-          //console.log(p)
-        }
-        
-      });
-      
-
       // Gérer le changement entre la physique et le déplacement manuel
       network.on("dragging", (params) => {
           if (params.nodes.length > 0) {
@@ -1104,15 +1085,14 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           const personTest = personNetwork?.getPersons().find((p) => p.getId() == params.nodes[0]) //person sélectionnée
           const node = nodes.get().find((n: any) => params.nodes[0] == n.id)
           if(node == undefined)return;
-          if (personTest != undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){ //si la personne existe et que le noeud n'a pas déjà été cliqué
+          if (node.label.includes(colorToEmoji(positionToColor(0), true)) || node.label.includes(colorToEmoji(positionToColor(0), false))) return
+          if (personTest != undefined){ //si la personne existe et que le noeud n'a pas déjà été cliqué
             let index =0
-            let works = true
-            const statsTime = elapsedTime;
             for (const i of indices){
               const tester = IndiceTesterFactory.Create(i)
               const test = tester.Works(personTest)
                 //@ts-ignore
-              if (node!=undefined){
+              if (node!=undefined && !node.label.includes(positionToEmoji(index, true)) && !node.label.includes(positionToEmoji(index, false))){
                 const nodeNode = nodes.get().find((n: any) => params.nodes[0] == n.id)
                 if(nodeNode == undefined)return;
                 networkData.nodes.update({id: params.nodes[0], label: nodeNode.label + positionToEmoji(index, test)})

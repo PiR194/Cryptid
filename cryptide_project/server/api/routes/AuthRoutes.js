@@ -11,6 +11,7 @@ router.delete('/auth/logout', AuthController.logout)
 router.delete('/auth/delAccount', AuthController.delAccount)
 router.post('/auth/validatePassword', AuthController.validatePassword);
 router.put('/auth/updatePassword', AuthController.updatePassword);
+router.put('/session/updateNbNodes', AuthController.UpdateNbNodesIndices);
 
 // Routes pour les sessions
 router.get('/session', SessionController.getUserInformation);
@@ -20,6 +21,7 @@ router.post('/session/addEasyEnigmaStats', SessionController.addEasyEnigmaStats)
 router.post('/session/addHardEnigmaStats', SessionController.addHardEnigmaStats);
 router.post('/session/addOnlineStats', SessionController.addOnlineStats);
 router.put('/session/updatePseudo', SessionController.UpdatePseudo);
+
 
 // Routes pour le daily scoreboard
 router.get('/scoreboard/getDailyMastermind', ScoreboardController.getDailyMastermind);
