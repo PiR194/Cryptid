@@ -332,17 +332,19 @@ const InGame = ({locale, changeLocale}) => {
 
   //@ts-ignore
   const handleNumberChange = (event) => {
-      setEnteredNumber(event.target.value);
+    if (parseInt(event.target.value)){
+      setEnteredNumber(parseInt(event.target.value));
+    }
   };
 
   //@ts-ignore
   const handleKeyDown = (event) => {
     // Vérifier si la touche appuyée est "Entrée"
-    if (event.key === 'Enter' && user!==null) {
+    if (event.key === 'Enter' && user!==null && parseInt(event.target.value)) {
       const newNumber = Math.max(20, Math.min(50, parseInt(event.target.value, 10)));
       user.nbNodes = newNumber;
       setEnteredNumber(newNumber);
-      setHistory([]); 
+      setHistory([])
     }
   };
   
@@ -351,20 +353,24 @@ const InGame = ({locale, changeLocale}) => {
       const newNumber = Math.max(20, Math.min(50, enteredNumber));
       user.nbNodes = newNumber;
       setEnteredNumber(newNumber);
-      setHistory([]); 
+      setHistory([])
     }
   };
   
 
   //@ts-ignore
   const handleNumberIndicesChange = (event) => {
-    setEnteredNumberIndices(event.target.value);
+    if (parseInt(event.target.value)){
+      setEnteredNumberIndices(parseInt(event.target.value));
+    }
 };
 
 useEffect(() => {
   if (changeGraph !== undefined){
+    if (enteredNumber>=20 && enteredNumber<=50 && enteredNumberIndices>=3 && enteredNumberIndices<=6){
     manager?.userService.changeNodesIndices(enteredNumber, enteredNumberIndices)
     changeGraph(enteredNumber, enteredNumberIndices)
+    }
   }
   else{
     setEnteredNumber(user?.nbNodes || 25)
@@ -375,7 +381,7 @@ useEffect(() => {
 //@ts-ignore
 const handleKeyDownIndice = (event) => {
   // Vérifier si la touche appuyée est "Entrée"
-  if (event.key === 'Enter' && user!=null) {
+  if (event.key === 'Enter' && user!=null && parseInt(event.target.value)) {
     const newNumber = Math.max(3, Math.min(6, parseInt(event.target.value, 10)));
     user.nbIndices = newNumber;
     setEnteredNumberIndices(newNumber);
@@ -385,7 +391,7 @@ const handleKeyDownIndice = (event) => {
 
 const handleBlurIndice = () => {
   if (user!==null){
-    const newNumber = Math.max(3, Math.min(6, enteredNumber));
+    const newNumber = Math.max(3, Math.min(6, enteredNumberIndices));
     setEnteredNumberIndices(newNumber);
     user.nbIndices = newNumber;
     setHistory([]); 
