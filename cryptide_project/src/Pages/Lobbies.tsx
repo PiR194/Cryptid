@@ -42,7 +42,6 @@ function Lobbies() {
 
     const [showAvailable, setShowAvailable] = useState(true);
 
-    //const [cptNavigation, setCptNavigation] = useState(0);  
 
     const handleShowAllClick = () => {
         setShowAvailable(false);
@@ -58,7 +57,7 @@ function Lobbies() {
     };
     
     const handleSetCptNavigation = () => {
-        //setCptNavigation((prevCpt) => prevCpt + 1);
+        cptNavigation++
 
         if (cptNavigation % 2 >= 0 && navigationType.toString() === "POP") {
             socket.emit("player quit");

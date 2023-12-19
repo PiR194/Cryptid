@@ -7,6 +7,8 @@ class User extends Player{
     public mediumEnigmaStats: any
     public hardEnigmaStats: any
     public onlineStats: any
+    public nbNodes: number = 25
+    public nbIndices: number = 3
 
     constructor(id: string, pseudo: string, profilePicture: string, soloStats: any, easyEnigmaStats: any, mediumEnigmaStats: any, hardEnigmaStats: any, onlineStats: any){
         super(id, pseudo, profilePicture || defaultImg)

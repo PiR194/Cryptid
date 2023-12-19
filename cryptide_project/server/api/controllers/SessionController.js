@@ -87,7 +87,7 @@ class SessionController {
             req.session.user.onlineStats = {nbGames: nbGamesOL, 
                                             nbWins: nbWinsOL, 
                                             ratio: ratioOL};
-            
+
             res.status(200).json({ user: req.session.user });
         }
         catch(error){

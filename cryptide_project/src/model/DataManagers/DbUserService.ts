@@ -41,6 +41,8 @@ class DbUserService implements IUserService{
                     nbWins: sessionData.user.onlineStats.nbWins,
                     ratio: sessionData.user.onlineStats.ratio,
                 });
+                currentUser.nbNodes = sessionData.user.nbNodes || 25
+                currentUser.nbIndices = sessionData.user.nbIndices || 3
 
                 return [currentUser, true];
             } 
@@ -75,6 +77,9 @@ class DbUserService implements IUserService{
                     nbWins: 0,
                     ratio: 0,
                 });
+
+                guestUser.nbNodes = 25
+                guestUser.nbIndices = 3
 
                 return [guestUser, false];
             }
@@ -143,6 +148,19 @@ class DbUserService implements IUserService{
                 console.log("Stats online updated");
             } else {
                 console.log("Stats online not updated");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async changeNodesIndices(nbNodes: number, nbIndices: number): Promise<void> {
+        try {
+            const result = await SessionService.changeNodesIndices(nbNodes, nbIndices);
+            if (result) {
+                console.log("Nodes updated");
+            } else {
+                console.log("Nodes not updated");
             }
         } catch (error) {
             console.error(error);

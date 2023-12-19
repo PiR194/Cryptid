@@ -24,6 +24,34 @@ class SessionService {
         }
     }
 
+    static async changeNodesIndices(nbNodes: number, nbIndices: number) {
+        try {
+            const response = await fetch(ADRESSE_DBSERVER + '/session/updateNbNodes', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nbNodes,
+                    nbIndices
+                }),
+                credentials: 'include',
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+
+    }
+
     static async addMastermindStats(pseudo: string, score: number, time: number){
         try {
             const response = await fetch(ADRESSE_DBSERVER + '/session/addMastermindStats', {

@@ -3,7 +3,6 @@
     justify-content: space-between;
     /* background-color: #D7D4C6; */
     background-color: #fff;
-    min-height: 100vh;
     font-size: calc(10px + 2vmin);
     /* color: #2A4541; */
 }

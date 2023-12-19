@@ -94,6 +94,19 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
 
     const intl = useIntl();
 
+
+    //@ts-ignore
+    const CustomPrevButton = ({ previousSlide }) => (
+        <button className='carousselButton' onClick={previousSlide}>&lt;</button>
+    );
+    
+    //@ts-ignore
+    const CustomNextButton = ({ nextSlide }) => (
+    <button className='carousselButton' onClick={nextSlide}>&gt;</button>
+    );
+
+
+
     return (
         <Tabs
             activeKey={activeTab}
@@ -108,7 +121,15 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
             title={intl.formatMessage({ id: 'score.tab.stat' })}
             disabled={!Player.pseudo.startsWith("Guest_") ? false : true}>
                 <Tab.Content className={`tabsStats ${activeTab !== 'perso' ? 'hidden' : ''}`}>
-                    <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
+                    <Carousel
+                        renderCenterLeftControls={({ previousSlide }) => <CustomPrevButton previousSlide={previousSlide} />}
+                        renderCenterRightControls={({ nextSlide }) => <CustomNextButton nextSlide={nextSlide} />}
+                        adaptiveHeight
+                        wrapAround
+                        slidesToShow={1}
+                        cellSpacing={10}
+                        key={carouselKey}
+                        >
                         <div className="stats">
                             <h5><FormattedMessage id='info.mdj.mastermind'/></h5>
                             <hr />
@@ -151,7 +172,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                     </Carousel>
                 </Tab.Content>
             </Tab>
-            <Tab eventKey="daily" title="Daily">
+            <Tab eventKey="daily" title={intl.formatMessage({ id: 'score.tab.quoti' })}>
                 <Tab.Content className={`tabsStats ${activeTab !== 'daily' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
                         <div className="stats">
@@ -257,7 +278,7 @@ const ScoreBoard: React.FC<{ Player: User }> = ({ Player }) => {
                     </Carousel>
                 </Tab.Content>
             </Tab>
-            <Tab eventKey="weekly" title="Weekly">
+            <Tab eventKey="weekly" title={intl.formatMessage({ id: 'score.tab.hebdo' })}>
                 <Tab.Content className={`tabsStats ${activeTab !== 'weekly' ? 'hidden' : ''}`}>
                     <Carousel adaptiveHeight wrapAround slidesToShow={1} cellSpacing={10} key={carouselKey}>
                         <div className="stats">
