@@ -436,14 +436,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
     setIndicesData(choosenIndices)
     const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
     setDailyEnigmeData(map)
-    if (solo && (difficulty === "intermediate" || !isDaily)){
-      addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkPerson.getPersons().length + "] ----->");
-    }
-    else{
-      choosenIndices.forEach((indice, index) => {
-        addToHistory(intl.formatMessage({ id: 'indice' }) + positionToEmoji(index, true) + " : " + indice.ToString(lang))
-      })
-    }
+
     changecptTour(1)
     testTemps=0
   }
