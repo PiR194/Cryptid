@@ -28,7 +28,7 @@
 
     "indice":"Indice",
     "param":"Paramètres",
-    "sfx":"Activer les SFX",
+    "sfx":"Activer les sons",
     "aide":"Aide",
 
     "majUn":"Un",
@@ -98,13 +98,17 @@
     "compris":"Compris !",
     "close" : "Fermer",
 
+    "askeveryone" : "Demandez à tous",
+
+    "regenerate":"Regénérer le graph",
+    "BackHome" : "Retour à l'accueil",
 
     "color.green":"Vert",
     "color.blue":"Bleu",
     "color.red":"Rouge",
     "color.yellow":"Jaune",
 
-    "play.jouerseul": "Jouer seul",
+    "play.jouerseul": "Mastermind",
     "play.enigme": "Résoudre une énigme",
     "play.enigme.easy": "Facile",
     "play.enigme.medium": "Intermédiaire",
@@ -134,6 +138,8 @@
     "score.online" : "En ligne",
 
     "score.tab.stat" : "Vos Stats",
+    "score.tab.quoti" : "Quotidien",
+    "score.tab.hebdo" : "Hebdomadaire",
 
     "lobby.players" : "Joueurs",
     "lobby.bienvenue" : "Bienvenue dans votre lobby !",
@@ -345,7 +351,7 @@
     "tuto.txt.14.6.5":" pour deviner, bonne chance !",
 
 
-    "history.mis":" à mis un ",
+    "history.mis":" a mis un ",
     "à":"à",
     "history.cantPose":" ne peut plus poser de carré",
     "history.NotCoupable":" n'est pas le coupable !"

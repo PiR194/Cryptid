@@ -67,6 +67,9 @@ class AuthController {
 
         // Stocker l'utilisateur dans la session)
         req.session.user = user;
+        req.session.user.nbNodes = 25
+        req.session.user.nbIndices = 3
+
 
         // Envoyer une réponse réussie
         console.log("[" + hour + ":" + minutes + "] " + user.pseudo + " have been connected.");
@@ -81,6 +84,20 @@ class AuthController {
         await databaseService.disconnect();
     }
   }
+
+  static async UpdateNbNodesIndices(req, res){
+    try{
+        if (req.session.user){
+            req.session.user.nbNodes = req.body.nbNodes;
+            req.session.user.nbIndices = req.body.nbIndices;
+            res.status(200).json({ message: 'Nombre de noeuds mis à jour.' });
+        }
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la mise à jour du nombre de noeuds.' });
+    }
+}
 
   static async logout(req, res) {
     const pseudo = req.session.user.pseudo;
