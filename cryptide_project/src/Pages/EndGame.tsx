@@ -35,7 +35,7 @@ import Player from '../model/Player';
 import { useGame } from '../Contexts/GameContext';
 
 /* Boostrap */
-import { Button } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Bot from '../model/Bot';
 import {basePath} from "../AdressSetup"
 
@@ -147,77 +147,191 @@ function EndGame({lang}: {lang: string}) {
         }, 2000);
     };
     return (
-        <div>
+        <div style={{overflow:"hidden"}}>
             {playTurnSound && <audio src={WinSound} autoPlay />}
             {!IsSolo ? (
-                <div>
-                    <div className="head">
-                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                            <h1>{winner?.pseudo} a gagné !</h1>
-                            <h3>Le coupable était <u>{person?.getName()}</u></h3>
-                        </header>
-                    </div>
-                    <div className='winner'>
-                        <img src={Person} width='250' height='250'/>
+                <Container>
+                    {/* Winner et son indice */}
+                    <Row>
+                        <Col>
+                            <div className="losingPlayersContainer">
+                                {/* Indices pairs */}
+                                {players.map((player, index) => (
+                                    index % 2 == 0 && (
+                                        <div className="playerContainer" key={index}>
+                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
+                                            {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString(lang)}</h6>)}
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+                        </Col>
 
-                        {!indicenull && (<h3 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == winner?.id)].ToString(lang)}</h3>)}
-                    </div>
-                    <div className='bottomEnd'>
-                        {/* <div className='centerDivH' onClick={resetAll}>
-                            <BigButtonNav dest="/play" img={Leave}/>
-                        </div> */}
-                        <div className="losingPlayersContainer">
-                            {players.map((player, index) => (
-                                player.id !== winner?.id && (
-                                    <div className="playerContainer" key={index}>
-                                        <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
-                                        {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString(lang)}</h6>)}
-                                    </div>
-                                )
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                        <Col xs={6}>
+                            <Row>
+                                <div className="head">
+                                    <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                                        <h4>{winner?.pseudo} a gagné !</h4>
+                                        <h5>Le coupable était <u>{person?.getName()}</u></h5>
+                                    </header>
+                                </div>
+                            </Row>
+                            <Row>
+                                <div id="vis-graph"></div>
+                            </Row>
+
+                            <Row className="justify-content-md-center">
+                                <Button href={`${basePath}/`} style={{
+                                    width:"50%",
+                                    margin:"10px"
+                                }}>Retour à l'accueil</Button>
+                            </Row>
+                        </Col>
+
+                        <Col>
+                            <div className="losingPlayersContainer">
+                                {players.map((player, index) => (
+                                    index % 2 == 1 && (
+                                        <div className="playerContainer" key={index}>
+                                            <PersonStatus img={Person} state={Person} key={index} name={player.pseudo} playerTouched={1} setPlayerTouched={() => {}} index={index} playerIndex={-2} showCircle={false} askedWrong={false}/>
+                                            {!indicenull && (<h6 className='indiceDisplay'>{indices[players.findIndex((p) => p.id == player?.id)].ToString(lang)}</h6>)}
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
             ): (
-            <div>
-                <div className="head">
-                            <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
-                                <h1>Vous avez gagné !</h1>
-                                <h3>Le coupable était <u>{person?.getName()}</u></h3>
-                            </header>
-                </div>
-                <div className='winner'>
-                    <img src={Person} width='250' height='250'/>
-                    <h1>{winner?.pseudo}</h1>
-                </div>
+                <Container fluid>
+                    {/* Perd une énigme */}
+                    {!winner && (
+                        <Row>
+                            <Col>
+                                <Row>
+                                    <div className="head">
+                                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                                            <h4>Vous avez perdu !</h4>
+                                            <h5>Le coupable était <u>{person?.getName()}</u></h5>
+                                        </header>
+                                    </div>
 
-                <div className='bottomEnd'>
-                    <div className="SoloContainer">
-                        <div className='solostat'>
-                            {!IsDaily && <p>Nombre de coups : {nbCoup}</p> }
-                            <p>Temps : {temps}s</p>
-                        </div>
-                        <div className='indicesolo'>
-                            {indices.map((indice, index) => (
-                                        // <div className="playerContainer" key={index}>
-                                            <div>
-                                                <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString(lang)}</h6>
-                                            </div>
-                                        //</div>
-                                    ))
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                    <Row>
+                                        {!IsDaily && 
+                                            <Col className='center'>
+                                                <p className='solostat'>Nombre de coups : {nbCoup}</p>
+                                            </Col>
+                                        }
+
+                                        <Col className='center'>
+                                            <p className='solostat'>Temps : {temps}s</p>
+                                        </Col>
+                                    </Row>
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        {indices.map((indice, index) => (
+                                            index % 2 == 0 && (
+                                                <div className='playerContainer'>
+                                                    <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                                </div>
+                                            )
+                                        ))}
+                                    </Col>
+
+                                    <Col xs={6}>
+                                        <div id="vis-graph"></div>
+                                    </Col>
+
+                                    <Col>
+                                        <div className="losingPlayersContainer">
+                                            {indices.map((indice, index) => (
+                                                index % 2 == 1 && (
+                                                    <div className='playerContainer'>
+                                                        <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                                    </div>  
+                                                )
+                                            ))}
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row className="justify-content-md-center">
+
+                                    <Button href={`${basePath}/`} style={{
+                                        width:"50%",
+                                        margin:"10px"
+                                    }}>Retour à l'accueil</Button>
+                                </Row>
+                            </Col>
+                        </Row>
+                    )}        
+
+                    {/* Gagne une énigme */}
+                    {winner && (
+                        <Row>
+                            <Col>
+                                <Row>
+                                    <div className="head">
+                                        <header className='leaderboard-header' style={{ borderColor: theme.colors.primary }}>
+                                            <h4>Vous avez gagné !</h4>
+                                            <h5>Le coupable était <u>{person?.getName()}</u></h5>
+                                        </header>
+                                    </div>
+
+                                    <Row>
+                                        {!IsDaily && 
+                                            <Col className='center'>
+                                                <p className='solostat'>Nombre de coups : {nbCoup}</p>
+                                            </Col>
+                                        }
+
+                                        <Col className='center'>
+                                            <p className='solostat'>Temps : {temps}s</p>
+                                        </Col>
+                                    </Row>
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        {indices.map((indice, index) => (
+                                            index % 2 == 0 && (
+                                                <div className='playerContainer'>
+                                                    <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                                </div>
+                                            )
+                                        ))}
+                                    </Col>
+
+                                    <Col xs={6}>
+                                        <div id="vis-graph"></div>
+                                    </Col>
+
+                                    <Col>
+                                        <div className="losingPlayersContainer">
+                                            {indices.map((indice, index) => (
+                                                index % 2 == 1 && (
+                                                    <div className='playerContainer'>
+                                                        <h6 className='indiceDisplay'> <u>Indice {index+1}</u> : {indice.ToString("fr")}</h6>
+                                                    </div>  
+                                                )
+                                            ))}
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row className='justify-content-center'>
+                                    <Button href={`${basePath}/`} style={{
+                                        width:"50%",
+                                        margin:"10px"
+                                    }}>Retour à l'accueil</Button>   
+                                </Row>
+                            </Col>
+                        </Row>    
+                    )}        
+                </Container>
             )}
-
-            <div id="vis-graph"/>
-
-            <div className='centerDivH' onClick={resetAll} style={{margin: "20px"}}>
-                <Button href={`${basePath}/`}>Retour à l'accueil</Button>
-            </div>
-
         </div>
     );
 }

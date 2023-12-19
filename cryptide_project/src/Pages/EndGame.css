@@ -1,124 +1,90 @@
-
-.head{
+/* Styles for the Winner and Indice section */
+.head {
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
-}
-
-.leaderboard-header{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-
-    width: fit-content;
-
-    border-radius: 0px 0px 30px 30px;
-    border: solid;
-    border-width: 0 5px;
-
+  }
+  
+  .leaderboard-header {
+    border: 2px solid;
+    border-color: #0064E0;
     padding: 20px;
-}
-
-.bottomEnd{
+    text-align: center;
+    border-radius: 0px 0px 10px 10px;
+  }
+  
+  /* Styles for the Winner's details */
+  .winner-details {
     display: flex;
-    justify-content: space-around;
-}
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .winner-details img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  /* Styles for the Indice Display */
+  .indiceDisplay {
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    margin: 5px; /* Réduire la marge */
+    padding: 8px; /* Réduire le rembourrage */
+    box-shadow: 3px 3px 3px rgb(246, 246, 246); /* Réduire l'ombre */
+  }
+  
+  /* Styles for the Losing Players Container */
+  .losingPlayersContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 5px;
+  }
+  
+  /* Styles for individual Player Containers */
+  .playerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid whitesmoke;
+    border-radius: 15px;
+    background-color: white;
+  }
 
-.winner{
+  .soloContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ajoutez cette ligne pour occuper toute la largeur */
+  }
+  
+  .solostat{
+    border: solid 1px whitesmoke;
+    border-radius: 15px;
+    background-color: white;
+    padding: 10px;
+    margin: 5px;
+    width: fit-content; /* Ajoutez cette ligne pour ajuster la largeur au contenu */
+  }
+
+  .center {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-}
-
-.playersContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* padding-left: "5px"; */
-
-    width: 100px;
-    background-color: red;
-}
-
-.playerContainer{
-    /* display: flex;
-    align-items: center; */
-    /* flex-direction: column; */
-
-    /* width: 300px; */
-    width: 30%;
-    margin-bottom: 20px;
-    /* margin-bottom: 10px; */
-
-    border: solid 1px whitesmoke;
-    border-radius: 15px;
+  }
     
-    background-color: white;
-}
 
-.losingPlayersContainer{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    
-    margin: 10px 0; 
-    
-    max-width: 50%;
-    
-    overflow-y: scroll;
-    max-height: 200px;
-    /* background-color: yellow; */
-}
-
-.indiceDisplay{
-    border: solid 2px whitesmoke;
-    border-radius: 10px;
-    margin: 0 15px 0 15px;
-    padding: 10px;  
-    box-shadow: 5px 5px 5px rgb(246, 246, 246);    
-}
-
-.SoloContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    border: solid 1px whitesmoke;
-    border-radius: 15px;
-    background-color: white;
-
-    max-width: 50%;
-}
-
-.indicesolo{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    
-    /* margin: 10px 0;  */
-    /* max-height: 200px; */
-}
-
-.solostat{
-    display: flex;
-    justify-content: space-between;
-    width: 70%;
-}
-
-.solostat p {
-    border: solid 1px whitesmoke;
-    border-radius: 15px;
-    background-color: white;
-
-    padding: 10px;
-}
-
-#vis-graph {
+  /* Styles for the Graph Container */
+  #vis-graph {
     height: 500px;
-    margin: 50px; 
+    margin: 5px;
     border: 2px solid #ccc;
-    overflow: hidden; 
-}
+    overflow: hidden;
+  }
+  
