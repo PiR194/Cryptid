@@ -14,14 +14,12 @@ import PlayerList from '../Components/PlayerList';
 import TurnBar from '../Components/TurnBar';
 
 /* Icon */
-import Leave from "../res/icon/leave.png";
 import Param from "../res/icon/param.png";
-import Replay from "../res/icon/replay.png";
 import Info from "../res/icon/infoGreen.png";
 import Check from "../res/icon/checkboxGreen.png";
-import Alpha from "../res/GreekLetters/alphaW.png";
 import MGlass from "../res/icon/magnifying-glass.png";
-import Download from "../res/icon/download.png"
+import Pdf from "../res/icon/pdf.png"
+import Tex from "../res/icon/tex.png"
 import Reset from "../res/icon/reset.png";
 import Oeye from "../res/icon/eye.png";
 import Ceye from "../res/icon/hidden.png";
@@ -559,7 +557,7 @@ const handleBlurIndice = () => {
                 backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
-              <img src={Download} alt="indice" height="40"/>
+              <img src={Tex} alt="indice" height="40"/>
             </button>
           }
 
@@ -569,7 +567,7 @@ const handleBlurIndice = () => {
                 backgroundColor: theme.colors.tertiary,
                 borderColor: theme.colors.secondary
               }}>
-              <img src={Download} alt="indice" height="40"/>
+              <img src={Pdf} alt="indice" height="40"/>
             </button>
           }
         </div>
