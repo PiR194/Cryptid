@@ -818,14 +818,6 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         
       })
     }
-    else {
-      if (firstLap){
-        firstLap=false
-        if (solo && (difficulty === "intermediate" || !isDaily)){
-          addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) +" " + 1  +"/"+networkData.nodes.length + "] ----->");
-        }
-      }
-    }
 
 
     const putCorrectBackground = () => {
@@ -1162,7 +1154,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 if (difficulty==="intermediate"){
                   addToHistory(personTest.getName() + intl.formatMessage({ id: 'history.NotCoupable' }));
                   cptTour ++; // On Incrémente le nombre de tour du joueur
-                  addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) + " " + cptTour  +"/"+networkData.nodes.length + "] ----->");
+                  addToHistory("<----- ["+ intl.formatMessage({ id: 'turn' }) + " " + cptTour  +"/"+networkData.nodes.length);
                   changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
                 }
                 else if (difficulty==="easy"){
