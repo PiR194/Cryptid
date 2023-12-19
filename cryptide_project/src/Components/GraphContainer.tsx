@@ -942,6 +942,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
         }
         finally{
           setElapsedTime(0)
+          putCorrectBackground()
           socket.off("end game")
           socket.off("asked all")
           socket.off("opacity activated")
