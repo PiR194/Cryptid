@@ -6,6 +6,8 @@ const ADRESSE_DBSERVER = "https://codefirst.iut.uca.fr/containers/Crypteam-api"
 const tmp = ADRESSE_DBSERVER
 const tmp2 = ADRESSE_WEBSERVER
 
+console.log(ADRESSE_WEBSERVER)
+
 const ADRESSE_WEBSITE = ""
 
 const basePath = process.env.REACT_APP_BASEPATH || '/containers/Crypteam-website';
