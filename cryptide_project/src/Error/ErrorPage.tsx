@@ -28,7 +28,7 @@ function ErrorPage({ code = "", msg = "Something is wrong"}) {
             </div>
 
             <div className='centerDivH' style={{margin: "20px"}}>
-                <Button href={`${basePath}/`} variant='danger'><FormattedMessage id='BackHome'/></Button>
+                <Button href={``} variant='danger'><FormattedMessage id='BackHome'/></Button>
             </div>
         </div>
     );

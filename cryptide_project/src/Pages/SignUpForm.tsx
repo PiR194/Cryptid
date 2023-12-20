@@ -34,7 +34,7 @@ const SignUp = () => {
 
                 setShowConfirmation(true);
                 setTimeout(() => {
-                    navigate(`${basePath}/login`);         // 3 secondes avant de rediriger vers la page de connexion
+                    navigate(`login`);         // 3 secondes avant de rediriger vers la page de connexion
                 }, 1250);
             }
         } catch (error: any) {
@@ -91,7 +91,7 @@ const SignUp = () => {
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    Vous avez déjà un <a href={`${basePath}/login`}>compte</a> ?
+                    Vous avez déjà un <a href={`login`}>compte</a> ?
                 </p>
             </form>
 

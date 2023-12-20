@@ -73,7 +73,7 @@ const InGame = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(`${basePath}/`)
+            navigate(``)
         }
     }
   
@@ -513,7 +513,7 @@ const handleBlurIndice = () => {
           {/* <Link to='/info#indice-possible' target='_blank'> 
             //? redirection impossible apparament (securité des navigateur
           */}
-          <Link to={`${basePath}/info`} target='_blank'>
+          <Link to={`info`} target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -524,7 +524,7 @@ const handleBlurIndice = () => {
           </Link>
 
           {!IsSolo &&
-          <Link to={`${basePath}/${navdeduc}`} target='_blank'>
+          <Link to={`${navdeduc}`} target='_blank'>
             <button className='button'
               style={{ 
                 backgroundColor: theme.colors.tertiary,
@@ -650,7 +650,7 @@ const handleBlurIndice = () => {
               <div className='centerDivH' style={{margin: "20px"}}>
                 <Button variant="outline-warning" onClick={() => {setHistory([]); changeGraph(enteredNumber, enteredNumberIndices)}}><FormattedMessage id='regenerate'/></Button>
               </div>
-                <Button variant="outline-danger" href={`${basePath}/`}><FormattedMessage id='BackHome'/></Button>
+                <Button variant="outline-danger" href={``}><FormattedMessage id='BackHome'/></Button>
             </div>
           </Offcanvas.Body>
         </Offcanvas>

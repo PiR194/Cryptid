@@ -144,7 +144,7 @@ function Lobby() {
         gameStarted = true
         //socket.off("player left")
         //socket.off("new player")
-        navigate(`${basePath}/game?solo=false&daily=false`);
+        navigate(`game?solo=false&daily=false`);
     });
 
 
@@ -181,7 +181,7 @@ function Lobby() {
         setGameStartData(true)
         first = true
         gameStarted = true
-        navigate(`${basePath}/game?solo=false&daily=false`)
+        navigate(`game?solo=false&daily=false`)
     });
 
     socket.on("new player", (tab) =>{
@@ -194,15 +194,15 @@ function Lobby() {
     });
 
     socket.on("room full", () => {
-        navigate(`${basePath}/`)
+        navigate(``)
     })
 
     socket.on("game started", () => {
-        navigate(`${basePath}/`)
+        navigate(``)
     })
 
     socket.on("game already started", () => {
-        navigate(`${basePath}/`)
+        navigate(``)
     })
 
     socket.on("player left", (tab, i) => {

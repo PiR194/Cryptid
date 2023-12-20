@@ -89,19 +89,19 @@ function App() {
                 {hasNavbarVisible && <AppNavbar changeLocale={changeLocale} locale={locale} />}
                 <Routes>
                 
-                  <Route path={`${basePath}/`} element={<NewPlay/>} />
-                  <Route path={`${basePath}/login`} element={<Login />} />
-                  <Route path={`${basePath}/signup`} element={<SignUp />} />
-                  <Route path={`${basePath}/presentation`} element={<Home />} />
-                  <Route path={`${basePath}/lobby`} element={<Lobby/>} />
-                  <Route path={`${basePath}/endgame`} element={<EndGame lang={locale}/>} />
-                  <Route path={`${basePath}/game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
-                  <Route path={`${basePath}/info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path={`${basePath}/tutorial`} element={<Tutorial locale={locale} changeLocale={changeLocale}/>} />
-                  <Route path={`${basePath}/deduc`} element={<DeducCheck lang={locale}/>} />
-                  <Route path={`${basePath}/TheRealDeduc`} element={<DeducGrid/>} />
-                  <Route path={`${basePath}/profile`} element={<Profile/>} />
-                  <Route path={`${basePath}/join`} element={<Lobbies/>}/>
+                  <Route path={``} element={<NewPlay/>} />
+                  <Route path={`login`} element={<Login />} />
+                  <Route path={`signup`} element={<SignUp />} />
+                  <Route path={`presentation`} element={<Home />} />
+                  <Route path={`lobby`} element={<Lobby/>} />
+                  <Route path={`endgame`} element={<EndGame lang={locale}/>} />
+                  <Route path={`game`} element={<InGame locale={locale} changeLocale={changeLocale}/>}/>
+                  <Route path={`info`} element={<InfoPage locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path={`tutorial`} element={<Tutorial locale={locale} changeLocale={changeLocale}/>} />
+                  <Route path={`deduc`} element={<DeducCheck lang={locale}/>} />
+                  <Route path={`TheRealDeduc`} element={<DeducGrid/>} />
+                  <Route path={`profile`} element={<Profile/>} />
+                  <Route path={`join`} element={<Lobbies/>}/>
                   {/* <Route path="/solo" element={<SoloGame locale={locale} changeLocale={changeLocale} />}/>   */}
 
                   <Route path="*" element={<ErrorPage code="404" msg='not found' />} /> {/* page 404 */}

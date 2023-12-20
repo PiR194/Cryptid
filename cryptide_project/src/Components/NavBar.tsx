@@ -37,15 +37,15 @@ function AppNavbar({changeLocale, locale}) {
     const {isLoggedIn, login, user, setUserData, manager } = useAuth();
 
     function navigateToProfile(){
-        navigate(`${basePath}/profile`)
+        navigate(`profile`)
     }
 
     function navigateToLogin(){
-        navigate(`${basePath}/login`)
+        navigate(`login`)
     }
     
     function navigateToHome(){
-        navigate(`${basePath}/`)
+        navigate(``)
     }
 
     return (
@@ -57,13 +57,13 @@ function AppNavbar({changeLocale, locale}) {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href={`${basePath}/`} style={{ color: theme.colors.text }}>
+                        <Nav.Link href={``} style={{ color: theme.colors.text }}>
                             <FormattedMessage id="navbar.play" />
                         </Nav.Link>
-                        <Nav.Link href={`${basePath}/presentation`} style={{ color: theme.colors.text }}>
+                        <Nav.Link href={`presentation`} style={{ color: theme.colors.text }}>
                             <FormattedMessage id="navbar.presentation" />
                         </Nav.Link>
-                        <Nav.Link href={`${basePath}/info`} style={{ color: theme.colors.text }}>
+                        <Nav.Link href={`info`} style={{ color: theme.colors.text }}>
                             <FormattedMessage id="navbar.info" />
                         </Nav.Link>
                     </Nav>

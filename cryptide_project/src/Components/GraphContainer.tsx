@@ -939,7 +939,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
           socket.off("asked")
           socket.off("who plays")
     
-          navigate(`${basePath}/endgame`)
+          navigate(`endgame`)
         }        
       }
     })
@@ -1137,12 +1137,12 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                 testFirst = true
                 setElapsedTime(0)
                 endgame = true                    
-                navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+                navigate(`endgame?solo=true&daily=${isDaily}`)
               }      
               catch(error){
                 console.log(error);
               }
-              navigate(`${basePath}/endgame?solo=true&daily=${isDaily}`)
+              navigate(`endgame?solo=true&daily=${isDaily}`)
             }
             else{
               if (isDaily){
@@ -1157,7 +1157,7 @@ const MyGraphComponent: React.FC<MyGraphComponentProps> = ({onNodeClick, handleS
                   changecptTour(cptTour); // On le transmet a la page précédente avec la fonction
                 }
                 else{
-                  navigate(`${basePath}/endgame?solo=true&daily=true`)
+                  navigate(`endgame?solo=true&daily=true`)
                   setNetworkDataData(networkData)
                   setWinnerData(null)
                 }
