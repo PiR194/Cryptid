@@ -6,7 +6,7 @@ const ADRESSE_DBSERVER = "https://codefirst.iut.uca.fr/containers/Crypteam-api"
 const tmp = ADRESSE_DBSERVER
 const tmp2 = ADRESSE_WEBSERVER
 
-console.log(ADRESSE_WEBSERVER)
+console.log(ADRESSE_WEBSERVER + " wesh")
 
 const ADRESSE_WEBSITE = ""
 
