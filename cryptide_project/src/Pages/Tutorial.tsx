@@ -82,7 +82,7 @@ const Tutorial = ({locale, changeLocale}) => {
     if (cptNavigation % 2 == 0){
         if (navigationType.toString() == "POP"){
             socket.emit("player quit")
-            navigate(``)
+            navigate(`${basePath}/`)
         }
     }
   
@@ -365,7 +365,7 @@ const Tutorial = ({locale, changeLocale}) => {
           <Button variant="primary" onClick={handleShowHelp}>
             <FormattedMessage id='aide'/>
           </Button>
-          <Link to={`info`} target='_blank'>
+          <Link to={`${basePath}/info`} target='_blank'>
             <button className='button' 
               style={{ 
                 backgroundColor: theme.colors.tertiary,

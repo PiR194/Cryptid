@@ -305,7 +305,7 @@ const TutorialGraph: React.FC<TutorialGraphProps> = ({showLast, setNetwork, setP
               setPlayerTouched(-1)
               setWinnerData(winner)      
               first = true
-              navigate(`endgame`)
+              navigate(`${basePath}/endgame`)
             }  
           }
         }

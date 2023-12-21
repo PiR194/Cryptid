@@ -102,7 +102,7 @@ function NewPlay() {
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
         setGameStartData(true)
-        navigate(`game?solo=true&daily=false`);
+        navigate(`${basePath}/game?solo=true&daily=false`);
     }
 
     
@@ -115,7 +115,7 @@ function NewPlay() {
     }
 
     function launchTuto(){
-        navigate(`tutorial`);
+        navigate(`${basePath}/tutorial`);
     }
     
 
@@ -142,7 +142,7 @@ function NewPlay() {
     }, [room, navigate]);
 
     const goBack = () => {
-        navigate(`lobby?room=${goBackRoom}`)
+        navigate(`${basePath}/lobby?room=${goBackRoom}`)
     }
 
 
@@ -165,7 +165,7 @@ function NewPlay() {
         setIndicesData(choosenIndices)
         setIndicesData(choosenIndices)
         setGameStartData(true)
-        navigate(`game?solo=true&daily=true&difficulty=easy`);
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=easy`);
         setShowOverlay(false);
     };
 
@@ -180,7 +180,7 @@ function NewPlay() {
         setGameStartData(true)
 
 
-        navigate(`game?solo=true&daily=true&difficulty=intermediate`);
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=intermediate`);
         if (first){
             first = false
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
@@ -203,7 +203,7 @@ function NewPlay() {
             const map = EnigmeDuJourCreator.createEnigme(networkPerson, choosenIndices, choosenPerson, Stub.GenerateIndice())
             setDailyEnigmeData(map)
         }
-        navigate(`game?solo=true&daily=true&difficulty=hard`);
+        navigate(`${basePath}/game?solo=true&daily=true&difficulty=hard`);
         setShowOverlay(false);
     };
 

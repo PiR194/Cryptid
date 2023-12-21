@@ -48,7 +48,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     logout();
-    navigate(``);
+    navigate(`${basePath}/`);
   };
   
   // @ts-ignore
@@ -200,7 +200,7 @@ const Profile = () => {
       }
       handleCloseDeleteModal();
 
-      navigate(``)
+      navigate(`${basePath}/`)
 
     } else {
       console.error('Phrase de confirmation incorrecte.');

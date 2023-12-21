@@ -11,7 +11,7 @@ import {basePath} from "../AdressSetup"
 function ButtonImgNav({ dest, img, text = "" }) {
     const theme = useTheme();
     return (
-    <Link to={`${dest}`} className="link-without-underline"> {/*target='_blank' ==> ouvre un nouvelle onglet*/ }
+    <Link to={`${basePath}/${dest}`} className="link-without-underline"> {/*target='_blank' ==> ouvre un nouvelle onglet*/ }
         <button className='buttonNabImg' style={{ backgroundColor: theme.colors.primary, color: theme.colors.secondary}}>
             <img src={img} alt="Button Image" height="50" width="50"/>
             <p>{text}</p>

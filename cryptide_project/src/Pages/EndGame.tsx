@@ -181,7 +181,7 @@ function EndGame({lang}: {lang: string}) {
                             </Row>
 
                             <Row className="justify-content-md-center">
-                                <Button href={``} style={{
+                                <Button href={`${basePath}/`} style={{
                                     width:"50%",
                                     margin:"10px"
                                 }}>Retour à l'accueil</Button>
@@ -259,7 +259,7 @@ function EndGame({lang}: {lang: string}) {
 
                                 <Row className="justify-content-md-center">
 
-                                    <Button href={``} style={{
+                                    <Button href={`${basePath}/`} style={{
                                         width:"50%",
                                         margin:"10px"
                                     }}>Retour à l'accueil</Button>
@@ -322,7 +322,7 @@ function EndGame({lang}: {lang: string}) {
                                 </Row>
 
                                 <Row className='justify-content-center'>
-                                    <Button href={``} style={{
+                                    <Button href={`${basePath}/`} style={{
                                         width:"50%",
                                         margin:"10px"
                                     }}>Retour à l'accueil</Button>   

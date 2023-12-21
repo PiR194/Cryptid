@@ -83,7 +83,7 @@ function Home() {
                         Si un joueur place un jeton carré, le questionneur doit également jouer son jeu en plaçant un jeton carré de sa couleur sur un nœud du graphique. La contre-manipulation devient ainsi une arme redoutable pour détourner l'accusation et semer la confusion. Pour en savoir plus, plongez-vous dans les détails de ce passionnant récit sur une autre page.
                     </p>
 
-                    <h5>Pour des informations plus détaillées, consulter les <Link to={`info`}>règles</Link>.</h5>
+                    <h5>Pour des informations plus détaillées, consulter les <Link to={`${basePath}/info`}>règles</Link>.</h5>
                     <hr/>
                 </div>
                 
@@ -116,7 +116,7 @@ function Home() {
                 {/* <button>Jouer au jeu</button> */}
                 <br/>
 
-                <Link to={``} className='button' 
+                <Link to={`${basePath}/`} className='button'
                     style={{ 
                         backgroundColor: theme.colors.primary,
                         borderColor: theme.colors.secondary
