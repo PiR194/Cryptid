@@ -55,6 +55,12 @@ import Indice from '../model/Indices/Indice';
 import {basePath} from "../AdressSetup"
 import { useAuth } from '../Contexts/AuthContext';
 
+import ballonDeBasket from '../Script/ballon-de-basket.png';
+import ballonDeFoot from '../Script/ballon-de-foot.png';
+import baseball from '../Script/baseball.png';
+import bowling from '../Script/bowling.png';
+import tennis from '../Script/tennis.png';
+
 
 let cptNavigation = 0
 
@@ -205,7 +211,7 @@ const InGame = ({locale, changeLocale}) => {
 
       const zip = new JSZip();
       
-      if (isDaily && networkEnigme != null){
+      if (isDaily && (difficulty === "hard" || difficulty === "intermediate") && networkEnigme != null){
         const tex = generateLatexCodeEnigme(personNetwork, person, indices, network, networkEnigme)
         const blob = new Blob([tex], { type: 'application/x-latex;charset=utf-8' });
         zip.file('socialGraph.tex', tex);
@@ -217,17 +223,25 @@ const InGame = ({locale, changeLocale}) => {
       }
 
       const imageNames = ['ballon-de-basket.png', 'ballon-de-foot.png', "baseball.png", "bowling.png", "tennis.png"]; // Liste des noms de fichiers d'images
-      const imagesFolder = 'Script';
+      
+      const imageNames2 = [ballonDeBasket, ballonDeFoot, baseball, bowling, tennis];
 
-      for (const imageName of imageNames) {
-        const imageUrl = process.env.PUBLIC_URL + `/${imagesFolder}/${imageName}`;
+      const imagesFolder = 'Script';
+      let test = 0
+      for (const image of imageNames2) {
+        /*
+        const imageUrl = `localhost/${imagesFolder}/${imageName}`;
+        console.log(imageUrl)
         const response = await fetch(imageUrl);
+        */
+        const response = await fetch(image);
         
         if (response.ok) {
           const imageBlob = await response.blob();
-          zip.file(`${imageName}`, imageBlob);
+          zip.file(imageNames[test], imageBlob);
+          test++
         } else {
-          console.error(`Erreur de chargement de l'image ${imageName}`);
+          //  console.error(`Erreur de chargement de l'image ${imageName}`);
         }
       }
 

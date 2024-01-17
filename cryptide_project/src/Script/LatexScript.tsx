@@ -86,7 +86,7 @@ function generateLatexCode(personsNet : PersonNetwork, choosenPerson : Person, c
     latexCode += "\\end{compactitem}\n"
 
     //* Solution
-    latexCode += "% Solution : " + choosenPerson.getName() + "\n";
+    latexCode += "Solution : " + choosenPerson.getName() + "\n";
     
     latexCode += "\\end{document}\n"
 
@@ -192,8 +192,14 @@ function generateLatexCodeEnigme(personsNet : PersonNetwork, choosenPerson : Per
     latexCode += "\\end{compactitem}\n"
 
     //* Solution
-    latexCode += "% Solution : " + choosenPerson.getName() + "\n";
+    latexCode += "Solution : " + choosenPerson.getName() + "\n";
     
+    latexCode += "\\begin{compactitem}\n"
+    choosenIndices.forEach((indices, index) => {
+        latexCode += `\\item Indice ${index + 1}: ${indices.ToString("fr")}\n`
+    })
+
+    latexCode += "\\end{compactitem}\n"
     latexCode += "\\end{document}\n"
 
    return latexCode
