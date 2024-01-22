@@ -10,8 +10,9 @@ class DbUserService implements IUserService{
             const sessionData = await SessionService.getSession();
             
             // Vérifie si il y a une session
-            if (sessionData.user) {
-                const currentUser = new User(socket.id, sessionData.user.pseudo, sessionData.profilePicture,
+            const id = socket.id;
+            if (sessionData.user && id) {
+                const currentUser = new User(id, sessionData.user.pseudo, sessionData.profilePicture,
                 {
                     nbGames: sessionData.user.mastermindStats.nbGames, 
                     bestScore: sessionData.user.mastermindStats.bestScore, 
